@@ -5,6 +5,8 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.darkColorScheme
 import androidx.compose.material3.lightColorScheme
 import androidx.compose.runtime.Composable
+import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 
 private val lightScheme = lightColorScheme(
     primary = primaryLight,
@@ -81,6 +83,22 @@ private val darkScheme = darkColorScheme(
     surfaceContainerHigh = surfaceContainerHighDark,
     surfaceContainerHighest = surfaceContainerHighestDark,
 )
+
+object Spacing {
+    val small = 4.dp
+    val medium = 12.dp
+    val large = 20.dp
+
+    val rowMinHeight = 48.dp
+}
+
+object Size {
+    val iconSmall = 16.sp
+    val iconMedium = 24.sp
+    val iconLarge = 32.sp
+
+    val iconMinWidth = 24.dp
+}
 
 @Composable
 fun AppTheme(
