@@ -1,17 +1,15 @@
 package org.zp1ke.platasync.ui.screen
 
-import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
-import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.remember
-import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
 import cafe.adriel.voyager.core.model.StateScreenModel
 import cafe.adriel.voyager.core.model.rememberScreenModel
 import cafe.adriel.voyager.core.model.screenModelScope
@@ -19,11 +17,10 @@ import cafe.adriel.voyager.navigator.tab.Tab
 import cafe.adriel.voyager.navigator.tab.TabOptions
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
-import org.jetbrains.compose.resources.painterResource
 import org.jetbrains.compose.ui.tooling.preview.Preview
 import org.zp1ke.platasync.model.AppIcon
 import org.zp1ke.platasync.model.UserCategory
-import org.zp1ke.platasync.ui.theme.Size
+import org.zp1ke.platasync.ui.common.ImageIcon
 import org.zp1ke.platasync.ui.theme.Spacing
 
 data class CategoriesScreenState(
@@ -54,6 +51,12 @@ class CategoriesScreenViewModel : StateScreenModel<CategoriesScreenState>(
             )
         }
     }
+
+    fun removeCategory(category: UserCategory) {
+        mutableState.value = CategoriesScreenState(
+            data = mutableState.value.data.filter { it.id != category.id }
+        )
+    }
 }
 
 object CategoriesScreen : Tab {
@@ -72,16 +75,9 @@ object CategoriesScreen : Tab {
     @Composable
     override fun Content() {
         val viewModel = rememberScreenModel { CategoriesScreenViewModel() }
-
         val state by viewModel.state.collectAsState()
-        val onCategoryAction: (UserCategory) -> Unit = {
-            print { "Redirect to edit screen" }
-        }
 
-        CategoriesListView(
-            categories = state.data,
-            onCategoryAction = onCategoryAction,
-        )
+        CategoriesListView(categories = state.data)
     }
 }
 
@@ -101,7 +97,6 @@ private fun CategoriesListView(
             icon = AppIcon.CATEGORY_GROCERIES,
         ),
     ),
-    onCategoryAction: (category: UserCategory) -> Unit = { _ -> },
 ) {
     Scaffold(
         topBar = {
@@ -113,7 +108,7 @@ private fun CategoriesListView(
         },
     ) { paddingValues ->
         Box(modifier = Modifier.padding(paddingValues)) {
-            CategoriesList(categories, onCategoryAction)
+            CategoriesList(categories)
         }
     }
 }
@@ -121,21 +116,16 @@ private fun CategoriesListView(
 @Composable
 private fun CategoriesList(
     categories: List<UserCategory>,
-    onCategoryAction: (category: UserCategory) -> Unit,
 ) {
     LazyColumn(
         verticalArrangement = Arrangement.spacedBy(Spacing.small),
+        modifier = Modifier.padding(horizontal = Spacing.small),
     ) {
         items(
             items = categories,
             key = { it.id },
         ) { category ->
-            CategoryListItem(
-                category = category,
-                onClick = {
-                    onCategoryAction(category)
-                },
-            )
+            CategoryListItem(category = category)
         }
 
         item {
@@ -147,37 +137,23 @@ private fun CategoriesList(
 @Composable
 private fun CategoryListItem(
     category: UserCategory,
-    onClick: () -> Unit = {},
 ) {
-    Surface(
-        modifier =
-            Modifier
-                .fillMaxWidth()
-                .padding(horizontal = Spacing.medium)
-                .defaultMinSize(minHeight = Spacing.rowMinHeight),
-        onClick = onClick,
-        shape = RoundedCornerShape(Spacing.small),
-        color = MaterialTheme.colorScheme.surfaceVariant,
-    ) {
-        Row(
-            modifier =
-                Modifier
-                    .padding(
-                        horizontal = Spacing.medium,
-                        vertical = Spacing.small,
-                    ),
-            verticalAlignment = Alignment.CenterVertically,
-            horizontalArrangement = Arrangement.spacedBy(Spacing.large),
-        ) {
-            Image(
-                painterResource(category.icon.resource()), null,
-                modifier = Modifier.width(Size.iconSmall),
-            )
+    ListItem(
+        modifier = Modifier
+            .clip(MaterialTheme.shapes.small)
+            .padding(horizontal = Spacing.small),
+        colors = ListItemDefaults.colors(
+            containerColor = MaterialTheme.colorScheme.surfaceVariant
+        ),
+        headlineContent = {
             Text(
                 text = category.name,
-                style = MaterialTheme.typography.bodyLarge.copy(color = MaterialTheme.colorScheme.onSurfaceVariant),
-                modifier = Modifier.weight(1f),
+                style = MaterialTheme.typography.titleMedium
+                    .copy(color = MaterialTheme.colorScheme.onSurfaceVariant),
             )
+        },
+        leadingContent = {
+            ImageIcon(category.icon)
         }
-    }
+    )
 }

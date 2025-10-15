@@ -1,4 +1,4 @@
-package org.zp1ke.platasync.ui.navigation
+package org.zp1ke.platasync.ui.common
 
 import androidx.compose.foundation.layout.RowScope
 import androidx.compose.material3.Icon

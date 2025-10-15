@@ -13,6 +13,9 @@ enum class AppIcon {
     ACCOUNT_PIGGY {
         override fun resource() = Res.drawable.account_piggy
     },
+    ACTION_DELETE {
+        override fun resource() = Res.drawable.action_delete
+    },
     CATEGORY_GROCERIES {
         override fun resource() = Res.drawable.category_groceries
     },

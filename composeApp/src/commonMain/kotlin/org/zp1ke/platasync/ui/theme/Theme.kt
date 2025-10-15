@@ -86,13 +86,11 @@ private val darkScheme = darkColorScheme(
 object Spacing {
     val small = 4.dp
     val medium = 12.dp
-    val large = 20.dp
-
-    val rowMinHeight = 48.dp
 }
 
 object Size {
-    val iconSmall = 24.dp
+    val iconMedium = 32.dp
+    val iconBorderSmall = 10.dp
 }
 
 @Composable
