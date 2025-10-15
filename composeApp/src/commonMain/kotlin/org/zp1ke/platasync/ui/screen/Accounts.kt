@@ -3,6 +3,8 @@ package org.zp1ke.platasync.ui.screen
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Add
 import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
@@ -56,6 +58,12 @@ class AccountsScreenViewModel : StateScreenModel<AccountsScreenState>(
         }
     }
 
+    fun addAccount(account: UserAccount) {
+        mutableState.value = AccountsScreenState(
+            data = mutableState.value.data + account
+        )
+    }
+
     fun removeAccount(account: UserAccount) {
         mutableState.value = AccountsScreenState(
             data = mutableState.value.data.filter { it.id != account.id }
@@ -81,7 +89,14 @@ object AccountsScreen : Tab {
         val viewModel = rememberScreenModel { AccountsScreenViewModel() }
         val state by viewModel.state.collectAsState()
 
-        AccountsListView(accounts = state.data)
+        AccountsListView(accounts = state.data, onAdd = {
+            viewModel.addAccount(UserAccount(
+                id = (state.data.size + 1).toString(),
+                name = "New Account",
+                icon = AppIcon.ACCOUNT_PIGGY,
+                balance = 10000,
+            ))
+        })
     }
 }
 
@@ -103,12 +118,23 @@ private fun AccountsListView(
             balance = 50000,
         ),
     ),
+    onAdd: () -> Unit = { },
 ) {
     Scaffold(
         topBar = {
             TopAppBar(
                 title = {
                     Text("TODO accounts", style = MaterialTheme.typography.titleMedium)
+                },
+                actions = {
+                    IconButton(onClick = {
+                        onAdd()
+                    }) {
+                        Icon(
+                            imageVector = Icons.Filled.Add,
+                            contentDescription = "Add Account",
+                        )
+                    }
                 },
             )
         },
