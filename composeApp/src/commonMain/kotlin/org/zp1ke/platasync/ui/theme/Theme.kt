@@ -93,11 +93,7 @@ object Spacing {
 }
 
 object Size {
-    val iconSmall = 16.sp
-    val iconMedium = 24.sp
-    val iconLarge = 32.sp
-
-    val iconMinWidth = 24.dp
+    val iconSmall = 24.dp
 }
 
 @Composable

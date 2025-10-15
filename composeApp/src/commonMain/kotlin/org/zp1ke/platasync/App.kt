@@ -12,6 +12,7 @@ import androidx.compose.ui.Modifier
 import cafe.adriel.voyager.navigator.Navigator
 import cafe.adriel.voyager.transitions.SlideTransition
 import org.jetbrains.compose.ui.tooling.preview.Preview
+import org.zp1ke.platasync.ui.screen.AccountsScreen
 import org.zp1ke.platasync.ui.screen.CategoriesScreen
 import org.zp1ke.platasync.ui.theme.AppTheme
 
@@ -28,7 +29,7 @@ fun App() {
                     .fillMaxSize(),
                 color = MaterialTheme.colorScheme.background,
             ) {
-                Navigator(CategoriesScreen) { navigator ->
+                Navigator(AccountsScreen) { navigator ->
                     SlideTransition(navigator)
                 }
             }

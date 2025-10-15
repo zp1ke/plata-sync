@@ -20,33 +20,36 @@ import kotlinx.coroutines.launch
 import org.jetbrains.compose.resources.painterResource
 import org.jetbrains.compose.ui.tooling.preview.Preview
 import org.zp1ke.platasync.model.AppIcon
-import org.zp1ke.platasync.model.UserCategory
+import org.zp1ke.platasync.model.UserAccount
 import org.zp1ke.platasync.ui.theme.Size
 import org.zp1ke.platasync.ui.theme.Spacing
+import org.zp1ke.platasync.util.formatMoney
 
-data class CategoriesScreenState(
-    val data: List<UserCategory>,
+data class AccountsScreenState(
+    val data: List<UserAccount>,
 )
 
-class CategoriesScreenViewModel : StateScreenModel<CategoriesScreenState>(
-    CategoriesScreenState(
+class AccountsScreenViewModel : StateScreenModel<AccountsScreenState>(
+    AccountsScreenState(
         data = listOf(),
     ),
 ) {
     init {
         screenModelScope.launch {
             delay(300)
-            mutableState.value = CategoriesScreenState(
+            mutableState.value = AccountsScreenState(
                 data = listOf(
-                    UserCategory(
+                    UserAccount(
                         id = "1",
-                        name = "Home",
-                        icon = AppIcon.CATEGORY_HOME,
+                        name = "Savings",
+                        icon = AppIcon.ACCOUNT_PIGGY,
+                        balance = 15000,
                     ),
-                    UserCategory(
+                    UserAccount(
                         id = "2",
-                        name = "Groceries",
-                        icon = AppIcon.CATEGORY_GROCERIES,
+                        name = "Credit Card",
+                        icon = AppIcon.ACCOUNT_CARD,
+                        balance = 50000,
                     ),
                 )
             )
@@ -54,21 +57,21 @@ class CategoriesScreenViewModel : StateScreenModel<CategoriesScreenState>(
     }
 }
 
-object CategoriesScreen : Screen {
-    private fun readResolve(): Any = CategoriesScreen
+object AccountsScreen : Screen {
+    private fun readResolve(): Any = AccountsScreen
 
     @Composable
     override fun Content() {
-        val viewModel = rememberScreenModel { CategoriesScreenViewModel() }
+        val viewModel = rememberScreenModel { AccountsScreenViewModel() }
 
         val state by viewModel.state.collectAsState()
-        val onCategoryAction: (UserCategory) -> Unit = {
+        val onAccountAction: (UserAccount) -> Unit = {
             print { "Redirect to edit screen" }
         }
 
-        CategoriesListView(
-            categories = state.data,
-            onCategoryAction = onCategoryAction,
+        AccountsListView(
+            accounts = state.data,
+            onAccountAction = onAccountAction,
         )
     }
 }
@@ -76,52 +79,54 @@ object CategoriesScreen : Screen {
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 @Preview
-private fun CategoriesListView(
-    categories: List<UserCategory> = listOf(
-        UserCategory(
+private fun AccountsListView(
+    accounts: List<UserAccount> = listOf(
+        UserAccount(
             id = "1",
-            name = "Home",
-            icon = AppIcon.CATEGORY_HOME,
+            name = "Savings",
+            icon = AppIcon.ACCOUNT_PIGGY,
+            balance = 15000,
         ),
-        UserCategory(
+        UserAccount(
             id = "2",
-            name = "Groceries",
-            icon = AppIcon.CATEGORY_GROCERIES,
+            name = "Credit Card",
+            icon = AppIcon.ACCOUNT_CARD,
+            balance = 50000,
         ),
     ),
-    onCategoryAction: (category: UserCategory) -> Unit = { _ -> },
+    onAccountAction: (account: UserAccount) -> Unit = { _ -> },
 ) {
     Scaffold(
         topBar = {
             TopAppBar(
                 title = {
-                    Text("TODO categories", style = MaterialTheme.typography.titleMedium)
+                    Text("TODO accounts", style = MaterialTheme.typography.titleMedium)
                 },
             )
         },
     ) { paddingValues ->
         Box(modifier = Modifier.padding(paddingValues)) {
-            CategoriesList(categories, onCategoryAction)
+            AccountsList(accounts, onAccountAction)
         }
     }
 }
 
 @Composable
-private fun CategoriesList(
-    categories: List<UserCategory>,
-    onCategoryAction: (category: UserCategory) -> Unit,
+private fun AccountsList(
+    accounts: List<UserAccount>,
+    onAccountAction: (account: UserAccount) -> Unit,
 ) {
     LazyColumn(
         verticalArrangement = Arrangement.spacedBy(Spacing.small),
     ) {
         items(
-            items = categories,
+            items = accounts,
             key = { it.id },
-        ) { category ->
-            CategoryListItem(
-                category = category,
+        ) { account ->
+            AccountListItem(
+                account = account,
                 onClick = {
-                    onCategoryAction(category)
+                    onAccountAction(account)
                 },
             )
         }
@@ -133,8 +138,8 @@ private fun CategoriesList(
 }
 
 @Composable
-private fun CategoryListItem(
-    category: UserCategory,
+private fun AccountListItem(
+    account: UserAccount,
     onClick: () -> Unit = {},
 ) {
     Surface(
@@ -158,13 +163,19 @@ private fun CategoryListItem(
             horizontalArrangement = Arrangement.spacedBy(Spacing.large),
         ) {
             Image(
-                painterResource(category.icon.resource()), null,
+                painterResource(account.icon.resource()), null,
                 modifier = Modifier.width(Size.iconSmall),
             )
             Text(
-                text = category.name,
-                style = MaterialTheme.typography.bodyLarge.copy(color = MaterialTheme.colorScheme.onSurfaceVariant),
+                text = account.name,
+                style = MaterialTheme.typography.bodyLarge
+                    .copy(color = MaterialTheme.colorScheme.onSurfaceVariant),
                 modifier = Modifier.weight(1f),
+            )
+            Text(
+                text = formatMoney(account.balance),
+                style = MaterialTheme.typography.bodyLarge
+                    .copy(color = MaterialTheme.colorScheme.onSurfaceVariant),
             )
         }
     }
