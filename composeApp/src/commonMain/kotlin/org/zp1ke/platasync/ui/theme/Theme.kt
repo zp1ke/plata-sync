@@ -6,7 +6,6 @@ import androidx.compose.material3.darkColorScheme
 import androidx.compose.material3.lightColorScheme
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.sp
 
 private val lightScheme = lightColorScheme(
     primary = primaryLight,

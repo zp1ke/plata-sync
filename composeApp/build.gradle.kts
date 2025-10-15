@@ -15,9 +15,9 @@ kotlin {
             jvmTarget.set(JvmTarget.JVM_11)
         }
     }
-    
+
     jvm()
-    
+
     sourceSets {
         androidMain.dependencies {
             implementation(compose.preview)
@@ -33,6 +33,7 @@ kotlin {
             implementation(libs.androidx.lifecycle.viewmodelCompose)
             implementation(libs.androidx.lifecycle.runtimeCompose)
             implementation(libs.voyager.navigator)
+            implementation(libs.voyager.tab.navigator)
             implementation(libs.voyager.screenModel)
             implementation(libs.voyager.transitions)
             implementation(libs.voyager.koin)

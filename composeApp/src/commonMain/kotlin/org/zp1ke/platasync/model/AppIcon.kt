@@ -1,12 +1,7 @@
 package org.zp1ke.platasync.model
 
 import org.jetbrains.compose.resources.DrawableResource
-import platasync.composeapp.generated.resources.Res
-import platasync.composeapp.generated.resources.account_bank
-import platasync.composeapp.generated.resources.account_card
-import platasync.composeapp.generated.resources.account_piggy
-import platasync.composeapp.generated.resources.category_groceries
-import platasync.composeapp.generated.resources.category_home
+import platasync.composeapp.generated.resources.*
 
 enum class AppIcon {
     ACCOUNT_BANK {

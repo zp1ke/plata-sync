@@ -9,12 +9,14 @@ import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import cafe.adriel.voyager.core.model.StateScreenModel
 import cafe.adriel.voyager.core.model.rememberScreenModel
 import cafe.adriel.voyager.core.model.screenModelScope
-import cafe.adriel.voyager.core.screen.Screen
+import cafe.adriel.voyager.navigator.tab.Tab
+import cafe.adriel.voyager.navigator.tab.TabOptions
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import org.jetbrains.compose.resources.painterResource
@@ -54,8 +56,18 @@ class CategoriesScreenViewModel : StateScreenModel<CategoriesScreenState>(
     }
 }
 
-object CategoriesScreen : Screen {
-    private fun readResolve(): Any = CategoriesScreen
+object CategoriesScreen : Tab {
+
+    override val options: TabOptions
+        @Composable
+        get() {
+            return remember {
+                TabOptions(
+                    index = 1u,
+                    title = "CAT TODO",
+                )
+            }
+        }
 
     @Composable
     override fun Content() {
