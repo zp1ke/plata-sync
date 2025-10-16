@@ -13,6 +13,7 @@ import org.zp1ke.platasync.model.AppIcon
 import org.zp1ke.platasync.model.UserAccount
 import org.zp1ke.platasync.ui.common.MoneyField
 import org.zp1ke.platasync.ui.theme.Spacing
+import org.zp1ke.platasync.util.randomId
 import platasync.composeapp.generated.resources.*
 
 @Composable
@@ -23,15 +24,15 @@ fun AccountDialog(
     onDismiss: () -> Unit = {},
     onSubmit: (UserAccount) -> Unit = { _ -> },
 ) {
-    var name by remember { mutableStateOf(account?.name ?: "") }
-    var icon by remember { mutableStateOf(account?.icon ?: AppIcon.ACCOUNT_BANK) }
-    var balance by remember { mutableIntStateOf(account?.balance ?: 0) }
+    var name by remember(account) { mutableStateOf(account?.name ?: "") }
+    var icon by remember(account) { mutableStateOf(account?.icon ?: AppIcon.ACCOUNT_BANK) }
+    var balance by remember(account) { mutableIntStateOf(account?.balance ?: 0) }
 
     fun checkValid(): Boolean {
         return name.isNotBlank() && balance >= 0
     }
 
-    var isValid by remember { mutableStateOf(checkValid()) }
+    var isValid by remember(account, name, balance) { mutableStateOf(checkValid()) }
 
     if (showDialog) {
         Dialog(onDismissRequest = onDismiss) {
@@ -98,8 +99,9 @@ fun AccountDialog(
                         }
                         TextButton(
                             onClick = {
+                                val id = account?.id ?: randomId()
                                 onSubmit(
-                                    UserAccount(name, name, icon, balance)
+                                    UserAccount(id, name, icon, balance)
                                 )
                                 onDismiss()
                             },

@@ -11,6 +11,7 @@
     <string name="account_edit">Edit Account</string>
     <string name="account_name">Name of Account</string>
     <string name="account_balance">Account balance</string>
+    <string name="account_delete">Delete Account</string>
     <!-- Actions -->
     <string name="action_save">Save</string>
     <string name="action_cancel">Cancel</string>
