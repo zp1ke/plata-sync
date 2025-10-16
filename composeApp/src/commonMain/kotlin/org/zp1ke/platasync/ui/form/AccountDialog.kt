@@ -3,7 +3,9 @@ package org.zp1ke.platasync.ui.form
 import androidx.compose.foundation.layout.*
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.unit.dp
 import androidx.compose.ui.window.Dialog
 import org.jetbrains.compose.resources.stringResource
 import org.jetbrains.compose.ui.tooling.preview.Preview
@@ -82,7 +84,9 @@ fun AccountDialog(
                             isValid = checkValid()
                         },
                         label = stringResource(Res.string.account_balance),
-                        modifier = Modifier.fillMaxWidth()
+                        modifier = Modifier
+                            .widthIn(max = 200.dp)
+                            .align(Alignment.End)
                     )
 
                     Row(
