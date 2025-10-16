@@ -3,10 +3,14 @@ package org.zp1ke.platasync.ui.form
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.padding
-import androidx.compose.material3.*
+import androidx.compose.material3.DropdownMenu
+import androidx.compose.material3.DropdownMenuItem
+import androidx.compose.material3.IconButton
+import androidx.compose.material3.Text
 import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.font.FontWeight
+import org.jetbrains.compose.resources.stringResource
 import org.jetbrains.compose.ui.tooling.preview.Preview
 import org.zp1ke.platasync.model.AppIcon
 import org.zp1ke.platasync.ui.common.ImageIcon
@@ -45,7 +49,12 @@ fun SelectIcon(
                     DropdownMenuItem(
                         modifier = Modifier.padding(vertical = Spacing.small),
                         leadingIcon = { ImageIcon(option, width = Size.iconLarge) },
-                        text = { Text(option.name, fontWeight = if (option == selected) FontWeight.Bold else FontWeight.Normal) },
+                        text = {
+                            Text(
+                                stringResource(option.title()),
+                                fontWeight = if (option == selected) FontWeight.Bold else FontWeight.Normal,
+                            )
+                        },
                         onClick = {
                             selected = option
                             expanded = false

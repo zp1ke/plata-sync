@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- App Icon Titles -->
+    <string name="icon_account_bank">Bank Account</string>
+    <string name="icon_account_card">Card Account</string>
+    <string name="icon_account_piggy">Piggy Bank</string>
+    <string name="icon_category_groceries">Groceries</string>
+    <string name="icon_category_home">Home</string>
+    <!-- Account -->
+    <string name="account_add">Add Account</string>
+    <string name="account_edit">Edit Account</string>
+    <string name="account_name">Name of Account</string>
+    <string name="account_balance">Account balance</string>
+    <!-- Actions -->
+    <string name="action_save">Save</string>
+    <string name="action_cancel">Cancel</string>
+    <!-- Form -->
+    <string name="form_invalid_amount">Please enter a valid positive amount.</string>
+</resources>
+

@@ -1,52 +1,54 @@
 package org.zp1ke.platasync.ui.form
 
-import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.padding
-import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.OutlinedTextField
-import androidx.compose.material3.Surface
-import androidx.compose.material3.Text
-import androidx.compose.material3.TextButton
-import androidx.compose.runtime.Composable
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
-import androidx.compose.runtime.setValue
+import androidx.compose.foundation.layout.*
+import androidx.compose.material3.*
+import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.unit.dp
 import androidx.compose.ui.window.Dialog
+import org.jetbrains.compose.resources.stringResource
 import org.jetbrains.compose.ui.tooling.preview.Preview
 import org.zp1ke.platasync.model.AppIcon
 import org.zp1ke.platasync.model.UserAccount
+import org.zp1ke.platasync.ui.common.MoneyField
+import org.zp1ke.platasync.ui.theme.Spacing
+import platasync.composeapp.generated.resources.*
 
 @Composable
 @Preview
 fun AccountDialog(
-    showDialog: Boolean,
-    onDismiss: () -> Unit,
-    onSubmit: (UserAccount) -> Unit
+    account: UserAccount? = null,
+    showDialog: Boolean = true,
+    onDismiss: () -> Unit = {},
+    onSubmit: (UserAccount) -> Unit = { _ -> },
 ) {
+    var name by remember { mutableStateOf(account?.name ?: "") }
+    var icon by remember { mutableStateOf(account?.icon ?: AppIcon.ACCOUNT_BANK) }
+    var balance by remember { mutableIntStateOf(account?.balance ?: 0) }
+
+    fun checkValid(): Boolean {
+        return name.isNotBlank() && balance >= 0
+    }
+
+    var isValid by remember { mutableStateOf(checkValid()) }
+
     if (showDialog) {
         Dialog(onDismissRequest = onDismiss) {
             Surface(
                 shape = MaterialTheme.shapes.medium,
                 color = MaterialTheme.colorScheme.background,
-                modifier = Modifier.padding(16.dp)
+                modifier = Modifier.padding(Spacing.medium)
             ) {
                 Column(
-                    modifier = Modifier.padding(16.dp),
-                    verticalArrangement = Arrangement.spacedBy(8.dp)
+                    modifier = Modifier.padding(Spacing.medium),
+                    verticalArrangement = Arrangement.spacedBy(Spacing.small)
                 ) {
                     Text(
-                        text = "Fill the Form",
-                        style = MaterialTheme.typography.titleMedium
+                        text = stringResource(
+                            if (account == null)
+                                Res.string.account_add else Res.string.account_edit
+                        ),
+                        style = MaterialTheme.typography.titleLarge
                     )
-
-                    var name by remember { mutableStateOf("") }
-                    var icon by remember { mutableStateOf(AppIcon.ACCOUNT_BANK) }
 
                     Row(
                         modifier = Modifier.fillMaxWidth(),
@@ -64,29 +66,42 @@ fun AccountDialog(
 
                         OutlinedTextField(
                             value = name,
-                            onValueChange = { name = it },
-                            label = { Text("Name") },
+                            onValueChange = {
+                                name = it
+                                isValid = checkValid()
+                            },
+                            label = { Text(stringResource(Res.string.account_name) + '*') },
                             modifier = Modifier.fillMaxWidth()
                         )
                     }
+
+                    MoneyField(
+                        value = balance,
+                        onValueChange = {
+                            balance = it
+                            isValid = checkValid()
+                        },
+                        label = stringResource(Res.string.account_balance),
+                        modifier = Modifier.fillMaxWidth()
+                    )
 
                     Row(
                         modifier = Modifier.fillMaxWidth(),
                         horizontalArrangement = Arrangement.End
                     ) {
                         TextButton(onClick = onDismiss) {
-                            Text("Cancel")
+                            Text(stringResource(Res.string.action_cancel))
                         }
-                        TextButton(onClick = {
-                            onSubmit(UserAccount(
-                                id = name,
-                                name = name,
-                                icon = icon,
-                                balance = 0,
-                            ))
-                            onDismiss()
-                        }) {
-                            Text("Submit")
+                        TextButton(
+                            onClick = {
+                                onSubmit(
+                                    UserAccount(name, name, icon, balance)
+                                )
+                                onDismiss()
+                            },
+                            enabled = isValid,
+                        ) {
+                            Text(stringResource(Res.string.action_save))
                         }
                     }
                 }
