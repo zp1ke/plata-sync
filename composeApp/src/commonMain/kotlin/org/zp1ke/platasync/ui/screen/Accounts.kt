@@ -11,15 +11,14 @@ import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.vector.rememberVectorPainter
 import cafe.adriel.voyager.core.model.StateScreenModel
-import cafe.adriel.voyager.core.model.rememberScreenModel
 import cafe.adriel.voyager.core.model.screenModelScope
 import cafe.adriel.voyager.navigator.tab.Tab
 import cafe.adriel.voyager.navigator.tab.TabOptions
 import kotlinx.coroutines.launch
 import org.jetbrains.compose.resources.stringResource
 import org.jetbrains.compose.ui.tooling.preview.Preview
+import org.koin.compose.koinInject
 import org.zp1ke.platasync.data.AccountRepository
-import org.zp1ke.platasync.data.RepositoryProvider
 import org.zp1ke.platasync.model.UserAccount
 import org.zp1ke.platasync.ui.common.LoadingIndicator
 import org.zp1ke.platasync.ui.form.AccountEditDialog
@@ -36,7 +35,7 @@ data class AccountsScreenState(
 )
 
 class AccountsScreenViewModel(
-    private val repository: AccountRepository = RepositoryProvider.provideAccountRepository()
+    private val repository: AccountRepository
 ) : StateScreenModel<AccountsScreenState>(
     AccountsScreenState(
         data = listOf(),
@@ -100,7 +99,8 @@ object AccountsScreen : Tab {
 
     @Composable
     override fun Content() {
-        val viewModel = rememberScreenModel { AccountsScreenViewModel() }
+        val repository: AccountRepository = koinInject()
+        val viewModel = remember { AccountsScreenViewModel(repository) }
         val state by viewModel.state.collectAsState()
 
         var showAdd by remember { mutableStateOf(false) }

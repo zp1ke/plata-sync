@@ -14,15 +14,14 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.vector.rememberVectorPainter
 import cafe.adriel.voyager.core.model.StateScreenModel
-import cafe.adriel.voyager.core.model.rememberScreenModel
 import cafe.adriel.voyager.core.model.screenModelScope
 import cafe.adriel.voyager.navigator.tab.Tab
 import cafe.adriel.voyager.navigator.tab.TabOptions
 import kotlinx.coroutines.launch
 import org.jetbrains.compose.resources.stringResource
 import org.jetbrains.compose.ui.tooling.preview.Preview
+import org.koin.compose.koinInject
 import org.zp1ke.platasync.data.CategoryRepository
-import org.zp1ke.platasync.data.RepositoryProvider
 import org.zp1ke.platasync.model.AppIcon
 import org.zp1ke.platasync.model.UserCategory
 import org.zp1ke.platasync.ui.common.ImageIcon
@@ -35,7 +34,7 @@ data class CategoriesScreenState(
 )
 
 class CategoriesScreenViewModel(
-    private val repository: CategoryRepository = RepositoryProvider.provideCategoryRepository()
+    private val repository: CategoryRepository
 ) : StateScreenModel<CategoriesScreenState>(
     CategoriesScreenState(
         data = listOf(),
@@ -94,7 +93,8 @@ object CategoriesScreen : Tab {
 
     @Composable
     override fun Content() {
-        val viewModel = rememberScreenModel { CategoriesScreenViewModel() }
+        val repository: CategoryRepository = koinInject()
+        val viewModel = remember { CategoriesScreenViewModel(repository) }
         val state by viewModel.state.collectAsState()
 
         CategoriesListView(categories = state.data)
