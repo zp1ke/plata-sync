@@ -89,6 +89,7 @@ object Spacing {
 }
 
 object Size {
+    val iconSmall = 22.dp
     val iconMedium = 36.dp
     val iconLarge = 64.dp
     val iconBorderSmall = 10.dp

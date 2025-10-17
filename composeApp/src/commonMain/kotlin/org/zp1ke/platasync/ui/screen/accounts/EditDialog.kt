@@ -18,7 +18,7 @@ import platasync.composeapp.generated.resources.*
 
 @Composable
 @Preview
-fun AccountDialog(
+fun AccountEditDialog(
     account: UserAccount? = null,
     showDialog: Boolean = true,
     onDismiss: () -> Unit = {},

@@ -1,17 +1,12 @@
 package org.zp1ke.platasync.ui.screen
 
-import androidx.compose.foundation.layout.*
-import androidx.compose.foundation.lazy.LazyColumn
-import androidx.compose.foundation.lazy.items
+import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.padding
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Add
-import androidx.compose.material.icons.filled.DeleteForever
-import androidx.compose.material.icons.filled.Edit
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.draw.clip
-import androidx.compose.ui.text.font.FontWeight
 import cafe.adriel.voyager.core.model.StateScreenModel
 import cafe.adriel.voyager.core.model.rememberScreenModel
 import cafe.adriel.voyager.core.model.screenModelScope
@@ -23,14 +18,12 @@ import org.jetbrains.compose.resources.stringResource
 import org.jetbrains.compose.ui.tooling.preview.Preview
 import org.zp1ke.platasync.model.AppIcon
 import org.zp1ke.platasync.model.UserAccount
-import org.zp1ke.platasync.ui.common.ImageIcon
-import org.zp1ke.platasync.ui.form.AccountDialog
-import org.zp1ke.platasync.ui.theme.Spacing
-import org.zp1ke.platasync.util.formatAsMoney
+import org.zp1ke.platasync.ui.form.AccountEditDialog
+import org.zp1ke.platasync.ui.screen.accounts.AccountDeleteDialog
+import org.zp1ke.platasync.ui.screen.accounts.AccountsList
 import org.zp1ke.platasync.util.randomId
 import platasync.composeapp.generated.resources.Res
-import platasync.composeapp.generated.resources.account_delete
-import platasync.composeapp.generated.resources.account_edit
+import platasync.composeapp.generated.resources.account_list
 
 data class AccountsScreenState(
     val data: List<UserAccount>,
@@ -94,7 +87,8 @@ object AccountsScreen : Tab {
             return remember {
                 TabOptions(
                     index = 0u,
-                    title = "ACC TODO",
+                    title = "ACC TODO", // TODO string resource
+                    icon = null, // TODO provide icon
                 )
             }
         }
@@ -106,15 +100,17 @@ object AccountsScreen : Tab {
 
         var showAdd by remember { mutableStateOf(false) }
         var editAccount by remember { mutableStateOf<UserAccount?>(null) }
+        var deleteAccount by remember { mutableStateOf<UserAccount?>(null) }
 
         AccountsListView(
             accounts = state.data,
+            onView = { account -> print("Got account" + account.id) }, // TODO implement view
             onAdd = { showAdd = true },
             onEdit = { account -> editAccount = account },
-            onDelete = { account -> viewModel.deleteAccount(account) }, // TODO confirmation dialog
+            onDelete = { account -> deleteAccount = account },
         )
 
-        AccountDialog(
+        AccountEditDialog(
             showDialog = showAdd || editAccount != null,
             account = editAccount,
             onDismiss = {
@@ -127,6 +123,18 @@ object AccountsScreen : Tab {
                 editAccount = null
             }
         )
+
+        AccountDeleteDialog(
+            showDialog = deleteAccount != null,
+            account = deleteAccount,
+            onDismiss = {
+                deleteAccount = null
+            },
+            onSubmit = {
+                viewModel.deleteAccount(deleteAccount!!)
+                deleteAccount = null
+            }
+        )
     }
 }
 
@@ -134,11 +142,9 @@ object AccountsScreen : Tab {
 @Composable
 @Preview
 private fun AccountsListView(
-    accounts: List<UserAccount> = listOf(
-        UserAccount(randomId(), "Savings", AppIcon.ACCOUNT_PIGGY, 15000),
-        UserAccount(randomId(), "Credit Card", AppIcon.ACCOUNT_CARD, 50000),
-    ),
+    accounts: List<UserAccount>,
     onAdd: () -> Unit = { },
+    onView: (UserAccount) -> Unit = { _ -> },
     onEdit: (UserAccount) -> Unit = { _ -> },
     onDelete: (UserAccount) -> Unit = { _ -> },
 ) {
@@ -146,12 +152,13 @@ private fun AccountsListView(
         topBar = {
             TopAppBar(
                 title = {
-                    Text("TODO accounts", style = MaterialTheme.typography.titleMedium)
+                    Text(
+                        stringResource(Res.string.account_list),
+                        style = MaterialTheme.typography.titleMedium,
+                    )
                 },
                 actions = {
-                    IconButton(onClick = {
-                        onAdd()
-                    }) {
+                    IconButton(onClick = { onAdd() }) {
                         Icon(
                             imageVector = Icons.Filled.Add,
                             contentDescription = "Add Account",
@@ -162,83 +169,7 @@ private fun AccountsListView(
         },
     ) { paddingValues ->
         Box(modifier = Modifier.padding(paddingValues)) {
-            AccountsList(accounts, onEdit = onEdit, onDelete = onDelete)
+            AccountsList(accounts, onView = onView, onEdit = onEdit, onDelete = onDelete)
         }
     }
-}
-
-@Composable
-private fun AccountsList(
-    accounts: List<UserAccount>,
-    onEdit: (UserAccount) -> Unit = { _ -> },
-    onDelete: (UserAccount) -> Unit = { _ -> },
-) {
-    LazyColumn(
-        verticalArrangement = Arrangement.spacedBy(Spacing.small),
-        modifier = Modifier.padding(horizontal = Spacing.small),
-    ) {
-        items(
-            items = accounts,
-            key = { it.id },
-        ) { account ->
-            AccountListItem(
-                account = account,
-                onEdit = { onEdit(account) },
-                onDelete = { onDelete(account) },
-            )
-        }
-
-        item {
-            Spacer(Modifier.height(Spacing.medium))
-        }
-    }
-}
-
-@Composable
-private fun AccountListItem(
-    account: UserAccount,
-    onEdit: () -> Unit = {},
-    onDelete: () -> Unit = {},
-) {
-    ListItem(
-        modifier = Modifier
-            .clip(MaterialTheme.shapes.small)
-            .padding(horizontal = Spacing.small),
-        colors = ListItemDefaults.colors(
-            containerColor = MaterialTheme.colorScheme.surfaceVariant
-        ),
-        headlineContent = {
-            Text(
-                text = account.name,
-                style = MaterialTheme.typography.titleMedium
-                    .copy(color = MaterialTheme.colorScheme.onSurfaceVariant),
-            )
-        },
-        supportingContent = {
-            Text(
-                text = account.balance.formatAsMoney(),
-                style = MaterialTheme.typography.bodySmall
-                    .copy(color = MaterialTheme.colorScheme.onSurfaceVariant, fontWeight = FontWeight.W500),
-            )
-        },
-        leadingContent = {
-            ImageIcon(account.icon)
-        },
-        trailingContent = {
-            Row {
-                IconButton(onClick = { onEdit() }) {
-                    Icon(
-                        imageVector = Icons.Filled.Edit,
-                        contentDescription = stringResource(Res.string.account_edit),
-                    )
-                }
-                IconButton(onClick = { onDelete() }) {
-                    Icon(
-                        imageVector = Icons.Filled.DeleteForever,
-                        contentDescription = stringResource(Res.string.account_delete),
-                    )
-                }
-            }
-        },
-    )
 }
