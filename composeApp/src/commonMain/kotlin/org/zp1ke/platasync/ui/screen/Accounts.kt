@@ -3,10 +3,13 @@ package org.zp1ke.platasync.ui.screen
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.AccountBalance
+import androidx.compose.material.icons.filled.AccountBalanceWallet
 import androidx.compose.material.icons.filled.Add
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.vector.rememberVectorPainter
 import cafe.adriel.voyager.core.model.StateScreenModel
 import cafe.adriel.voyager.core.model.rememberScreenModel
 import cafe.adriel.voyager.core.model.screenModelScope
@@ -84,11 +87,14 @@ object AccountsScreen : Tab {
     override val options: TabOptions
         @Composable
         get() {
+            val title = stringResource(Res.string.account_list)
+            val icon = rememberVectorPainter(Icons.Filled.AccountBalanceWallet)
+
             return remember {
                 TabOptions(
                     index = 0u,
-                    title = "ACC TODO", // TODO string resource
-                    icon = null, // TODO provide icon
+                    title = title,
+                    icon = icon,
                 )
             }
         }
