@@ -15,8 +15,8 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import org.jetbrains.compose.resources.stringResource
 import org.jetbrains.compose.ui.tooling.preview.Preview
-import org.zp1ke.platasync.model.AppIcon
 import org.zp1ke.platasync.model.UserAccount
+import org.zp1ke.platasync.ui.common.AppIcon
 import org.zp1ke.platasync.ui.common.ImageIcon
 import org.zp1ke.platasync.ui.theme.Size
 import org.zp1ke.platasync.ui.theme.Spacing

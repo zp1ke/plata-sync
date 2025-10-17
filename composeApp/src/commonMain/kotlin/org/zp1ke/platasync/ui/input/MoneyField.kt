@@ -72,7 +72,7 @@ fun MoneyField(
                     keyboardType = KeyboardType.Number
                 ),
                 singleLine = true,
-                textStyle = androidx.compose.ui.text.TextStyle(textAlign = TextAlign.End)
+                textStyle = TextStyle(textAlign = TextAlign.End)
             )
 
             // Decimal separator

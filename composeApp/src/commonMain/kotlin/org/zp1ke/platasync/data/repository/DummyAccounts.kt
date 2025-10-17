@@ -1,11 +1,11 @@
-package org.zp1ke.platasync.data
+package org.zp1ke.platasync.data.repository
 
 import kotlinx.coroutines.delay
-import org.zp1ke.platasync.model.AppIcon
 import org.zp1ke.platasync.model.UserAccount
+import org.zp1ke.platasync.ui.common.AppIcon
 import org.zp1ke.platasync.util.randomId
 
-class DummyAccountRepository : AccountRepository {
+class DummyAccountsRepository : BaseRepository<UserAccount> {
     private val accounts = mutableListOf<UserAccount>()
 
     init {
@@ -34,22 +34,22 @@ class DummyAccountRepository : AccountRepository {
         )
     }
 
-    override suspend fun getAllAccounts(): List<UserAccount> {
+    override suspend fun getAllItems(): List<UserAccount> {
         delay(500) // Simulate network delay
         return accounts.toList()
     }
 
-    override suspend fun getAccountById(id: String): UserAccount? {
+    override suspend fun getItemById(id: String): UserAccount? {
         delay(300) // Simulate network delay
         return accounts.firstOrNull { it.id == id }
     }
 
-    override suspend fun addAccount(account: UserAccount) {
+    override suspend fun addItem(account: UserAccount) {
         delay(400) // Simulate network delay
         accounts.add(account)
     }
 
-    override suspend fun updateAccount(account: UserAccount) {
+    override suspend fun updateItem(account: UserAccount) {
         delay(400) // Simulate network delay
         val index = accounts.indexOfFirst { it.id == account.id }
         if (index >= 0) {
@@ -57,7 +57,7 @@ class DummyAccountRepository : AccountRepository {
         }
     }
 
-    override suspend fun deleteAccount(id: String) {
+    override suspend fun deleteItem(id: String) {
         delay(400) // Simulate network delay
         accounts.removeAll { it.id == id }
     }

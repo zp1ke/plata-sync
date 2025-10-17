@@ -9,8 +9,8 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.window.Dialog
 import org.jetbrains.compose.resources.stringResource
 import org.jetbrains.compose.ui.tooling.preview.Preview
-import org.zp1ke.platasync.model.AppIcon
 import org.zp1ke.platasync.model.UserAccount
+import org.zp1ke.platasync.ui.common.AppIcon
 import org.zp1ke.platasync.ui.common.MoneyField
 import org.zp1ke.platasync.ui.theme.Spacing
 import org.zp1ke.platasync.util.randomId

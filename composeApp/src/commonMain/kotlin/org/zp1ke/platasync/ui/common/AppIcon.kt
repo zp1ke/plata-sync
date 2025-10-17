@@ -1,4 +1,4 @@
-package org.zp1ke.platasync.model
+package org.zp1ke.platasync.ui.common
 
 import org.jetbrains.compose.resources.DrawableResource
 import org.jetbrains.compose.resources.StringResource

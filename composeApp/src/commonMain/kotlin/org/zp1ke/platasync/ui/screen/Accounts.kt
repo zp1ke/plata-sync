@@ -14,8 +14,7 @@ import cafe.adriel.voyager.navigator.tab.Tab
 import cafe.adriel.voyager.navigator.tab.TabOptions
 import org.jetbrains.compose.resources.stringResource
 import org.jetbrains.compose.ui.tooling.preview.Preview
-import org.koin.compose.koinInject
-import org.zp1ke.platasync.data.viewModel.AccountsScreenViewModel
+import org.zp1ke.platasync.data.viewModel.BaseViewModel
 import org.zp1ke.platasync.model.UserAccount
 import org.zp1ke.platasync.ui.common.LoadingIndicator
 import org.zp1ke.platasync.ui.form.AccountEditDialog
@@ -27,7 +26,7 @@ import platasync.composeapp.generated.resources.accounts_list
 import platasync.composeapp.generated.resources.accounts_refresh
 
 class AccountsScreen(
-    private val screenViewModel: AccountsScreenViewModel,
+    private val screenViewModel: BaseViewModel<UserAccount>,
 ) : Tab {
 
     override val options: TabOptions
@@ -57,7 +56,7 @@ class AccountsScreen(
         AccountsListView(
             isLoading = state.isLoading,
             accounts = state.data,
-            onReload = { viewModel.loadAccounts() },
+            onReload = { viewModel.loadItems() },
             onView = { account -> print("Got account" + account.id) }, // TODO implement view
             onAdd = { showAdd = true },
             onEdit = { account -> editAccount = account },
@@ -72,7 +71,7 @@ class AccountsScreen(
                 editAccount = null
             },
             onSubmit = { account ->
-                viewModel.addAccount(account)
+                viewModel.addItem(account)
                 showAdd = false
                 editAccount = null
             }
@@ -85,7 +84,7 @@ class AccountsScreen(
                 deleteAccount = null
             },
             onSubmit = {
-                viewModel.deleteAccount(deleteAccount!!)
+                viewModel.deleteItem(deleteAccount!!)
                 deleteAccount = null
             }
         )
