@@ -10,15 +10,12 @@ import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.vector.rememberVectorPainter
-import cafe.adriel.voyager.core.model.StateScreenModel
-import cafe.adriel.voyager.core.model.screenModelScope
 import cafe.adriel.voyager.navigator.tab.Tab
 import cafe.adriel.voyager.navigator.tab.TabOptions
-import kotlinx.coroutines.launch
 import org.jetbrains.compose.resources.stringResource
 import org.jetbrains.compose.ui.tooling.preview.Preview
 import org.koin.compose.koinInject
-import org.zp1ke.platasync.data.AccountRepository
+import org.zp1ke.platasync.data.viewModel.AccountsScreenViewModel
 import org.zp1ke.platasync.model.UserAccount
 import org.zp1ke.platasync.ui.common.LoadingIndicator
 import org.zp1ke.platasync.ui.form.AccountEditDialog
@@ -29,58 +26,9 @@ import platasync.composeapp.generated.resources.account_add
 import platasync.composeapp.generated.resources.accounts_list
 import platasync.composeapp.generated.resources.accounts_refresh
 
-data class AccountsScreenState(
-    val data: List<UserAccount>,
-    val isLoading: Boolean,
-)
-
-class AccountsScreenViewModel(
-    private val repository: AccountRepository
-) : StateScreenModel<AccountsScreenState>(
-    AccountsScreenState(
-        data = listOf(),
-        isLoading = false,
-    ),
-) {
-    init {
-        loadAccounts()
-    }
-
-    fun loadAccounts() {
-        mutableState.value = mutableState.value.copy(isLoading = true)
-        screenModelScope.launch {
-            val accounts = repository.getAllAccounts()
-            mutableState.value = AccountsScreenState(
-                data = accounts,
-                isLoading = false,
-            )
-        }
-    }
-
-    fun addAccount(account: UserAccount) {
-        mutableState.value = mutableState.value.copy(isLoading = true)
-        screenModelScope.launch {
-            val index = mutableState.value.data.indexOfFirst { it.id == account.id }
-            if (index >= 0) {
-                // Update existing
-                repository.updateAccount(account)
-            } else {
-                repository.addAccount(account)
-            }
-            loadAccounts()
-        }
-    }
-
-    fun deleteAccount(account: UserAccount) {
-        mutableState.value = mutableState.value.copy(isLoading = true)
-        screenModelScope.launch {
-            repository.deleteAccount(account.id)
-            loadAccounts()
-        }
-    }
-}
-
-object AccountsScreen : Tab {
+class AccountsScreen(
+    private val screenViewModel: AccountsScreenViewModel,
+) : Tab {
 
     override val options: TabOptions
         @Composable
@@ -99,8 +47,7 @@ object AccountsScreen : Tab {
 
     @Composable
     override fun Content() {
-        val repository: AccountRepository = koinInject()
-        val viewModel = remember { AccountsScreenViewModel(repository) }
+        val viewModel = remember { screenViewModel }
         val state by viewModel.state.collectAsState()
 
         var showAdd by remember { mutableStateOf(false) }

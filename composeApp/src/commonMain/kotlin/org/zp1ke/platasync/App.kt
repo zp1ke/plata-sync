@@ -12,13 +12,13 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.LayoutDirection
 import cafe.adriel.voyager.navigator.tab.CurrentTab
+import cafe.adriel.voyager.navigator.tab.Tab
 import cafe.adriel.voyager.navigator.tab.TabNavigator
 import org.jetbrains.compose.ui.tooling.preview.Preview
 import org.koin.compose.KoinApplication
+import org.koin.compose.getKoin
 import org.zp1ke.platasync.di.appModule
 import org.zp1ke.platasync.ui.common.TabItem
-import org.zp1ke.platasync.ui.screen.AccountsScreen
-import org.zp1ke.platasync.ui.screen.CategoriesScreen
 import org.zp1ke.platasync.ui.theme.AppTheme
 
 @Composable
@@ -27,6 +27,8 @@ fun App() {
     KoinApplication(application = {
         modules(appModule)
     }) {
+        val tabs: List<Tab> = getKoin().getAll()
+
         AppTheme {
             Surface(
                 modifier = Modifier
@@ -34,7 +36,10 @@ fun App() {
                     .fillMaxSize(),
                 color = MaterialTheme.colorScheme.background,
             ) {
-                TabNavigator(AccountsScreen) {
+                TabNavigator(tabs.minByOrNull { tab -> tab.options.index }?.let { minIndexTab ->
+                    tabs.filter { it.options.index == minIndexTab.options.index }
+                        .minByOrNull { it.options.title }
+                } ?: tabs.first()) {
                     Scaffold(
                         content = { paddingValues ->
                             Column(
@@ -52,8 +57,7 @@ fun App() {
                             NavigationBar(
                                 containerColor = MaterialTheme.colorScheme.background,
                             ) {
-                                TabItem(AccountsScreen)
-                                TabItem(CategoriesScreen)
+                                tabs.map { tab -> TabItem(tab) }
                             }
                         }
                     )
