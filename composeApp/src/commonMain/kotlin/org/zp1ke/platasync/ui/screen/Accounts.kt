@@ -3,9 +3,9 @@ package org.zp1ke.platasync.ui.screen
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.AccountBalance
 import androidx.compose.material.icons.filled.AccountBalanceWallet
 import androidx.compose.material.icons.filled.Add
+import androidx.compose.material.icons.filled.Refresh
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
@@ -15,70 +15,69 @@ import cafe.adriel.voyager.core.model.rememberScreenModel
 import cafe.adriel.voyager.core.model.screenModelScope
 import cafe.adriel.voyager.navigator.tab.Tab
 import cafe.adriel.voyager.navigator.tab.TabOptions
-import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import org.jetbrains.compose.resources.stringResource
 import org.jetbrains.compose.ui.tooling.preview.Preview
-import org.zp1ke.platasync.model.AppIcon
+import org.zp1ke.platasync.data.AccountRepository
+import org.zp1ke.platasync.data.RepositoryProvider
 import org.zp1ke.platasync.model.UserAccount
+import org.zp1ke.platasync.ui.common.LoadingIndicator
 import org.zp1ke.platasync.ui.form.AccountEditDialog
 import org.zp1ke.platasync.ui.screen.accounts.AccountDeleteDialog
 import org.zp1ke.platasync.ui.screen.accounts.AccountsList
-import org.zp1ke.platasync.util.randomId
 import platasync.composeapp.generated.resources.Res
-import platasync.composeapp.generated.resources.account_list
+import platasync.composeapp.generated.resources.account_add
+import platasync.composeapp.generated.resources.accounts_list
+import platasync.composeapp.generated.resources.accounts_refresh
 
 data class AccountsScreenState(
     val data: List<UserAccount>,
+    val isLoading: Boolean,
 )
 
-class AccountsScreenViewModel : StateScreenModel<AccountsScreenState>(
+class AccountsScreenViewModel(
+    private val repository: AccountRepository = RepositoryProvider.provideAccountRepository()
+) : StateScreenModel<AccountsScreenState>(
     AccountsScreenState(
         data = listOf(),
+        isLoading = false,
     ),
 ) {
     init {
+        loadAccounts()
+    }
+
+    fun loadAccounts() {
+        mutableState.value = mutableState.value.copy(isLoading = true)
         screenModelScope.launch {
-            delay(300)
+            val accounts = repository.getAllAccounts()
             mutableState.value = AccountsScreenState(
-                data = listOf(
-                    UserAccount(
-                        id = randomId(),
-                        name = "Savings",
-                        icon = AppIcon.ACCOUNT_PIGGY,
-                        balance = 15000,
-                    ),
-                    UserAccount(
-                        id = randomId(),
-                        name = "Credit Card",
-                        icon = AppIcon.ACCOUNT_CARD,
-                        balance = 50000,
-                    ),
-                )
+                data = accounts,
+                isLoading = false,
             )
         }
     }
 
     fun addAccount(account: UserAccount) {
-        val index = mutableState.value.data.indexOfFirst { it.id == account.id }
-        if (index >= 0) {
-            // Update existing
-            mutableState.value = AccountsScreenState(
-                data = mutableState.value.data.toMutableList().also {
-                    it[index] = account
-                }
-            )
-        } else {
-            mutableState.value = AccountsScreenState(
-                data = mutableState.value.data + account
-            )
+        mutableState.value = mutableState.value.copy(isLoading = true)
+        screenModelScope.launch {
+            val index = mutableState.value.data.indexOfFirst { it.id == account.id }
+            if (index >= 0) {
+                // Update existing
+                repository.updateAccount(account)
+            } else {
+                repository.addAccount(account)
+            }
+            loadAccounts()
         }
     }
 
     fun deleteAccount(account: UserAccount) {
-        mutableState.value = AccountsScreenState(
-            data = mutableState.value.data.filter { it.id != account.id }
-        )
+        mutableState.value = mutableState.value.copy(isLoading = true)
+        screenModelScope.launch {
+            repository.deleteAccount(account.id)
+            loadAccounts()
+        }
     }
 }
 
@@ -87,7 +86,7 @@ object AccountsScreen : Tab {
     override val options: TabOptions
         @Composable
         get() {
-            val title = stringResource(Res.string.account_list)
+            val title = stringResource(Res.string.accounts_list)
             val icon = rememberVectorPainter(Icons.Filled.AccountBalanceWallet)
 
             return remember {
@@ -109,7 +108,9 @@ object AccountsScreen : Tab {
         var deleteAccount by remember { mutableStateOf<UserAccount?>(null) }
 
         AccountsListView(
+            isLoading = state.isLoading,
             accounts = state.data,
+            onReload = { viewModel.loadAccounts() },
             onView = { account -> print("Got account" + account.id) }, // TODO implement view
             onAdd = { showAdd = true },
             onEdit = { account -> editAccount = account },
@@ -148,7 +149,9 @@ object AccountsScreen : Tab {
 @Composable
 @Preview
 private fun AccountsListView(
-    accounts: List<UserAccount>,
+    isLoading: Boolean = false,
+    accounts: List<UserAccount> = listOf(),
+    onReload: () -> Unit = { },
     onAdd: () -> Unit = { },
     onView: (UserAccount) -> Unit = { _ -> },
     onEdit: (UserAccount) -> Unit = { _ -> },
@@ -159,15 +162,26 @@ private fun AccountsListView(
             TopAppBar(
                 title = {
                     Text(
-                        stringResource(Res.string.account_list),
+                        stringResource(Res.string.accounts_list),
                         style = MaterialTheme.typography.titleMedium,
                     )
                 },
                 actions = {
+                    if (isLoading) {
+                        IconButton(onClick = { }, enabled = false) {
+                            LoadingIndicator()
+                        }
+                    }
+                    IconButton(onClick = { onReload() }) {
+                        Icon(
+                            imageVector = Icons.Filled.Refresh,
+                            contentDescription = stringResource(Res.string.accounts_refresh),
+                        )
+                    }
                     IconButton(onClick = { onAdd() }) {
                         Icon(
                             imageVector = Icons.Filled.Add,
-                            contentDescription = "Add Account",
+                            contentDescription = stringResource(Res.string.account_add),
                         )
                     }
                 },
