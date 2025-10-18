@@ -10,18 +10,24 @@ import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.vector.rememberVectorPainter
+import androidx.compose.ui.text.font.FontWeight
 import cafe.adriel.voyager.navigator.tab.Tab
 import cafe.adriel.voyager.navigator.tab.TabOptions
 import org.jetbrains.compose.resources.stringResource
 import org.jetbrains.compose.ui.tooling.preview.Preview
 import org.zp1ke.platasync.data.viewModel.BaseViewModel
 import org.zp1ke.platasync.model.UserAccount
+import org.zp1ke.platasync.ui.common.BaseList
+import org.zp1ke.platasync.ui.common.ImageIcon
 import org.zp1ke.platasync.ui.common.LoadingIndicator
 import org.zp1ke.platasync.ui.form.AccountEditDialog
 import org.zp1ke.platasync.ui.screen.accounts.AccountDeleteDialog
-import org.zp1ke.platasync.ui.screen.accounts.AccountsList
+import org.zp1ke.platasync.util.formatAsMoney
 import platasync.composeapp.generated.resources.Res
 import platasync.composeapp.generated.resources.account_add
+import platasync.composeapp.generated.resources.account_delete
+import platasync.composeapp.generated.resources.account_edit
+import platasync.composeapp.generated.resources.accounts_empty
 import platasync.composeapp.generated.resources.accounts_list
 import platasync.composeapp.generated.resources.accounts_refresh
 
@@ -135,7 +141,39 @@ private fun AccountsListView(
         },
     ) { paddingValues ->
         Box(modifier = Modifier.padding(paddingValues)) {
-            AccountsList(accounts, onView = onView, onEdit = onEdit, onDelete = onDelete, enabled = !isLoading)
+            BaseList(
+                items = accounts,
+                onView = onView,
+                onEdit = onEdit,
+                onDelete = onDelete,
+                enabled = !isLoading,
+                emptyStringResource = Res.string.accounts_empty,
+                editStringResource = Res.string.account_edit,
+                deleteStringResource = Res.string.account_delete,
+                headlineContent = { account ->
+                    {
+                        Text(
+                            text = account.name,
+                            style = MaterialTheme.typography.titleMedium
+                                .copy(color = MaterialTheme.colorScheme.onSurfaceVariant),
+                        )
+                    }
+                },
+                supportingContent = { account ->
+                    {
+                        Text(
+                            text = account.balance.formatAsMoney(),
+                            style = MaterialTheme.typography.bodySmall
+                                .copy(color = MaterialTheme.colorScheme.onSurfaceVariant, fontWeight = FontWeight.W500),
+                        )
+                    }
+                },
+                leadingContent = { account ->
+                    {
+                        ImageIcon(account.icon)
+                    }
+                },
+            )
         }
     }
 }

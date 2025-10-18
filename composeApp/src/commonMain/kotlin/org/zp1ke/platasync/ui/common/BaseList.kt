@@ -1,4 +1,4 @@
-package org.zp1ke.platasync.ui.screen.accounts
+package org.zp1ke.platasync.ui.common
 
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
@@ -9,64 +9,61 @@ import androidx.compose.material.icons.filled.DeleteForever
 import androidx.compose.material.icons.filled.Edit
 import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
-import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
+import org.jetbrains.compose.resources.StringResource
 import org.jetbrains.compose.resources.stringResource
-import org.jetbrains.compose.ui.tooling.preview.Preview
-import org.zp1ke.platasync.model.UserAccount
-import org.zp1ke.platasync.ui.common.AppIcon
-import org.zp1ke.platasync.ui.common.ImageIcon
-import org.zp1ke.platasync.ui.common.LoadingIndicator
+import org.zp1ke.platasync.model.BaseModel
 import org.zp1ke.platasync.ui.theme.Size
 import org.zp1ke.platasync.ui.theme.Spacing
-import org.zp1ke.platasync.util.formatAsMoney
-import org.zp1ke.platasync.util.randomId
-import platasync.composeapp.generated.resources.Res
-import platasync.composeapp.generated.resources.account_delete
-import platasync.composeapp.generated.resources.account_edit
-import platasync.composeapp.generated.resources.accounts_empty
 
 @Composable
-@Preview
-fun AccountsList(
-    accounts: List<UserAccount> = listOf(
-        UserAccount(randomId(), "Savings", AppIcon.ACCOUNT_PIGGY, 15000),
-        UserAccount(randomId(), "Credit Card", AppIcon.ACCOUNT_CARD, 50000),
-    ),
-    onView: (UserAccount) -> Unit = { _ -> },
-    onEdit: (UserAccount) -> Unit = { _ -> },
-    onDelete: (UserAccount) -> Unit = { _ -> },
+fun <T : BaseModel>BaseList(
+    items: List<T>,
+    onView: (T) -> Unit,
+    onEdit: (T) -> Unit,
+    onDelete: (T) -> Unit,
     enabled: Boolean = true,
+    emptyStringResource: StringResource,
+    editStringResource: StringResource,
+    deleteStringResource: StringResource,
+    headlineContent: (T) -> (@Composable () -> Unit),
+    supportingContent: (T) -> (@Composable () -> Unit),
+    leadingContent: (T) -> (@Composable () -> Unit),
 ) {
     LazyColumn(
         verticalArrangement = Arrangement.spacedBy(Spacing.small),
         modifier = Modifier.padding(horizontal = Spacing.small),
     ) {
         items(
-            items = accounts,
+            items = items,
             key = { it.id },
-        ) { account ->
-            AccountListItem(
-                account = account,
-                onView = { onView(account) },
-                onEdit = { onEdit(account) },
-                onDelete = { onDelete(account) },
+        ) { item ->
+            BaseListItem(
+                onView = { onView(item) },
+                onEdit = { onEdit(item) },
+                onDelete = { onDelete(item) },
                 enabled = enabled,
+                headlineContent = headlineContent(item),
+                supportingContent = supportingContent(item),
+                leadingContent = leadingContent(item),
+                editStringResource = editStringResource,
+                deleteStringResource = deleteStringResource,
             )
         }
 
-        if (accounts.isEmpty()) {
+        if (items.isEmpty()) {
             item {
                 Spacer(modifier = Modifier.height(Size.iconLarge))
             }
         }
 
-        if (accounts.isEmpty() && enabled) {
+        if (items.isEmpty() && enabled) {
             item {
                 Text(
-                    text = stringResource(Res.string.accounts_empty),
+                    text = stringResource(emptyStringResource),
                     style = MaterialTheme.typography.titleLarge
                         .copy(color = MaterialTheme.colorScheme.onSurfaceVariant),
                     textAlign = TextAlign.Center,
@@ -77,11 +74,11 @@ fun AccountsList(
             }
         }
 
-        if (accounts.isEmpty() && !enabled) {
+        if (items.isEmpty() && !enabled) {
             item {
                 Box(
                     modifier = Modifier.fillMaxWidth(),
-                    contentAlignment = androidx.compose.ui.Alignment.Center
+                    contentAlignment = Alignment.Center
                 ) {
                     LoadingIndicator(size = Size.iconLarge, strokeWidth = Size.strokeMedium)
                 }
@@ -91,12 +88,16 @@ fun AccountsList(
 }
 
 @Composable
-private fun AccountListItem(
-    account: UserAccount,
-    onView: () -> Unit = {},
-    onEdit: () -> Unit = {},
-    onDelete: () -> Unit = {},
+private fun BaseListItem(
+    onView: () -> Unit,
+    onEdit: () -> Unit,
+    onDelete: () -> Unit,
     enabled: Boolean = true,
+    headlineContent: @Composable () -> Unit,
+    supportingContent: @Composable () -> Unit,
+    leadingContent: @Composable () -> Unit,
+    editStringResource: StringResource,
+    deleteStringResource: StringResource,
 ) {
     ListItem(
         modifier = Modifier
@@ -106,36 +107,22 @@ private fun AccountListItem(
         colors = ListItemDefaults.colors(
             containerColor = MaterialTheme.colorScheme.surfaceVariant
         ),
-        headlineContent = {
-            Text(
-                text = account.name,
-                style = MaterialTheme.typography.titleMedium
-                    .copy(color = MaterialTheme.colorScheme.onSurfaceVariant),
-            )
-        },
-        supportingContent = {
-            Text(
-                text = account.balance.formatAsMoney(),
-                style = MaterialTheme.typography.bodySmall
-                    .copy(color = MaterialTheme.colorScheme.onSurfaceVariant, fontWeight = FontWeight.W500),
-            )
-        },
-        leadingContent = {
-            ImageIcon(account.icon)
-        },
+        headlineContent = headlineContent,
+        supportingContent = supportingContent,
+        leadingContent = leadingContent,
         trailingContent = {
             Row {
                 IconButton(onClick = { onEdit() }, enabled = enabled) {
                     Icon(
                         imageVector = Icons.Filled.Edit,
-                        contentDescription = stringResource(Res.string.account_edit),
+                        contentDescription = stringResource(editStringResource),
                         modifier = Modifier.width(Size.iconSmall),
                     )
                 }
                 IconButton(onClick = { onDelete() }, enabled = enabled) {
                     Icon(
                         imageVector = Icons.Filled.DeleteForever,
-                        contentDescription = stringResource(Res.string.account_delete),
+                        contentDescription = stringResource(deleteStringResource),
                         modifier = Modifier.width(Size.iconSmall),
                     )
                 }
