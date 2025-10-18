@@ -20,11 +20,9 @@ import org.zp1ke.platasync.ui.theme.Size
 import org.zp1ke.platasync.ui.theme.Spacing
 
 @Composable
-fun <T : BaseModel>BaseList(
+fun <T : BaseModel> BaseList(
     items: List<T>,
-    onView: (T) -> Unit,
-    onEdit: (T) -> Unit,
-    onDelete: (T) -> Unit,
+    actions: ItemActions<T>,
     enabled: Boolean = true,
     emptyStringResource: StringResource,
     editStringResource: StringResource,
@@ -42,9 +40,9 @@ fun <T : BaseModel>BaseList(
             key = { it.id },
         ) { item ->
             BaseListItem(
-                onView = { onView(item) },
-                onEdit = { onEdit(item) },
-                onDelete = { onDelete(item) },
+                onView = { actions.onView(item) },
+                onEdit = { actions.onEdit(item) },
+                onDelete = { actions.onDelete(item) },
                 enabled = enabled,
                 headlineContent = headlineContent(item),
                 supportingContent = supportingContent(item),
