@@ -1,10 +1,12 @@
 package org.zp1ke.platasync.data.repository
 
 import kotlinx.coroutines.delay
+import org.koin.core.annotation.Single
 import org.zp1ke.platasync.model.UserAccount
 import org.zp1ke.platasync.ui.common.AppIcon
 import org.zp1ke.platasync.util.randomId
 
+@Single
 class DummyAccountsRepository : BaseRepository<UserAccount> {
     private val accounts = mutableListOf<UserAccount>()
 

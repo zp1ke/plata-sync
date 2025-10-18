@@ -17,7 +17,7 @@ import cafe.adriel.voyager.navigator.tab.TabNavigator
 import org.jetbrains.compose.ui.tooling.preview.Preview
 import org.koin.compose.KoinApplication
 import org.koin.compose.getKoin
-import org.zp1ke.platasync.di.appModule
+import org.koin.ksp.generated.module
 import org.zp1ke.platasync.ui.common.TabItem
 import org.zp1ke.platasync.ui.theme.AppTheme
 
@@ -25,7 +25,7 @@ import org.zp1ke.platasync.ui.theme.AppTheme
 @Preview
 fun App() {
     KoinApplication(application = {
-        modules(appModule)
+        modules(AppModule().module)
     }) {
         val tabs: List<Tab> = getKoin().getAll()
 

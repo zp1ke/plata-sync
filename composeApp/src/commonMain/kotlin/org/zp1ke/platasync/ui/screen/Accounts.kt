@@ -10,6 +10,9 @@ import androidx.compose.ui.text.font.FontWeight
 import cafe.adriel.voyager.navigator.tab.Tab
 import cafe.adriel.voyager.navigator.tab.TabOptions
 import org.jetbrains.compose.resources.stringResource
+import org.koin.core.annotation.Factory
+import org.koin.core.annotation.Provided
+import org.zp1ke.platasync.data.repository.BaseRepository
 import org.zp1ke.platasync.data.viewModel.BaseViewModel
 import org.zp1ke.platasync.model.UserAccount
 import org.zp1ke.platasync.ui.common.BaseList
@@ -20,8 +23,10 @@ import org.zp1ke.platasync.ui.screen.accounts.AccountDeleteDialog
 import org.zp1ke.platasync.util.formatAsMoney
 import platasync.composeapp.generated.resources.*
 
+@Factory
 class AccountsScreen(
-    private val screenViewModel: BaseViewModel<UserAccount>,
+    @Provided repository: BaseRepository<UserAccount>,
+    private val screenViewModel: BaseViewModel<UserAccount> = BaseViewModel(repository),
 ) : Tab {
 
     override val options: TabOptions
