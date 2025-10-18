@@ -44,16 +44,16 @@ class DummyAccountsRepository : BaseRepository<UserAccount> {
         return accounts.firstOrNull { it.id == id }
     }
 
-    override suspend fun addItem(account: UserAccount) {
+    override suspend fun addItem(item: UserAccount) {
         delay(400) // Simulate network delay
-        accounts.add(account)
+        accounts.add(item)
     }
 
-    override suspend fun updateItem(account: UserAccount) {
+    override suspend fun updateItem(item: UserAccount) {
         delay(400) // Simulate network delay
-        val index = accounts.indexOfFirst { it.id == account.id }
+        val index = accounts.indexOfFirst { it.id == item.id }
         if (index >= 0) {
-            accounts[index] = account
+            accounts[index] = item
         }
     }
 

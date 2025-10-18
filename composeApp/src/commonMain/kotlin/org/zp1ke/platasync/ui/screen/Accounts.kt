@@ -118,13 +118,13 @@ private fun AccountsListView(
                             LoadingIndicator()
                         }
                     }
-                    IconButton(onClick = { onReload() }) {
+                    IconButton(onClick = { onReload() }, enabled = !isLoading) {
                         Icon(
                             imageVector = Icons.Filled.Refresh,
                             contentDescription = stringResource(Res.string.accounts_refresh),
                         )
                     }
-                    IconButton(onClick = { onAdd() }) {
+                    IconButton(onClick = { onAdd() }, enabled = !isLoading) {
                         Icon(
                             imageVector = Icons.Filled.Add,
                             contentDescription = stringResource(Res.string.account_add),
@@ -135,7 +135,7 @@ private fun AccountsListView(
         },
     ) { paddingValues ->
         Box(modifier = Modifier.padding(paddingValues)) {
-            AccountsList(accounts, onView = onView, onEdit = onEdit, onDelete = onDelete)
+            AccountsList(accounts, onView = onView, onEdit = onEdit, onDelete = onDelete, enabled = !isLoading)
         }
     }
 }

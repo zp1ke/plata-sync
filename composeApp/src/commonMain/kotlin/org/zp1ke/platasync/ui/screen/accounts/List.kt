@@ -18,6 +18,7 @@ import org.jetbrains.compose.ui.tooling.preview.Preview
 import org.zp1ke.platasync.model.UserAccount
 import org.zp1ke.platasync.ui.common.AppIcon
 import org.zp1ke.platasync.ui.common.ImageIcon
+import org.zp1ke.platasync.ui.common.LoadingIndicator
 import org.zp1ke.platasync.ui.theme.Size
 import org.zp1ke.platasync.ui.theme.Spacing
 import org.zp1ke.platasync.util.formatAsMoney
@@ -37,6 +38,7 @@ fun AccountsList(
     onView: (UserAccount) -> Unit = { _ -> },
     onEdit: (UserAccount) -> Unit = { _ -> },
     onDelete: (UserAccount) -> Unit = { _ -> },
+    enabled: Boolean = true,
 ) {
     LazyColumn(
         verticalArrangement = Arrangement.spacedBy(Spacing.small),
@@ -51,12 +53,18 @@ fun AccountsList(
                 onView = { onView(account) },
                 onEdit = { onEdit(account) },
                 onDelete = { onDelete(account) },
+                enabled = enabled,
             )
         }
 
         if (accounts.isEmpty()) {
             item {
                 Spacer(modifier = Modifier.height(Size.iconLarge))
+            }
+        }
+
+        if (accounts.isEmpty() && enabled) {
+            item {
                 Text(
                     text = stringResource(Res.string.accounts_empty),
                     style = MaterialTheme.typography.titleLarge
@@ -68,6 +76,17 @@ fun AccountsList(
                 )
             }
         }
+
+        if (accounts.isEmpty() && !enabled) {
+            item {
+                Box(
+                    modifier = Modifier.fillMaxWidth(),
+                    contentAlignment = androidx.compose.ui.Alignment.Center
+                ) {
+                    LoadingIndicator(size = Size.iconLarge, strokeWidth = Size.strokeMedium)
+                }
+            }
+        }
     }
 }
 
@@ -77,11 +96,12 @@ private fun AccountListItem(
     onView: () -> Unit = {},
     onEdit: () -> Unit = {},
     onDelete: () -> Unit = {},
+    enabled: Boolean = true,
 ) {
     ListItem(
         modifier = Modifier
             .clip(MaterialTheme.shapes.small)
-            .clickable { onView() }
+            .clickable(enabled = enabled, onClick = onView)
             .padding(horizontal = Spacing.small),
         colors = ListItemDefaults.colors(
             containerColor = MaterialTheme.colorScheme.surfaceVariant
@@ -105,14 +125,14 @@ private fun AccountListItem(
         },
         trailingContent = {
             Row {
-                IconButton(onClick = { onEdit() }) {
+                IconButton(onClick = { onEdit() }, enabled = enabled) {
                     Icon(
                         imageVector = Icons.Filled.Edit,
                         contentDescription = stringResource(Res.string.account_edit),
                         modifier = Modifier.width(Size.iconSmall),
                     )
                 }
-                IconButton(onClick = { onDelete() }) {
+                IconButton(onClick = { onDelete() }, enabled = enabled) {
                     Icon(
                         imageVector = Icons.Filled.DeleteForever,
                         contentDescription = stringResource(Res.string.account_delete),

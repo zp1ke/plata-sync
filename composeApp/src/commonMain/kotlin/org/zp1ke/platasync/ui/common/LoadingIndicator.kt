@@ -6,6 +6,7 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import org.jetbrains.compose.ui.tooling.preview.Preview
 import org.zp1ke.platasync.ui.theme.Size
@@ -14,11 +15,13 @@ import org.zp1ke.platasync.ui.theme.Size
 @Preview
 fun LoadingIndicator(
     paddingValues: PaddingValues = PaddingValues(0.dp),
+    size: Dp = Size.iconSmall,
+    strokeWidth: Dp = Size.strokeSmall,
 ) {
     CircularProgressIndicator(
         modifier = Modifier
             .padding(paddingValues)
-            .size(Size.iconSmall),
-        strokeWidth = 2.dp,
+            .size(size),
+        strokeWidth = strokeWidth,
     )
 }
