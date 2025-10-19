@@ -3,7 +3,6 @@ package org.zp1ke.platasync.data.room
 import androidx.room.*
 import androidx.sqlite.driver.bundled.BundledSQLiteDriver
 import kotlinx.coroutines.Dispatchers
-import org.koin.core.annotation.Factory
 import org.koin.core.annotation.Provided
 import org.koin.core.annotation.Single
 import org.koin.core.scope.Scope
@@ -20,18 +19,15 @@ abstract class AppDatabase() : RoomDatabase() {
 @Single
 fun createDatabase(
     @Provided
-    builder: RoomDatabase.Builder<AppDatabase>,
+    scope: Scope,
 ): AppDatabase {
-    return builder
+    return getDatabaseBuilder(scope)
         .setDriver(BundledSQLiteDriver())
         .setQueryCoroutineContext(Dispatchers.IO)
         .build()
 }
 
-expect class RoomDatabaseBuilder {
-    @Factory
-    fun getDatabaseBuilder(scope: Scope): RoomDatabase.Builder<AppDatabase>
-}
+expect fun getDatabaseBuilder(scope: Scope): RoomDatabase.Builder<AppDatabase>
 
 @Suppress("KotlinNoActualForExpect")
 expect object AppDatabaseConstructor : RoomDatabaseConstructor<AppDatabase> {

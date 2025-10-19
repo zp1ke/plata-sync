@@ -37,13 +37,7 @@ class BaseViewModel<T : BaseModel>(
     fun addItem(item: T) {
         mutableState.value = mutableState.value.copy(isLoading = true)
         screenModelScope.launch {
-            val index = mutableState.value.data.indexOfFirst { it.id == item.id }
-            if (index >= 0) {
-                // Update existing
-                repository.updateItem(item)
-            } else {
-                repository.addItem(item)
-            }
+            repository.saveItem(item)
             loadItems()
         }
     }
