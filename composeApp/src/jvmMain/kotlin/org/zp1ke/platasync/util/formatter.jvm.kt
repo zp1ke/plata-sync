@@ -7,4 +7,4 @@ actual fun formatMoney(amount: Int): String = (
         NumberFormat.getCurrencyInstance().apply {
             currency = Currency.getInstance("USD")
         }
-        ).format(amount.toFloat() / 100)
+        ).format(amount.toDouble() / 100)
