@@ -1,10 +1,12 @@
 package org.zp1ke.platasync.model
 
-import kotlinx.serialization.Serializable
+import androidx.room.Entity
+import androidx.room.PrimaryKey
 import org.zp1ke.platasync.ui.common.AppIcon
 
-@Serializable
+@Entity
 data class UserAccount(
+    @PrimaryKey
     override val id: String,
     val name: String,
     val icon: AppIcon,
