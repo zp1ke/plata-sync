@@ -11,7 +11,6 @@ import cafe.adriel.voyager.navigator.tab.Tab
 import cafe.adriel.voyager.navigator.tab.TabOptions
 import org.jetbrains.compose.resources.stringResource
 import org.koin.core.annotation.Factory
-import org.koin.core.annotation.Provided
 import org.zp1ke.platasync.data.repository.BaseRepository
 import org.zp1ke.platasync.data.viewModel.BaseViewModel
 import org.zp1ke.platasync.model.UserAccount
@@ -25,9 +24,9 @@ import platasync.composeapp.generated.resources.*
 
 @Factory
 class AccountsScreen(
-    @Provided repository: BaseRepository<UserAccount>,
-    private val screenViewModel: BaseViewModel<UserAccount> = BaseViewModel(repository),
+    repository: BaseRepository<UserAccount>,
 ) : Tab {
+    private val screenViewModel: BaseViewModel<UserAccount> = BaseViewModel(repository)
 
     override val options: TabOptions
         @Composable

@@ -3,7 +3,6 @@ package org.zp1ke.platasync.data.room
 import androidx.room.*
 import androidx.sqlite.driver.bundled.BundledSQLiteDriver
 import kotlinx.coroutines.Dispatchers
-import org.koin.core.annotation.Provided
 import org.koin.core.annotation.Single
 import org.koin.core.scope.Scope
 import org.zp1ke.platasync.data.dao.UserAccountDao
@@ -18,7 +17,6 @@ abstract class AppDatabase() : RoomDatabase() {
 
 @Single
 fun createDatabase(
-    @Provided
     scope: Scope,
 ): AppDatabase {
     return getDatabaseBuilder(scope)

@@ -28,6 +28,11 @@ fun App() {
         modules(AppModule().module)
     }) {
         val tabs: List<Tab> = getKoin().getAll()
+        // Determine the first tab to show based on the lowest index and title
+        val firstTab = tabs.minByOrNull { tab -> tab.options.index }?.let { minIndexTab ->
+            tabs.filter { it.options.index == minIndexTab.options.index }
+                .minByOrNull { it.options.title }
+        } ?: tabs.first()
 
         AppTheme {
             Surface(
@@ -36,10 +41,7 @@ fun App() {
                     .fillMaxSize(),
                 color = MaterialTheme.colorScheme.background,
             ) {
-                TabNavigator(tabs.minByOrNull { tab -> tab.options.index }?.let { minIndexTab ->
-                    tabs.filter { it.options.index == minIndexTab.options.index }
-                        .minByOrNull { it.options.title }
-                } ?: tabs.first()) {
+                TabNavigator(firstTab) {
                     Scaffold(
                         content = { paddingValues ->
                             Column(
