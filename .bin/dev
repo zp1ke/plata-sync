@@ -1,0 +1,100 @@
+#!/usr/bin/env bash
+
+set -e  # Exit on error
+
+# Navigate to project root
+cd "$(dirname "$(dirname "$(readlink -f "$0")")")"
+root_dir=$(pwd)
+
+# Colors for output
+RED='\033[0;31m'
+GREEN='\033[0;32m'
+YELLOW='\033[1;33m'
+BLUE='\033[0;34m'
+NC='\033[0m' # No Color
+
+# Helper functions
+function log_info {
+  echo -e "${BLUE}ℹ${NC} $1"
+}
+
+function log_success {
+  echo -e "${GREEN}✓${NC} $1"
+}
+
+function log_error {
+  echo -e "${RED}✗${NC} $1" >&2
+}
+
+function log_warning {
+  echo -e "${YELLOW}⚠${NC} $1"
+}
+
+function do_test {
+  log_info "Running tests..."
+
+  ./gradlew test
+
+  log_success "Tests completed"
+}
+
+function do_run_desktop {
+  log_info "Starting desktop app..."
+
+  ./gradlew :composeApp:run
+
+  log_success "Desktop app stopped"
+}
+
+function do_clean {
+  log_info "Cleaning..."
+
+  ./gradlew clean
+
+  log_success "Clean completed"
+}
+
+function help_message {
+  echo -e "${BLUE}plata-sync Development Script${NC}"
+  echo ""
+  echo -e "${GREEN}Usage:${NC}"
+  echo "  ./dev <command>"
+  echo ""
+  echo -e "${GREEN}Commands:${NC}"
+  echo -e "  ${YELLOW}clean${NC}             Clean"
+  echo -e "  ${YELLOW}test${NC}              Run tests"
+  echo -e "  ${YELLOW}run-desktop${NC}       Run desktop application"
+  echo -e "  ${YELLOW}help${NC}              Show this help message"
+  echo ""
+  echo -e "${GREEN}Environment:${NC}"
+  echo -e "  Root: ${YELLOW}$root_dir${NC}"
+  echo ""
+}
+
+function do_start {
+  command=$1
+  shift
+
+  case $command in
+    clean)
+      do_clean "$@"
+      ;;
+    test)
+      do_test "$@"
+      ;;
+    run-desktop)
+      do_run_desktop "$@"
+      ;;
+    ""|"help")
+      help_message
+      ;;
+    *)
+      log_error "Unknown command: $command"
+      echo ""
+      help_message
+      exit 1
+      ;;
+  esac
+}
+
+do_start "$@"

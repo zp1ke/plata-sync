@@ -46,6 +46,35 @@ in your IDE’s toolbar or run it directly from the terminal:
   .\gradlew.bat :composeApp:run
   ```
 
+### Development Script
+
+Use the provided dev script for common development tasks:
+
+```shell
+./.bin/dev <command>
+```
+
+Available commands:
+- `clean`: Clean the project
+- `test`: Run tests
+- `run-desktop`: Run the desktop application
+- `help`: Show help message
+
+### Direnv Setup
+
+This project uses [direnv](https://direnv.net/) to manage environment variables.
+
+To set up direnv:
+
+1. Install direnv if not already installed.
+2. Allow the .envrc file in the project root:
+
+```shell
+direnv allow
+```
+
+This will add the `.bin` directory to your PATH and set the `PROJECT_ROOT` environment variable.
+
 ---
 
 Learn more about [Kotlin Multiplatform](https://www.jetbrains.com/help/kotlin-multiplatform-dev/get-started.html)…
