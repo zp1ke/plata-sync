@@ -15,6 +15,7 @@ import org.zp1ke.platasync.ui.common.MoneyField
 import org.zp1ke.platasync.ui.theme.Spacing
 import org.zp1ke.platasync.util.randomId
 import platasync.composeapp.generated.resources.*
+import java.time.OffsetDateTime
 
 @Composable
 @Preview
@@ -26,13 +27,13 @@ fun AccountEditDialog(
 ) {
     var name by remember(account) { mutableStateOf(account?.name ?: "") }
     var icon by remember(account) { mutableStateOf(account?.icon ?: AppIcon.ACCOUNT_BANK) }
-    var balance by remember(account) { mutableIntStateOf(account?.balance ?: 0) }
+    var initialBalance by remember(account) { mutableIntStateOf(account?.initialBalance ?: 0) }
 
     fun checkValid(): Boolean {
-        return name.isNotBlank() && balance >= 0
+        return name.isNotBlank() && initialBalance >= 0
     }
 
-    var isValid by remember(account, name, balance) { mutableStateOf(checkValid()) }
+    var isValid by remember(account, name, initialBalance) { mutableStateOf(checkValid()) }
 
     if (showDialog) {
         Dialog(onDismissRequest = onDismiss) {
@@ -79,9 +80,9 @@ fun AccountEditDialog(
                     }
 
                     MoneyField(
-                        value = balance,
+                        value = initialBalance,
                         onValueChange = {
-                            balance = it
+                            initialBalance = it
                             isValid = checkValid()
                         },
                         label = stringResource(Res.string.account_balance),
@@ -100,8 +101,9 @@ fun AccountEditDialog(
                         TextButton(
                             onClick = {
                                 val id = account?.id ?: randomId()
+                                val createdAt = account?.createdAt ?: OffsetDateTime.now()
                                 onSubmit(
-                                    UserAccount(id, name, icon, balance)
+                                    UserAccount(id, createdAt, name, icon, initialBalance)
                                 )
                                 onDismiss()
                             },

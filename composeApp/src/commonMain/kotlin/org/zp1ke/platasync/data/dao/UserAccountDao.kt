@@ -10,12 +10,12 @@ interface UserAccountDao {
     @Upsert
     suspend fun save(item: UserAccount)
 
-    @Query("SELECT * FROM UserAccount")
+    @Query("SELECT * FROM ${UserAccount.TABLE_NAME}")
     suspend fun getAll(): List<UserAccount>
 
-    @Query("SELECT * FROM UserAccount WHERE id = :id LIMIT 1")
+    @Query("SELECT * FROM ${UserAccount.TABLE_NAME} WHERE id = :id LIMIT 1")
     suspend fun getById(id: String): UserAccount?
 
-    @Query("DELETE FROM UserAccount WHERE id = :id")
+    @Query("DELETE FROM ${UserAccount.TABLE_NAME} WHERE id = :id")
     suspend fun deleteById(id: String)
 }

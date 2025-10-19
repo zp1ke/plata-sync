@@ -4,8 +4,7 @@ import kotlin.uuid.ExperimentalUuidApi
 import kotlin.uuid.Uuid
 
 @OptIn(ExperimentalUuidApi::class)
-fun randomId(len: Int = 6): String {
-    var uuid = Uuid.random().toString()
-    uuid = uuid.replace("-", "").lowercase()
-    return uuid.take(len)
+fun randomId(): String {
+    val uuid = Uuid.random().toString()
+    return uuid.replace("-", "").lowercase()
 }
