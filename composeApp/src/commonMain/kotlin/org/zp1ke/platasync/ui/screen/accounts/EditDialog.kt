@@ -35,6 +35,14 @@ fun AccountEditDialog(
 
     var isValid by remember(account, name, initialBalance) { mutableStateOf(checkValid()) }
 
+    fun onClose() {
+        name = ""
+        icon = AppIcon.ACCOUNT_BANK
+        initialBalance = 0
+        isValid = false
+        onDismiss()
+    }
+
     if (showDialog) {
         Dialog(onDismissRequest = onDismiss) {
             Surface(
@@ -95,7 +103,7 @@ fun AccountEditDialog(
                         modifier = Modifier.fillMaxWidth(),
                         horizontalArrangement = Arrangement.End
                     ) {
-                        TextButton(onClick = onDismiss) {
+                        TextButton(onClick = { onClose() }) {
                             Text(stringResource(Res.string.action_cancel))
                         }
                         TextButton(
@@ -105,7 +113,7 @@ fun AccountEditDialog(
                                 onSubmit(
                                     UserAccount(id, createdAt, name, icon, initialBalance)
                                 )
-                                onDismiss()
+                                onClose()
                             },
                             enabled = isValid,
                         ) {

@@ -55,7 +55,6 @@ class AccountsScreen(
         val itemActions = object : ItemActions<UserAccount> {
             override fun onView(item: UserAccount) {
                 // TODO implement view
-                print("Got account" + item.id)
             }
 
             override fun onEdit(item: UserAccount) {
@@ -70,7 +69,10 @@ class AccountsScreen(
         BaseScreen(
             isLoading = state.isLoading,
             onReload = { viewModel.loadItems() },
-            onAdd = { showAdd = true },
+            onAdd = {
+                editAccount = null
+                showAdd = true
+            },
             actions = itemActions,
             titleResource = Res.string.accounts_list,
             refreshResource = Res.string.accounts_refresh,
