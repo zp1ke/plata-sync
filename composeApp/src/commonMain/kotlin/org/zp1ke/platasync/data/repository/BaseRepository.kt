@@ -9,6 +9,7 @@ interface BaseRepository<T : BaseModel> {
         sortKey: String = BaseModel.COLUMN_CREATED_AT,
         sortOrder: SortOrder = SortOrder.DESC,
     ): List<T>
+
     suspend fun getBalanceStats(): BalanceStats
     suspend fun getItemById(id: String): T?
     suspend fun saveItem(item: T)

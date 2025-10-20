@@ -11,7 +11,8 @@ interface UserAccountDao {
     @Upsert
     suspend fun save(item: UserAccount)
 
-    @Query("""
+    @Query(
+        """
         SELECT * FROM ${UserAccount.TABLE_NAME}
         ORDER BY 
             CASE WHEN :sortOrder = '${SortOrder.ASC_VALUE}' THEN
@@ -28,7 +29,8 @@ interface UserAccountDao {
                     WHEN '${UserAccount.COLUMN_INITIAL_BALANCE}' THEN ${UserAccount.COLUMN_INITIAL_BALANCE}
                 END
             END DESC
-    """)
+    """
+    )
     suspend fun getAll(
         sortKey: String = BaseModel.COLUMN_CREATED_AT,
         sortOrder: SortOrder = SortOrder.DESC,
