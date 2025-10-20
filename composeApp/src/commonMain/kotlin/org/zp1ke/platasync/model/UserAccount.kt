@@ -10,14 +10,17 @@ import java.time.OffsetDateTime
 data class UserAccount(
     @PrimaryKey
     override val id: String,
-    @ColumnInfo(name = "created_at")
+    @ColumnInfo(name = COLUMN_CREATED_AT)
     override val createdAt: OffsetDateTime,
     val name: String,
     val icon: AppIcon,
-    @ColumnInfo(name = "initial_balance")
+    @ColumnInfo(name = COLUMN_INITIAL_BALANCE)
     val initialBalance: Int,
 ) : BaseModel(id, createdAt) {
     companion object {
         const val TABLE_NAME = "users_accounts"
+
+        const val COLUMN_NAME = "name"
+        const val COLUMN_INITIAL_BALANCE = "initial_balance"
     }
 }
