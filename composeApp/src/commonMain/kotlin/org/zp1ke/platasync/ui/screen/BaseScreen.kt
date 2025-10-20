@@ -21,7 +21,9 @@ fun <T : BaseModel> BaseScreen(
     onReload: () -> Unit,
     onAdd: () -> Unit,
     actions: ItemActions<T>,
+    titleIcon: (@Composable () -> Unit)? = null,
     titleResource: StringResource,
+    subtitle: String? = null,
     refreshResource: StringResource,
     addResource: StringResource,
     list: @Composable (
@@ -33,9 +35,26 @@ fun <T : BaseModel> BaseScreen(
         topBar = {
             TopAppBar(
                 title = {
-                    Text(
-                        stringResource(titleResource),
-                        style = MaterialTheme.typography.titleMedium,
+                    ListItem(
+                        leadingContent = {
+                            if (titleIcon != null) {
+                                titleIcon()
+                            }
+                        },
+                        headlineContent = {
+                            Text(
+                                stringResource(titleResource),
+                                style = MaterialTheme.typography.titleMedium,
+                            )
+                        },
+                        supportingContent = {
+                            if (subtitle != null) {
+                                Text(
+                                    subtitle,
+                                    style = MaterialTheme.typography.bodyMedium,
+                                )
+                            }
+                        }
                     )
                 },
                 actions = {

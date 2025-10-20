@@ -34,6 +34,9 @@ interface UserAccountDao {
         sortOrder: SortOrder = SortOrder.DESC,
     ): List<UserAccount>
 
+    @Query("SELECT SUM(${UserAccount.COLUMN_INITIAL_BALANCE}) FROM ${UserAccount.TABLE_NAME}")
+    suspend fun sumBalance(): Int?
+
     @Query("SELECT * FROM ${UserAccount.TABLE_NAME} WHERE id = :id LIMIT 1")
     suspend fun getById(id: String): UserAccount?
 

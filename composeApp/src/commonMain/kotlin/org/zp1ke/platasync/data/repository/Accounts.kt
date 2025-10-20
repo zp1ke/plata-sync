@@ -4,6 +4,7 @@ import org.koin.core.annotation.Single
 import org.zp1ke.platasync.data.dao.SortOrder
 import org.zp1ke.platasync.data.dao.UserAccountDao
 import org.zp1ke.platasync.data.room.AppDatabase
+import org.zp1ke.platasync.model.BalanceStats
 import org.zp1ke.platasync.model.UserAccount
 
 @Single
@@ -16,6 +17,13 @@ class DaoAccountsRepository(
         sortKey: String,
         sortOrder: SortOrder,
     ): List<UserAccount> = accountDao.getAll(sortKey, sortOrder)
+
+    override suspend fun getBalanceStats(): BalanceStats {
+        val balance = accountDao.sumBalance() ?: 0
+        return BalanceStats(
+            balance = balance,
+        )
+    }
 
     override suspend fun getItemById(id: String): UserAccount? = accountDao.getById(id)
 

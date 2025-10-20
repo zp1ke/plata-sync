@@ -1,10 +1,13 @@
 package org.zp1ke.platasync.ui.screen
 
+import androidx.compose.foundation.layout.width
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.AccountBalanceWallet
+import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.*
+import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.vector.rememberVectorPainter
 import androidx.compose.ui.text.font.FontWeight
 import cafe.adriel.voyager.navigator.tab.Tab
@@ -19,6 +22,7 @@ import org.zp1ke.platasync.ui.common.ImageIcon
 import org.zp1ke.platasync.ui.common.ItemActions
 import org.zp1ke.platasync.ui.form.AccountEditDialog
 import org.zp1ke.platasync.ui.screen.accounts.AccountDeleteDialog
+import org.zp1ke.platasync.ui.theme.Size
 import org.zp1ke.platasync.util.formatAsMoney
 import platasync.composeapp.generated.resources.*
 
@@ -74,7 +78,15 @@ class AccountsScreen(
                 showAdd = true
             },
             actions = itemActions,
+            titleIcon = {
+                Icon(
+                    imageVector = Icons.Filled.AccountBalanceWallet,
+                    contentDescription = stringResource(Res.string.accounts_list),
+                    modifier = Modifier.width(Size.iconSmall),
+                )
+            },
             titleResource = Res.string.accounts_list,
+            subtitle = state.stats.balance.formatAsMoney(),
             refreshResource = Res.string.accounts_refresh,
             addResource = Res.string.account_add,
             list = { enabled, actions ->

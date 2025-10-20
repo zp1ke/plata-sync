@@ -3,11 +3,14 @@ package org.zp1ke.platasync.data.viewModel
 import cafe.adriel.voyager.core.model.StateScreenModel
 import cafe.adriel.voyager.core.model.screenModelScope
 import kotlinx.coroutines.launch
+import org.zp1ke.platasync.data.dao.SortOrder
 import org.zp1ke.platasync.data.repository.BaseRepository
+import org.zp1ke.platasync.model.BalanceStats
 import org.zp1ke.platasync.model.BaseModel
 
 data class ScreenState<T : BaseModel>(
     val data: List<T>,
+    val stats: BalanceStats,
     val isLoading: Boolean,
 )
 
@@ -16,6 +19,7 @@ class BaseViewModel<T : BaseModel>(
 ) : StateScreenModel<ScreenState<T>>(
     ScreenState(
         data = listOf(),
+        stats = BalanceStats(),
         isLoading = false,
     ),
 ) {
@@ -23,12 +27,17 @@ class BaseViewModel<T : BaseModel>(
         loadItems()
     }
 
-    fun loadItems() {
+    fun loadItems(
+        sortKey: String = BaseModel.COLUMN_CREATED_AT,
+        sortOrder: SortOrder = SortOrder.DESC,
+    ) {
         mutableState.value = mutableState.value.copy(isLoading = true)
         screenModelScope.launch {
-            val items = repository.getAllItems()
+            val items = repository.getAllItems(sortKey, sortOrder)
+            val stats = repository.getBalanceStats()
             mutableState.value = ScreenState(
                 data = items,
+                stats = stats,
                 isLoading = false,
             )
         }
