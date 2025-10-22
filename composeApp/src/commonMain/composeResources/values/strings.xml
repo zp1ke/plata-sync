@@ -15,12 +15,20 @@
     <string name="account_delete">Delete Account</string>
     <string name="accounts_empty">No Accounts!</string>
     <string name="accounts_refresh">Refresh Accounts</string>
+    <string name="accounts_sort_field_name">Name</string>
+    <string name="accounts_sort_field_balance">Balance</string>
     <!-- Category -->
     <string name="category_list">Categories</string>
     <!-- Actions -->
     <string name="action_save">Save</string>
     <string name="action_cancel">Cancel</string>
     <string name="action_ok">OK</string>
+    <!-- Filters -->
+    <string name="sort_by">Sort by</string>
+    <string name="sort_order">Order</string>
+    <string name="sort_field_created">Created Date</string>
+    <string name="sort_order_asc">Ascending</string>
+    <string name="sort_order_desc">Descending</string>
     <!-- Form -->
     <string name="form_invalid_amount">Please enter a valid positive amount.</string>
 </resources>

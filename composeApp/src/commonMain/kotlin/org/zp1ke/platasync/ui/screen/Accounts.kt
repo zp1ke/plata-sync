@@ -3,25 +3,31 @@ package org.zp1ke.platasync.ui.screen
 import androidx.compose.foundation.layout.width
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.AccountBalanceWallet
+import androidx.compose.material.icons.filled.FilterList
+import androidx.compose.material.icons.outlined.FilterListOff
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.graphics.vector.rememberVectorPainter
 import androidx.compose.ui.text.font.FontWeight
 import cafe.adriel.voyager.navigator.tab.Tab
 import cafe.adriel.voyager.navigator.tab.TabOptions
 import org.jetbrains.compose.resources.stringResource
 import org.koin.core.annotation.Factory
+import org.zp1ke.platasync.data.dao.SortOrder
 import org.zp1ke.platasync.data.repository.BaseRepository
 import org.zp1ke.platasync.data.viewModel.BaseViewModel
+import org.zp1ke.platasync.model.BaseModel
 import org.zp1ke.platasync.model.UserAccount
 import org.zp1ke.platasync.ui.common.BaseList
 import org.zp1ke.platasync.ui.common.ImageIcon
 import org.zp1ke.platasync.ui.common.ItemActions
 import org.zp1ke.platasync.ui.form.AccountEditDialog
 import org.zp1ke.platasync.ui.screen.accounts.AccountDeleteDialog
+import org.zp1ke.platasync.ui.screen.accounts.AccountsFilterWidget
 import org.zp1ke.platasync.ui.theme.Size
 import org.zp1ke.platasync.util.formatAsMoney
 import platasync.composeapp.generated.resources.*
@@ -70,9 +76,45 @@ class AccountsScreen(
             }
         }
 
+        var filterVisible by remember { mutableStateOf(false) }
+        var filterName by remember { mutableStateOf("") }
+        var sortField by remember { mutableStateOf(BaseModel.COLUMN_CREATED_AT) }
+        var sortOrder by remember { mutableStateOf(SortOrder.DESC) }
+
+        val filterWidgetProvider = object : TopWidgetProvider {
+            override fun controlIcon(): ImageVector =
+                if (filterVisible) Icons.Outlined.FilterListOff else Icons.Filled.FilterList
+
+            override fun onControlAction() {
+                filterVisible = !filterVisible
+            }
+
+            override fun content(): (@Composable () -> Unit)? {
+                if (filterVisible) {
+                    return {
+                        AccountsFilterWidget(
+                            filterName = filterName,
+                            onFilterNameChange = { filterName = it },
+                            sortField = sortField,
+                            onSortFieldChange = {
+                                sortField = it
+                                viewModel.loadItems(sortKey = sortField, sortOrder = sortOrder)
+                            },
+                            sortOrder = sortOrder,
+                            onSortOrderChange = {
+                                sortOrder = it
+                                viewModel.loadItems(sortKey = sortField, sortOrder = sortOrder)
+                            }
+                        )
+                    }
+                }
+                return null
+            }
+        }
+
         BaseScreen(
             isLoading = state.isLoading,
-            onReload = { viewModel.loadItems() },
+            onReload = { viewModel.loadItems(sortField, sortOrder) },
             onAdd = {
                 editAccount = null
                 showAdd = true
@@ -89,6 +131,7 @@ class AccountsScreen(
             subtitle = state.stats.balance.formatAsMoney(),
             refreshResource = Res.string.accounts_refresh,
             addResource = Res.string.account_add,
+            topWidgetProvider = filterWidgetProvider,
             list = { enabled, actions ->
                 BaseList(
                     items = state.data,

@@ -1,18 +1,21 @@
 package org.zp1ke.platasync.ui.screen
 
-import androidx.compose.foundation.layout.Box
-import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.background
+import androidx.compose.foundation.layout.*
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Add
 import androidx.compose.material.icons.filled.Refresh
 import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
+import androidx.compose.ui.graphics.vector.ImageVector
 import org.jetbrains.compose.resources.StringResource
 import org.jetbrains.compose.resources.stringResource
 import org.zp1ke.platasync.model.BaseModel
 import org.zp1ke.platasync.ui.common.ItemActions
 import org.zp1ke.platasync.ui.common.LoadingIndicator
+import org.zp1ke.platasync.ui.theme.Spacing
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -26,6 +29,7 @@ fun <T : BaseModel> BaseScreen(
     subtitle: String? = null,
     refreshResource: StringResource,
     addResource: StringResource,
+    topWidgetProvider: TopWidgetProvider? = null,
     list: @Composable (
         enabled: Boolean,
         actions: ItemActions<T>,
@@ -63,6 +67,14 @@ fun <T : BaseModel> BaseScreen(
                             LoadingIndicator()
                         }
                     }
+                    topWidgetProvider?.controlIcon()?.let {
+                        IconButton(onClick = { topWidgetProvider.onControlAction() }, enabled = !isLoading) {
+                            Icon(
+                                imageVector = it,
+                                contentDescription = null,
+                            )
+                        }
+                    }
                     IconButton(onClick = { onReload() }, enabled = !isLoading) {
                         Icon(
                             imageVector = Icons.Filled.Refresh,
@@ -79,8 +91,28 @@ fun <T : BaseModel> BaseScreen(
             )
         },
     ) { paddingValues ->
-        Box(modifier = Modifier.padding(paddingValues)) {
+        Column(
+            modifier = Modifier.padding(paddingValues),
+            verticalArrangement = Arrangement.spacedBy(Spacing.medium),
+        ) {
+            topWidgetProvider?.content()?.let {
+                Box(
+                    modifier = Modifier
+                        .clip(MaterialTheme.shapes.small)
+                        .background(MaterialTheme.colorScheme.surfaceVariant)
+                        .width(IntrinsicSize.Max)
+                        .padding(Spacing.medium)
+                ) {
+                    topWidgetProvider.content()?.invoke()
+                }
+            }
             list(!isLoading, actions)
         }
     }
+}
+
+interface TopWidgetProvider {
+    fun controlIcon(): ImageVector?
+    fun onControlAction()
+    fun content(): (@Composable () -> Unit)?
 }
