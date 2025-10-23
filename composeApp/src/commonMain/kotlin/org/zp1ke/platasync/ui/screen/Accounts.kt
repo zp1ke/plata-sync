@@ -81,6 +81,18 @@ class AccountsScreen(
         var sortField by remember { mutableStateOf(BaseModel.COLUMN_CREATED_AT) }
         var sortOrder by remember { mutableStateOf(SortOrder.DESC) }
 
+        fun loadData() {
+            val filters = mutableMapOf<String, String>()
+            if (filterName.isNotBlank()) {
+                filters[UserAccount.COLUMN_NAME] = filterName
+            }
+            viewModel.loadItems(
+                filters = filters,
+                sortKey = sortField,
+                sortOrder = sortOrder,
+            )
+        }
+
         val filterWidgetProvider = object : TopWidgetProvider {
             override fun controlIcon(): ImageVector =
                 if (filterVisible) Icons.Outlined.FilterListOff else Icons.Filled.FilterList
@@ -94,16 +106,19 @@ class AccountsScreen(
                     return {
                         AccountsFilterWidget(
                             filterName = filterName,
-                            onFilterNameChange = { filterName = it },
+                            onFilterNameChange = {
+                                filterName = it
+                                loadData()
+                            },
                             sortField = sortField,
                             onSortFieldChange = {
                                 sortField = it
-                                viewModel.loadItems(sortKey = sortField, sortOrder = sortOrder)
+                                loadData()
                             },
                             sortOrder = sortOrder,
                             onSortOrderChange = {
                                 sortOrder = it
-                                viewModel.loadItems(sortKey = sortField, sortOrder = sortOrder)
+                                loadData()
                             }
                         )
                     }
@@ -114,7 +129,7 @@ class AccountsScreen(
 
         BaseScreen(
             isLoading = state.isLoading,
-            onReload = { viewModel.loadItems(sortField, sortOrder) },
+            onReload = { loadData() },
             onAdd = {
                 editAccount = null
                 showAdd = true

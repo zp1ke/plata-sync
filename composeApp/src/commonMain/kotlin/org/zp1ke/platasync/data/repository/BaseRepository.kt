@@ -6,6 +6,7 @@ import org.zp1ke.platasync.model.BaseModel
 
 interface BaseRepository<T : BaseModel> {
     suspend fun getAllItems(
+        filters: Map<String, String> = emptyMap(),
         sortKey: String = BaseModel.COLUMN_CREATED_AT,
         sortOrder: SortOrder = SortOrder.DESC,
     ): List<T>

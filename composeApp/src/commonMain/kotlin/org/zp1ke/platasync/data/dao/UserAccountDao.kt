@@ -14,6 +14,7 @@ interface UserAccountDao {
     @Query(
         """
         SELECT * FROM ${UserAccount.TABLE_NAME}
+        WHERE (:nameFilter IS NULL OR ${UserAccount.COLUMN_NAME} LIKE '%' || :nameFilter || '%')
         ORDER BY 
             CASE WHEN :sortOrder = '${SortOrder.ASC_VALUE}' THEN
                 CASE :sortKey
@@ -32,6 +33,7 @@ interface UserAccountDao {
     """
     )
     suspend fun getAll(
+        nameFilter: String? = null,
         sortKey: String = BaseModel.COLUMN_CREATED_AT,
         sortOrder: SortOrder = SortOrder.DESC,
     ): List<UserAccount>

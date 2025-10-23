@@ -14,9 +14,16 @@ class DaoAccountsRepository(
     private val accountDao: UserAccountDao = database.getAccountDao()
 
     override suspend fun getAllItems(
+        filters: Map<String, String>,
         sortKey: String,
         sortOrder: SortOrder,
-    ): List<UserAccount> = accountDao.getAll(sortKey, sortOrder)
+    ): List<UserAccount> {
+        var nameFilter: String? = null
+        filters[UserAccount.COLUMN_NAME]?.let {
+            nameFilter = it
+        }
+        return accountDao.getAll(nameFilter, sortKey, sortOrder)
+    }
 
     override suspend fun getBalanceStats(): BalanceStats {
         val balance = accountDao.sumBalance() ?: 0

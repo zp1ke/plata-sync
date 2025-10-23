@@ -28,12 +28,13 @@ class BaseViewModel<T : BaseModel>(
     }
 
     fun loadItems(
+        filters: Map<String, String> = emptyMap(),
         sortKey: String = BaseModel.COLUMN_CREATED_AT,
         sortOrder: SortOrder = SortOrder.DESC,
     ) {
         mutableState.value = mutableState.value.copy(isLoading = true)
         screenModelScope.launch {
-            val items = repository.getAllItems(sortKey, sortOrder)
+            val items = repository.getAllItems(filters, sortKey, sortOrder)
             val stats = repository.getBalanceStats()
             mutableState.value = ScreenState(
                 data = items,
