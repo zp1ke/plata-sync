@@ -9,7 +9,6 @@ import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
-import androidx.compose.ui.graphics.vector.ImageVector
 import org.jetbrains.compose.resources.StringResource
 import org.jetbrains.compose.resources.stringResource
 import org.zp1ke.platasync.model.BaseModel
@@ -67,13 +66,8 @@ fun <T : BaseModel> BaseScreen(
                             LoadingIndicator()
                         }
                     }
-                    topWidgetProvider?.controlIcon()?.let {
-                        IconButton(onClick = { topWidgetProvider.onControlAction() }, enabled = !isLoading) {
-                            Icon(
-                                imageVector = it,
-                                contentDescription = null,
-                            )
-                        }
+                    topWidgetProvider?.action()?.let {
+                        topWidgetProvider.action()?.invoke()
                     }
                     IconButton(onClick = { onReload() }, enabled = !isLoading) {
                         Icon(
@@ -112,7 +106,6 @@ fun <T : BaseModel> BaseScreen(
 }
 
 interface TopWidgetProvider {
-    fun controlIcon(): ImageVector?
-    fun onControlAction()
+    fun action(): (@Composable () -> Unit)?
     fun content(): (@Composable () -> Unit)?
 }

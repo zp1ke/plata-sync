@@ -5,12 +5,10 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.AccountBalanceWallet
 import androidx.compose.material.icons.filled.FilterList
 import androidx.compose.material.icons.outlined.FilterListOff
-import androidx.compose.material3.Icon
-import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.Text
+import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.vector.ImageVector
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.vector.rememberVectorPainter
 import androidx.compose.ui.text.font.FontWeight
 import cafe.adriel.voyager.navigator.tab.Tab
@@ -94,11 +92,26 @@ class AccountsScreen(
         }
 
         val filterWidgetProvider = object : TopWidgetProvider {
-            override fun controlIcon(): ImageVector =
-                if (filterVisible) Icons.Outlined.FilterListOff else Icons.Filled.FilterList
-
-            override fun onControlAction() {
-                filterVisible = !filterVisible
+            override fun action(): (@Composable () -> Unit) = {
+                var buttonColor = Color.Unspecified
+                var iconColor = Color.Unspecified
+                if (!filterVisible && (filterName.isNotBlank() || sortField != BaseModel.COLUMN_CREATED_AT || sortOrder != SortOrder.DESC)) {
+                    buttonColor = MaterialTheme.colorScheme.errorContainer // TODO: warning color
+                    iconColor = MaterialTheme.colorScheme.onErrorContainer // TODO: warning color
+                }
+                IconButton(
+                    onClick = { filterVisible = !filterVisible },
+                    enabled = !state.isLoading,
+                    colors = IconButtonDefaults.iconButtonColors(
+                        containerColor = buttonColor
+                    )
+                ) {
+                    Icon(
+                        imageVector = if (filterVisible) Icons.Outlined.FilterListOff else Icons.Filled.FilterList,
+                        tint = iconColor,
+                        contentDescription = null,
+                    )
+                }
             }
 
             override fun content(): (@Composable () -> Unit)? {
