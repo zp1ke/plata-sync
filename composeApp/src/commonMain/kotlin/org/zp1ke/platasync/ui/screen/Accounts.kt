@@ -95,7 +95,9 @@ class AccountsScreen(
             override fun action(): (@Composable () -> Unit) = {
                 var buttonColor = Color.Unspecified
                 var iconColor = Color.Unspecified
-                if (!filterVisible && (filterName.isNotBlank() || sortField != BaseModel.COLUMN_CREATED_AT || sortOrder != SortOrder.DESC)) {
+                val isFiltered =
+                    filterName.isNotBlank() || sortField != BaseModel.COLUMN_CREATED_AT || sortOrder != SortOrder.DESC
+                if (!filterVisible && isFiltered) {
                     buttonColor = MaterialTheme.colorScheme.errorContainer // TODO: warning color
                     iconColor = MaterialTheme.colorScheme.onErrorContainer // TODO: warning color
                 }
@@ -166,7 +168,7 @@ class AccountsScreen(
                     items = state.data,
                     actions = actions,
                     enabled = enabled,
-                    emptyStringResource = Res.string.accounts_empty,
+                    emptyStringResource = if (filterName.isBlank()) Res.string.accounts_empty else Res.string.accounts_empty_with_filter,
                     editStringResource = Res.string.account_edit,
                     deleteStringResource = Res.string.account_delete,
                     headlineContent = { account ->

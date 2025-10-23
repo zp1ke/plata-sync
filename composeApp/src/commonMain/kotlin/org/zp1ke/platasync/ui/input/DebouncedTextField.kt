@@ -1,9 +1,16 @@
 package org.zp1ke.platasync.ui.input
 
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Clear
+import androidx.compose.material3.Icon
+import androidx.compose.material3.IconButton
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
 import kotlinx.coroutines.delay
+import org.jetbrains.compose.resources.stringResource
+import platasync.composeapp.generated.resources.Res
+import platasync.composeapp.generated.resources.action_clear
 
 @Composable
 fun DebouncedTextField(
@@ -19,6 +26,7 @@ fun DebouncedTextField(
     maxLines: Int = if (singleLine) 1 else Int.MAX_VALUE,
     minLines: Int = 1,
     debounceMillis: Long = 500,
+    showClearButton: Boolean = true,
 ) {
     // Local state for immediate UI updates
     var localValue by remember(value) { mutableStateOf(value) }
@@ -39,7 +47,21 @@ fun DebouncedTextField(
         label = label,
         placeholder = placeholder,
         leadingIcon = leadingIcon,
-        trailingIcon = trailingIcon,
+        trailingIcon = {
+            if (showClearButton && localValue.isNotEmpty()) {
+                IconButton(onClick = {
+                    localValue = ""
+                    onValueChange("")
+                }) {
+                    Icon(
+                        imageVector = Icons.Default.Clear,
+                        contentDescription = stringResource(Res.string.action_clear),
+                    )
+                }
+            } else {
+                trailingIcon?.invoke()
+            }
+        },
         singleLine = singleLine,
         maxLines = maxLines,
         minLines = minLines,
