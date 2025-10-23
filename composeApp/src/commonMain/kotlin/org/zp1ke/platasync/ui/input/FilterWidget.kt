@@ -17,6 +17,7 @@ import platasync.composeapp.generated.resources.*
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun BaseFilterWidget(
+    enabled: Boolean,
     sortField: String,
     sortFieldOptions: Map<String, StringResource> = mapOf(
         BaseModel.COLUMN_CREATED_AT to Res.string.sort_field_created,
@@ -44,7 +45,11 @@ fun BaseFilterWidget(
 
         ExposedDropdownMenuBox(
             expanded = sortFieldExpanded,
-            onExpandedChange = { sortFieldExpanded = it },
+            onExpandedChange = {
+                if (enabled) {
+                    sortFieldExpanded = it
+                }
+            },
         ) {
             OutlinedTextField(
                 value = sortFieldTitle(sortField),
@@ -75,6 +80,7 @@ fun BaseFilterWidget(
 
         // Sort order selector
         OutlinedButton(
+            enabled = enabled,
             onClick = {
                 onSortOrderChange(if (sortOrder == SortOrder.ASC) SortOrder.DESC else SortOrder.ASC)
             },

@@ -118,9 +118,10 @@ class AccountsScreen(
                 if (filterVisible) {
                     return {
                         AccountsFilterWidget(
+                            enabled = !state.isLoading,
                             filterName = filterName,
                             onFilterNameChange = {
-                                filterName = it
+                                filterName = it.trim()
                                 loadData()
                             },
                             sortField = sortField,
