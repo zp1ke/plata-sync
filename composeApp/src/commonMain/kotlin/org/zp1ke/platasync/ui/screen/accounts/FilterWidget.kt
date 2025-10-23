@@ -1,15 +1,14 @@
 package org.zp1ke.platasync.ui.screen.accounts
 
 import androidx.compose.material3.ExperimentalMaterial3Api
-import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Text
-import androidx.compose.runtime.*
-import kotlinx.coroutines.delay
+import androidx.compose.runtime.Composable
 import org.jetbrains.compose.resources.stringResource
 import org.zp1ke.platasync.data.dao.SortOrder
 import org.zp1ke.platasync.model.BaseModel
 import org.zp1ke.platasync.model.UserAccount
 import org.zp1ke.platasync.ui.input.BaseFilterWidget
+import org.zp1ke.platasync.ui.input.DebouncedTextField
 import platasync.composeapp.generated.resources.Res
 import platasync.composeapp.generated.resources.accounts_sort_field_balance
 import platasync.composeapp.generated.resources.accounts_sort_field_name
@@ -26,17 +25,6 @@ fun AccountsFilterWidget(
     sortOrder: SortOrder,
     onSortOrderChange: (SortOrder) -> Unit,
 ) {
-    // Local state for immediate UI updates
-    var localFilterName by remember(filterName) { mutableStateOf(filterName) }
-
-    // Debounce the filter change
-    LaunchedEffect(localFilterName) {
-        delay(500) // 500ms delay
-        if (localFilterName != filterName) {
-            onFilterNameChange(localFilterName)
-        }
-    }
-
     BaseFilterWidget(
         enabled = enabled,
         sortField = sortField,
@@ -51,10 +39,10 @@ fun AccountsFilterWidget(
         extras = listOf(
             {
                 // Filter by name
-                OutlinedTextField(
+                DebouncedTextField(
+                    value = filterName,
+                    onValueChange = onFilterNameChange,
                     enabled = enabled,
-                    value = localFilterName,
-                    onValueChange = { localFilterName = it },
                     label = { Text(stringResource(Res.string.accounts_sort_field_name)) },
                     singleLine = true,
                 )
