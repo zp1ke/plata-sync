@@ -1,5 +1,6 @@
 package org.zp1ke.platasync.ui.screen
 
+import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.width
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.AccountBalanceWallet
@@ -11,6 +12,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.vector.rememberVectorPainter
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.style.TextAlign
 import cafe.adriel.voyager.navigator.tab.Tab
 import cafe.adriel.voyager.navigator.tab.TabOptions
 import org.jetbrains.compose.resources.stringResource
@@ -56,9 +58,9 @@ class AccountsScreen(
         val viewModel = remember { screenViewModel }
         val state by viewModel.state.collectAsState()
 
-        var showAdd by remember { mutableStateOf(false) }
-        var editAccount by remember { mutableStateOf<UserAccount?>(null) }
-        var deleteAccount by remember { mutableStateOf<UserAccount?>(null) }
+        var accountToEdit by remember { mutableStateOf<UserAccount?>(null) }
+        var showEditDialog by remember { mutableStateOf(false) }
+        var accountToDelete by remember { mutableStateOf<UserAccount?>(null) }
 
         val itemActions = object : ItemActions<UserAccount> {
             override fun onView(item: UserAccount) {
@@ -66,11 +68,12 @@ class AccountsScreen(
             }
 
             override fun onEdit(item: UserAccount) {
-                editAccount = item
+                accountToEdit = item
+                showEditDialog = true
             }
 
             override fun onDelete(item: UserAccount) {
-                deleteAccount = item
+                accountToDelete = item
             }
         }
 
@@ -105,7 +108,10 @@ class AccountsScreen(
                     iconColor = MaterialTheme.colorScheme.onErrorContainer // TODO: warning color
                 }
                 IconButton(
-                    onClick = { filterVisible = !filterVisible },
+                    onClick = {
+                        @Suppress("ASSIGNED_VALUE_IS_NEVER_READ")
+                        filterVisible = !filterVisible
+                    },
                     enabled = !state.isLoading,
                     colors = IconButtonDefaults.iconButtonColors(
                         containerColor = buttonColor
@@ -141,8 +147,8 @@ class AccountsScreen(
             isLoading = state.isLoading,
             onReload = { reloadTrigger++ },
             onAdd = {
-                editAccount = null
-                showAdd = true
+                accountToEdit = null
+                showEditDialog = true
             },
             actions = itemActions,
             titleIcon = {
@@ -183,6 +189,8 @@ class AccountsScreen(
                                         color = MaterialTheme.colorScheme.onSurfaceVariant,
                                         fontWeight = FontWeight.W500
                                     ),
+                                modifier = Modifier.fillMaxWidth(0.25f),
+                                textAlign = TextAlign.End
                             )
                         }
                     },
@@ -196,29 +204,35 @@ class AccountsScreen(
         )
 
         AccountEditDialog(
-            showDialog = showAdd || editAccount != null,
-            account = editAccount,
+            showDialog = showEditDialog,
+            account = accountToEdit,
             onDismiss = {
-                showAdd = false
-                editAccount = null
+                @Suppress("ASSIGNED_VALUE_IS_NEVER_READ")
+                showEditDialog = false
+                @Suppress("ASSIGNED_VALUE_IS_NEVER_READ")
+                accountToEdit = null
             },
             onSubmit = { account ->
                 viewModel.addItem(account)
-                showAdd = false
-                editAccount = null
+                @Suppress("ASSIGNED_VALUE_IS_NEVER_READ")
+                showEditDialog = false
+                @Suppress("ASSIGNED_VALUE_IS_NEVER_READ")
+                accountToEdit = null
                 reloadTrigger++
             }
         )
 
         AccountDeleteDialog(
-            showDialog = deleteAccount != null,
-            account = deleteAccount,
+            showDialog = accountToDelete != null,
+            account = accountToDelete,
             onDismiss = {
-                deleteAccount = null
+                @Suppress("ASSIGNED_VALUE_IS_NEVER_READ")
+                accountToDelete = null
             },
             onSubmit = {
-                viewModel.deleteItem(deleteAccount!!)
-                deleteAccount = null
+                accountToDelete?.let { viewModel.deleteItem(it) }
+                @Suppress("ASSIGNED_VALUE_IS_NEVER_READ")
+                accountToDelete = null
                 reloadTrigger++
             }
         )
