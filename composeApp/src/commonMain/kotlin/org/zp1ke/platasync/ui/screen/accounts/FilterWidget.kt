@@ -3,6 +3,7 @@ package org.zp1ke.platasync.ui.screen.accounts
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.key
 import org.jetbrains.compose.resources.stringResource
 import org.zp1ke.platasync.data.dao.SortOrder
 import org.zp1ke.platasync.model.BaseModel
@@ -38,15 +39,19 @@ fun AccountsFilterWidget(
         onSortOrderChange = onSortOrderChange,
         extras = listOf(
             {
-                // Filter by name
-                DebouncedTextField(
-                    value = filterName,
-                    onValueChange = onFilterNameChange,
-                    enabled = enabled,
-                    label = { Text(stringResource(Res.string.accounts_sort_field_name)) },
-                    singleLine = true,
-                )
+                // Filter by name - use key to maintain identity across recompositions
+                key("filter_name_field") {
+                    DebouncedTextField(
+                        value = filterName,
+                        onValueChange = onFilterNameChange,
+                        enabled = enabled,
+                        label = { Text(stringResource(Res.string.accounts_sort_field_name)) },
+                        singleLine = true,
+                    )
+                }
             }
         ),
     )
 }
+
+

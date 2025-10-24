@@ -78,11 +78,14 @@ class AccountsScreen(
         var filterName by remember { mutableStateOf("") }
         var sortField by remember { mutableStateOf(BaseModel.COLUMN_CREATED_AT) }
         var sortOrder by remember { mutableStateOf(SortOrder.DESC) }
+        var reloadTrigger by remember { mutableIntStateOf(0) }
 
-        fun loadData() {
+        // Trigger loadData whenever filter/sort parameters change or reload is requested
+        LaunchedEffect(filterName, sortField, sortOrder, reloadTrigger) {
             val filters = mutableMapOf<String, String>()
-            if (filterName.isNotBlank()) {
-                filters[UserAccount.COLUMN_NAME] = filterName
+            val trimmedFilterName = filterName.trim()
+            if (trimmedFilterName.isNotBlank()) {
+                filters[UserAccount.COLUMN_NAME] = trimmedFilterName
             }
             viewModel.loadItems(
                 filters = filters,
@@ -122,20 +125,11 @@ class AccountsScreen(
                         AccountsFilterWidget(
                             enabled = !state.isLoading,
                             filterName = filterName,
-                            onFilterNameChange = {
-                                filterName = it.trim()
-                                loadData()
-                            },
+                            onFilterNameChange = { filterName = it },
                             sortField = sortField,
-                            onSortFieldChange = {
-                                sortField = it
-                                loadData()
-                            },
+                            onSortFieldChange = { sortField = it },
                             sortOrder = sortOrder,
-                            onSortOrderChange = {
-                                sortOrder = it
-                                loadData()
-                            }
+                            onSortOrderChange = { sortOrder = it },
                         )
                     }
                 }
@@ -145,7 +139,7 @@ class AccountsScreen(
 
         BaseScreen(
             isLoading = state.isLoading,
-            onReload = { loadData() },
+            onReload = { reloadTrigger++ },
             onAdd = {
                 editAccount = null
                 showAdd = true
@@ -212,6 +206,7 @@ class AccountsScreen(
                 viewModel.addItem(account)
                 showAdd = false
                 editAccount = null
+                reloadTrigger++
             }
         )
 
@@ -224,6 +219,7 @@ class AccountsScreen(
             onSubmit = {
                 viewModel.deleteItem(deleteAccount!!)
                 deleteAccount = null
+                reloadTrigger++
             }
         )
     }

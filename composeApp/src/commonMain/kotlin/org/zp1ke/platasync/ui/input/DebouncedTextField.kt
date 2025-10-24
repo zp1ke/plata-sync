@@ -29,7 +29,14 @@ fun DebouncedTextField(
     showClearButton: Boolean = true,
 ) {
     // Local state for immediate UI updates
-    var localValue by remember(value) { mutableStateOf(value) }
+    var localValue by remember { mutableStateOf(value) }
+
+    // Sync external value changes only when local hasn't been modified
+    LaunchedEffect(value) {
+        if (localValue != value) {
+            localValue = value
+        }
+    }
 
     // Debounce the value change
     LaunchedEffect(localValue) {
