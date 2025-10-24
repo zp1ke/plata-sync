@@ -6,3 +6,6 @@ import org.koin.core.annotation.Module
 @Module
 @ComponentScan
 class AppModule
+
+expect fun appModule(): org.koin.core.module.Module
+

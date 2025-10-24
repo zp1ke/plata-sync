@@ -17,7 +17,6 @@ import cafe.adriel.voyager.navigator.tab.TabNavigator
 import org.jetbrains.compose.ui.tooling.preview.Preview
 import org.koin.compose.KoinApplication
 import org.koin.compose.getKoin
-import org.koin.ksp.generated.module
 import org.zp1ke.platasync.ui.common.TabItem
 import org.zp1ke.platasync.ui.theme.AppTheme
 
@@ -25,7 +24,7 @@ import org.zp1ke.platasync.ui.theme.AppTheme
 @Preview
 fun App() {
     KoinApplication(application = {
-        modules(AppModule().module)
+        modules(appModule())
     }) {
         val tabs: List<Tab> = getKoin().getAll()
         // Determine the first tab to show based on the lowest index and title
