@@ -54,17 +54,99 @@ function do_clean {
   log_success "Clean completed"
 }
 
+function do_version {
+  local bump_type="${1:-}"
+  local gradle_file="$root_dir/composeApp/build.gradle.kts"
+
+  if [[ ! -f "$gradle_file" ]]; then
+    log_error "build.gradle.kts not found at: $gradle_file"
+    exit 1
+  fi
+
+  # Extract current version
+  local current_version
+  current_version=$(grep -oP 'versionName = "\K[^"]+' "$gradle_file")
+  local current_version_code
+  current_version_code=$(grep -oP 'versionCode = \K\d+' "$gradle_file")
+  local current_package_version
+  current_package_version=$(grep -oP 'packageVersion = "\K[^"]+' "$gradle_file")
+
+  if [[ -z "$current_version" ]]; then
+    log_error "Could not find versionName in $gradle_file"
+    exit 1
+  fi
+
+  # If no bump type provided, just display current version
+  if [[ -z "$bump_type" ]]; then
+    echo -e "${BLUE}Current Version Information:${NC}"
+    echo -e "  Version Name:    ${GREEN}$current_version${NC}"
+    echo -e "  Version Code:    ${GREEN}$current_version_code${NC}"
+    echo -e "  Package Version: ${GREEN}$current_package_version${NC}"
+    return 0
+  fi
+
+  log_info "Current version: $current_version (code: $current_version_code)"
+
+  # Parse version components (handle both X.Y and X.Y.Z formats)
+  IFS='.' read -r major minor patch <<< "$current_version"
+  patch=${patch:-0}  # Default to 0 if not present
+
+  # Bump version based on type
+  case $bump_type in
+    major)
+      major=$((major + 1))
+      minor=0
+      patch=0
+      log_info "Bumping major version..."
+      ;;
+    minor)
+      minor=$((minor + 1))
+      patch=0
+      log_info "Bumping minor version..."
+      ;;
+    patch)
+      patch=$((patch + 1))
+      log_info "Bumping patch version..."
+      ;;
+    *)
+      log_error "Invalid bump type: $bump_type (use: major, minor, patch)"
+      exit 1
+      ;;
+  esac
+
+  local new_version="$major.$minor.$patch"
+  local new_version_code=$((current_version_code + 1))
+
+  # Update versionName
+  sed -i "s/versionName = \"$current_version\"/versionName = \"$new_version\"/" "$gradle_file"
+
+  # Update versionCode
+  sed -i "s/versionCode = $current_version_code/versionCode = $new_version_code/" "$gradle_file"
+
+  # Update packageVersion (desktop)
+  sed -i "s/packageVersion = \"$current_package_version\"/packageVersion = \"$new_version\"/" "$gradle_file"
+
+  log_success "Version updated: $current_version → $new_version (code: $current_version_code → $new_version_code)"
+}
+
 function help_message {
   echo -e "${BLUE}plata-sync Development Script${NC}"
   echo ""
   echo -e "${GREEN}Usage:${NC}"
-  echo "  ./dev <command>"
+  echo "  ./dev <command> [options]"
   echo ""
   echo -e "${GREEN}Commands:${NC}"
-  echo -e "  ${YELLOW}clean${NC}             Clean"
-  echo -e "  ${YELLOW}test${NC}              Run tests"
-  echo -e "  ${YELLOW}run-desktop${NC}       Run desktop application"
-  echo -e "  ${YELLOW}help${NC}              Show this help message"
+  echo -e "  ${YELLOW}clean${NC}                    Clean"
+  echo -e "  ${YELLOW}test${NC}                     Run tests"
+  echo -e "  ${YELLOW}run-desktop${NC}              Run desktop application"
+  echo -e "  ${YELLOW}version${NC} [type]           Display or bump version (type: major|minor|patch)"
+  echo -e "  ${YELLOW}help${NC}                     Show this help message"
+  echo ""
+  echo -e "${GREEN}Version Examples:${NC}"
+  echo -e "  ${YELLOW}./dev version${NC}            Display current version"
+  echo -e "  ${YELLOW}./dev version patch${NC}      Bump patch version (1.0.0 → 1.0.1)"
+  echo -e "  ${YELLOW}./dev version minor${NC}      Bump minor version (1.0.0 → 1.1.0)"
+  echo -e "  ${YELLOW}./dev version major${NC}      Bump major version (1.0.0 → 2.0.0)"
   echo ""
   echo -e "${GREEN}Environment:${NC}"
   echo -e "  Root: ${YELLOW}$root_dir${NC}"
@@ -84,6 +166,9 @@ function do_start {
       ;;
     run-desktop)
       do_run_desktop "$@"
+      ;;
+    version)
+      do_version "$@"
       ;;
     ""|"help")
       help_message

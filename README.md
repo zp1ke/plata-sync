@@ -51,14 +51,23 @@ in your IDE’s toolbar or run it directly from the terminal:
 Use the provided dev script for common development tasks:
 
 ```shell
-./.bin/dev <command>
+./.bin/dev <command> [options]
 ```
 
 Available commands:
 - `clean`: Clean the project
 - `test`: Run tests
 - `run-desktop`: Run the desktop application
+- `version [type]`: Display or bump version (type: major|minor|patch)
 - `help`: Show help message
+
+Version management examples:
+```shell
+./.bin/dev version              # Display current version
+./.bin/dev version patch        # Bump patch: 1.0.0 → 1.0.1
+./.bin/dev version minor        # Bump minor: 1.0.0 → 1.1.0
+./.bin/dev version major        # Bump major: 1.0.0 → 2.0.0
+```
 
 ### Direnv Setup
 
