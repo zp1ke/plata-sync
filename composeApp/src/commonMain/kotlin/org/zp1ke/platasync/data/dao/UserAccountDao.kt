@@ -20,14 +20,14 @@ interface UserAccountDao {
                 CASE :sortKey
                     WHEN '${BaseModel.COLUMN_CREATED_AT}' THEN ${BaseModel.COLUMN_CREATED_AT}
                     WHEN '${UserAccount.COLUMN_NAME}' THEN ${UserAccount.COLUMN_NAME}
-                    WHEN '${UserAccount.COLUMN_INITIAL_BALANCE}' THEN ${UserAccount.COLUMN_INITIAL_BALANCE}
+                    WHEN '${UserAccount.COLUMN_BALANCE}' THEN ${UserAccount.COLUMN_BALANCE}
                 END
             END ASC,
             CASE WHEN :sortOrder = '${SortOrder.DESC_VALUE}' THEN
                 CASE :sortKey
                     WHEN '${BaseModel.COLUMN_CREATED_AT}' THEN ${BaseModel.COLUMN_CREATED_AT}
                     WHEN '${UserAccount.COLUMN_NAME}' THEN ${UserAccount.COLUMN_NAME}
-                    WHEN '${UserAccount.COLUMN_INITIAL_BALANCE}' THEN ${UserAccount.COLUMN_INITIAL_BALANCE}
+                    WHEN '${UserAccount.COLUMN_BALANCE}' THEN ${UserAccount.COLUMN_BALANCE}
                 END
             END DESC
     """
@@ -38,7 +38,7 @@ interface UserAccountDao {
         sortOrder: SortOrder = SortOrder.DESC,
     ): List<UserAccount>
 
-    @Query("SELECT SUM(${UserAccount.COLUMN_INITIAL_BALANCE}) FROM ${UserAccount.TABLE_NAME}")
+    @Query("SELECT SUM(${UserAccount.COLUMN_BALANCE}) FROM ${UserAccount.TABLE_NAME}")
     suspend fun sumBalance(): Int?
 
     @Query("SELECT * FROM ${UserAccount.TABLE_NAME} WHERE id = :id LIMIT 1")

@@ -2,11 +2,11 @@
   "formatVersion": 1,
   "database": {
     "version": 1,
-    "identityHash": "b990ccfdca440a6e57e5ce19fad8f00e",
+    "identityHash": "59acc0f63083b117d64b7c175bd801d4",
     "entities": [
       {
         "tableName": "users_accounts",
-        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`id` TEXT NOT NULL, `created_at` INTEGER NOT NULL, `name` TEXT NOT NULL, `icon` TEXT NOT NULL, `initial_balance` INTEGER NOT NULL, PRIMARY KEY(`id`))",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`id` TEXT NOT NULL, `created_at` INTEGER NOT NULL, `name` TEXT NOT NULL, `icon` TEXT NOT NULL, `initialBalance` INTEGER NOT NULL, `balance` INTEGER NOT NULL, PRIMARY KEY(`id`))",
         "fields": [
           {
             "fieldPath": "id",
@@ -34,7 +34,13 @@
           },
           {
             "fieldPath": "initialBalance",
-            "columnName": "initial_balance",
+            "columnName": "initialBalance",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "balance",
+            "columnName": "balance",
             "affinity": "INTEGER",
             "notNull": true
           }
@@ -49,7 +55,7 @@
     ],
     "setupQueries": [
       "CREATE TABLE IF NOT EXISTS room_master_table (id INTEGER PRIMARY KEY,identity_hash TEXT)",
-      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, 'b990ccfdca440a6e57e5ce19fad8f00e')"
+      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, '59acc0f63083b117d64b7c175bd801d4')"
     ]
   }
 }

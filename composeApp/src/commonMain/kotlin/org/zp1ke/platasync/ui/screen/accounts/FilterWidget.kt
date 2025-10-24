@@ -31,7 +31,7 @@ fun AccountsFilterWidget(
         sortFieldOptions = mapOf(
             BaseModel.COLUMN_CREATED_AT to Res.string.sort_field_created,
             UserAccount.COLUMN_NAME to Res.string.accounts_sort_field_name,
-            UserAccount.COLUMN_INITIAL_BALANCE to Res.string.accounts_sort_field_balance,
+            UserAccount.COLUMN_BALANCE to Res.string.accounts_sort_field_balance,
         ),
         onSortFieldChange = onSortFieldChange,
         sortOrder = sortOrder,

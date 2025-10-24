@@ -183,7 +183,7 @@ class AccountsScreen(
                     supportingContent = { account ->
                         {
                             Text(
-                                text = account.initialBalance.formatAsMoney(),
+                                text = account.balance.formatAsMoney(),
                                 style = MaterialTheme.typography.bodySmall
                                     .copy(
                                         color = MaterialTheme.colorScheme.onSurfaceVariant,

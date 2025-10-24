@@ -96,10 +96,11 @@ fun AccountEditDialog(
                     MoneyField(
                         value = initialBalance,
                         onValueChange = {
+                            // TODO: recalculate balance based on existing transactions?
                             initialBalance = it
                             isValid = checkValid()
                         },
-                        label = stringResource(Res.string.account_balance),
+                        label = stringResource(Res.string.account_initial_balance),
                         modifier = Modifier
                             .widthIn(max = 200.dp)
                             .align(Alignment.End)

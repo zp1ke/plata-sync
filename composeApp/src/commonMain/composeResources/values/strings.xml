@@ -12,6 +12,7 @@
     <string name="account_edit">Edit Account</string>
     <string name="account_name">Name of Account</string>
     <string name="account_balance">Account balance</string>
+    <string name="account_initial_balance">Account initial balance</string>
     <string name="account_delete">Delete Account</string>
     <string name="accounts_empty">No Accounts!</string>
     <string name="accounts_empty_with_filter">No Accounts matching filters!</string>

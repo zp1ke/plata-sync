@@ -14,13 +14,14 @@ data class UserAccount(
     override val createdAt: OffsetDateTime,
     val name: String,
     val icon: AppIcon,
-    @ColumnInfo(name = COLUMN_INITIAL_BALANCE)
     val initialBalance: Int,
+    @ColumnInfo(name = COLUMN_BALANCE)
+    val balance: Int = initialBalance,
 ) : BaseModel(id, createdAt) {
     companion object {
         const val TABLE_NAME = "users_accounts"
 
         const val COLUMN_NAME = "name"
-        const val COLUMN_INITIAL_BALANCE = "initial_balance"
+        const val COLUMN_BALANCE = "balance"
     }
 }
