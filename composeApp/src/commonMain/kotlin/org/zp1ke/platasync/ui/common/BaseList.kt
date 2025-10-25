@@ -28,7 +28,7 @@ fun <T : BaseModel> BaseList(
     editStringResource: StringResource,
     deleteStringResource: StringResource,
     headlineContent: (T) -> (@Composable () -> Unit),
-    supportingContent: (T) -> (@Composable () -> Unit),
+    supportingContent: ((T) -> (@Composable () -> Unit))? = null,
     leadingContent: (T) -> (@Composable () -> Unit),
 ) {
     LazyColumn(
@@ -45,7 +45,7 @@ fun <T : BaseModel> BaseList(
                 onDelete = { actions.onDelete(item) },
                 enabled = enabled,
                 headlineContent = headlineContent(item),
-                supportingContent = supportingContent(item),
+                supportingContent = supportingContent?.let { it(item) } ?: {},
                 leadingContent = leadingContent(item),
                 editStringResource = editStringResource,
                 deleteStringResource = deleteStringResource,

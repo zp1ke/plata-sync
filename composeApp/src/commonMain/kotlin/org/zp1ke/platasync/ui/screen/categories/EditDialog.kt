@@ -1,19 +1,16 @@
-package org.zp1ke.platasync.ui.screen.accounts
+package org.zp1ke.platasync.ui.screen.categories
 
 import androidx.compose.foundation.layout.*
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
-import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.unit.dp
 import androidx.compose.ui.window.Dialog
 import androidx.compose.ui.window.DialogProperties
 import org.jetbrains.compose.resources.stringResource
 import org.jetbrains.compose.ui.tooling.preview.Preview
-import org.zp1ke.platasync.model.UserAccount
+import org.zp1ke.platasync.model.UserCategory
 import org.zp1ke.platasync.ui.common.AppIcon
 import org.zp1ke.platasync.ui.common.AppIconType
-import org.zp1ke.platasync.ui.common.MoneyField
 import org.zp1ke.platasync.ui.form.SelectIcon
 import org.zp1ke.platasync.ui.theme.Spacing
 import org.zp1ke.platasync.util.randomId
@@ -22,26 +19,24 @@ import java.time.OffsetDateTime
 
 @Composable
 @Preview
-fun AccountEditDialog(
-    account: UserAccount? = null,
+fun CategoryEditDialog(
+    category: UserCategory? = null,
     showDialog: Boolean = true,
     onDismiss: () -> Unit = {},
-    onSubmit: (UserAccount) -> Unit = { _ -> },
+    onSubmit: (UserCategory) -> Unit = { _ -> },
 ) {
-    var name by remember(account) { mutableStateOf(account?.name ?: "") }
-    var icon by remember(account) { mutableStateOf(account?.icon ?: AppIcon.ACCOUNT_BANK) }
-    var initialBalance by remember(account) { mutableIntStateOf(account?.initialBalance ?: 0) }
+    var name by remember(category) { mutableStateOf(category?.name ?: "") }
+    var icon by remember(category) { mutableStateOf(category?.icon ?: AppIcon.CATEGORY_HOME) }
 
     fun checkValid(): Boolean {
-        return name.isNotBlank() && initialBalance >= 0
+        return name.isNotBlank()
     }
 
-    var isValid by remember(account, name, initialBalance) { mutableStateOf(checkValid()) }
+    var isValid by remember(category, name) { mutableStateOf(checkValid()) }
 
     fun onClose() {
         name = ""
-        icon = AppIcon.ACCOUNT_BANK
-        initialBalance = 0
+        icon = AppIcon.CATEGORY_HOME
         isValid = false
         onDismiss()
     }
@@ -64,8 +59,8 @@ fun AccountEditDialog(
                 ) {
                     Text(
                         text = stringResource(
-                            if (account == null)
-                                Res.string.account_add else Res.string.account_edit
+                            if (category == null)
+                                Res.string.category_add else Res.string.category_edit
                         ),
                         style = MaterialTheme.typography.titleLarge
                     )
@@ -76,7 +71,7 @@ fun AccountEditDialog(
                     ) {
                         SelectIcon(
                             value = icon,
-                            options = AppIcon.listByType(AppIconType.ACCOUNT),
+                            options = AppIcon.listByType(AppIconType.CATEGORY),
                             onChanged = { icon = it },
                         )
 
@@ -86,23 +81,10 @@ fun AccountEditDialog(
                                 name = it
                                 isValid = checkValid()
                             },
-                            label = { Text(stringResource(Res.string.account_name) + '*') },
+                            label = { Text(stringResource(Res.string.category_name) + '*') },
                             modifier = Modifier.fillMaxWidth()
                         )
                     }
-
-                    MoneyField(
-                        value = initialBalance,
-                        onValueChange = {
-                            // TODO: recalculate balance based on existing transactions?
-                            initialBalance = it
-                            isValid = checkValid()
-                        },
-                        label = stringResource(Res.string.account_initial_balance),
-                        modifier = Modifier
-                            .widthIn(max = 200.dp)
-                            .align(Alignment.End)
-                    )
 
                     Row(
                         modifier = Modifier.fillMaxWidth(),
@@ -113,10 +95,10 @@ fun AccountEditDialog(
                         }
                         TextButton(
                             onClick = {
-                                val id = account?.id ?: randomId()
-                                val createdAt = account?.createdAt ?: OffsetDateTime.now()
+                                val id = category?.id ?: randomId()
+                                val createdAt = category?.createdAt ?: OffsetDateTime.now()
                                 onSubmit(
-                                    UserAccount(id, createdAt, name, icon, initialBalance)
+                                    UserCategory(id, createdAt, name, icon)
                                 )
                                 onClose()
                             },
