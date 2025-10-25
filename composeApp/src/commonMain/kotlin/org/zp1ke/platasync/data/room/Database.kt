@@ -8,8 +8,9 @@ import org.koin.core.scope.Scope
 import org.zp1ke.platasync.data.dao.UserAccountDao
 import org.zp1ke.platasync.data.dao.UserCategoryDao
 import org.zp1ke.platasync.model.UserAccount
+import org.zp1ke.platasync.model.UserCategory
 
-@Database(entities = [UserAccount::class], version = 1)
+@Database(entities = [UserAccount::class, UserCategory::class], version = 1)
 @ConstructedBy(AppDatabaseConstructor::class)
 @TypeConverters(Converters::class)
 abstract class AppDatabase() : RoomDatabase() {
