@@ -17,8 +17,10 @@ import cafe.adriel.voyager.navigator.tab.Tab
 import cafe.adriel.voyager.navigator.tab.TabOptions
 import org.jetbrains.compose.resources.stringResource
 import org.koin.core.annotation.Factory
+import org.koin.core.annotation.Named
 import org.zp1ke.platasync.data.dao.SortOrder
 import org.zp1ke.platasync.data.repository.BaseRepository
+import org.zp1ke.platasync.data.repository.DaoAccountsRepository
 import org.zp1ke.platasync.data.viewModel.BaseViewModel
 import org.zp1ke.platasync.model.BaseModel
 import org.zp1ke.platasync.model.UserAccount
@@ -34,7 +36,7 @@ import platasync.composeapp.generated.resources.*
 
 @Factory
 class AccountsScreen(
-    repository: BaseRepository<UserAccount>,
+    @Named(DaoAccountsRepository.KEY) repository: BaseRepository<UserAccount>,
 ) : Tab {
     private val screenViewModel: BaseViewModel<UserAccount> = BaseViewModel(repository)
 

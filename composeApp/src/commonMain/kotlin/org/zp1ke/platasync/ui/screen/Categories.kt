@@ -14,8 +14,10 @@ import cafe.adriel.voyager.navigator.tab.Tab
 import cafe.adriel.voyager.navigator.tab.TabOptions
 import org.jetbrains.compose.resources.stringResource
 import org.koin.core.annotation.Factory
+import org.koin.core.annotation.Named
 import org.zp1ke.platasync.data.dao.SortOrder
 import org.zp1ke.platasync.data.repository.BaseRepository
+import org.zp1ke.platasync.data.repository.DaoCategoriesRepository
 import org.zp1ke.platasync.data.viewModel.BaseViewModel
 import org.zp1ke.platasync.model.BaseModel
 import org.zp1ke.platasync.model.UserCategory
@@ -30,7 +32,7 @@ import platasync.composeapp.generated.resources.*
 
 @Factory
 class CategoriesScreen(
-    repository: BaseRepository<UserCategory>,
+    @Named(DaoCategoriesRepository.KEY) repository: BaseRepository<UserCategory>,
 ) : Tab {
     private val screenViewModel: BaseViewModel<UserCategory> = BaseViewModel(repository)
 

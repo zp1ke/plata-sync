@@ -1,5 +1,6 @@
 package org.zp1ke.platasync.data.repository
 
+import org.koin.core.annotation.Named
 import org.koin.core.annotation.Single
 import org.zp1ke.platasync.data.dao.SortOrder
 import org.zp1ke.platasync.data.dao.UserAccountDao
@@ -8,6 +9,7 @@ import org.zp1ke.platasync.model.BalanceStats
 import org.zp1ke.platasync.model.UserAccount
 
 @Single
+@Named(DaoAccountsRepository.KEY)
 class DaoAccountsRepository(
     database: AppDatabase,
 ) : BaseRepository<UserAccount> {
@@ -37,4 +39,8 @@ class DaoAccountsRepository(
     override suspend fun saveItem(item: UserAccount) = accountDao.save(item)
 
     override suspend fun deleteItem(id: String) = accountDao.deleteById(id)
+
+    companion object {
+        const val KEY = "accountsRepository"
+    }
 }
