@@ -14,7 +14,6 @@ import org.jetbrains.compose.ui.tooling.preview.Preview
 import org.zp1ke.platasync.model.UserCategory
 import org.zp1ke.platasync.ui.theme.Spacing
 import platasync.composeapp.generated.resources.Res
-import platasync.composeapp.generated.resources.account_delete
 import platasync.composeapp.generated.resources.action_cancel
 import platasync.composeapp.generated.resources.action_ok
 import platasync.composeapp.generated.resources.category_delete

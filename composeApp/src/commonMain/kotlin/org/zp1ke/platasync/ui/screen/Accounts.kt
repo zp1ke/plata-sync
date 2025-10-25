@@ -25,8 +25,8 @@ import org.zp1ke.platasync.model.UserAccount
 import org.zp1ke.platasync.ui.common.BaseList
 import org.zp1ke.platasync.ui.common.ImageIcon
 import org.zp1ke.platasync.ui.common.ItemActions
-import org.zp1ke.platasync.ui.screen.accounts.AccountEditDialog
 import org.zp1ke.platasync.ui.screen.accounts.AccountDeleteDialog
+import org.zp1ke.platasync.ui.screen.accounts.AccountEditDialog
 import org.zp1ke.platasync.ui.screen.accounts.AccountsFilterWidget
 import org.zp1ke.platasync.ui.theme.Size
 import org.zp1ke.platasync.util.formatAsMoney
