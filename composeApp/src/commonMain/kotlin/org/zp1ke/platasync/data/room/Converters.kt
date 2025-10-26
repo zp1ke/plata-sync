@@ -26,14 +26,16 @@ object Converters {
         if (list.isNullOrEmpty()) {
             return ""
         }
-        return list.map { it.name }.joinToString { "," }
+        return list.joinToString(",") { it.name }
     }
 
     @TypeConverter
     fun toTransactionTypeList(value: String?): List<TransactionType> {
-        if (value.isNullOrEmpty()) {
-            return listOf()
+        if (value.isNullOrBlank()) {
+            return emptyList()
         }
-        return value.split(",").map { enumValueOf<TransactionType>(it) }.toList()
+        return value.split(",")
+            .filter { it.isNotBlank() }
+            .map { enumValueOf<TransactionType>(it.trim()) }
     }
 }

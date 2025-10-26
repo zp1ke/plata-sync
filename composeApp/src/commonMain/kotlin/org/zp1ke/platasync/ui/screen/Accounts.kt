@@ -9,7 +9,6 @@ import androidx.compose.material.icons.outlined.FilterListOff
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.vector.rememberVectorPainter
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
@@ -101,13 +100,17 @@ class AccountsScreen(
 
         val filterWidgetProvider = object : TopWidgetProvider {
             override fun action(): (@Composable () -> Unit) = {
-                var buttonColor = Color.Unspecified
-                var iconColor = Color.Unspecified
                 val isFiltered =
                     filterName.isNotBlank() || sortField != BaseModel.COLUMN_CREATED_AT || sortOrder != SortOrder.DESC
-                if (!filterVisible && isFiltered) {
-                    buttonColor = MaterialTheme.colorScheme.errorContainer // TODO: warning color
-                    iconColor = MaterialTheme.colorScheme.onErrorContainer // TODO: warning color
+                val buttonColor = if (!filterVisible && isFiltered) {
+                    MaterialTheme.colorScheme.tertiaryContainer
+                } else {
+                    MaterialTheme.colorScheme.surfaceVariant
+                }
+                val iconColor = if (!filterVisible && isFiltered) {
+                    MaterialTheme.colorScheme.onTertiaryContainer
+                } else {
+                    MaterialTheme.colorScheme.onSurfaceVariant
                 }
                 IconButton(
                     onClick = {

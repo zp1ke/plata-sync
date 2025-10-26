@@ -8,10 +8,12 @@ import androidx.compose.ui.window.Dialog
 import androidx.compose.ui.window.DialogProperties
 import org.jetbrains.compose.resources.stringResource
 import org.jetbrains.compose.ui.tooling.preview.Preview
+import org.zp1ke.platasync.model.TransactionType
 import org.zp1ke.platasync.model.UserCategory
 import org.zp1ke.platasync.ui.common.AppIcon
 import org.zp1ke.platasync.ui.common.AppIconType
 import org.zp1ke.platasync.ui.form.SelectIcon
+import org.zp1ke.platasync.ui.input.SelectTransactionTypes
 import org.zp1ke.platasync.ui.theme.Spacing
 import org.zp1ke.platasync.util.randomId
 import platasync.composeapp.generated.resources.*
@@ -27,16 +29,20 @@ fun CategoryEditDialog(
 ) {
     var name by remember(category) { mutableStateOf(category?.name ?: "") }
     var icon by remember(category) { mutableStateOf(category?.icon ?: AppIcon.CATEGORY_HOME) }
-
-    fun checkValid(): Boolean {
-        return name.isNotBlank()
+    var transactionTypes by remember(category) {
+        mutableStateOf(category?.transactionTypes ?: emptyList())
     }
 
-    var isValid by remember(category, name) { mutableStateOf(checkValid()) }
+    fun checkValid(): Boolean {
+        return name.isNotBlank() && transactionTypes.isNotEmpty()
+    }
+
+    var isValid by remember(category, name, transactionTypes) { mutableStateOf(checkValid()) }
 
     fun onClose() {
         name = ""
         icon = AppIcon.CATEGORY_HOME
+        transactionTypes = emptyList()
         isValid = false
         onDismiss()
     }
@@ -86,6 +92,15 @@ fun CategoryEditDialog(
                         )
                     }
 
+                    SelectTransactionTypes(
+                        selectedTypes = transactionTypes,
+                        availableTypes = listOf(TransactionType.INCOME, TransactionType.EXPENSE),
+                        onChanged = {
+                            transactionTypes = it
+                            isValid = checkValid()
+                        }
+                    )
+
                     Row(
                         modifier = Modifier.fillMaxWidth(),
                         horizontalArrangement = Arrangement.End
@@ -98,7 +113,7 @@ fun CategoryEditDialog(
                                 val id = category?.id ?: randomId()
                                 val createdAt = category?.createdAt ?: OffsetDateTime.now()
                                 onSubmit(
-                                    UserCategory(id, createdAt, name, icon, listOf()) // TODO: transaction types
+                                    UserCategory(id, createdAt, name, icon, transactionTypes)
                                 )
                                 onClose()
                             },
