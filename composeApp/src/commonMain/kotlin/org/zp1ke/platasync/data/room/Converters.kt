@@ -37,5 +37,6 @@ object Converters {
         return value.split(",")
             .filter { it.isNotBlank() }
             .map { enumValueOf<TransactionType>(it.trim()) }
+            .sortedBy { it.ordinal }
     }
 }

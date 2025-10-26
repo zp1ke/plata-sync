@@ -1,9 +1,9 @@
 package org.zp1ke.platasync.model
 
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.Money
-import androidx.compose.material.icons.filled.MoneyOff
-import androidx.compose.material.icons.filled.TransferWithinAStation
+import androidx.compose.material.icons.automirrored.filled.TrendingDown
+import androidx.compose.material.icons.automirrored.filled.TrendingUp
+import androidx.compose.material.icons.filled.SwapHoriz
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.vector.ImageVector
 import org.jetbrains.compose.resources.StringResource
@@ -15,21 +15,21 @@ import platasync.composeapp.generated.resources.transaction_type_transfer
 
 enum class TransactionType {
     INCOME {
-        override fun icon(): ImageVector = Icons.Filled.Money
+        override fun icon(): ImageVector = Icons.AutoMirrored.Filled.TrendingUp
 
         override fun title(): StringResource = Res.string.transaction_type_income
 
         override fun color(isDarkMode: Boolean): Color = if (isDarkMode) incomeDark else incomeLight
     },
     EXPENSE {
-        override fun icon(): ImageVector = Icons.Filled.MoneyOff
+        override fun icon(): ImageVector = Icons.AutoMirrored.Filled.TrendingDown
 
         override fun title(): StringResource = Res.string.transaction_type_expense
 
         override fun color(isDarkMode: Boolean): Color = if (isDarkMode) expenseDark else expenseLight
     },
     TRANSFER {
-        override fun icon(): ImageVector = Icons.Filled.TransferWithinAStation
+        override fun icon(): ImageVector = Icons.Filled.SwapHoriz
 
         override fun title(): StringResource = Res.string.transaction_type_transfer
 

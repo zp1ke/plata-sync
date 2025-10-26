@@ -1,4 +1,4 @@
-package org.zp1ke.platasync.ui.screen.categories
+package org.zp1ke.platasync.ui.feature.categories
 
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Row

@@ -1,19 +1,20 @@
-package org.zp1ke.platasync.ui.screen.categories
+package org.zp1ke.platasync.ui.feature.accounts
 
 import androidx.compose.foundation.layout.*
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.unit.dp
 import androidx.compose.ui.window.Dialog
 import androidx.compose.ui.window.DialogProperties
 import org.jetbrains.compose.resources.stringResource
 import org.jetbrains.compose.ui.tooling.preview.Preview
-import org.zp1ke.platasync.model.TransactionType
-import org.zp1ke.platasync.model.UserCategory
+import org.zp1ke.platasync.model.UserAccount
 import org.zp1ke.platasync.ui.common.AppIcon
 import org.zp1ke.platasync.ui.common.AppIconType
+import org.zp1ke.platasync.ui.common.MoneyField
 import org.zp1ke.platasync.ui.form.SelectIcon
-import org.zp1ke.platasync.ui.input.SelectTransactionTypes
 import org.zp1ke.platasync.ui.theme.Spacing
 import org.zp1ke.platasync.util.randomId
 import platasync.composeapp.generated.resources.*
@@ -21,28 +22,26 @@ import java.time.OffsetDateTime
 
 @Composable
 @Preview
-fun CategoryEditDialog(
-    category: UserCategory? = null,
+fun AccountEditDialog(
+    account: UserAccount? = null,
     showDialog: Boolean = true,
     onDismiss: () -> Unit = {},
-    onSubmit: (UserCategory) -> Unit = { _ -> },
+    onSubmit: (UserAccount) -> Unit = { _ -> },
 ) {
-    var name by remember(category) { mutableStateOf(category?.name ?: "") }
-    var icon by remember(category) { mutableStateOf(category?.icon ?: AppIcon.CATEGORY_HOME) }
-    var transactionTypes by remember(category) {
-        mutableStateOf(category?.transactionTypes ?: emptyList())
-    }
+    var name by remember(account) { mutableStateOf(account?.name ?: "") }
+    var icon by remember(account) { mutableStateOf(account?.icon ?: AppIcon.ACCOUNT_BANK) }
+    var initialBalance by remember(account) { mutableIntStateOf(account?.initialBalance ?: 0) }
 
     fun checkValid(): Boolean {
-        return name.isNotBlank() && transactionTypes.isNotEmpty()
+        return name.isNotBlank() && initialBalance >= 0
     }
 
-    var isValid by remember(category, name, transactionTypes) { mutableStateOf(checkValid()) }
+    var isValid by remember(account, name, initialBalance) { mutableStateOf(checkValid()) }
 
     fun onClose() {
         name = ""
-        icon = AppIcon.CATEGORY_HOME
-        transactionTypes = emptyList()
+        icon = AppIcon.ACCOUNT_BANK
+        initialBalance = 0
         isValid = false
         onDismiss()
     }
@@ -65,8 +64,8 @@ fun CategoryEditDialog(
                 ) {
                     Text(
                         text = stringResource(
-                            if (category == null)
-                                Res.string.category_add else Res.string.category_edit
+                            if (account == null)
+                                Res.string.account_add else Res.string.account_edit
                         ),
                         style = MaterialTheme.typography.titleLarge
                     )
@@ -77,7 +76,7 @@ fun CategoryEditDialog(
                     ) {
                         SelectIcon(
                             value = icon,
-                            options = AppIcon.listByType(AppIconType.CATEGORY),
+                            options = AppIcon.listByType(AppIconType.ACCOUNT),
                             onChanged = { icon = it },
                         )
 
@@ -87,18 +86,22 @@ fun CategoryEditDialog(
                                 name = it
                                 isValid = checkValid()
                             },
-                            label = { Text(stringResource(Res.string.category_name) + '*') },
+                            label = { Text(stringResource(Res.string.account_name) + '*') },
                             modifier = Modifier.fillMaxWidth()
                         )
                     }
 
-                    SelectTransactionTypes(
-                        selectedTypes = transactionTypes,
-                        availableTypes = listOf(TransactionType.INCOME, TransactionType.EXPENSE),
-                        onChanged = {
-                            transactionTypes = it
+                    MoneyField(
+                        value = initialBalance,
+                        onValueChange = {
+                            // TODO: recalculate balance based on existing transactions?
+                            initialBalance = it
                             isValid = checkValid()
-                        }
+                        },
+                        label = stringResource(Res.string.account_initial_balance),
+                        modifier = Modifier
+                            .widthIn(max = 200.dp)
+                            .align(Alignment.End)
                     )
 
                     Row(
@@ -110,10 +113,10 @@ fun CategoryEditDialog(
                         }
                         TextButton(
                             onClick = {
-                                val id = category?.id ?: randomId()
-                                val createdAt = category?.createdAt ?: OffsetDateTime.now()
+                                val id = account?.id ?: randomId()
+                                val createdAt = account?.createdAt ?: OffsetDateTime.now()
                                 onSubmit(
-                                    UserCategory(id, createdAt, name, icon, transactionTypes)
+                                    UserAccount(id, createdAt, name, icon, initialBalance)
                                 )
                                 onClose()
                             },

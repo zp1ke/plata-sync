@@ -1,4 +1,4 @@
-package org.zp1ke.platasync.ui.screen.accounts
+package org.zp1ke.platasync.ui.feature.accounts
 
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Text

@@ -27,9 +27,9 @@ import org.zp1ke.platasync.ui.common.BaseList
 import org.zp1ke.platasync.ui.common.ImageIcon
 import org.zp1ke.platasync.ui.common.ItemActions
 import org.zp1ke.platasync.ui.common.TransactionTypeWidget
-import org.zp1ke.platasync.ui.screen.categories.CategoriesFilterWidget
-import org.zp1ke.platasync.ui.screen.categories.CategoryDeleteDialog
-import org.zp1ke.platasync.ui.screen.categories.CategoryEditDialog
+import org.zp1ke.platasync.ui.feature.categories.CategoriesFilterWidget
+import org.zp1ke.platasync.ui.feature.categories.CategoryDeleteDialog
+import org.zp1ke.platasync.ui.feature.categories.CategoryEditDialog
 import org.zp1ke.platasync.ui.theme.Size
 import org.zp1ke.platasync.ui.theme.Spacing
 import platasync.composeapp.generated.resources.*
