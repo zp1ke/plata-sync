@@ -22,7 +22,7 @@ fun ImageIcon(
     shape: Shape = RoundedCornerShape(Size.iconBorderSmall),
 ) {
     Image(
-        painterResource(icon.resource()), null,
+        painterResource(icon.icon()), null,
         modifier = Modifier
             .width(width)
             .clip(shape)

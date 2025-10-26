@@ -1,14 +1,14 @@
 package org.zp1ke.platasync.ui.screen
 
-import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.layout.*
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Category
 import androidx.compose.material.icons.filled.FilterList
 import androidx.compose.material.icons.outlined.FilterListOff
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.vector.rememberVectorPainter
 import cafe.adriel.voyager.navigator.tab.Tab
 import cafe.adriel.voyager.navigator.tab.TabOptions
@@ -28,6 +28,7 @@ import org.zp1ke.platasync.ui.screen.categories.CategoriesFilterWidget
 import org.zp1ke.platasync.ui.screen.categories.CategoryDeleteDialog
 import org.zp1ke.platasync.ui.screen.categories.CategoryEditDialog
 import org.zp1ke.platasync.ui.theme.Size
+import org.zp1ke.platasync.ui.theme.Spacing
 import platasync.composeapp.generated.resources.*
 
 @Factory
@@ -183,15 +184,28 @@ class CategoriesScreen(
                     },
                     supportingContent = { category ->
                         {
-                            @Suppress("SimplifiableCallChain")
-                            val typesText = category.transactionTypes
-                                .map { type -> stringResource(type.title()) }
-                                .joinToString()
-                            Text(
-                                text = typesText,
-                                style = MaterialTheme.typography.bodyMedium
-                                    .copy(color = MaterialTheme.colorScheme.onSurfaceVariant),
-                            )
+                            Row(
+                                horizontalArrangement = Arrangement.spacedBy(Spacing.small)
+                            ) {
+                                category.transactionTypes.forEach { type ->
+                                    Row(
+                                        horizontalArrangement = Arrangement.spacedBy(Spacing.small),
+                                        verticalAlignment = Alignment.CenterVertically
+                                    ) {
+                                        Icon(
+                                            imageVector = type.icon(),
+                                            contentDescription = null,
+                                            tint = type.color(),
+                                            modifier = Modifier.size(Size.iconSmall)
+                                        )
+                                        Text(
+                                            text = stringResource(type.title()),
+                                            style = MaterialTheme.typography.bodyMedium,
+                                            color = type.color()
+                                        )
+                                    }
+                                }
+                            }
                         }
                     },
                     leadingContent = { category ->
