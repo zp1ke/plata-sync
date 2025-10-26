@@ -1,9 +1,7 @@
 package org.zp1ke.platasync.ui.screen
 
-import androidx.compose.foundation.isSystemInDarkTheme
-import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Category
@@ -11,7 +9,6 @@ import androidx.compose.material.icons.filled.FilterList
 import androidx.compose.material.icons.outlined.FilterListOff
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
-import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.vector.rememberVectorPainter
 import cafe.adriel.voyager.navigator.tab.Tab
@@ -29,6 +26,7 @@ import org.zp1ke.platasync.model.UserCategory
 import org.zp1ke.platasync.ui.common.BaseList
 import org.zp1ke.platasync.ui.common.ImageIcon
 import org.zp1ke.platasync.ui.common.ItemActions
+import org.zp1ke.platasync.ui.common.TransactionTypeWidget
 import org.zp1ke.platasync.ui.screen.categories.CategoriesFilterWidget
 import org.zp1ke.platasync.ui.screen.categories.CategoryDeleteDialog
 import org.zp1ke.platasync.ui.screen.categories.CategoryEditDialog
@@ -195,28 +193,10 @@ class CategoriesScreen(
                     },
                     supportingContent = { category ->
                         {
-                            val isDarkMode = isSystemInDarkTheme()
                             Row(
                                 horizontalArrangement = Arrangement.spacedBy(Spacing.small)
                             ) {
-                                category.transactionTypes.forEach { type ->
-                                    Row(
-                                        horizontalArrangement = Arrangement.spacedBy(Spacing.small),
-                                        verticalAlignment = Alignment.CenterVertically
-                                    ) {
-                                        Icon(
-                                            imageVector = type.icon(),
-                                            contentDescription = null,
-                                            tint = type.color(isDarkMode),
-                                            modifier = Modifier.size(Size.iconSmall)
-                                        )
-                                        Text(
-                                            text = stringResource(type.title()),
-                                            style = MaterialTheme.typography.bodyMedium,
-                                            color = type.color(isDarkMode)
-                                        )
-                                    }
-                                }
+                                category.transactionTypes.forEach { TransactionTypeWidget(it) }
                             }
                         }
                     },
