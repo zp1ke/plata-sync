@@ -98,7 +98,7 @@ fun CategoryEditDialog(
                                 val id = category?.id ?: randomId()
                                 val createdAt = category?.createdAt ?: OffsetDateTime.now()
                                 onSubmit(
-                                    UserCategory(id, createdAt, name, icon)
+                                    UserCategory(id, createdAt, name, icon, listOf()) // TODO: transaction types
                                 )
                                 onClose()
                             },

@@ -58,7 +58,7 @@ fun App() {
                             NavigationBar(
                                 containerColor = MaterialTheme.colorScheme.background,
                             ) {
-                                tabs.map { tab -> TabItem(tab) }
+                                tabs.map { TabItem(it) }
                             }
                         }
                     )

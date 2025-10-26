@@ -12,12 +12,16 @@ data class UserCategory(
     override val id: String,
     @ColumnInfo(name = COLUMN_CREATED_AT)
     override val createdAt: OffsetDateTime,
+    @ColumnInfo(index = true)
     val name: String,
     val icon: AppIcon,
+    @ColumnInfo(name = COLUMN_TRANSACTION_TYPES, index = true)
+    val transactionTypes: List<TransactionType>
 ) : BaseModel(id, createdAt) {
     companion object {
         const val TABLE_NAME = "users_categories"
 
         const val COLUMN_NAME = "name"
+        const val COLUMN_TRANSACTION_TYPES = "transaction_types"
     }
 }

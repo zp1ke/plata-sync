@@ -177,6 +177,19 @@ class CategoriesScreen(
                             )
                         }
                     },
+                    supportingContent = { category ->
+                        {
+                            @Suppress("SimplifiableCallChain")
+                            val typesText = category.transactionTypes
+                                .map { type -> stringResource(type.title()) }
+                                .joinToString()
+                            Text(
+                                text = typesText,
+                                style = MaterialTheme.typography.bodyMedium
+                                    .copy(color = MaterialTheme.colorScheme.onSurfaceVariant),
+                            )
+                        }
+                    },
                     leadingContent = { category ->
                         {
                             ImageIcon(category.icon)

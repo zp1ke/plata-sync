@@ -42,4 +42,8 @@
     <string name="sort_order_desc">Descending</string>
     <!-- Form -->
     <string name="form_invalid_amount">Please enter a valid positive amount.</string>
+    <!-- Transaction Types -->
+    <string name="transaction_type_expense">Expense</string>
+    <string name="transaction_type_income">Income</string>
+    <string name="transaction_type_transfer">Transfer</string>
 </resources>

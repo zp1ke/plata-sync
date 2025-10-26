@@ -12,6 +12,7 @@ data class UserAccount(
     override val id: String,
     @ColumnInfo(name = COLUMN_CREATED_AT)
     override val createdAt: OffsetDateTime,
+    @ColumnInfo(index = true)
     val name: String,
     val icon: AppIcon,
     val initialBalance: Int,

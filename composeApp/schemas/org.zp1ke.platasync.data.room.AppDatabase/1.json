@@ -2,7 +2,7 @@
   "formatVersion": 1,
   "database": {
     "version": 1,
-    "identityHash": "a229b2df009ab53d8e652b103d0f10aa",
+    "identityHash": "e1b746a1ecdb248ae6f0f28241fbadd7",
     "entities": [
       {
         "tableName": "users_accounts",
@@ -50,11 +50,22 @@
           "columnNames": [
             "id"
           ]
-        }
+        },
+        "indices": [
+          {
+            "name": "index_users_accounts_name",
+            "unique": false,
+            "columnNames": [
+              "name"
+            ],
+            "orders": [],
+            "createSql": "CREATE INDEX IF NOT EXISTS `index_users_accounts_name` ON `${TABLE_NAME}` (`name`)"
+          }
+        ]
       },
       {
         "tableName": "users_categories",
-        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`id` TEXT NOT NULL, `created_at` INTEGER NOT NULL, `name` TEXT NOT NULL, `icon` TEXT NOT NULL, PRIMARY KEY(`id`))",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`id` TEXT NOT NULL, `created_at` INTEGER NOT NULL, `name` TEXT NOT NULL, `icon` TEXT NOT NULL, `transaction_types` TEXT NOT NULL, PRIMARY KEY(`id`))",
         "fields": [
           {
             "fieldPath": "id",
@@ -79,6 +90,12 @@
             "columnName": "icon",
             "affinity": "TEXT",
             "notNull": true
+          },
+          {
+            "fieldPath": "transactionTypes",
+            "columnName": "transaction_types",
+            "affinity": "TEXT",
+            "notNull": true
           }
         ],
         "primaryKey": {
@@ -86,12 +103,32 @@
           "columnNames": [
             "id"
           ]
-        }
+        },
+        "indices": [
+          {
+            "name": "index_users_categories_name",
+            "unique": false,
+            "columnNames": [
+              "name"
+            ],
+            "orders": [],
+            "createSql": "CREATE INDEX IF NOT EXISTS `index_users_categories_name` ON `${TABLE_NAME}` (`name`)"
+          },
+          {
+            "name": "index_users_categories_transaction_types",
+            "unique": false,
+            "columnNames": [
+              "transaction_types"
+            ],
+            "orders": [],
+            "createSql": "CREATE INDEX IF NOT EXISTS `index_users_categories_transaction_types` ON `${TABLE_NAME}` (`transaction_types`)"
+          }
+        ]
       }
     ],
     "setupQueries": [
       "CREATE TABLE IF NOT EXISTS room_master_table (id INTEGER PRIMARY KEY,identity_hash TEXT)",
-      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, 'a229b2df009ab53d8e652b103d0f10aa')"
+      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, 'e1b746a1ecdb248ae6f0f28241fbadd7')"
     ]
   }
 }
