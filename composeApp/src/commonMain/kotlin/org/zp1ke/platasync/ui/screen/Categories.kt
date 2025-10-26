@@ -1,6 +1,7 @@
 package org.zp1ke.platasync.ui.screen
 
-import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.isSystemInDarkTheme
+import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
@@ -194,6 +195,7 @@ class CategoriesScreen(
                     },
                     supportingContent = { category ->
                         {
+                            val isDarkMode = isSystemInDarkTheme()
                             Row(
                                 horizontalArrangement = Arrangement.spacedBy(Spacing.small)
                             ) {
@@ -205,13 +207,13 @@ class CategoriesScreen(
                                         Icon(
                                             imageVector = type.icon(),
                                             contentDescription = null,
-                                            tint = type.color(),
+                                            tint = type.color(isDarkMode),
                                             modifier = Modifier.size(Size.iconSmall)
                                         )
                                         Text(
                                             text = stringResource(type.title()),
                                             style = MaterialTheme.typography.bodyMedium,
-                                            color = type.color()
+                                            color = type.color(isDarkMode)
                                         )
                                     }
                                 }

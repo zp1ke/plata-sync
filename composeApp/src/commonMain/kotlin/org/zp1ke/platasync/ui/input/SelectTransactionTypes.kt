@@ -1,5 +1,6 @@
 package org.zp1ke.platasync.ui.input
 
+import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -25,6 +26,7 @@ fun SelectTransactionTypes(
     availableTypes: List<TransactionType> = listOf(TransactionType.INCOME, TransactionType.EXPENSE),
     onChanged: (List<TransactionType>) -> Unit = { _ -> },
 ) {
+    val isDarkMode = isSystemInDarkTheme()
     Row(
         modifier = Modifier.fillMaxWidth(),
         horizontalArrangement = Arrangement.spacedBy(Spacing.small)
@@ -49,12 +51,12 @@ fun SelectTransactionTypes(
                         Icon(
                             imageVector = type.icon(),
                             contentDescription = null,
-                            tint = type.color(),
+                            tint = type.color(isDarkMode),
                             modifier = Modifier.size(Size.iconSmall)
                         )
                         Text(
                             text = stringResource(type.title()),
-                            color = type.color()
+                            color = type.color(isDarkMode)
                         )
                     }
                 }

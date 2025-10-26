@@ -18,26 +18,38 @@ enum class TransactionType {
 
         override fun title(): StringResource = Res.string.transaction_type_income
 
-        override fun color(): Color = Color(0xFF4CAF50)
+        override fun color(isDarkMode: Boolean): Color = if (isDarkMode) {
+            Color(0xFF4CAF50) // Lighter green for dark mode
+        } else {
+            Color(0xFF2E7D32) // Darker green for light mode
+        }
     },
     EXPENSE {
         override fun icon(): ImageVector = Icons.Filled.MoneyOff
 
         override fun title(): StringResource = Res.string.transaction_type_expense
 
-        override fun color(): Color = Color(0xFFF44336)
+        override fun color(isDarkMode: Boolean): Color = if (isDarkMode) {
+            Color(0xFFEF5350) // Lighter red for dark mode
+        } else {
+            Color(0xFFC62828) // Darker red for light mode
+        }
     },
     TRANSFER {
         override fun icon(): ImageVector = Icons.Filled.TransferWithinAStation
 
         override fun title(): StringResource = Res.string.transaction_type_transfer
 
-        override fun color(): Color = Color(0xFF2196F3)
+        override fun color(isDarkMode: Boolean): Color = if (isDarkMode) {
+            Color(0xFF42A5F5) // Lighter blue for dark mode
+        } else {
+            Color(0xFF1976D2) // Darker blue for light mode
+        }
     };
 
     abstract fun icon(): ImageVector
 
     abstract fun title(): StringResource
 
-    abstract fun color(): Color
+    abstract fun color(isDarkMode: Boolean): Color
 }

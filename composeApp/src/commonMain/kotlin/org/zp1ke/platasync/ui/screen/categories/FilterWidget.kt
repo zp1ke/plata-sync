@@ -1,5 +1,6 @@
 package org.zp1ke.platasync.ui.screen.categories
 
+import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -63,6 +64,7 @@ fun CategoriesFilterWidget(
 
                 // Filter by transaction type (single select: Income/Expense only, no Transfer)
                 key("transaction_type_field") {
+                    val isDarkMode = isSystemInDarkTheme()
                     Row(
                         modifier = Modifier.fillMaxWidth(),
                         horizontalArrangement = Arrangement.spacedBy(Spacing.small)
@@ -85,12 +87,12 @@ fun CategoriesFilterWidget(
                                         Icon(
                                             imageVector = type.icon(),
                                             contentDescription = null,
-                                            tint = type.color(),
+                                            tint = type.color(isDarkMode),
                                             modifier = Modifier.size(Size.iconSmall)
                                         )
                                         Text(
                                             text = stringResource(type.title()),
-                                            color = type.color()
+                                            color = type.color(isDarkMode)
                                         )
                                     }
                                 }
