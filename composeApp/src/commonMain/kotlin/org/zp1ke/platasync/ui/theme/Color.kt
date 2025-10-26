@@ -73,3 +73,14 @@ val surfaceContainerLowDark = Color(0xFF181C20)
 val surfaceContainerDark = Color(0xFF1C2024)
 val surfaceContainerHighDark = Color(0xFF272A2E)
 val surfaceContainerHighestDark = Color(0xFF313539)
+
+// Transaction Type Colors
+val incomeLight = Color(0xFF2E7D32)
+val incomeDark = Color(0xFF4CAF50)
+
+val expenseLight = Color(0xFFC62828)
+val expenseDark = Color(0xFFEF5350)
+
+val transferLight = Color(0xFF1976D2)
+val transferDark = Color(0xFF42A5F5)
+
