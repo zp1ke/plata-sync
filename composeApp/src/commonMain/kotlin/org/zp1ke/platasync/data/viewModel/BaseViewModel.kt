@@ -3,10 +3,10 @@ package org.zp1ke.platasync.data.viewModel
 import cafe.adriel.voyager.core.model.StateScreenModel
 import cafe.adriel.voyager.core.model.screenModelScope
 import kotlinx.coroutines.launch
-import org.zp1ke.platasync.data.dao.SortOrder
+import org.zp1ke.platasync.data.model.SortOrder
 import org.zp1ke.platasync.data.repository.BaseRepository
 import org.zp1ke.platasync.model.BalanceStats
-import org.zp1ke.platasync.model.BaseModel
+import org.zp1ke.platasync.domain.BaseModel
 
 data class ScreenState<T : BaseModel>(
     val data: List<T>,

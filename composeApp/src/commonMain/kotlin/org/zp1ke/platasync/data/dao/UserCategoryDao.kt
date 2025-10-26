@@ -3,8 +3,9 @@ package org.zp1ke.platasync.data.dao
 import androidx.room.Dao
 import androidx.room.Query
 import androidx.room.Upsert
-import org.zp1ke.platasync.model.BaseModel
-import org.zp1ke.platasync.model.UserCategory
+import org.zp1ke.platasync.data.model.SortOrder
+import org.zp1ke.platasync.domain.BaseModel
+import org.zp1ke.platasync.domain.UserCategory
 
 @Dao
 interface UserCategoryDao {

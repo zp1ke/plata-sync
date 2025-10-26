@@ -22,6 +22,12 @@ object Converters {
     fun fromInstant(value: OffsetDateTime): Long = value.toInstant().toEpochMilli()
 
     @TypeConverter
+    fun toTransactionType(value: String): TransactionType = enumValueOf<TransactionType>(value)
+
+    @TypeConverter
+    fun fromTransactionType(value: TransactionType): String = value.name
+
+    @TypeConverter
     fun fromTransactionTypeList(list: List<TransactionType>?): String {
         if (list.isNullOrEmpty()) {
             return ""

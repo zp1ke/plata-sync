@@ -1,4 +1,4 @@
-package org.zp1ke.platasync.model
+package org.zp1ke.platasync.domain
 
 import java.time.OffsetDateTime
 

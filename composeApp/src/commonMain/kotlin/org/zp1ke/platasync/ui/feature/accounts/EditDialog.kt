@@ -10,7 +10,7 @@ import androidx.compose.ui.window.Dialog
 import androidx.compose.ui.window.DialogProperties
 import org.jetbrains.compose.resources.stringResource
 import org.jetbrains.compose.ui.tooling.preview.Preview
-import org.zp1ke.platasync.model.UserAccount
+import org.zp1ke.platasync.domain.UserAccount
 import org.zp1ke.platasync.ui.common.AppIcon
 import org.zp1ke.platasync.ui.common.AppIconType
 import org.zp1ke.platasync.ui.common.MoneyField

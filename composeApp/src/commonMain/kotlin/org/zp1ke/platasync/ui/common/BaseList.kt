@@ -15,7 +15,7 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.text.style.TextAlign
 import org.jetbrains.compose.resources.StringResource
 import org.jetbrains.compose.resources.stringResource
-import org.zp1ke.platasync.model.BaseModel
+import org.zp1ke.platasync.domain.BaseModel
 import org.zp1ke.platasync.ui.theme.Size
 import org.zp1ke.platasync.ui.theme.Spacing
 

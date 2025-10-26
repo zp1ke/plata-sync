@@ -1,4 +1,4 @@
-package org.zp1ke.platasync.data.dao
+package org.zp1ke.platasync.data.model
 
 enum class SortOrder {
     ASC,

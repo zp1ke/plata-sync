@@ -17,13 +17,13 @@ import cafe.adriel.voyager.navigator.tab.TabOptions
 import org.jetbrains.compose.resources.stringResource
 import org.koin.core.annotation.Factory
 import org.koin.core.annotation.Named
-import org.zp1ke.platasync.data.dao.SortOrder
+import org.zp1ke.platasync.data.model.SortOrder
 import org.zp1ke.platasync.data.repository.BaseRepository
 import org.zp1ke.platasync.data.repository.DaoCategoriesRepository
 import org.zp1ke.platasync.data.viewModel.BaseViewModel
-import org.zp1ke.platasync.model.BaseModel
+import org.zp1ke.platasync.domain.BaseModel
 import org.zp1ke.platasync.model.TransactionType
-import org.zp1ke.platasync.model.UserCategory
+import org.zp1ke.platasync.domain.UserCategory
 import org.zp1ke.platasync.ui.common.BaseList
 import org.zp1ke.platasync.ui.common.ImageIcon
 import org.zp1ke.platasync.ui.common.ItemActions
