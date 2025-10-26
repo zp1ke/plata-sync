@@ -33,6 +33,8 @@ import org.zp1ke.platasync.ui.theme.Size
 import org.zp1ke.platasync.util.formatAsMoney
 import platasync.composeapp.generated.resources.*
 
+val accountIcon = Icons.Filled.AccountBalanceWallet
+
 @Factory
 class AccountsScreen(
     @Named(DaoAccountsRepository.KEY) repository: BaseRepository<UserAccount>,
@@ -43,7 +45,7 @@ class AccountsScreen(
         @Composable
         get() {
             val title = stringResource(Res.string.accounts_list)
-            val icon = rememberVectorPainter(Icons.Filled.AccountBalanceWallet)
+            val icon = rememberVectorPainter(accountIcon)
 
             return remember {
                 TabOptions(
@@ -158,7 +160,7 @@ class AccountsScreen(
             actions = itemActions,
             titleIcon = {
                 Icon(
-                    imageVector = Icons.Filled.AccountBalanceWallet,
+                    imageVector = accountIcon,
                     contentDescription = stringResource(Res.string.accounts_list),
                     modifier = Modifier.width(Size.iconSmall),
                 )

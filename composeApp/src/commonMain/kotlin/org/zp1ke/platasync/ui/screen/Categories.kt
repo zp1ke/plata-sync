@@ -6,6 +6,7 @@ import androidx.compose.foundation.layout.width
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Category
 import androidx.compose.material.icons.filled.FilterList
+import androidx.compose.material.icons.filled.LocalOffer
 import androidx.compose.material.icons.outlined.FilterListOff
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
@@ -34,6 +35,8 @@ import org.zp1ke.platasync.ui.theme.Size
 import org.zp1ke.platasync.ui.theme.Spacing
 import platasync.composeapp.generated.resources.*
 
+val categoryIcon = Icons.Filled.LocalOffer
+
 @Factory
 class CategoriesScreen(
     @Named(DaoCategoriesRepository.KEY) repository: BaseRepository<UserCategory>,
@@ -44,7 +47,7 @@ class CategoriesScreen(
         @Composable
         get() {
             val title = stringResource(Res.string.categories_list)
-            val icon = rememberVectorPainter(Icons.Filled.Category)
+            val icon = rememberVectorPainter(categoryIcon)
 
             return remember {
                 TabOptions(
@@ -165,7 +168,7 @@ class CategoriesScreen(
             actions = itemActions,
             titleIcon = {
                 Icon(
-                    imageVector = Icons.Filled.Category,
+                    imageVector = categoryIcon,
                     contentDescription = stringResource(Res.string.categories_list),
                     modifier = Modifier.width(Size.iconSmall),
                 )
