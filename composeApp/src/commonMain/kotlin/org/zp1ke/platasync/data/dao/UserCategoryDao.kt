@@ -15,6 +15,7 @@ interface UserCategoryDao {
         """
         SELECT * FROM ${UserCategory.TABLE_NAME}
         WHERE (:nameFilter IS NULL OR ${UserCategory.COLUMN_NAME} LIKE '%' || :nameFilter || '%')
+          AND (:transactionTypeFilter IS NULL OR ${UserCategory.COLUMN_TRANSACTION_TYPES} LIKE '%' || :transactionTypeFilter || '%')
         ORDER BY 
             CASE WHEN :sortOrder = '${SortOrder.ASC_VALUE}' THEN
                 CASE :sortKey
@@ -32,6 +33,7 @@ interface UserCategoryDao {
     )
     suspend fun getAll(
         nameFilter: String? = null,
+        transactionTypeFilter: String? = null,
         sortKey: String = BaseModel.COLUMN_CREATED_AT,
         sortOrder: SortOrder = SortOrder.DESC,
     ): List<UserCategory>

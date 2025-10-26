@@ -24,7 +24,11 @@ class DaoCategoriesRepository(
         filters[UserCategory.COLUMN_NAME]?.let {
             nameFilter = it
         }
-        return categoryDao.getAll(nameFilter, sortKey, sortOrder)
+        var transactionTypeFilter: String? = null
+        filters[UserCategory.COLUMN_TRANSACTION_TYPES]?.let {
+            transactionTypeFilter = it
+        }
+        return categoryDao.getAll(nameFilter, transactionTypeFilter, sortKey, sortOrder)
     }
 
     override suspend fun getBalanceStats(): BalanceStats = BalanceStats()

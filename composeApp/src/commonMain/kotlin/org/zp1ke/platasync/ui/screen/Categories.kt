@@ -1,6 +1,9 @@
 package org.zp1ke.platasync.ui.screen
 
-import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.width
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Category
 import androidx.compose.material.icons.filled.FilterList
@@ -20,6 +23,7 @@ import org.zp1ke.platasync.data.repository.BaseRepository
 import org.zp1ke.platasync.data.repository.DaoCategoriesRepository
 import org.zp1ke.platasync.data.viewModel.BaseViewModel
 import org.zp1ke.platasync.model.BaseModel
+import org.zp1ke.platasync.model.TransactionType
 import org.zp1ke.platasync.model.UserCategory
 import org.zp1ke.platasync.ui.common.BaseList
 import org.zp1ke.platasync.ui.common.ImageIcon
@@ -78,16 +82,20 @@ class CategoriesScreen(
 
         var filterVisible by remember { mutableStateOf(false) }
         var filterName by remember { mutableStateOf("") }
+        var transactionType by remember { mutableStateOf<TransactionType?>(null) }
         var sortField by remember { mutableStateOf(BaseModel.COLUMN_CREATED_AT) }
         var sortOrder by remember { mutableStateOf(SortOrder.DESC) }
         var reloadTrigger by remember { mutableIntStateOf(0) }
 
         // Trigger loadData whenever filter/sort parameters change or reload is requested
-        LaunchedEffect(filterName, sortField, sortOrder, reloadTrigger) {
+        LaunchedEffect(filterName, transactionType, sortField, sortOrder, reloadTrigger) {
             val filters = mutableMapOf<String, String>()
             val trimmedFilterName = filterName.trim()
             if (trimmedFilterName.isNotBlank()) {
                 filters[UserCategory.COLUMN_NAME] = trimmedFilterName
+            }
+            transactionType?.let {
+                filters[UserCategory.COLUMN_TRANSACTION_TYPES] = it.name
             }
             viewModel.loadItems(
                 filters = filters,
@@ -99,7 +107,7 @@ class CategoriesScreen(
         val filterWidgetProvider = object : TopWidgetProvider {
             override fun action(): (@Composable () -> Unit) = {
                 val isFiltered =
-                    filterName.isNotBlank() || sortField != BaseModel.COLUMN_CREATED_AT || sortOrder != SortOrder.DESC
+                    filterName.isNotBlank() || transactionType != null || sortField != BaseModel.COLUMN_CREATED_AT || sortOrder != SortOrder.DESC
                 val buttonColor = if (!filterVisible && isFiltered) {
                     MaterialTheme.colorScheme.tertiaryContainer
                 } else {
@@ -139,6 +147,8 @@ class CategoriesScreen(
                             onSortFieldChange = { sortField = it },
                             sortOrder = sortOrder,
                             onSortOrderChange = { sortOrder = it },
+                            transactionType = transactionType,
+                            onTransactionTypeChange = { transactionType = it },
                         )
                     }
                 }
@@ -170,7 +180,7 @@ class CategoriesScreen(
                     items = state.data,
                     actions = actions,
                     enabled = enabled,
-                    emptyStringResource = if (filterName.isBlank()) Res.string.categories_empty else Res.string.categories_empty_with_filter,
+                    emptyStringResource = if (filterName.isBlank() && transactionType == null) Res.string.categories_empty else Res.string.categories_empty_with_filter,
                     editStringResource = Res.string.category_edit,
                     deleteStringResource = Res.string.category_delete,
                     headlineContent = { category ->
