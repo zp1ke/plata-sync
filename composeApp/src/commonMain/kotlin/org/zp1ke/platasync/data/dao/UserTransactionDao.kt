@@ -2,11 +2,11 @@ package org.zp1ke.platasync.data.dao
 
 import androidx.room.Dao
 import androidx.room.Query
+import androidx.room.Transaction
 import androidx.room.Upsert
 import org.zp1ke.platasync.data.model.SortOrder
 import org.zp1ke.platasync.data.model.UserFullTransaction
 import org.zp1ke.platasync.domain.BaseModel
-import org.zp1ke.platasync.domain.UserAccount
 import org.zp1ke.platasync.domain.UserTransaction
 import org.zp1ke.platasync.model.TransactionType
 
@@ -36,6 +36,7 @@ interface UserTransactionDao {
         sortOrder: SortOrder = SortOrder.DESC,
     ): List<UserTransaction>
 
+    @Transaction
     @Query(
         """
         SELECT * FROM ${UserTransaction.TABLE_NAME}
@@ -60,10 +61,12 @@ interface UserTransactionDao {
         offset: Int,
     ): List<UserFullTransaction>
 
-    @Query("""
+    @Query(
+        """
         SELECT SUM(${UserTransaction.COLUMN_AMOUNT}) FROM ${UserTransaction.TABLE_NAME}
         WHERE (${UserTransaction.COLUMN_TRANSACTION_TYPE} = :transactionType)
-    """)
+    """
+    )
     suspend fun sumAmount(transactionType: TransactionType): Int?
 
     @Query("SELECT * FROM ${UserTransaction.TABLE_NAME} WHERE id = :id LIMIT 1")

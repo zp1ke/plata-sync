@@ -43,3 +43,31 @@ fun SelectTransactionTypes(
         }
     }
 }
+
+@OptIn(ExperimentalMaterial3Api::class)
+@Composable
+@Preview
+fun SelectTransactionType(
+    selectedType: TransactionType?,
+    availableTypes: List<TransactionType> = TransactionType.entries,
+    onChanged: (TransactionType) -> Unit = { _ -> },
+) {
+    Row(
+        modifier = Modifier.fillMaxWidth(),
+        horizontalArrangement = Arrangement.spacedBy(Spacing.small)
+    ) {
+        availableTypes.forEach { type ->
+            val isSelected = selectedType == type
+            FilterChip(
+                selected = isSelected,
+                enabled = !isSelected,
+                onClick = {
+                    onChanged(type)
+                },
+                label = {
+                    TransactionTypeWidget(type)
+                }
+            )
+        }
+    }
+}

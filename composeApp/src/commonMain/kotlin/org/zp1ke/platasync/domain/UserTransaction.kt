@@ -22,6 +22,8 @@ data class UserTransaction(
     val amount: Int,
     @ColumnInfo(name = COLUMN_TRANSACTION_TYPE, index = true)
     val transactionType: TransactionType,
+    @ColumnInfo(name = COLUMN_DATETIME, index = true)
+    val datetime: OffsetDateTime,
 ) : BaseModel(id, createdAt) {
     companion object {
         const val TABLE_NAME = "users_transactions"
@@ -31,5 +33,6 @@ data class UserTransaction(
         const val COLUMN_CATEGORY_ID = "category_id"
         const val COLUMN_AMOUNT = "amount"
         const val COLUMN_TRANSACTION_TYPE = "transaction_type"
+        const val COLUMN_DATETIME = "datetime"
     }
 }

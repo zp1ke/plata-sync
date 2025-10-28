@@ -29,6 +29,21 @@
     <string name="categories_empty_with_filter">No Categories matching filters!</string>
     <string name="categories_refresh">Refresh Categories</string>
     <string name="categories_sort_field_name">Name</string>
+    <!-- Transaction -->
+    <string name="transactions_list">Transactions</string>
+    <string name="transaction_add">Add Transaction</string>
+    <string name="transaction_edit">Edit Transaction</string>
+    <string name="transaction_delete">Delete Category</string>
+    <string name="transactions_empty">No Transactions!</string>
+    <string name="transactions_empty_with_filter">No Transactions matching filters!</string>
+    <string name="transactions_refresh">Refresh Transactions</string>
+    <string name="transaction_description">Description</string>
+    <string name="transaction_amount">Amount</string>
+    <string name="transaction_datetime">Datetime</string>
+    <string name="transaction_account">Account</string>
+    <string name="transaction_category">Category</string>
+    <string name="transactions_sort_field_datetime">Datetime</string>
+    <string name="transactions_sort_field_amount">Amount</string>
     <!-- Actions -->
     <string name="action_save">Save</string>
     <string name="action_cancel">Cancel</string>
