@@ -4,7 +4,6 @@ import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.width
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.Category
 import androidx.compose.material.icons.filled.FilterList
 import androidx.compose.material.icons.filled.LocalOffer
 import androidx.compose.material.icons.outlined.FilterListOff
@@ -22,8 +21,8 @@ import org.zp1ke.platasync.data.repository.BaseRepository
 import org.zp1ke.platasync.data.repository.DaoCategoriesRepository
 import org.zp1ke.platasync.data.viewModel.BaseViewModel
 import org.zp1ke.platasync.domain.BaseModel
-import org.zp1ke.platasync.model.TransactionType
 import org.zp1ke.platasync.domain.UserCategory
+import org.zp1ke.platasync.model.TransactionType
 import org.zp1ke.platasync.ui.common.BaseList
 import org.zp1ke.platasync.ui.common.ImageIcon
 import org.zp1ke.platasync.ui.common.ItemActions

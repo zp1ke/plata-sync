@@ -1,8 +1,8 @@
 package org.zp1ke.platasync.data.repository
 
 import org.zp1ke.platasync.data.model.SortOrder
-import org.zp1ke.platasync.model.BalanceStats
 import org.zp1ke.platasync.domain.BaseModel
+import org.zp1ke.platasync.model.BalanceStats
 
 interface BaseRepository<T : BaseModel> {
     suspend fun getAllItems(

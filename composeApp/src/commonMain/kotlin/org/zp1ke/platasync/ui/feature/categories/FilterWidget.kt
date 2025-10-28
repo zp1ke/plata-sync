@@ -12,8 +12,8 @@ import androidx.compose.ui.Modifier
 import org.jetbrains.compose.resources.stringResource
 import org.zp1ke.platasync.data.model.SortOrder
 import org.zp1ke.platasync.domain.BaseModel
-import org.zp1ke.platasync.model.TransactionType
 import org.zp1ke.platasync.domain.UserCategory
+import org.zp1ke.platasync.model.TransactionType
 import org.zp1ke.platasync.ui.common.TransactionTypeWidget
 import org.zp1ke.platasync.ui.input.BaseFilterWidget
 import org.zp1ke.platasync.ui.input.DebouncedTextField

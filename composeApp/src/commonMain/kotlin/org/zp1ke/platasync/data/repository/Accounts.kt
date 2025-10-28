@@ -2,11 +2,11 @@ package org.zp1ke.platasync.data.repository
 
 import org.koin.core.annotation.Named
 import org.koin.core.annotation.Single
-import org.zp1ke.platasync.data.model.SortOrder
 import org.zp1ke.platasync.data.dao.UserAccountDao
+import org.zp1ke.platasync.data.model.SortOrder
 import org.zp1ke.platasync.data.room.AppDatabase
-import org.zp1ke.platasync.model.BalanceStats
 import org.zp1ke.platasync.domain.UserAccount
+import org.zp1ke.platasync.model.BalanceStats
 
 @Single
 @Named(DaoAccountsRepository.KEY)

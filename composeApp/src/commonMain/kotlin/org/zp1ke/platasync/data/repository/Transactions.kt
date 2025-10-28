@@ -11,7 +11,7 @@ import org.zp1ke.platasync.model.TransactionType
 
 @Single
 @Named(DaoTransactionsRepository.KEY)
-class DaoTransactionsRepository (
+class DaoTransactionsRepository(
     database: AppDatabase,
 ) : BaseRepository<UserTransaction> {
     private val transactionDao: UserTransactionDao = database.getTransactionDao()
