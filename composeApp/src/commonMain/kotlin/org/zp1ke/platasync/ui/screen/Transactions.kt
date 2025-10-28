@@ -1,10 +1,12 @@
 package org.zp1ke.platasync.ui.screen
 
+import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.AccountBalanceWallet
 import androidx.compose.material.icons.filled.FilterList
+import androidx.compose.material.icons.filled.Receipt
 import androidx.compose.material.icons.outlined.FilterListOff
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
@@ -19,37 +21,36 @@ import org.koin.core.annotation.Factory
 import org.koin.core.annotation.Named
 import org.zp1ke.platasync.data.model.SortOrder
 import org.zp1ke.platasync.data.repository.BaseRepository
-import org.zp1ke.platasync.data.repository.DaoAccountsRepository
+import org.zp1ke.platasync.data.repository.DaoTransactionsRepository
 import org.zp1ke.platasync.data.viewModel.BaseViewModel
 import org.zp1ke.platasync.domain.BaseModel
-import org.zp1ke.platasync.domain.UserAccount
+import org.zp1ke.platasync.domain.UserTransaction
 import org.zp1ke.platasync.ui.common.BaseList
-import org.zp1ke.platasync.ui.common.ImageIcon
 import org.zp1ke.platasync.ui.common.ItemActions
-import org.zp1ke.platasync.ui.feature.accounts.AccountDeleteDialog
-import org.zp1ke.platasync.ui.feature.accounts.AccountEditDialog
-import org.zp1ke.platasync.ui.feature.accounts.AccountsFilterWidget
+import org.zp1ke.platasync.ui.feature.transactions.TransactionDeleteDialog
+import org.zp1ke.platasync.ui.feature.transactions.TransactionEditDialog
+import org.zp1ke.platasync.ui.feature.transactions.TransactionsFilterWidget
 import org.zp1ke.platasync.ui.theme.Size
 import org.zp1ke.platasync.util.formatAsMoney
 import platasync.composeapp.generated.resources.*
 
-val accountIcon = Icons.Filled.AccountBalanceWallet
+val transactionIcon = Icons.Filled.Receipt
 
 @Factory
-class AccountsScreen(
-    @Named(DaoAccountsRepository.KEY) repository: BaseRepository<UserAccount>,
+class TransactionsScreen(
+    @Named(DaoTransactionsRepository.KEY) repository: BaseRepository<UserTransaction>,
 ) : Tab {
-    private val screenViewModel: BaseViewModel<UserAccount> = BaseViewModel(repository)
+    private val screenViewModel: BaseViewModel<UserTransaction> = BaseViewModel(repository)
 
     override val options: TabOptions
         @Composable
         get() {
-            val title = stringResource(Res.string.accounts_list)
-            val icon = rememberVectorPainter(accountIcon)
+            val title = stringResource(Res.string.transactions_list)
+            val icon = rememberVectorPainter(transactionIcon)
 
             return remember {
                 TabOptions(
-                    index = 1u,
+                    index = 0u,
                     title = title,
                     icon = icon,
                 )
@@ -61,38 +62,33 @@ class AccountsScreen(
         val viewModel = remember { screenViewModel }
         val state by viewModel.state.collectAsState()
 
-        var accountToEdit by remember { mutableStateOf<UserAccount?>(null) }
+        var transactionToEdit by remember { mutableStateOf<UserTransaction?>(null) }
         var showEditDialog by remember { mutableStateOf(false) }
-        var accountToDelete by remember { mutableStateOf<UserAccount?>(null) }
+        var transactionToDelete by remember { mutableStateOf<UserTransaction?>(null) }
 
-        val itemActions = object : ItemActions<UserAccount> {
-            override fun onView(item: UserAccount) {
+        val itemActions = object : ItemActions<UserTransaction> {
+            override fun onView(item: UserTransaction) {
                 // TODO implement view
             }
 
-            override fun onEdit(item: UserAccount) {
-                accountToEdit = item
+            override fun onEdit(item: UserTransaction) {
+                transactionToEdit = item
                 showEditDialog = true
             }
 
-            override fun onDelete(item: UserAccount) {
-                accountToDelete = item
+            override fun onDelete(item: UserTransaction) {
+                transactionToDelete = item
             }
         }
 
         var filterVisible by remember { mutableStateOf(false) }
-        var filterName by remember { mutableStateOf("") }
         var sortField by remember { mutableStateOf(BaseModel.COLUMN_CREATED_AT) }
         var sortOrder by remember { mutableStateOf(SortOrder.DESC) }
         var reloadTrigger by remember { mutableIntStateOf(0) }
 
         // Trigger loadData whenever filter/sort parameters change or reload is requested
-        LaunchedEffect(filterName, sortField, sortOrder, reloadTrigger) {
+        LaunchedEffect(sortField, sortOrder, reloadTrigger) {
             val filters = mutableMapOf<String, String>()
-            val trimmedFilterName = filterName.trim()
-            if (trimmedFilterName.isNotBlank()) {
-                filters[UserAccount.COLUMN_NAME] = trimmedFilterName
-            }
             viewModel.loadItems(
                 filters = filters,
                 sortKey = sortField,
@@ -102,8 +98,7 @@ class AccountsScreen(
 
         val filterWidgetProvider = object : TopWidgetProvider {
             override fun action(): (@Composable () -> Unit) = {
-                val isFiltered =
-                    filterName.isNotBlank() || sortField != BaseModel.COLUMN_CREATED_AT || sortOrder != SortOrder.DESC
+                val isFiltered = sortField != BaseModel.COLUMN_CREATED_AT || sortOrder != SortOrder.DESC
                 val buttonColor = if (!filterVisible && isFiltered) {
                     MaterialTheme.colorScheme.tertiaryContainer
                 } else {
@@ -135,10 +130,8 @@ class AccountsScreen(
             override fun content(): (@Composable () -> Unit)? {
                 if (filterVisible) {
                     return {
-                        AccountsFilterWidget(
+                        TransactionsFilterWidget(
                             enabled = !state.isLoading,
-                            filterName = filterName,
-                            onFilterNameChange = { filterName = it },
                             sortField = sortField,
                             onSortFieldChange = { sortField = it },
                             sortOrder = sortOrder,
@@ -154,43 +147,43 @@ class AccountsScreen(
             isLoading = state.isLoading,
             onReload = { reloadTrigger++ },
             onAdd = {
-                accountToEdit = null
+                transactionToEdit = null
                 showEditDialog = true
             },
             actions = itemActions,
             titleIcon = {
                 Icon(
-                    imageVector = accountIcon,
-                    contentDescription = stringResource(Res.string.accounts_list),
+                    imageVector = transactionIcon,
+                    contentDescription = stringResource(Res.string.transactions_list),
                     modifier = Modifier.width(Size.iconSmall),
                 )
             },
-            titleResource = Res.string.accounts_list,
+            titleResource = Res.string.transactions_list,
             subtitle = state.stats.balance.formatAsMoney(),
-            refreshResource = Res.string.accounts_refresh,
-            addResource = Res.string.account_add,
+            refreshResource = Res.string.transactions_refresh,
+            addResource = Res.string.transaction_add,
             topWidgetProvider = filterWidgetProvider,
             list = { enabled, actions ->
                 BaseList(
                     items = state.data,
                     actions = actions,
                     enabled = enabled,
-                    emptyStringResource = if (filterName.isBlank()) Res.string.accounts_empty else Res.string.accounts_empty_with_filter,
-                    editStringResource = Res.string.account_edit,
-                    deleteStringResource = Res.string.account_delete,
-                    headlineContent = { account ->
+                    emptyStringResource = if (true) Res.string.accounts_empty else Res.string.accounts_empty_with_filter,
+                    editStringResource = Res.string.transaction_edit,
+                    deleteStringResource = Res.string.transaction_delete,
+                    headlineContent = { transaction ->
                         {
                             Text(
-                                text = account.name,
+                                text = transaction.amount.formatAsMoney(),
                                 style = MaterialTheme.typography.titleMedium
                                     .copy(color = MaterialTheme.colorScheme.onSurfaceVariant),
                             )
                         }
                     },
-                    supportingContent = { account ->
+                    supportingContent = { transaction ->
                         {
                             Text(
-                                text = account.balance.formatAsMoney(),
+                                text = transaction.amount.formatAsMoney(),
                                 style = MaterialTheme.typography.bodySmall
                                     .copy(
                                         color = MaterialTheme.colorScheme.onSurfaceVariant,
@@ -201,45 +194,51 @@ class AccountsScreen(
                             )
                         }
                     },
-                    leadingContent = { account ->
+                    leadingContent = { transaction ->
                         {
-                            ImageIcon(account.icon)
+                            val isDarkMode = isSystemInDarkTheme()
+                            Icon(
+                                imageVector = transaction.transactionType.icon(),
+                                contentDescription = null,
+                                tint = transaction.transactionType.color(isDarkMode),
+                                modifier = Modifier.size(Size.iconSmall)
+                            )
                         }
                     },
                 )
             }
         )
 
-        AccountEditDialog(
+        TransactionEditDialog(
             showDialog = showEditDialog,
-            account = accountToEdit,
+            transaction = transactionToEdit,
             onDismiss = {
                 @Suppress("ASSIGNED_VALUE_IS_NEVER_READ")
                 showEditDialog = false
                 @Suppress("ASSIGNED_VALUE_IS_NEVER_READ")
-                accountToEdit = null
+                transactionToEdit = null
             },
             onSubmit = { account ->
                 viewModel.addItem(account)
                 @Suppress("ASSIGNED_VALUE_IS_NEVER_READ")
                 showEditDialog = false
                 @Suppress("ASSIGNED_VALUE_IS_NEVER_READ")
-                accountToEdit = null
+                transactionToEdit = null
                 reloadTrigger++
             }
         )
 
-        AccountDeleteDialog(
-            showDialog = accountToDelete != null,
-            account = accountToDelete,
+        TransactionDeleteDialog(
+            showDialog = transactionToDelete != null,
+            transaction = transactionToDelete,
             onDismiss = {
                 @Suppress("ASSIGNED_VALUE_IS_NEVER_READ")
-                accountToDelete = null
+                transactionToDelete = null
             },
             onSubmit = {
-                accountToDelete?.let { viewModel.deleteItem(it) }
+                transactionToDelete?.let { viewModel.deleteItem(it) }
                 @Suppress("ASSIGNED_VALUE_IS_NEVER_READ")
-                accountToDelete = null
+                transactionToDelete = null
                 reloadTrigger++
             }
         )
