@@ -41,6 +41,7 @@
     <string name="transaction_amount">Amount</string>
     <string name="transaction_datetime">Datetime</string>
     <string name="transaction_account">Account</string>
+    <string name="transaction_target_account">Target Account</string>
     <string name="transaction_category">Category</string>
     <string name="transactions_sort_field_datetime">Datetime</string>
     <string name="transactions_sort_field_amount">Amount</string>
@@ -49,6 +50,9 @@
     <string name="action_cancel">Cancel</string>
     <string name="action_ok">OK</string>
     <string name="action_clear">Clear</string>
+    <string name="action_search">Search</string>
+    <!-- General -->
+    <string name="no_items_found">No items found</string>
     <!-- Filters -->
     <string name="sort_by">Sort by</string>
     <string name="sort_order">Order</string>
