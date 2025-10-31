@@ -33,7 +33,7 @@
     <string name="transactions_list">Transactions</string>
     <string name="transaction_add">Add Transaction</string>
     <string name="transaction_edit">Edit Transaction</string>
-    <string name="transaction_delete">Delete Category</string>
+    <string name="transaction_delete">Delete Transaction</string>
     <string name="transactions_empty">No Transactions!</string>
     <string name="transactions_empty_with_filter">No Transactions matching filters!</string>
     <string name="transactions_refresh">Refresh Transactions</string>

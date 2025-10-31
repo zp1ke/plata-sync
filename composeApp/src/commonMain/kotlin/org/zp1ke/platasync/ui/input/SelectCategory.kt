@@ -133,6 +133,7 @@ fun SelectCategory(
             }
         },
         itemKey = { it.id },
+        itemText = { it.name },
         onItemSelected = onCategorySelected,
         modifier = modifier
     )

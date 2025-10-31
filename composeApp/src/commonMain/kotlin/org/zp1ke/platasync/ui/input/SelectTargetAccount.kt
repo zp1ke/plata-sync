@@ -134,6 +134,7 @@ fun SelectTargetAccount(
             }
         },
         itemKey = { it.id },
+        itemText = { it.name },
         onItemSelected = onAccountSelected,
         modifier = modifier
     )

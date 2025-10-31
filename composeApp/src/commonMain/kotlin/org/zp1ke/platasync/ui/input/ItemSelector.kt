@@ -30,6 +30,7 @@ fun <T> ItemSelector(
     isLoading: Boolean,
     itemContent: @Composable (T) -> Unit,
     itemKey: (T) -> String,
+    itemText: (T) -> String,
     onItemSelected: (T) -> Unit,
     modifier: Modifier = Modifier,
 ) {
@@ -46,21 +47,34 @@ fun <T> ItemSelector(
     }
 
     // Main selector button
-    OutlinedTextField(
-        value = if (selectedItem != null) itemKey(selectedItem) else "",
-        onValueChange = {},
-        label = { Text(label) },
-        readOnly = true,
-        trailingIcon = {
-            Icon(
-                imageVector = Icons.Default.ArrowDropDown,
-                contentDescription = null
-            )
-        },
+    Box(
         modifier = modifier
             .fillMaxWidth()
             .clickable { showDialog = true }
-    )
+    ) {
+        OutlinedTextField(
+            value = if (selectedItem != null) itemText(selectedItem) else "",
+            onValueChange = {},
+            label = { Text(label) },
+            readOnly = true,
+            enabled = false,
+            trailingIcon = {
+                Icon(
+                    imageVector = Icons.Default.ArrowDropDown,
+                    contentDescription = null
+                )
+            },
+            modifier = Modifier.fillMaxWidth(),
+            colors = OutlinedTextFieldDefaults.colors(
+                disabledTextColor = MaterialTheme.colorScheme.onSurface,
+                disabledBorderColor = MaterialTheme.colorScheme.outline,
+                disabledLeadingIconColor = MaterialTheme.colorScheme.onSurfaceVariant,
+                disabledTrailingIconColor = MaterialTheme.colorScheme.onSurfaceVariant,
+                disabledLabelColor = MaterialTheme.colorScheme.onSurfaceVariant,
+                disabledPlaceholderColor = MaterialTheme.colorScheme.onSurfaceVariant,
+            )
+        )
+    }
 
     // Dialog with search and list
     if (showDialog) {
