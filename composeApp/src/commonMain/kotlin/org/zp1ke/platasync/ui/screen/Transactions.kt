@@ -20,9 +20,9 @@ import org.jetbrains.compose.resources.stringResource
 import org.koin.core.annotation.Factory
 import org.koin.core.annotation.Named
 import org.zp1ke.platasync.data.model.SortOrder
-import org.zp1ke.platasync.data.repository.BaseRepository
 import org.zp1ke.platasync.data.repository.DaoTransactionsRepository
-import org.zp1ke.platasync.data.viewModel.BaseViewModel
+import org.zp1ke.platasync.data.repository.TransactionsRepository
+import org.zp1ke.platasync.data.viewModel.TransactionViewModel
 import org.zp1ke.platasync.domain.BaseModel
 import org.zp1ke.platasync.domain.UserTransaction
 import org.zp1ke.platasync.ui.common.BaseList
@@ -38,9 +38,9 @@ val transactionIcon = Icons.Filled.Receipt
 
 @Factory
 class TransactionsScreen(
-    @Named(DaoTransactionsRepository.KEY) repository: BaseRepository<UserTransaction>,
+    @Named(DaoTransactionsRepository.KEY) repository: TransactionsRepository,
 ) : Tab {
-    private val screenViewModel: BaseViewModel<UserTransaction> = BaseViewModel(repository)
+    private val screenViewModel: TransactionViewModel = TransactionViewModel(repository)
 
     override val options: TabOptions
         @Composable

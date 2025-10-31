@@ -2,6 +2,7 @@ package org.zp1ke.platasync.data.model
 
 import androidx.room.Embedded
 import androidx.room.Relation
+import org.zp1ke.platasync.domain.BaseModel
 import org.zp1ke.platasync.domain.UserAccount
 import org.zp1ke.platasync.domain.UserCategory
 import org.zp1ke.platasync.domain.UserTransaction
@@ -26,4 +27,4 @@ data class UserFullTransaction(
         entity = UserCategory::class,
     )
     val category: UserCategory?,
-)
+) : BaseModel(transaction.id, transaction.createdAt)
