@@ -18,11 +18,12 @@ import org.zp1ke.platasync.ui.theme.Spacing
 @Composable
 fun ImageIcon(
     icon: AppIcon,
+    modifier: Modifier = Modifier,
     width: Dp = Size.iconMedium,
     shape: Shape = RoundedCornerShape(Size.iconBorderSmall),
 ) {
     Card(
-        modifier = Modifier.width(width).padding(Spacing.small),
+        modifier = modifier.width(width).padding(Spacing.small),
         shape = shape,
         colors = CardDefaults.cardColors(
             containerColor = MaterialTheme.colorScheme.surfaceVariant

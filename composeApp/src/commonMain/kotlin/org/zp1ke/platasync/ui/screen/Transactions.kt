@@ -1,6 +1,7 @@
 package org.zp1ke.platasync.ui.screen
 
 import androidx.compose.foundation.isSystemInDarkTheme
+import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
@@ -27,6 +28,7 @@ import org.zp1ke.platasync.data.viewModel.TransactionViewModel
 import org.zp1ke.platasync.domain.DomainModel
 import org.zp1ke.platasync.domain.UserTransaction
 import org.zp1ke.platasync.ui.common.BaseList
+import org.zp1ke.platasync.ui.common.ImageIcon
 import org.zp1ke.platasync.ui.common.ItemActions
 import org.zp1ke.platasync.ui.feature.transactions.TransactionDeleteDialog
 import org.zp1ke.platasync.ui.feature.transactions.TransactionEditDialog
@@ -174,20 +176,42 @@ class TransactionsScreen(
                     deleteStringResource = Res.string.transaction_delete,
                     headlineContent = { transaction ->
                         {
-                            Text(
-                                text = transaction.signedAmount.formatAsMoney(),
-                                style = MaterialTheme.typography.titleMedium
-                                    .copy(color = MaterialTheme.colorScheme.onSurfaceVariant),
-                            )
+                            Row {
+                                ImageIcon(
+                                    transaction.account.icon,
+                                    modifier = Modifier.alignByBaseline()
+                                )
+                                Text(
+                                    text = transaction.account.name,
+                                    style = MaterialTheme.typography.titleMedium
+                                        .copy(color = MaterialTheme.colorScheme.onSurfaceVariant),
+                                    modifier = Modifier.alignByBaseline()
+                                )
+                                if (transaction.category != null) {
+                                    Text(
+                                        text = " • ${transaction.category.name}",
+                                        style = MaterialTheme.typography.titleSmall
+                                            .copy(color = MaterialTheme.colorScheme.onSurfaceVariant),
+                                        modifier = Modifier.alignByBaseline()
+                                    )
+                                }
+                                if (transaction.category != null) {
+                                    ImageIcon(
+                                        transaction.category.icon,
+                                        modifier = Modifier.alignByBaseline()
+                                    )
+                                }
+                            }
                         }
                     },
                     supportingContent = { transaction ->
                         {
+                            val isDarkMode = isSystemInDarkTheme()
                             Text(
                                 text = transaction.signedAmount.formatAsMoney(),
-                                style = MaterialTheme.typography.bodySmall
+                                style = MaterialTheme.typography.bodyMedium
                                     .copy(
-                                        color = MaterialTheme.colorScheme.onSurfaceVariant,
+                                        color = transaction.transactionType.color(isDarkMode),
                                         fontWeight = FontWeight.W500
                                     ),
                                 modifier = Modifier.fillMaxWidth(0.25f),
