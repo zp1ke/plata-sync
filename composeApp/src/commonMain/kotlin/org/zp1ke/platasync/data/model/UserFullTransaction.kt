@@ -2,10 +2,12 @@ package org.zp1ke.platasync.data.model
 
 import androidx.room.Embedded
 import androidx.room.Relation
-import org.zp1ke.platasync.domain.BaseModel
+import org.zp1ke.platasync.domain.DomainModel
 import org.zp1ke.platasync.domain.UserAccount
 import org.zp1ke.platasync.domain.UserCategory
 import org.zp1ke.platasync.domain.UserTransaction
+import org.zp1ke.platasync.model.TransactionType
+import java.time.OffsetDateTime
 
 data class UserFullTransaction(
     @Embedded val transaction: UserTransaction,
@@ -27,4 +29,25 @@ data class UserFullTransaction(
         entity = UserCategory::class,
     )
     val category: UserCategory?,
-) : BaseModel(transaction.id, transaction.createdAt)
+) : DomainModel {
+
+    /**
+     * Returns the signed amount based on transaction type:
+     * - INCOME: positive amount (money coming in)
+     * - EXPENSE: negative amount (money going out)
+     * - TRANSFER: negative amount (money leaving this account)
+     */
+    val signedAmount: Int
+        get() = when (transaction.transactionType) {
+            TransactionType.INCOME -> transaction.amount
+            TransactionType.EXPENSE -> -transaction.amount
+            TransactionType.TRANSFER -> -transaction.amount
+        }
+
+    val transactionType: TransactionType
+        get() = transaction.transactionType
+
+    override fun id(): String = transaction.id
+
+    override fun createdAt(): OffsetDateTime = transaction.createdAt
+}

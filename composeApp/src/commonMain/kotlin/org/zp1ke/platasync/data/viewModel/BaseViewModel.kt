@@ -5,16 +5,16 @@ import cafe.adriel.voyager.core.model.screenModelScope
 import kotlinx.coroutines.launch
 import org.zp1ke.platasync.data.model.SortOrder
 import org.zp1ke.platasync.data.repository.BaseRepository
-import org.zp1ke.platasync.domain.BaseModel
+import org.zp1ke.platasync.domain.DomainModel
 import org.zp1ke.platasync.model.BalanceStats
 
-data class ScreenState<T : BaseModel>(
+data class ScreenState<T : DomainModel>(
     val data: List<T>,
     val stats: BalanceStats,
     val isLoading: Boolean,
 )
 
-class BaseViewModel<T : BaseModel>(
+class BaseViewModel<T : DomainModel>(
     private val repository: BaseRepository<T>
 ) : StateScreenModel<ScreenState<T>>(
     ScreenState(
@@ -29,7 +29,7 @@ class BaseViewModel<T : BaseModel>(
 
     fun loadItems(
         filters: Map<String, String> = emptyMap(),
-        sortKey: String = BaseModel.COLUMN_CREATED_AT,
+        sortKey: String = DomainModel.COLUMN_CREATED_AT,
         sortOrder: SortOrder = SortOrder.DESC,
     ) {
         mutableState.value = mutableState.value.copy(isLoading = true)
@@ -55,7 +55,7 @@ class BaseViewModel<T : BaseModel>(
     fun deleteItem(item: T) {
         mutableState.value = mutableState.value.copy(isLoading = true)
         screenModelScope.launch {
-            repository.deleteItem(item.id)
+            repository.deleteItem(item.id())
             loadItems()
         }
     }

@@ -17,7 +17,7 @@ import org.koin.core.qualifier.named
 import org.zp1ke.platasync.data.model.SortOrder
 import org.zp1ke.platasync.data.repository.BaseRepository
 import org.zp1ke.platasync.data.repository.DaoCategoriesRepository
-import org.zp1ke.platasync.domain.BaseModel
+import org.zp1ke.platasync.domain.DomainModel
 import org.zp1ke.platasync.domain.UserCategory
 import org.zp1ke.platasync.model.TransactionType
 import org.zp1ke.platasync.ui.common.ImageIcon
@@ -60,7 +60,7 @@ fun SelectCategory(
 
                 val allItems = repository.getAllItems(
                     filters = filters,
-                    sortKey = BaseModel.COLUMN_CREATED_AT,
+                    sortKey = DomainModel.COLUMN_CREATED_AT,
                     sortOrder = SortOrder.DESC
                 )
 

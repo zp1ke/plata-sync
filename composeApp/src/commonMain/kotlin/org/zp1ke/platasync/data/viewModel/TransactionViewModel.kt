@@ -6,7 +6,7 @@ import kotlinx.coroutines.launch
 import org.zp1ke.platasync.data.model.SortOrder
 import org.zp1ke.platasync.data.model.UserFullTransaction
 import org.zp1ke.platasync.data.repository.TransactionsRepository
-import org.zp1ke.platasync.domain.BaseModel
+import org.zp1ke.platasync.domain.DomainModel
 import org.zp1ke.platasync.domain.UserTransaction
 import org.zp1ke.platasync.model.BalanceStats
 
@@ -25,7 +25,7 @@ class TransactionViewModel(
 
     fun loadItems(
         filters: Map<String, String> = emptyMap(),
-        sortKey: String = BaseModel.COLUMN_CREATED_AT,
+        sortKey: String = DomainModel.COLUMN_CREATED_AT,
         sortOrder: SortOrder = SortOrder.DESC,
     ) {
         mutableState.value = mutableState.value.copy(isLoading = true)

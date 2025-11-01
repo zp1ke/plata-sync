@@ -17,7 +17,7 @@ import org.koin.core.qualifier.named
 import org.zp1ke.platasync.data.model.SortOrder
 import org.zp1ke.platasync.data.repository.BaseRepository
 import org.zp1ke.platasync.data.repository.DaoAccountsRepository
-import org.zp1ke.platasync.domain.BaseModel
+import org.zp1ke.platasync.domain.DomainModel
 import org.zp1ke.platasync.domain.UserAccount
 import org.zp1ke.platasync.ui.common.ImageIcon
 import org.zp1ke.platasync.ui.theme.Spacing
@@ -57,7 +57,7 @@ fun SelectAccount(
 
                 val allItems = repository.getAllItems(
                     filters = filters,
-                    sortKey = BaseModel.COLUMN_CREATED_AT,
+                    sortKey = DomainModel.COLUMN_CREATED_AT,
                     sortOrder = SortOrder.DESC
                 )
 

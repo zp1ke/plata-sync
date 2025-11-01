@@ -15,12 +15,12 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.text.style.TextAlign
 import org.jetbrains.compose.resources.StringResource
 import org.jetbrains.compose.resources.stringResource
-import org.zp1ke.platasync.domain.BaseModel
+import org.zp1ke.platasync.domain.DomainModel
 import org.zp1ke.platasync.ui.theme.Size
 import org.zp1ke.platasync.ui.theme.Spacing
 
 @Composable
-fun <T : BaseModel> BaseList(
+fun <T : DomainModel> BaseList(
     items: List<T>,
     actions: ItemActions<T>,
     enabled: Boolean = true,
@@ -37,7 +37,7 @@ fun <T : BaseModel> BaseList(
     ) {
         items(
             items = items,
-            key = { it.id },
+            key = { it.id() },
         ) { item ->
             BaseListItem(
                 onView = { actions.onView(item) },

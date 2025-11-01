@@ -20,7 +20,7 @@ import org.zp1ke.platasync.data.model.SortOrder
 import org.zp1ke.platasync.data.repository.BaseRepository
 import org.zp1ke.platasync.data.repository.DaoCategoriesRepository
 import org.zp1ke.platasync.data.viewModel.BaseViewModel
-import org.zp1ke.platasync.domain.BaseModel
+import org.zp1ke.platasync.domain.DomainModel
 import org.zp1ke.platasync.domain.UserCategory
 import org.zp1ke.platasync.model.TransactionType
 import org.zp1ke.platasync.ui.common.BaseList
@@ -84,7 +84,7 @@ class CategoriesScreen(
         var filterVisible by remember { mutableStateOf(false) }
         var filterName by remember { mutableStateOf("") }
         var transactionType by remember { mutableStateOf<TransactionType?>(null) }
-        var sortField by remember { mutableStateOf(BaseModel.COLUMN_CREATED_AT) }
+        var sortField by remember { mutableStateOf(DomainModel.COLUMN_CREATED_AT) }
         var sortOrder by remember { mutableStateOf(SortOrder.DESC) }
         var reloadTrigger by remember { mutableIntStateOf(0) }
 
@@ -108,7 +108,7 @@ class CategoriesScreen(
         val filterWidgetProvider = object : TopWidgetProvider {
             override fun action(): (@Composable () -> Unit) = {
                 val isFiltered =
-                    filterName.isNotBlank() || transactionType != null || sortField != BaseModel.COLUMN_CREATED_AT || sortOrder != SortOrder.DESC
+                    filterName.isNotBlank() || transactionType != null || sortField != DomainModel.COLUMN_CREATED_AT || sortOrder != SortOrder.DESC
                 val buttonColor = if (!filterVisible && isFiltered) {
                     MaterialTheme.colorScheme.tertiaryContainer
                 } else {

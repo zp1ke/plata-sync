@@ -6,7 +6,7 @@ import androidx.room.Transaction
 import androidx.room.Upsert
 import org.zp1ke.platasync.data.model.SortOrder
 import org.zp1ke.platasync.data.model.UserFullTransaction
-import org.zp1ke.platasync.domain.BaseModel
+import org.zp1ke.platasync.domain.DomainModel
 import org.zp1ke.platasync.domain.UserTransaction
 import org.zp1ke.platasync.model.TransactionType
 
@@ -21,18 +21,18 @@ interface UserTransactionDao {
         ORDER BY 
             CASE WHEN :sortOrder = '${SortOrder.ASC_VALUE}' THEN
                 CASE :sortKey
-                    WHEN '${BaseModel.COLUMN_CREATED_AT}' THEN ${BaseModel.COLUMN_CREATED_AT}
+                    WHEN '${DomainModel.COLUMN_CREATED_AT}' THEN ${DomainModel.COLUMN_CREATED_AT}
                 END
             END ASC,
             CASE WHEN :sortOrder = '${SortOrder.DESC_VALUE}' THEN
                 CASE :sortKey
-                    WHEN '${BaseModel.COLUMN_CREATED_AT}' THEN ${BaseModel.COLUMN_CREATED_AT}
+                    WHEN '${DomainModel.COLUMN_CREATED_AT}' THEN ${DomainModel.COLUMN_CREATED_AT}
                 END
             END DESC
     """
     )
     suspend fun getAll(
-        sortKey: String = BaseModel.COLUMN_CREATED_AT,
+        sortKey: String = DomainModel.COLUMN_CREATED_AT,
         sortOrder: SortOrder = SortOrder.DESC,
     ): List<UserTransaction>
 
@@ -43,19 +43,19 @@ interface UserTransactionDao {
         ORDER BY 
             CASE WHEN :sortOrder = '${SortOrder.ASC_VALUE}' THEN
                 CASE :sortKey
-                    WHEN '${BaseModel.COLUMN_CREATED_AT}' THEN ${BaseModel.COLUMN_CREATED_AT}
+                    WHEN '${DomainModel.COLUMN_CREATED_AT}' THEN ${DomainModel.COLUMN_CREATED_AT}
                 END
             END ASC,
             CASE WHEN :sortOrder = '${SortOrder.DESC_VALUE}' THEN
                 CASE :sortKey
-                    WHEN '${BaseModel.COLUMN_CREATED_AT}' THEN ${BaseModel.COLUMN_CREATED_AT}
+                    WHEN '${DomainModel.COLUMN_CREATED_AT}' THEN ${DomainModel.COLUMN_CREATED_AT}
                 END
             END DESC
         LIMIT :limit OFFSET :offset
     """
     )
     suspend fun getFull(
-        sortKey: String = BaseModel.COLUMN_CREATED_AT,
+        sortKey: String = DomainModel.COLUMN_CREATED_AT,
         sortOrder: SortOrder = SortOrder.DESC,
         limit: Int,
         offset: Int,

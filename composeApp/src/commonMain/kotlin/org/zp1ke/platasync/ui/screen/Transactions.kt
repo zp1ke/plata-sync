@@ -20,10 +20,11 @@ import org.jetbrains.compose.resources.stringResource
 import org.koin.core.annotation.Factory
 import org.koin.core.annotation.Named
 import org.zp1ke.platasync.data.model.SortOrder
+import org.zp1ke.platasync.data.model.UserFullTransaction
 import org.zp1ke.platasync.data.repository.DaoTransactionsRepository
 import org.zp1ke.platasync.data.repository.TransactionsRepository
 import org.zp1ke.platasync.data.viewModel.TransactionViewModel
-import org.zp1ke.platasync.domain.BaseModel
+import org.zp1ke.platasync.domain.DomainModel
 import org.zp1ke.platasync.domain.UserTransaction
 import org.zp1ke.platasync.ui.common.BaseList
 import org.zp1ke.platasync.ui.common.ItemActions
@@ -66,23 +67,23 @@ class TransactionsScreen(
         var showEditDialog by remember { mutableStateOf(false) }
         var transactionToDelete by remember { mutableStateOf<UserTransaction?>(null) }
 
-        val itemActions = object : ItemActions<UserTransaction> {
-            override fun onView(item: UserTransaction) {
+        val itemActions = object : ItemActions<UserFullTransaction> {
+            override fun onView(item: UserFullTransaction) {
                 // TODO implement view
             }
 
-            override fun onEdit(item: UserTransaction) {
-                transactionToEdit = item
+            override fun onEdit(item: UserFullTransaction) {
+                transactionToEdit = item.transaction
                 showEditDialog = true
             }
 
-            override fun onDelete(item: UserTransaction) {
-                transactionToDelete = item
+            override fun onDelete(item: UserFullTransaction) {
+                transactionToDelete = item.transaction
             }
         }
 
         var filterVisible by remember { mutableStateOf(false) }
-        var sortField by remember { mutableStateOf(BaseModel.COLUMN_CREATED_AT) }
+        var sortField by remember { mutableStateOf(DomainModel.COLUMN_CREATED_AT) }
         var sortOrder by remember { mutableStateOf(SortOrder.DESC) }
         var reloadTrigger by remember { mutableIntStateOf(0) }
 
@@ -98,7 +99,7 @@ class TransactionsScreen(
 
         val filterWidgetProvider = object : TopWidgetProvider {
             override fun action(): (@Composable () -> Unit) = {
-                val isFiltered = sortField != BaseModel.COLUMN_CREATED_AT || sortOrder != SortOrder.DESC
+                val isFiltered = sortField != DomainModel.COLUMN_CREATED_AT || sortOrder != SortOrder.DESC
                 val buttonColor = if (!filterVisible && isFiltered) {
                     MaterialTheme.colorScheme.tertiaryContainer
                 } else {
@@ -174,7 +175,7 @@ class TransactionsScreen(
                     headlineContent = { transaction ->
                         {
                             Text(
-                                text = transaction.amount.formatAsMoney(),
+                                text = transaction.signedAmount.formatAsMoney(),
                                 style = MaterialTheme.typography.titleMedium
                                     .copy(color = MaterialTheme.colorScheme.onSurfaceVariant),
                             )
@@ -183,7 +184,7 @@ class TransactionsScreen(
                     supportingContent = { transaction ->
                         {
                             Text(
-                                text = transaction.amount.formatAsMoney(),
+                                text = transaction.signedAmount.formatAsMoney(),
                                 style = MaterialTheme.typography.bodySmall
                                     .copy(
                                         color = MaterialTheme.colorScheme.onSurfaceVariant,

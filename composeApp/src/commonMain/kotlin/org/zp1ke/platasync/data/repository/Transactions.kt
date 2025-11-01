@@ -6,14 +6,14 @@ import org.zp1ke.platasync.data.dao.UserTransactionDao
 import org.zp1ke.platasync.data.model.SortOrder
 import org.zp1ke.platasync.data.model.UserFullTransaction
 import org.zp1ke.platasync.data.room.AppDatabase
-import org.zp1ke.platasync.domain.BaseModel
+import org.zp1ke.platasync.domain.DomainModel
 import org.zp1ke.platasync.domain.UserTransaction
 import org.zp1ke.platasync.model.BalanceStats
 import org.zp1ke.platasync.model.TransactionType
 
 interface TransactionsRepository : BaseRepository<UserTransaction> {
     suspend fun getFull(
-        sortKey: String = BaseModel.COLUMN_CREATED_AT,
+        sortKey: String = DomainModel.COLUMN_CREATED_AT,
         sortOrder: SortOrder = SortOrder.DESC,
         limit: Int,
         offset: Int,

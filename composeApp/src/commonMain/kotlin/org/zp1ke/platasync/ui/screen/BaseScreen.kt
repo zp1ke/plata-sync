@@ -11,14 +11,14 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import org.jetbrains.compose.resources.StringResource
 import org.jetbrains.compose.resources.stringResource
-import org.zp1ke.platasync.domain.BaseModel
+import org.zp1ke.platasync.domain.DomainModel
 import org.zp1ke.platasync.ui.common.ItemActions
 import org.zp1ke.platasync.ui.common.LoadingIndicator
 import org.zp1ke.platasync.ui.theme.Spacing
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun <T : BaseModel> BaseScreen(
+fun <T : DomainModel> BaseScreen(
     isLoading: Boolean = false,
     onReload: () -> Unit,
     onAdd: () -> Unit,

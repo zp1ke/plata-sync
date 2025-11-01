@@ -10,7 +10,7 @@ import androidx.compose.ui.Modifier
 import org.jetbrains.compose.resources.StringResource
 import org.jetbrains.compose.resources.stringResource
 import org.zp1ke.platasync.data.model.SortOrder
-import org.zp1ke.platasync.domain.BaseModel
+import org.zp1ke.platasync.domain.DomainModel
 import org.zp1ke.platasync.ui.theme.Spacing
 import platasync.composeapp.generated.resources.*
 
@@ -20,7 +20,7 @@ fun BaseFilterWidget(
     enabled: Boolean,
     sortField: String,
     sortFieldOptions: Map<String, StringResource> = mapOf(
-        BaseModel.COLUMN_CREATED_AT to Res.string.sort_field_created,
+        DomainModel.COLUMN_CREATED_AT to Res.string.sort_field_created,
     ),
     onSortFieldChange: (String) -> Unit,
     sortOrder: SortOrder,

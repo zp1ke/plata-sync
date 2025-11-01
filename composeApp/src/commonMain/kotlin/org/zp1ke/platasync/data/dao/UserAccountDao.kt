@@ -4,7 +4,7 @@ import androidx.room.Dao
 import androidx.room.Query
 import androidx.room.Upsert
 import org.zp1ke.platasync.data.model.SortOrder
-import org.zp1ke.platasync.domain.BaseModel
+import org.zp1ke.platasync.domain.DomainModel
 import org.zp1ke.platasync.domain.UserAccount
 
 @Dao
@@ -19,14 +19,14 @@ interface UserAccountDao {
         ORDER BY 
             CASE WHEN :sortOrder = '${SortOrder.ASC_VALUE}' THEN
                 CASE :sortKey
-                    WHEN '${BaseModel.COLUMN_CREATED_AT}' THEN ${BaseModel.COLUMN_CREATED_AT}
+                    WHEN '${DomainModel.COLUMN_CREATED_AT}' THEN ${DomainModel.COLUMN_CREATED_AT}
                     WHEN '${UserAccount.COLUMN_NAME}' THEN ${UserAccount.COLUMN_NAME}
                     WHEN '${UserAccount.COLUMN_BALANCE}' THEN ${UserAccount.COLUMN_BALANCE}
                 END
             END ASC,
             CASE WHEN :sortOrder = '${SortOrder.DESC_VALUE}' THEN
                 CASE :sortKey
-                    WHEN '${BaseModel.COLUMN_CREATED_AT}' THEN ${BaseModel.COLUMN_CREATED_AT}
+                    WHEN '${DomainModel.COLUMN_CREATED_AT}' THEN ${DomainModel.COLUMN_CREATED_AT}
                     WHEN '${UserAccount.COLUMN_NAME}' THEN ${UserAccount.COLUMN_NAME}
                     WHEN '${UserAccount.COLUMN_BALANCE}' THEN ${UserAccount.COLUMN_BALANCE}
                 END
@@ -35,7 +35,7 @@ interface UserAccountDao {
     )
     suspend fun getAll(
         nameFilter: String? = null,
-        sortKey: String = BaseModel.COLUMN_CREATED_AT,
+        sortKey: String = DomainModel.COLUMN_CREATED_AT,
         sortOrder: SortOrder = SortOrder.DESC,
     ): List<UserAccount>
 

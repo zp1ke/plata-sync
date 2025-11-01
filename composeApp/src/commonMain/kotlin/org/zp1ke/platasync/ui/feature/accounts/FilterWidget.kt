@@ -6,7 +6,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.key
 import org.jetbrains.compose.resources.stringResource
 import org.zp1ke.platasync.data.model.SortOrder
-import org.zp1ke.platasync.domain.BaseModel
+import org.zp1ke.platasync.domain.DomainModel
 import org.zp1ke.platasync.domain.UserAccount
 import org.zp1ke.platasync.ui.input.BaseFilterWidget
 import org.zp1ke.platasync.ui.input.DebouncedTextField
@@ -30,7 +30,7 @@ fun AccountsFilterWidget(
         enabled = enabled,
         sortField = sortField,
         sortFieldOptions = mapOf(
-            BaseModel.COLUMN_CREATED_AT to Res.string.sort_field_created,
+            DomainModel.COLUMN_CREATED_AT to Res.string.sort_field_created,
             UserAccount.COLUMN_NAME to Res.string.accounts_sort_field_name,
             UserAccount.COLUMN_BALANCE to Res.string.accounts_sort_field_balance,
         ),
