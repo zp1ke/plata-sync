@@ -47,6 +47,7 @@ fun BaseFilterWidget(
             expanded = sortFieldExpanded,
             onExpandedChange = {
                 if (enabled) {
+                    @Suppress("ASSIGNED_VALUE_IS_NEVER_READ")
                     sortFieldExpanded = it
                 }
             },

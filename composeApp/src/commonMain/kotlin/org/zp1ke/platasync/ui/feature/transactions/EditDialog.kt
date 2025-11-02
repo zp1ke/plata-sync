@@ -19,11 +19,7 @@ import org.zp1ke.platasync.domain.UserAccount
 import org.zp1ke.platasync.domain.UserCategory
 import org.zp1ke.platasync.domain.UserTransaction
 import org.zp1ke.platasync.model.TransactionType
-import org.zp1ke.platasync.ui.common.MoneyField
-import org.zp1ke.platasync.ui.input.SelectAccount
-import org.zp1ke.platasync.ui.input.SelectCategory
-import org.zp1ke.platasync.ui.input.SelectTargetAccount
-import org.zp1ke.platasync.ui.input.SelectTransactionType
+import org.zp1ke.platasync.ui.input.*
 import org.zp1ke.platasync.ui.theme.Spacing
 import org.zp1ke.platasync.util.randomId
 import platasync.composeapp.generated.resources.*

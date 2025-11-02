@@ -13,8 +13,8 @@ import org.jetbrains.compose.ui.tooling.preview.Preview
 import org.zp1ke.platasync.domain.UserAccount
 import org.zp1ke.platasync.ui.common.AppIcon
 import org.zp1ke.platasync.ui.common.AppIconType
-import org.zp1ke.platasync.ui.common.MoneyField
-import org.zp1ke.platasync.ui.form.SelectIcon
+import org.zp1ke.platasync.ui.input.MoneyField
+import org.zp1ke.platasync.ui.input.SelectIcon
 import org.zp1ke.platasync.ui.theme.Spacing
 import org.zp1ke.platasync.util.randomId
 import platasync.composeapp.generated.resources.*

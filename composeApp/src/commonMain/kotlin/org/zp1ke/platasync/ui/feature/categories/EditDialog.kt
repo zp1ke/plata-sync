@@ -12,7 +12,7 @@ import org.zp1ke.platasync.domain.UserCategory
 import org.zp1ke.platasync.model.TransactionType
 import org.zp1ke.platasync.ui.common.AppIcon
 import org.zp1ke.platasync.ui.common.AppIconType
-import org.zp1ke.platasync.ui.form.SelectIcon
+import org.zp1ke.platasync.ui.input.SelectIcon
 import org.zp1ke.platasync.ui.input.SelectTransactionTypes
 import org.zp1ke.platasync.ui.theme.Spacing
 import org.zp1ke.platasync.util.randomId

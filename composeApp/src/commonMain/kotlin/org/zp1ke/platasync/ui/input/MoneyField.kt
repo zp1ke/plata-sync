@@ -1,4 +1,4 @@
-package org.zp1ke.platasync.ui.common
+package org.zp1ke.platasync.ui.input
 
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.text.KeyboardOptions

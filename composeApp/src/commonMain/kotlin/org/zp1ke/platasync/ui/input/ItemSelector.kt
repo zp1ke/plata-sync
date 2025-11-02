@@ -37,7 +37,7 @@ fun <T> ItemSelector(
     var showDialog by remember { mutableStateOf(false) }
     var searchQuery by remember { mutableStateOf("") }
     val listState = rememberLazyListState()
-    val coroutineScope = rememberCoroutineScope()
+    rememberCoroutineScope()
 
     // Detect when user scrolls near the end
     LaunchedEffect(listState.canScrollForward, listState.isScrollInProgress) {
@@ -79,7 +79,10 @@ fun <T> ItemSelector(
     // Dialog with search and list
     if (showDialog) {
         Dialog(
-            onDismissRequest = { showDialog = false },
+            onDismissRequest = {
+                @Suppress("ASSIGNED_VALUE_IS_NEVER_READ")
+                showDialog = false
+            },
             properties = DialogProperties(usePlatformDefaultWidth = false)
         ) {
             Surface(
@@ -157,6 +160,7 @@ fun <T> ItemSelector(
                                             .fillMaxWidth()
                                             .clickable {
                                                 onItemSelected(item)
+                                                @Suppress("ASSIGNED_VALUE_IS_NEVER_READ")
                                                 showDialog = false
                                                 searchQuery = ""
                                             },
@@ -206,6 +210,7 @@ fun <T> ItemSelector(
                         horizontalArrangement = Arrangement.End
                     ) {
                         TextButton(onClick = {
+                            @Suppress("ASSIGNED_VALUE_IS_NEVER_READ")
                             showDialog = false
                             searchQuery = ""
                         }) {
