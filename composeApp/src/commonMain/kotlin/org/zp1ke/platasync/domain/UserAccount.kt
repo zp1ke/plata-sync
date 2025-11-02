@@ -4,6 +4,7 @@ import androidx.room.ColumnInfo
 import androidx.room.Entity
 import androidx.room.Ignore
 import androidx.room.PrimaryKey
+import org.zp1ke.platasync.model.TransactionType
 import org.zp1ke.platasync.ui.common.AppIcon
 import java.time.OffsetDateTime
 
@@ -32,4 +33,11 @@ data class UserAccount(
 
     @Ignore
     override fun createdAt(): OffsetDateTime = createdAt
+
+    fun balanceAfter(amount: Int, transactionType: TransactionType): Int {
+        return when (transactionType) {
+            TransactionType.INCOME -> balance + amount
+            TransactionType.EXPENSE, TransactionType.TRANSFER -> balance - amount
+        }
+    }
 }

@@ -40,7 +40,7 @@ class TransactionViewModel(
         }
     }
 
-    fun addItem(item: UserTransaction) {
+    fun saveItem(item: UserTransaction) {
         mutableState.value = mutableState.value.copy(isLoading = true)
         screenModelScope.launch {
             repository.saveItem(item)

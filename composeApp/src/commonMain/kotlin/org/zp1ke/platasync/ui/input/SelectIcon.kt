@@ -1,4 +1,4 @@
-package org.zp1ke.platasync.ui.form
+package org.zp1ke.platasync.ui.input
 
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column

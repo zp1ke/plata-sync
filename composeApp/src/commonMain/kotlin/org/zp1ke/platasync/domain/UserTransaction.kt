@@ -25,6 +25,10 @@ data class UserTransaction(
     val transactionType: TransactionType,
     @ColumnInfo(name = COLUMN_DATETIME, index = true)
     val datetime: OffsetDateTime,
+    @ColumnInfo(name = COLUMN_ACCOUNT_BALANCE_AFTER)
+    val accountBalanceAfter: Int,
+    @ColumnInfo(name = COLUMN_TARGET_ACCOUNT_BALANCE_AFTER)
+    val targetAccountBalanceAfter: Int?,
 ) : DomainModel {
     companion object {
         const val TABLE_NAME = "users_transactions"
@@ -35,6 +39,8 @@ data class UserTransaction(
         const val COLUMN_AMOUNT = "amount"
         const val COLUMN_TRANSACTION_TYPE = "transaction_type"
         const val COLUMN_DATETIME = "datetime"
+        const val COLUMN_ACCOUNT_BALANCE_AFTER = "account_balance_after"
+        const val COLUMN_TARGET_ACCOUNT_BALANCE_AFTER = "target_account_balance_after"
     }
 
     @Ignore

@@ -221,7 +221,7 @@ class CategoriesScreen(
                 categoryToEdit = null
             },
             onSubmit = { category ->
-                viewModel.addItem(category)
+                viewModel.saveItem(category)
                 @Suppress("ASSIGNED_VALUE_IS_NEVER_READ")
                 showEditDialog = false
                 @Suppress("ASSIGNED_VALUE_IS_NEVER_READ")

@@ -243,8 +243,8 @@ class TransactionsScreen(
                 @Suppress("ASSIGNED_VALUE_IS_NEVER_READ")
                 transactionToEdit = null
             },
-            onSubmit = { account ->
-                viewModel.addItem(account)
+            onSubmit = { transaction ->
+                viewModel.saveItem(transaction)
                 @Suppress("ASSIGNED_VALUE_IS_NEVER_READ")
                 showEditDialog = false
                 @Suppress("ASSIGNED_VALUE_IS_NEVER_READ")

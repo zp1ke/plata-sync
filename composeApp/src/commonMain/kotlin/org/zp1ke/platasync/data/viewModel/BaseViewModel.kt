@@ -44,7 +44,7 @@ class BaseViewModel<T : DomainModel>(
         }
     }
 
-    fun addItem(item: T) {
+    fun saveItem(item: T) {
         mutableState.value = mutableState.value.copy(isLoading = true)
         screenModelScope.launch {
             repository.saveItem(item)

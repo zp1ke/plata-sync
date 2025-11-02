@@ -93,6 +93,7 @@ fun SelectCategory(
         items = categories,
         onSearch = { query ->
             searchJob?.cancel()
+            @Suppress("ASSIGNED_VALUE_IS_NEVER_READ")
             searchJob = scope.launch {
                 delay(300) // Debounce
                 searchQuery = query

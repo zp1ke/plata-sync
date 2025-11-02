@@ -13,7 +13,9 @@ import org.jetbrains.compose.ui.tooling.preview.Preview
 import org.koin.compose.koinInject
 import org.koin.core.qualifier.named
 import org.zp1ke.platasync.data.repository.BaseRepository
+import org.zp1ke.platasync.data.repository.DaoAccountsRepository
 import org.zp1ke.platasync.data.repository.DaoCategoriesRepository
+import org.zp1ke.platasync.domain.UserAccount
 import org.zp1ke.platasync.domain.UserCategory
 import org.zp1ke.platasync.domain.UserTransaction
 import org.zp1ke.platasync.model.TransactionType
@@ -34,11 +36,12 @@ fun TransactionEditDialog(
     showDialog: Boolean = true,
     onDismiss: () -> Unit = {},
     onSubmit: (UserTransaction) -> Unit = { _ -> },
+    accountRepository: BaseRepository<UserAccount> = koinInject(named(DaoAccountsRepository.KEY)),
     categoryRepository: BaseRepository<UserCategory> = koinInject(named(DaoCategoriesRepository.KEY))
 ) {
-    var accountId by remember(transaction) { mutableStateOf(transaction?.accountId) }
-    var targetAccountId by remember(transaction) { mutableStateOf(transaction?.targetAccountId) }
-    var categoryId by remember(transaction) { mutableStateOf(transaction?.categoryId) }
+    var account: UserAccount? by remember(transaction) { mutableStateOf(null) }
+    var targetAccount: UserAccount? by remember(transaction) { mutableStateOf(null) }
+    var category: UserCategory? by remember(transaction) { mutableStateOf(null) }
     var selectedCategoryTransactionTypes by remember { mutableStateOf<List<TransactionType>>(emptyList()) }
     var description by remember(transaction) { mutableStateOf(transaction?.description ?: "") }
     var amount by remember(transaction) { mutableIntStateOf(transaction?.amount ?: 0) }
@@ -54,20 +57,19 @@ fun TransactionEditDialog(
     }
 
     // Track selected category's transaction types
-    LaunchedEffect(categoryId) {
-        if (categoryId != null) {
-            val category = categoryRepository.getItemById(categoryId!!)
-            selectedCategoryTransactionTypes = category?.transactionTypes ?: emptyList()
+    LaunchedEffect(category) {
+        selectedCategoryTransactionTypes = if (category != null) {
+            category?.transactionTypes ?: emptyList()
         } else {
-            selectedCategoryTransactionTypes = emptyList()
+            emptyList()
         }
     }
 
     // Clear categoryId if transaction type changes and is not compatible with selected category
     LaunchedEffect(transactionType, selectedCategoryTransactionTypes) {
-        if (categoryId != null && selectedCategoryTransactionTypes.isNotEmpty()) {
+        if (category != null && selectedCategoryTransactionTypes.isNotEmpty()) {
             if (!selectedCategoryTransactionTypes.contains(transactionType)) {
-                categoryId = null
+                category = null
             }
         }
     }
@@ -75,42 +77,55 @@ fun TransactionEditDialog(
     // Clear categoryId/targetAccountId when switching between TRANSFER and other types
     LaunchedEffect(transactionType) {
         if (transactionType == TransactionType.TRANSFER) {
-            categoryId = null
+            category = null
         } else {
-            targetAccountId = null
+            targetAccount = null
         }
     }
 
     // Clear targetAccountId if it matches the source accountId
-    LaunchedEffect(accountId, targetAccountId) {
-        if (accountId != null && targetAccountId != null && accountId == targetAccountId) {
-            targetAccountId = null
+    LaunchedEffect(account, targetAccount) {
+        if (account != null && targetAccount != null && account?.id == targetAccount?.id) {
+            targetAccount = null
+        }
+    }
+
+    // Load initial account, targetAccount, category
+    LaunchedEffect(transaction) {
+        if (transaction != null) {
+            account = accountRepository.getItemById(transaction.accountId)
+            targetAccount = transaction.targetAccountId?.let {
+                accountRepository.getItemById(it)
+            }
+            category = transaction.categoryId?.let {
+                categoryRepository.getItemById(it)
+            }
         }
     }
 
     fun checkValid(): Boolean {
-        return amount > 0 && accountId != null &&
+        return amount > 0 && account != null &&
                 if (transactionType == TransactionType.TRANSFER) {
-                    targetAccountId != null && targetAccountId != accountId
+                    targetAccount != null && targetAccount?.id != account?.id
                 } else {
-                    categoryId != null
+                    category != null
                 }
     }
 
     var isValid by remember(
         transaction,
-        accountId,
-        targetAccountId,
-        categoryId,
+        account,
+        targetAccount,
+        category,
         amount,
         transactionType,
         datetime,
     ) { mutableStateOf(checkValid()) }
 
     fun onClose() {
-        accountId = null
-        targetAccountId = null
-        categoryId = null
+        account = null
+        targetAccount = null
+        category = null
         description = ""
         amount = 0
         transactionType = TransactionType.EXPENSE
@@ -156,9 +171,9 @@ fun TransactionEditDialog(
                         horizontalArrangement = Arrangement.spacedBy(Spacing.small)
                     ) {
                         SelectAccount(
-                            selectedAccountId = accountId,
-                            onAccountSelected = { account ->
-                                accountId = account.id
+                            selectedAccountId = account?.id,
+                            onAccountSelected = { selectedAccount ->
+                                account = selectedAccount
                                 isValid = checkValid()
                             },
                             modifier = Modifier.weight(1f)
@@ -166,20 +181,20 @@ fun TransactionEditDialog(
 
                         if (transactionType == TransactionType.TRANSFER) {
                             SelectTargetAccount(
-                                selectedTargetAccountId = targetAccountId,
-                                excludeAccountId = accountId,
-                                onAccountSelected = { account ->
-                                    targetAccountId = account.id
+                                selectedTargetAccountId = targetAccount?.id,
+                                excludeAccountId = account?.id,
+                                onAccountSelected = { selectedAccount ->
+                                    targetAccount = selectedAccount
                                     isValid = checkValid()
                                 },
                                 modifier = Modifier.weight(1f)
                             )
                         } else {
                             SelectCategory(
-                                selectedCategoryId = categoryId,
+                                selectedCategoryId = category?.id,
                                 transactionType = transactionType,
-                                onCategorySelected = { category ->
-                                    categoryId = category.id
+                                onCategorySelected = { selectedCategory ->
+                                    category = selectedCategory
                                     isValid = checkValid()
                                 },
                                 modifier = Modifier.weight(1f)
@@ -224,13 +239,15 @@ fun TransactionEditDialog(
                                     UserTransaction(
                                         id,
                                         createdAt,
-                                        accountId!!,
-                                        targetAccountId,
-                                        categoryId,
+                                        account?.id!!,
+                                        targetAccount?.id,
+                                        category?.id,
                                         description,
                                         amount,
                                         transactionType,
                                         datetime,
+                                        account!!.balanceAfter(amount, transactionType),
+                                        targetAccount?.balanceAfter(amount, transactionType),
                                     )
                                 )
                                 onClose()
