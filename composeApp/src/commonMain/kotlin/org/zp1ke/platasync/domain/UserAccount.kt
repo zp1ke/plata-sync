@@ -40,4 +40,11 @@ data class UserAccount(
             TransactionType.EXPENSE, TransactionType.TRANSFER -> balance - amount
         }
     }
+
+    fun balanceBefore(amount: Int, transactionType: TransactionType): Int {
+        return when (transactionType) {
+            TransactionType.INCOME -> balance - amount
+            TransactionType.EXPENSE, TransactionType.TRANSFER -> balance + amount
+        }
+    }
 }

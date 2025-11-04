@@ -5,13 +5,16 @@ import cafe.adriel.voyager.core.model.screenModelScope
 import kotlinx.coroutines.launch
 import org.zp1ke.platasync.data.model.SortOrder
 import org.zp1ke.platasync.data.model.UserFullTransaction
+import org.zp1ke.platasync.data.repository.BaseRepository
 import org.zp1ke.platasync.data.repository.TransactionsRepository
 import org.zp1ke.platasync.domain.DomainModel
+import org.zp1ke.platasync.domain.UserAccount
 import org.zp1ke.platasync.domain.UserTransaction
 import org.zp1ke.platasync.model.BalanceStats
 
 class TransactionViewModel(
-    private val repository: TransactionsRepository
+    private val repository: TransactionsRepository,
+    private val accountRepository: BaseRepository<UserAccount>
 ) : StateScreenModel<ScreenState<UserFullTransaction>>(
     ScreenState(
         data = listOf(),
@@ -44,6 +47,18 @@ class TransactionViewModel(
         mutableState.value = mutableState.value.copy(isLoading = true)
         screenModelScope.launch {
             repository.saveItem(item)
+            val account = accountRepository.getItemById(item.accountId)
+            if (account != null) {
+                accountRepository.saveItem(account.copy(balance = item.accountBalanceAfter))
+            }
+            val targetAccount = if (item.targetAccountId != null && item.targetAccountBalanceAfter != null) {
+                accountRepository.getItemById(item.targetAccountId)
+            } else {
+                null
+            }
+            if (targetAccount != null) {
+                accountRepository.saveItem(targetAccount.copy(balance = item.targetAccountBalanceAfter!!))
+            }
             loadItems()
         }
     }
@@ -52,6 +67,20 @@ class TransactionViewModel(
         mutableState.value = mutableState.value.copy(isLoading = true)
         screenModelScope.launch {
             repository.deleteItem(item.id)
+            val account = accountRepository.getItemById(item.accountId)
+            if (account != null) {
+                val accountBalanceBefore = account.balanceBefore(item.amount, item.transactionType)
+                accountRepository.saveItem(account.copy(balance = accountBalanceBefore))
+            }
+            val targetAccount = if (item.targetAccountId != null && item.targetAccountBalanceAfter != null) {
+                accountRepository.getItemById(item.targetAccountId)
+            } else {
+                null
+            }
+            if (targetAccount != null) {
+                val accountBalanceBefore = targetAccount.balanceAfter(item.amount, item.transactionType)
+                accountRepository.saveItem(targetAccount.copy(balance = accountBalanceBefore))
+            }
             loadItems()
         }
     }
