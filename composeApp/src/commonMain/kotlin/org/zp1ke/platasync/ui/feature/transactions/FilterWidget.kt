@@ -3,11 +3,9 @@ package org.zp1ke.platasync.ui.feature.transactions
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.runtime.Composable
 import org.zp1ke.platasync.data.model.SortOrder
-import org.zp1ke.platasync.domain.DomainModel
 import org.zp1ke.platasync.domain.UserTransaction
 import org.zp1ke.platasync.ui.input.BaseFilterWidget
 import platasync.composeapp.generated.resources.Res
-import platasync.composeapp.generated.resources.sort_field_created
 import platasync.composeapp.generated.resources.transactions_sort_field_amount
 import platasync.composeapp.generated.resources.transactions_sort_field_datetime
 
@@ -24,9 +22,8 @@ fun TransactionsFilterWidget(
         enabled = enabled,
         sortField = sortField,
         sortFieldOptions = mapOf(
-            DomainModel.COLUMN_CREATED_AT to Res.string.sort_field_created,
-            UserTransaction.COLUMN_AMOUNT to Res.string.transactions_sort_field_amount,
             UserTransaction.COLUMN_DATETIME to Res.string.transactions_sort_field_datetime,
+            UserTransaction.COLUMN_AMOUNT to Res.string.transactions_sort_field_amount,
         ),
         onSortFieldChange = onSortFieldChange,
         sortOrder = sortOrder,

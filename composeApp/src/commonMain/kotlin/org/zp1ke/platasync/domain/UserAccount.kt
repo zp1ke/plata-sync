@@ -20,12 +20,15 @@ data class UserAccount(
     val initialBalance: Int,
     @ColumnInfo(name = COLUMN_BALANCE)
     val balance: Int = initialBalance,
+    @ColumnInfo(name = COLUMN_LAST_USED_AT, index = true)
+    val lastUsedAt: OffsetDateTime = createdAt,
 ) : DomainModel {
     companion object {
         const val TABLE_NAME = "users_accounts"
 
         const val COLUMN_NAME = "name"
         const val COLUMN_BALANCE = "balance"
+        const val COLUMN_LAST_USED_AT = "last_used_at"
     }
 
     @Ignore

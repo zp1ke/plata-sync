@@ -21,7 +21,6 @@ import org.zp1ke.platasync.data.model.SortOrder
 import org.zp1ke.platasync.data.repository.BaseRepository
 import org.zp1ke.platasync.data.repository.DaoAccountsRepository
 import org.zp1ke.platasync.data.viewModel.BaseViewModel
-import org.zp1ke.platasync.domain.DomainModel
 import org.zp1ke.platasync.domain.UserAccount
 import org.zp1ke.platasync.ui.common.BaseList
 import org.zp1ke.platasync.ui.common.ImageIcon
@@ -82,7 +81,7 @@ class AccountsScreen(
 
         var filterVisible by remember { mutableStateOf(false) }
         var filterName by remember { mutableStateOf("") }
-        var sortField by remember { mutableStateOf(DomainModel.COLUMN_CREATED_AT) }
+        var sortField by remember { mutableStateOf(UserAccount.COLUMN_LAST_USED_AT) }
         var sortOrder by remember { mutableStateOf(SortOrder.DESC) }
         var reloadTrigger by remember { mutableIntStateOf(0) }
 
@@ -103,7 +102,7 @@ class AccountsScreen(
         val filterWidgetProvider = object : TopWidgetProvider {
             override fun action(): (@Composable () -> Unit) = {
                 val isFiltered =
-                    filterName.isNotBlank() || sortField != DomainModel.COLUMN_CREATED_AT || sortOrder != SortOrder.DESC
+                    filterName.isNotBlank() || sortField != UserAccount.COLUMN_LAST_USED_AT || sortOrder != SortOrder.DESC
                 val buttonColor = if (!filterVisible && isFiltered) {
                     MaterialTheme.colorScheme.tertiaryContainer
                 } else {

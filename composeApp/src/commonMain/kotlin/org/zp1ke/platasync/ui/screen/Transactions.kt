@@ -35,6 +35,7 @@ import org.zp1ke.platasync.ui.feature.transactions.TransactionEditDialog
 import org.zp1ke.platasync.ui.feature.transactions.TransactionsFilterWidget
 import org.zp1ke.platasync.ui.theme.Size
 import org.zp1ke.platasync.util.formatAsMoney
+import org.zp1ke.platasync.util.formatAsString
 import platasync.composeapp.generated.resources.*
 
 val transactionIcon = Icons.Filled.Receipt
@@ -102,7 +103,7 @@ class TransactionsScreen(
 
         val filterWidgetProvider = object : TopWidgetProvider {
             override fun action(): (@Composable () -> Unit) = {
-                val isFiltered = sortField != DomainModel.COLUMN_CREATED_AT || sortOrder != SortOrder.DESC
+                val isFiltered = sortField != UserTransaction.COLUMN_DATETIME || sortOrder != SortOrder.DESC
                 val buttonColor = if (!filterVisible && isFiltered) {
                     MaterialTheme.colorScheme.tertiaryContainer
                 } else {
@@ -172,7 +173,7 @@ class TransactionsScreen(
                     items = state.data,
                     actions = actions,
                     enabled = enabled,
-                    emptyStringResource = if (true) Res.string.accounts_empty else Res.string.accounts_empty_with_filter,
+                    emptyStringResource = if (true) Res.string.transactions_empty else Res.string.transactions_empty_with_filter,
                     editStringResource = Res.string.transaction_edit,
                     deleteStringResource = Res.string.transaction_delete,
                     headlineContent = { transaction ->
@@ -186,6 +187,12 @@ class TransactionsScreen(
                                 Text(
                                     text = transaction.account.name,
                                     style = MaterialTheme.typography.titleMedium
+                                        .copy(color = MaterialTheme.colorScheme.onSurfaceVariant),
+                                    modifier = Modifier.alignByBaseline()
+                                )
+                                Text(
+                                    text = " • ${transaction.transaction.datetime.formatAsString()}",
+                                    style = MaterialTheme.typography.bodySmall
                                         .copy(color = MaterialTheme.colorScheme.onSurfaceVariant),
                                     modifier = Modifier.alignByBaseline()
                                 )

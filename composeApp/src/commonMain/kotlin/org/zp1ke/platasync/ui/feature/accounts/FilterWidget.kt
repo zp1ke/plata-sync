@@ -6,14 +6,13 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.key
 import org.jetbrains.compose.resources.stringResource
 import org.zp1ke.platasync.data.model.SortOrder
-import org.zp1ke.platasync.domain.DomainModel
 import org.zp1ke.platasync.domain.UserAccount
 import org.zp1ke.platasync.ui.input.BaseFilterWidget
 import org.zp1ke.platasync.ui.input.DebouncedTextField
 import platasync.composeapp.generated.resources.Res
 import platasync.composeapp.generated.resources.accounts_sort_field_balance
+import platasync.composeapp.generated.resources.accounts_sort_field_last_used_at
 import platasync.composeapp.generated.resources.accounts_sort_field_name
-import platasync.composeapp.generated.resources.sort_field_created
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -30,7 +29,7 @@ fun AccountsFilterWidget(
         enabled = enabled,
         sortField = sortField,
         sortFieldOptions = mapOf(
-            DomainModel.COLUMN_CREATED_AT to Res.string.sort_field_created,
+            UserAccount.COLUMN_LAST_USED_AT to Res.string.accounts_sort_field_last_used_at,
             UserAccount.COLUMN_NAME to Res.string.accounts_sort_field_name,
             UserAccount.COLUMN_BALANCE to Res.string.accounts_sort_field_balance,
         ),

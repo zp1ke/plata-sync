@@ -11,6 +11,7 @@ import org.zp1ke.platasync.domain.DomainModel
 import org.zp1ke.platasync.domain.UserAccount
 import org.zp1ke.platasync.domain.UserTransaction
 import org.zp1ke.platasync.model.BalanceStats
+import java.time.OffsetDateTime
 
 class TransactionViewModel(
     private val repository: TransactionsRepository,
@@ -49,7 +50,12 @@ class TransactionViewModel(
             repository.saveItem(item)
             val account = accountRepository.getItemById(item.accountId)
             if (account != null) {
-                accountRepository.saveItem(account.copy(balance = item.accountBalanceAfter))
+                accountRepository.saveItem(
+                    account.copy(
+                        balance = item.accountBalanceAfter,
+                        lastUsedAt = OffsetDateTime.now()
+                    )
+                )
             }
             val targetAccount = if (item.targetAccountId != null && item.targetAccountBalanceAfter != null) {
                 accountRepository.getItemById(item.targetAccountId)

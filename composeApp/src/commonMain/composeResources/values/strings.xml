@@ -19,6 +19,7 @@
     <string name="accounts_refresh">Refresh Accounts</string>
     <string name="accounts_sort_field_name">Name</string>
     <string name="accounts_sort_field_balance">Balance</string>
+    <string name="accounts_sort_field_last_used_at">Last Used at</string>
     <!-- Category -->
     <string name="categories_list">Categories</string>
     <string name="category_add">Add Category</string>
