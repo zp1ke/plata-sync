@@ -26,43 +26,48 @@ fun App() {
     KoinApplication(application = {
         modules(appModule())
     }) {
-        val tabs: List<Tab> = getKoin().getAll()
-        // Determine the first tab to show based on the lowest index and title
-        val firstTab = tabs.minByOrNull { tab -> tab.options.index }?.let { minIndexTab ->
-            tabs.filter { it.options.index == minIndexTab.options.index }
-                .minByOrNull { it.options.title }
-        } ?: tabs.first()
+        AppContent()
+    }
+}
 
-        AppTheme {
-            Surface(
-                modifier = Modifier
-                    .background(MaterialTheme.colorScheme.background)
-                    .fillMaxSize(),
-                color = MaterialTheme.colorScheme.background,
-            ) {
-                TabNavigator(firstTab) {
-                    Scaffold(
-                        content = { paddingValues ->
-                            Column(
-                                modifier = Modifier
-                                    .fillMaxSize()
-                                    .padding(
-                                        start = paddingValues.calculateLeftPadding(LayoutDirection.Ltr),
-                                        end = paddingValues.calculateRightPadding(LayoutDirection.Ltr),
-                                    )
-                            ) {
-                                CurrentTab()
-                            }
-                        },
-                        bottomBar = {
-                            NavigationBar(
-                                containerColor = MaterialTheme.colorScheme.background,
-                            ) {
-                                tabs.map { TabItem(it) }
-                            }
+@Composable
+private fun AppContent() {
+    val allTabs: List<Tab> = getKoin().getAll()
+    // Access tab options in composable context and create pairs
+    val tabsWithIndex = allTabs.map { tab -> tab to tab.options.index }
+    // Sort by index
+    val tabs = tabsWithIndex.sortedBy { it.second }.map { it.first }
+    val firstTab = tabs.firstOrNull() ?: error("No tabs found")
+
+    AppTheme {
+        Surface(
+            modifier = Modifier
+                .background(MaterialTheme.colorScheme.background)
+                .fillMaxSize(),
+            color = MaterialTheme.colorScheme.background,
+        ) {
+            TabNavigator(firstTab) {
+                Scaffold(
+                    content = { paddingValues ->
+                        Column(
+                            modifier = Modifier
+                                .fillMaxSize()
+                                .padding(
+                                    start = paddingValues.calculateLeftPadding(LayoutDirection.Ltr),
+                                    end = paddingValues.calculateRightPadding(LayoutDirection.Ltr),
+                                )
+                        ) {
+                            CurrentTab()
                         }
-                    )
-                }
+                    },
+                    bottomBar = {
+                        NavigationBar(
+                            containerColor = MaterialTheme.colorScheme.background,
+                        ) {
+                            tabs.map { TabItem(it) }
+                        }
+                    }
+                )
             }
         }
     }

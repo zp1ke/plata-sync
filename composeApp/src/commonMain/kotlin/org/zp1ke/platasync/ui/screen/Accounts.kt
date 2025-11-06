@@ -18,9 +18,9 @@ import org.jetbrains.compose.resources.stringResource
 import org.koin.core.annotation.Factory
 import org.koin.core.annotation.Named
 import org.zp1ke.platasync.data.model.SortOrder
-import org.zp1ke.platasync.data.repository.BaseRepository
+import org.zp1ke.platasync.data.repository.AccountsRepository
 import org.zp1ke.platasync.data.repository.DaoAccountsRepository
-import org.zp1ke.platasync.data.viewModel.BaseViewModel
+import org.zp1ke.platasync.data.viewModel.AccountsViewModel
 import org.zp1ke.platasync.domain.UserAccount
 import org.zp1ke.platasync.ui.common.BaseList
 import org.zp1ke.platasync.ui.common.ImageIcon
@@ -36,9 +36,9 @@ val accountIcon = Icons.Filled.AccountBalanceWallet
 
 @Factory
 class AccountsScreen(
-    @Named(DaoAccountsRepository.KEY) repository: BaseRepository<UserAccount>,
+    @Named(DaoAccountsRepository.KEY) repository: AccountsRepository,
 ) : Tab {
-    private val screenViewModel: BaseViewModel<UserAccount> = BaseViewModel(repository)
+    private val screenViewModel: AccountsViewModel = AccountsViewModel(repository)
 
     override val options: TabOptions
         @Composable

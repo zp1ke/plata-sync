@@ -15,7 +15,7 @@ import org.jetbrains.compose.resources.stringResource
 import org.koin.compose.koinInject
 import org.koin.core.qualifier.named
 import org.zp1ke.platasync.data.model.SortOrder
-import org.zp1ke.platasync.data.repository.BaseRepository
+import org.zp1ke.platasync.data.repository.AccountsRepository
 import org.zp1ke.platasync.data.repository.DaoAccountsRepository
 import org.zp1ke.platasync.domain.DomainModel
 import org.zp1ke.platasync.domain.UserAccount
@@ -31,7 +31,7 @@ fun SelectTargetAccount(
     excludeAccountId: String?,
     onAccountSelected: (UserAccount) -> Unit,
     modifier: Modifier = Modifier,
-    repository: BaseRepository<UserAccount> = koinInject(named(DaoAccountsRepository.KEY))
+    repository: AccountsRepository = koinInject(named(DaoAccountsRepository.KEY))
 ) {
     var accounts by remember { mutableStateOf<List<UserAccount>>(emptyList()) }
     var isLoading by remember { mutableStateOf(false) }

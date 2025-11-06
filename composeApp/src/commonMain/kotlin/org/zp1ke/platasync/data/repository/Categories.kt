@@ -6,7 +6,6 @@ import org.zp1ke.platasync.data.dao.UserCategoryDao
 import org.zp1ke.platasync.data.model.SortOrder
 import org.zp1ke.platasync.data.room.AppDatabase
 import org.zp1ke.platasync.domain.UserCategory
-import org.zp1ke.platasync.model.BalanceStats
 
 @Single
 @Named(DaoCategoriesRepository.KEY)
@@ -30,8 +29,6 @@ class DaoCategoriesRepository(
         }
         return categoryDao.getAll(nameFilter, transactionTypeFilter, sortKey, sortOrder)
     }
-
-    override suspend fun getBalanceStats(): BalanceStats = BalanceStats()
 
     override suspend fun getItemById(id: String): UserCategory? = categoryDao.getById(id)
 

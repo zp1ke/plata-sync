@@ -8,11 +8,15 @@ import org.zp1ke.platasync.data.room.AppDatabase
 import org.zp1ke.platasync.domain.UserAccount
 import org.zp1ke.platasync.model.BalanceStats
 
+interface AccountsRepository : BaseRepository<UserAccount> {
+    suspend fun getBalanceStats(): BalanceStats
+}
+
 @Single
 @Named(DaoAccountsRepository.KEY)
 class DaoAccountsRepository(
     database: AppDatabase,
-) : BaseRepository<UserAccount> {
+) : AccountsRepository {
     private val accountDao: UserAccountDao = database.getAccountDao()
 
     override suspend fun getAllItems(

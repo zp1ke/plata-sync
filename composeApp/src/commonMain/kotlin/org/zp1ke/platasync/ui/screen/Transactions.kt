@@ -19,13 +19,11 @@ import org.koin.core.annotation.Factory
 import org.koin.core.annotation.Named
 import org.zp1ke.platasync.data.model.SortOrder
 import org.zp1ke.platasync.data.model.UserFullTransaction
-import org.zp1ke.platasync.data.repository.BaseRepository
+import org.zp1ke.platasync.data.repository.AccountsRepository
 import org.zp1ke.platasync.data.repository.DaoAccountsRepository
 import org.zp1ke.platasync.data.repository.DaoTransactionsRepository
 import org.zp1ke.platasync.data.repository.TransactionsRepository
-import org.zp1ke.platasync.data.viewModel.TransactionViewModel
-import org.zp1ke.platasync.domain.DomainModel
-import org.zp1ke.platasync.domain.UserAccount
+import org.zp1ke.platasync.data.viewModel.TransactionsViewModel
 import org.zp1ke.platasync.domain.UserTransaction
 import org.zp1ke.platasync.ui.common.BaseList
 import org.zp1ke.platasync.ui.common.ImageIcon
@@ -43,9 +41,9 @@ val transactionIcon = Icons.Filled.Receipt
 @Factory
 class TransactionsScreen(
     @Named(DaoTransactionsRepository.KEY) repository: TransactionsRepository,
-    @Named(DaoAccountsRepository.KEY) accountRepository: BaseRepository<UserAccount>,
+    @Named(DaoAccountsRepository.KEY) accountRepository: AccountsRepository,
 ) : Tab {
-    private val screenViewModel: TransactionViewModel = TransactionViewModel(repository, accountRepository)
+    private val screenViewModel: TransactionsViewModel = TransactionsViewModel(repository, accountRepository)
 
     override val options: TabOptions
         @Composable
@@ -87,7 +85,7 @@ class TransactionsScreen(
         }
 
         var filterVisible by remember { mutableStateOf(false) }
-        var sortField by remember { mutableStateOf(DomainModel.COLUMN_CREATED_AT) }
+        var sortField by remember { mutableStateOf(UserTransaction.COLUMN_DATETIME) }
         var sortOrder by remember { mutableStateOf(SortOrder.DESC) }
         var reloadTrigger by remember { mutableIntStateOf(0) }
 

@@ -10,14 +10,27 @@ import org.zp1ke.platasync.domain.DomainModel
 import org.zp1ke.platasync.domain.UserTransaction
 import org.zp1ke.platasync.model.BalanceStats
 import org.zp1ke.platasync.model.TransactionType
+import java.time.OffsetDateTime
 
 interface TransactionsRepository : BaseRepository<UserTransaction> {
+    /**
+     * Get full transactions with related data (e.g., account info) between the given date range.
+     * The date range is inclusive.
+     **/
     suspend fun getFull(
         sortKey: String = DomainModel.COLUMN_CREATED_AT,
         sortOrder: SortOrder = SortOrder.DESC,
         limit: Int,
         offset: Int,
+        from: OffsetDateTime,
+        to: OffsetDateTime,
     ): List<UserFullTransaction>
+
+    /**
+     * Get balance stats (total income and expense) between the given date range.
+     * The date range is inclusive.
+     **/
+    suspend fun getBalanceStats(from: OffsetDateTime, to: OffsetDateTime): BalanceStats
 }
 
 @Single
@@ -35,9 +48,9 @@ class DaoTransactionsRepository(
         return transactionDao.getAll(sortKey, sortOrder)
     }
 
-    override suspend fun getBalanceStats(): BalanceStats {
-        val income = transactionDao.sumAmount(TransactionType.INCOME) ?: 0
-        val expense = transactionDao.sumAmount(TransactionType.EXPENSE) ?: 0
+    override suspend fun getBalanceStats(from: OffsetDateTime, to: OffsetDateTime): BalanceStats {
+        val income = transactionDao.sumAmount(TransactionType.INCOME, from, to) ?: 0
+        val expense = transactionDao.sumAmount(TransactionType.EXPENSE, from, to) ?: 0
         return BalanceStats(
             income = income,
             expense = expense,
@@ -54,8 +67,10 @@ class DaoTransactionsRepository(
         sortKey: String,
         sortOrder: SortOrder,
         limit: Int,
-        offset: Int
-    ): List<UserFullTransaction> = transactionDao.getFull(sortKey, sortOrder, limit, offset)
+        offset: Int,
+        from: OffsetDateTime,
+        to: OffsetDateTime,
+    ): List<UserFullTransaction> = transactionDao.getFull(sortKey, sortOrder, limit, offset, from, to)
 
     companion object {
         const val KEY = "transactionsRepository"

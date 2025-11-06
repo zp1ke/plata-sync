@@ -6,11 +6,9 @@ import kotlinx.coroutines.launch
 import org.zp1ke.platasync.data.model.SortOrder
 import org.zp1ke.platasync.data.repository.BaseRepository
 import org.zp1ke.platasync.domain.DomainModel
-import org.zp1ke.platasync.model.BalanceStats
 
 data class ScreenState<T : DomainModel>(
     val data: List<T>,
-    val stats: BalanceStats,
     val isLoading: Boolean,
 )
 
@@ -19,7 +17,6 @@ class BaseViewModel<T : DomainModel>(
 ) : StateScreenModel<ScreenState<T>>(
     ScreenState(
         data = listOf(),
-        stats = BalanceStats(),
         isLoading = false,
     ),
 ) {
@@ -35,10 +32,8 @@ class BaseViewModel<T : DomainModel>(
         mutableState.value = mutableState.value.copy(isLoading = true)
         screenModelScope.launch {
             val items = repository.getAllItems(filters, sortKey, sortOrder)
-            val stats = repository.getBalanceStats()
             mutableState.value = ScreenState(
                 data = items,
-                stats = stats,
                 isLoading = false,
             )
         }
