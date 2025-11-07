@@ -8,6 +8,10 @@ fun Int.formatAsMoney() = formatMoney(this)
 
 expect fun formatDateTime(datetime: OffsetDateTime): String
 
-fun OffsetDateTime.formatAsString() = formatDateTime(this)
+fun OffsetDateTime.formatAsDateTime() = formatDateTime(this)
+
+expect fun formatDate(datetime: OffsetDateTime): String
+
+fun OffsetDateTime.formatAsDate() = formatDate(this)
 
 

@@ -15,3 +15,6 @@ actual fun formatMoney(amount: Int): String = (
 actual fun formatDateTime(datetime: OffsetDateTime): String =
     datetime.format(DateTimeFormatter.ofLocalizedDateTime(FormatStyle.SHORT))
 
+actual fun formatDate(datetime: OffsetDateTime): String =
+    datetime.format(DateTimeFormatter.ofLocalizedDate(FormatStyle.SHORT))
+

@@ -28,6 +28,7 @@ fun <T : DomainModel> BaseScreen(
     subtitle: String? = null,
     refreshResource: StringResource,
     addResource: StringResource,
+    topActions: List<(@Composable () -> Unit)>? = null,
     topWidgetProvider: TopWidgetProvider? = null,
     list: @Composable (
         enabled: Boolean,
@@ -66,6 +67,9 @@ fun <T : DomainModel> BaseScreen(
                             LoadingIndicator()
                         }
                     }
+                    topActions?.forEach { action ->
+                        action()
+                    }
                     topWidgetProvider?.action()?.let {
                         topWidgetProvider.action()?.invoke()
                     }
@@ -94,8 +98,8 @@ fun <T : DomainModel> BaseScreen(
                     modifier = Modifier
                         .clip(MaterialTheme.shapes.small)
                         .background(MaterialTheme.colorScheme.surfaceVariant)
-                        .width(IntrinsicSize.Max)
-                        .padding(Spacing.medium)
+                        .fillMaxWidth()
+                        .padding(Spacing.small)
                 ) {
                     topWidgetProvider.content()?.invoke()
                 }

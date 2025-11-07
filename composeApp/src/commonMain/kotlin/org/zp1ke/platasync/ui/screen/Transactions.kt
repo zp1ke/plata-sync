@@ -28,12 +28,14 @@ import org.zp1ke.platasync.domain.UserTransaction
 import org.zp1ke.platasync.ui.common.BaseList
 import org.zp1ke.platasync.ui.common.ImageIcon
 import org.zp1ke.platasync.ui.common.ItemActions
+import org.zp1ke.platasync.ui.feature.transactions.DateRangePickerDialog
 import org.zp1ke.platasync.ui.feature.transactions.TransactionDeleteDialog
 import org.zp1ke.platasync.ui.feature.transactions.TransactionEditDialog
 import org.zp1ke.platasync.ui.feature.transactions.TransactionsFilterWidget
 import org.zp1ke.platasync.ui.theme.Size
+import org.zp1ke.platasync.util.formatAsDate
+import org.zp1ke.platasync.util.formatAsDateTime
 import org.zp1ke.platasync.util.formatAsMoney
-import org.zp1ke.platasync.util.formatAsString
 import platasync.composeapp.generated.resources.*
 
 val transactionIcon = Icons.Filled.Receipt
@@ -68,6 +70,7 @@ class TransactionsScreen(
         var transactionToEdit by remember { mutableStateOf<UserTransaction?>(null) }
         var showEditDialog by remember { mutableStateOf(false) }
         var transactionToDelete by remember { mutableStateOf<UserTransaction?>(null) }
+        var showDateRangePicker by remember { mutableStateOf(false) }
 
         val itemActions = object : ItemActions<UserFullTransaction> {
             override fun onView(item: UserFullTransaction) {
@@ -165,6 +168,19 @@ class TransactionsScreen(
             subtitle = state.stats.balance.formatAsMoney(),
             refreshResource = Res.string.transactions_refresh,
             addResource = Res.string.transaction_add,
+            topActions = listOf(
+                {
+                    TextButton(
+                        onClick = {
+                            @Suppress("ASSIGNED_VALUE_IS_NEVER_READ")
+                            showDateRangePicker = true
+                        },
+                        enabled = !state.isLoading,
+                    ) {
+                        Text("${state.from.formatAsDate()} - ${state.to.formatAsDate()}")
+                    }
+                }
+            ),
             topWidgetProvider = filterWidgetProvider,
             list = { enabled, actions ->
                 BaseList(
@@ -189,7 +205,7 @@ class TransactionsScreen(
                                     modifier = Modifier.alignByBaseline()
                                 )
                                 Text(
-                                    text = " • ${transaction.transaction.datetime.formatAsString()}",
+                                    text = " • ${transaction.transaction.datetime.formatAsDateTime()}",
                                     style = MaterialTheme.typography.bodySmall
                                         .copy(color = MaterialTheme.colorScheme.onSurfaceVariant),
                                     modifier = Modifier.alignByBaseline()
@@ -294,6 +310,21 @@ class TransactionsScreen(
                 @Suppress("ASSIGNED_VALUE_IS_NEVER_READ")
                 transactionToDelete = null
                 reloadTrigger++
+            }
+        )
+
+        DateRangePickerDialog(
+            showDialog = showDateRangePicker,
+            currentFrom = state.from,
+            currentTo = state.to,
+            onDismiss = {
+                @Suppress("ASSIGNED_VALUE_IS_NEVER_READ")
+                showDateRangePicker = false
+            },
+            onSubmit = { from, to ->
+                viewModel.setRange(from, to)
+                @Suppress("ASSIGNED_VALUE_IS_NEVER_READ")
+                showDateRangePicker = false
             }
         )
     }
