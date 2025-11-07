@@ -37,7 +37,7 @@ class AccountsViewModel(
 
     fun loadItems(
         filters: Map<String, String> = emptyMap(),
-        sortKey: String = DomainModel.COLUMN_CREATED_AT,
+        sortKey: String = UserAccount.COLUMN_LAST_USED_AT,
         sortOrder: SortOrder = SortOrder.DESC,
     ) {
         mutableState.value = mutableState.value.copy(

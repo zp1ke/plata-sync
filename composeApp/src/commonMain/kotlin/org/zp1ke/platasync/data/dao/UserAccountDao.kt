@@ -19,6 +19,7 @@ interface UserAccountDao {
         ORDER BY 
             CASE WHEN :sortOrder = '${SortOrder.ASC_VALUE}' THEN
                 CASE :sortKey
+                    WHEN '${UserAccount.COLUMN_LAST_USED_AT}' THEN ${UserAccount.COLUMN_LAST_USED_AT}
                     WHEN '${DomainModel.COLUMN_CREATED_AT}' THEN ${DomainModel.COLUMN_CREATED_AT}
                     WHEN '${UserAccount.COLUMN_NAME}' THEN ${UserAccount.COLUMN_NAME}
                     WHEN '${UserAccount.COLUMN_BALANCE}' THEN ${UserAccount.COLUMN_BALANCE}
@@ -26,6 +27,7 @@ interface UserAccountDao {
             END ASC,
             CASE WHEN :sortOrder = '${SortOrder.DESC_VALUE}' THEN
                 CASE :sortKey
+                    WHEN '${UserAccount.COLUMN_LAST_USED_AT}' THEN ${UserAccount.COLUMN_LAST_USED_AT}
                     WHEN '${DomainModel.COLUMN_CREATED_AT}' THEN ${DomainModel.COLUMN_CREATED_AT}
                     WHEN '${UserAccount.COLUMN_NAME}' THEN ${UserAccount.COLUMN_NAME}
                     WHEN '${UserAccount.COLUMN_BALANCE}' THEN ${UserAccount.COLUMN_BALANCE}
@@ -35,7 +37,7 @@ interface UserAccountDao {
     )
     suspend fun getAll(
         nameFilter: String? = null,
-        sortKey: String = DomainModel.COLUMN_CREATED_AT,
+        sortKey: String = UserAccount.COLUMN_LAST_USED_AT,
         sortOrder: SortOrder = SortOrder.DESC,
     ): List<UserAccount>
 
