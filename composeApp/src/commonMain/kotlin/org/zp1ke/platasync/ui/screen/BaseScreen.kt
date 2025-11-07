@@ -25,7 +25,8 @@ fun <T : DomainModel> BaseScreen(
     actions: ItemActions<T>,
     titleIcon: (@Composable () -> Unit)? = null,
     titleResource: StringResource,
-    subtitle: String? = null,
+    subtitleString: String? = null,
+    subtitle: (@Composable () -> Unit)? = null,
     refreshResource: StringResource,
     addResource: StringResource,
     topActions: List<(@Composable () -> Unit)>? = null,
@@ -53,8 +54,10 @@ fun <T : DomainModel> BaseScreen(
                         },
                         supportingContent = {
                             if (subtitle != null) {
+                                subtitle()
+                            } else if (subtitleString != null) {
                                 Text(
-                                    subtitle,
+                                    subtitleString,
                                     style = MaterialTheme.typography.bodyMedium,
                                 )
                             }

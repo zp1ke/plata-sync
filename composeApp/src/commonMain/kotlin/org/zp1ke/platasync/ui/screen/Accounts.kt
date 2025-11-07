@@ -165,7 +165,7 @@ class AccountsScreen(
                 )
             },
             titleResource = Res.string.accounts_list,
-            subtitle = state.stats.balance.formatAsMoney(),
+            subtitleString = state.stats.balance.formatAsMoney(),
             refreshResource = Res.string.accounts_refresh,
             addResource = Res.string.account_add,
             topWidgetProvider = filterWidgetProvider,

@@ -25,6 +25,7 @@ import org.zp1ke.platasync.data.repository.DaoTransactionsRepository
 import org.zp1ke.platasync.data.repository.TransactionsRepository
 import org.zp1ke.platasync.data.viewModel.TransactionsViewModel
 import org.zp1ke.platasync.domain.UserTransaction
+import org.zp1ke.platasync.model.TransactionType
 import org.zp1ke.platasync.ui.common.BaseList
 import org.zp1ke.platasync.ui.common.ImageIcon
 import org.zp1ke.platasync.ui.common.ItemActions
@@ -33,6 +34,7 @@ import org.zp1ke.platasync.ui.feature.transactions.TransactionDeleteDialog
 import org.zp1ke.platasync.ui.feature.transactions.TransactionEditDialog
 import org.zp1ke.platasync.ui.feature.transactions.TransactionsFilterWidget
 import org.zp1ke.platasync.ui.theme.Size
+import org.zp1ke.platasync.ui.theme.Spacing
 import org.zp1ke.platasync.util.formatAsDateTime
 import org.zp1ke.platasync.util.formatAsMoney
 import platasync.composeapp.generated.resources.*
@@ -164,7 +166,46 @@ class TransactionsScreen(
                 )
             },
             titleResource = Res.string.transactions_list,
-            subtitle = state.stats.balance.formatAsMoney(),
+            subtitle = {
+                Row(
+                    modifier = Modifier.fillMaxWidth(),
+                    horizontalArrangement = Arrangement.spacedBy(Spacing.small)
+                ) {
+                    val isDarkMode = isSystemInDarkTheme()
+                    Icon(
+                        imageVector = TransactionType.INCOME.icon(),
+                        contentDescription = null,
+                        tint = TransactionType.INCOME.color(isDarkMode),
+                        modifier = Modifier.size(Size.iconSmall)
+                    )
+                    Text(
+                        text = state.stats.income.formatAsMoney(),
+                        style = MaterialTheme.typography.bodyMedium
+                            .copy(
+                                color = TransactionType.INCOME.color(isDarkMode),
+                                fontWeight = FontWeight.W500
+                            ),
+                        modifier = Modifier.alignByBaseline(),
+                        textAlign = TextAlign.End,
+                    )
+                    Icon(
+                        imageVector = TransactionType.EXPENSE.icon(),
+                        contentDescription = null,
+                        tint = TransactionType.EXPENSE.color(isDarkMode),
+                        modifier = Modifier.size(Size.iconSmall)
+                    )
+                    Text(
+                        text = state.stats.expense.formatAsMoney(),
+                        style = MaterialTheme.typography.bodyMedium
+                            .copy(
+                                color = TransactionType.EXPENSE.color(isDarkMode),
+                                fontWeight = FontWeight.W500
+                            ),
+                        modifier = Modifier.alignByBaseline(),
+                        textAlign = TextAlign.End,
+                    )
+                }
+            },
             refreshResource = Res.string.transactions_refresh,
             addResource = Res.string.transaction_add,
             topActions = listOf(
