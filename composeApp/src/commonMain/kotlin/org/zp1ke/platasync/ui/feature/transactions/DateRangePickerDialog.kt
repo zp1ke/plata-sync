@@ -13,114 +13,35 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.window.Dialog
 import androidx.compose.ui.window.DialogProperties
 import org.jetbrains.compose.resources.stringResource
+import org.zp1ke.platasync.model.DateRangePreset
 import org.zp1ke.platasync.ui.theme.Spacing
 import org.zp1ke.platasync.util.formatAsDate
 import platasync.composeapp.generated.resources.*
-import java.time.LocalTime
 import java.time.OffsetDateTime
-
-enum class DateRangePreset(val key: String) {
-    TODAY("today"),
-    YESTERDAY("yesterday"),
-    LAST_7_DAYS("last_7_days"),
-    LAST_30_DAYS("last_30_days"),
-    THIS_MONTH("this_month"),
-    LAST_MONTH("last_month")
-}
 
 @Composable
 fun DateRangePickerDialog(
     showDialog: Boolean = false,
-    currentFrom: OffsetDateTime,
-    currentTo: OffsetDateTime,
+    currentRange: DateRangePreset,
     onDismiss: () -> Unit = {},
-    onSubmit: (from: OffsetDateTime, to: OffsetDateTime) -> Unit = { _, _ -> },
+    onSubmit: (range: DateRangePreset) -> Unit = { _ -> },
 ) {
     if (!showDialog) return
 
     val now = remember { OffsetDateTime.now() }
 
-    // Determine initial preset based on current date range
-    val initialPreset = remember(currentFrom, currentTo) {
-        val fromLocal = currentFrom.toLocalDate()
-        val toLocal = currentTo.toLocalDate()
-        val nowLocal = now.toLocalDate()
-
-        when {
-            // Check if it's today
-            fromLocal.equals(nowLocal) && toLocal.equals(nowLocal) -> DateRangePreset.TODAY
-
-            // Check if it's yesterday
-            fromLocal.equals(nowLocal.minusDays(1)) && toLocal.equals(nowLocal.minusDays(1)) -> DateRangePreset.YESTERDAY
-
-            // Check if it's last 7 days
-            fromLocal.equals(nowLocal.minusDays(6)) && toLocal.equals(nowLocal) -> DateRangePreset.LAST_7_DAYS
-
-            // Check if it's last 30 days
-            fromLocal.equals(nowLocal.minusDays(29)) && toLocal.equals(nowLocal) -> DateRangePreset.LAST_30_DAYS
-
-            // Check if it's this month
-            fromLocal.equals(nowLocal.withDayOfMonth(1)) && toLocal.equals(nowLocal) -> DateRangePreset.THIS_MONTH
-
-            // Check if it's last month
-            else -> {
-                val lastMonth = nowLocal.minusMonths(1)
-                val firstDay = lastMonth.withDayOfMonth(1)
-                val lastDay = firstDay.plusMonths(1).minusDays(1)
-                if (fromLocal.equals(firstDay) && toLocal.equals(lastDay)) {
-                    DateRangePreset.LAST_MONTH
-                } else {
-                    // Default to TODAY if no preset matches
-                    DateRangePreset.TODAY
-                }
-            }
-        }
-    }
-
     var selectedPreset by remember(showDialog) {
-        mutableStateOf(initialPreset)
+        mutableStateOf(currentRange)
     }
 
-    var fromDate by remember(showDialog) { mutableStateOf(currentFrom) }
-    var toDate by remember(showDialog) { mutableStateOf(currentTo) }
+    var fromDate by remember(showDialog) { mutableStateOf(currentRange.getDateRange().first) }
+    var toDate by remember(showDialog) { mutableStateOf(currentRange.getDateRange().second) }
 
     // Update dates when preset changes
     LaunchedEffect(selectedPreset) {
-        when (selectedPreset) {
-            DateRangePreset.TODAY -> {
-                fromDate = OffsetDateTime.of(now.toLocalDate().atStartOfDay(), now.offset)
-                toDate = OffsetDateTime.of(now.toLocalDate().atTime(LocalTime.MAX), now.offset)
-            }
-
-            DateRangePreset.YESTERDAY -> {
-                val yesterday = now.minusDays(1)
-                fromDate = OffsetDateTime.of(yesterday.toLocalDate().atStartOfDay(), now.offset)
-                toDate = OffsetDateTime.of(yesterday.toLocalDate().atTime(LocalTime.MAX), now.offset)
-            }
-
-            DateRangePreset.LAST_7_DAYS -> {
-                fromDate = OffsetDateTime.of(now.minusDays(6).toLocalDate().atStartOfDay(), now.offset)
-                toDate = OffsetDateTime.of(now.toLocalDate().atTime(LocalTime.MAX), now.offset)
-            }
-
-            DateRangePreset.LAST_30_DAYS -> {
-                fromDate = OffsetDateTime.of(now.minusDays(29).toLocalDate().atStartOfDay(), now.offset)
-                toDate = OffsetDateTime.of(now.toLocalDate().atTime(LocalTime.MAX), now.offset)
-            }
-
-            DateRangePreset.THIS_MONTH -> {
-                fromDate = OffsetDateTime.of(now.toLocalDate().withDayOfMonth(1).atStartOfDay(), now.offset)
-                toDate = OffsetDateTime.of(now.toLocalDate().atTime(LocalTime.MAX), now.offset)
-            }
-
-            DateRangePreset.LAST_MONTH -> {
-                val lastMonth = now.minusMonths(1)
-                val firstDay = lastMonth.toLocalDate().withDayOfMonth(1)
-                val lastDay = firstDay.plusMonths(1).minusDays(1)
-                fromDate = OffsetDateTime.of(firstDay.atStartOfDay(), now.offset)
-                toDate = OffsetDateTime.of(lastDay.atTime(LocalTime.MAX), now.offset)
-            }
-        }
+        val (from, to) = selectedPreset.getDateRange(now)
+        fromDate = from
+        toDate = to
     }
 
     Dialog(
@@ -176,14 +97,7 @@ fun DateRangePickerDialog(
                                 onClick = { selectedPreset = preset }
                             )
                             Text(
-                                text = when (preset) {
-                                    DateRangePreset.TODAY -> stringResource(Res.string.date_range_today)
-                                    DateRangePreset.YESTERDAY -> stringResource(Res.string.date_range_yesterday)
-                                    DateRangePreset.LAST_7_DAYS -> stringResource(Res.string.date_range_last_7_days)
-                                    DateRangePreset.LAST_30_DAYS -> stringResource(Res.string.date_range_last_30_days)
-                                    DateRangePreset.THIS_MONTH -> stringResource(Res.string.date_range_this_month)
-                                    DateRangePreset.LAST_MONTH -> stringResource(Res.string.date_range_last_month)
-                                },
+                                text = preset.getLabel(),
                                 style = MaterialTheme.typography.bodyLarge,
                                 modifier = Modifier.weight(1f)
                             )
@@ -227,7 +141,7 @@ fun DateRangePickerDialog(
                     }
                     Button(
                         onClick = {
-                            onSubmit(fromDate, toDate)
+                            onSubmit(selectedPreset)
                         }
                     ) {
                         Text(stringResource(Res.string.apply))

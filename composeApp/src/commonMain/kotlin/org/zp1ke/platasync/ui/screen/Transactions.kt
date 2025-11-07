@@ -33,7 +33,6 @@ import org.zp1ke.platasync.ui.feature.transactions.TransactionDeleteDialog
 import org.zp1ke.platasync.ui.feature.transactions.TransactionEditDialog
 import org.zp1ke.platasync.ui.feature.transactions.TransactionsFilterWidget
 import org.zp1ke.platasync.ui.theme.Size
-import org.zp1ke.platasync.util.formatAsDate
 import org.zp1ke.platasync.util.formatAsDateTime
 import org.zp1ke.platasync.util.formatAsMoney
 import platasync.composeapp.generated.resources.*
@@ -177,7 +176,7 @@ class TransactionsScreen(
                         },
                         enabled = !state.isLoading,
                     ) {
-                        Text("${state.from.formatAsDate()} - ${state.to.formatAsDate()}")
+                        Text(state.dateRange.getLabel())
                     }
                 }
             ),
@@ -315,14 +314,13 @@ class TransactionsScreen(
 
         DateRangePickerDialog(
             showDialog = showDateRangePicker,
-            currentFrom = state.from,
-            currentTo = state.to,
+            currentRange = state.dateRange,
             onDismiss = {
                 @Suppress("ASSIGNED_VALUE_IS_NEVER_READ")
                 showDateRangePicker = false
             },
-            onSubmit = { from, to ->
-                viewModel.setRange(from, to)
+            onSubmit = { range ->
+                viewModel.setRange(range)
                 @Suppress("ASSIGNED_VALUE_IS_NEVER_READ")
                 showDateRangePicker = false
             }

@@ -10,14 +10,13 @@ import org.zp1ke.platasync.data.repository.TransactionsRepository
 import org.zp1ke.platasync.domain.DomainModel
 import org.zp1ke.platasync.domain.UserTransaction
 import org.zp1ke.platasync.model.BalanceStats
-import java.time.LocalTime
+import org.zp1ke.platasync.model.DateRangePreset
 import java.time.OffsetDateTime
 
 data class TransactionsScreenState(
     val screenState: ScreenState<UserFullTransaction>,
     val stats: BalanceStats,
-    val from: OffsetDateTime,
-    val to: OffsetDateTime,
+    val dateRange: DateRangePreset,
 ) {
     val data: List<UserFullTransaction>
         get() = screenState.data
@@ -29,7 +28,6 @@ data class TransactionsScreenState(
 class TransactionsViewModel(
     private val repository: TransactionsRepository,
     private val accountRepository: AccountsRepository,
-    now: OffsetDateTime = OffsetDateTime.now(),
 ) : StateScreenModel<TransactionsScreenState>(
     TransactionsScreenState(
         screenState = ScreenState(
@@ -37,18 +35,16 @@ class TransactionsViewModel(
             isLoading = false,
         ),
         stats = BalanceStats(),
-        from = OffsetDateTime.of(now.toLocalDate().atStartOfDay(), now.offset),
-        to = OffsetDateTime.of(now.toLocalDate().atTime(LocalTime.MAX), now.offset),
+        dateRange = DateRangePreset.TODAY,
     ),
 ) {
     init {
         loadItems()
     }
 
-    fun setRange(from: OffsetDateTime, to: OffsetDateTime) {
+    fun setRange(dateRange: DateRangePreset) {
         mutableState.value = mutableState.value.copy(
-            from = from,
-            to = to,
+            dateRange = dateRange,
         )
         loadItems()
     }
@@ -62,8 +58,10 @@ class TransactionsViewModel(
             screenState = mutableState.value.screenState.copy(isLoading = true)
         )
         screenModelScope.launch {
-            val items = repository.getFull(sortKey, sortOrder, 1000, 0, mutableState.value.from, mutableState.value.to)
-            val stats = repository.getBalanceStats(mutableState.value.from, mutableState.value.to)
+            val from = mutableState.value.dateRange.getDateRange().first
+            val to = mutableState.value.dateRange.getDateRange().second
+            val items = repository.getFull(sortKey, sortOrder, 1000, 0, from, to)
+            val stats = repository.getBalanceStats(from, to)
             mutableState.value = mutableState.value.copy(
                 screenState = ScreenState(
                     data = items,
