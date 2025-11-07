@@ -43,7 +43,9 @@ interface UserTransactionDao {
         SELECT * FROM ${UserTransaction.TABLE_NAME}
         WHERE (
             ${UserTransaction.COLUMN_DATETIME} >= :from AND
-            ${UserTransaction.COLUMN_DATETIME} <= :to
+            ${UserTransaction.COLUMN_DATETIME} <= :to AND
+            (:accountId IS NULL OR ${UserTransaction.COLUMN_ACCOUNT_ID} = :accountId OR ${UserTransaction.COLUMN_TARGET_ACCOUNT_ID} = :accountId) AND
+            (:categoryId IS NULL OR ${UserTransaction.COLUMN_CATEGORY_ID} = :categoryId)
         )
         ORDER BY 
             CASE WHEN :sortOrder = '${SortOrder.ASC_VALUE}' THEN
@@ -66,6 +68,8 @@ interface UserTransactionDao {
         offset: Int,
         from: OffsetDateTime,
         to: OffsetDateTime,
+        accountId: String? = null,
+        categoryId: String? = null,
     ): List<UserFullTransaction>
 
     @Query(
@@ -74,11 +78,19 @@ interface UserTransactionDao {
         WHERE (
             ${UserTransaction.COLUMN_TRANSACTION_TYPE} = :transactionType AND
             ${UserTransaction.COLUMN_DATETIME} >= :from AND
-            ${UserTransaction.COLUMN_DATETIME} <= :to
+            ${UserTransaction.COLUMN_DATETIME} <= :to AND
+            (:accountId IS NULL OR ${UserTransaction.COLUMN_ACCOUNT_ID} = :accountId OR ${UserTransaction.COLUMN_TARGET_ACCOUNT_ID} = :accountId) AND
+            (:categoryId IS NULL OR ${UserTransaction.COLUMN_CATEGORY_ID} = :categoryId)
         )
     """
     )
-    suspend fun sumAmount(transactionType: TransactionType, from: OffsetDateTime, to: OffsetDateTime): Int?
+    suspend fun sumAmount(
+        transactionType: TransactionType,
+        from: OffsetDateTime,
+        to: OffsetDateTime,
+        accountId: String? = null,
+        categoryId: String? = null,
+    ): Int?
 
     @Query("SELECT * FROM ${UserTransaction.TABLE_NAME} WHERE id = :id LIMIT 1")
     suspend fun getById(id: String): UserTransaction?

@@ -91,21 +91,26 @@ class TransactionsScreen(
         var filterVisible by remember { mutableStateOf(false) }
         var sortField by remember { mutableStateOf(UserTransaction.COLUMN_DATETIME) }
         var sortOrder by remember { mutableStateOf(SortOrder.DESC) }
+        var selectedAccount by remember { mutableStateOf<org.zp1ke.platasync.domain.UserAccount?>(null) }
+        var selectedCategory by remember { mutableStateOf<org.zp1ke.platasync.domain.UserCategory?>(null) }
         var reloadTrigger by remember { mutableIntStateOf(0) }
 
         // Trigger loadData whenever filter/sort parameters change or reload is requested
-        LaunchedEffect(sortField, sortOrder, reloadTrigger) {
-            val filters = mutableMapOf<String, String>()
+        LaunchedEffect(sortField, sortOrder, selectedAccount, selectedCategory, reloadTrigger) {
             viewModel.loadItems(
-                filters = filters,
                 sortKey = sortField,
                 sortOrder = sortOrder,
+                accountId = selectedAccount?.id,
+                categoryId = selectedCategory?.id,
             )
         }
 
         val filterWidgetProvider = object : TopWidgetProvider {
             override fun action(): (@Composable () -> Unit) = {
-                val isFiltered = sortField != UserTransaction.COLUMN_DATETIME || sortOrder != SortOrder.DESC
+                val isFiltered = sortField != UserTransaction.COLUMN_DATETIME ||
+                        sortOrder != SortOrder.DESC ||
+                        selectedAccount != null ||
+                        selectedCategory != null
                 val buttonColor = if (!filterVisible && isFiltered) {
                     MaterialTheme.colorScheme.tertiaryContainer
                 } else {
@@ -143,6 +148,10 @@ class TransactionsScreen(
                             onSortFieldChange = { sortField = it },
                             sortOrder = sortOrder,
                             onSortOrderChange = { sortOrder = it },
+                            selectedAccount = selectedAccount,
+                            onAccountSelected = { selectedAccount = it },
+                            selectedCategory = selectedCategory,
+                            onCategorySelected = { selectedCategory = it },
                         )
                     }
                 }
@@ -223,11 +232,15 @@ class TransactionsScreen(
             ),
             topWidgetProvider = filterWidgetProvider,
             list = { enabled, actions ->
+                val isFiltered = sortField != UserTransaction.COLUMN_DATETIME ||
+                        sortOrder != SortOrder.DESC ||
+                        selectedAccount != null ||
+                        selectedCategory != null
                 BaseList(
                     items = state.data,
                     actions = actions,
                     enabled = enabled,
-                    emptyStringResource = if (true) Res.string.transactions_empty else Res.string.transactions_empty_with_filter,
+                    emptyStringResource = if (isFiltered) Res.string.transactions_empty_with_filter else Res.string.transactions_empty,
                     editStringResource = Res.string.transaction_edit,
                     deleteStringResource = Res.string.transaction_delete,
                     headlineContent = { transaction ->

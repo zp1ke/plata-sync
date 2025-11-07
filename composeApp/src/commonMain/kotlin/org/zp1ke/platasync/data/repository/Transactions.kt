@@ -24,13 +24,20 @@ interface TransactionsRepository : BaseRepository<UserTransaction> {
         offset: Int,
         from: OffsetDateTime,
         to: OffsetDateTime,
+        accountId: String? = null,
+        categoryId: String? = null,
     ): List<UserFullTransaction>
 
     /**
      * Get balance stats (total income and expense) between the given date range.
      * The date range is inclusive.
      **/
-    suspend fun getBalanceStats(from: OffsetDateTime, to: OffsetDateTime): BalanceStats
+    suspend fun getBalanceStats(
+        from: OffsetDateTime,
+        to: OffsetDateTime,
+        accountId: String? = null,
+        categoryId: String? = null,
+    ): BalanceStats
 }
 
 @Single
@@ -48,9 +55,14 @@ class DaoTransactionsRepository(
         return transactionDao.getAll(sortKey, sortOrder)
     }
 
-    override suspend fun getBalanceStats(from: OffsetDateTime, to: OffsetDateTime): BalanceStats {
-        val income = transactionDao.sumAmount(TransactionType.INCOME, from, to) ?: 0
-        val expense = transactionDao.sumAmount(TransactionType.EXPENSE, from, to) ?: 0
+    override suspend fun getBalanceStats(
+        from: OffsetDateTime,
+        to: OffsetDateTime,
+        accountId: String?,
+        categoryId: String?,
+    ): BalanceStats {
+        val income = transactionDao.sumAmount(TransactionType.INCOME, from, to, accountId, categoryId) ?: 0
+        val expense = transactionDao.sumAmount(TransactionType.EXPENSE, from, to, accountId, categoryId) ?: 0
         return BalanceStats(
             income = income,
             expense = expense,
@@ -70,7 +82,10 @@ class DaoTransactionsRepository(
         offset: Int,
         from: OffsetDateTime,
         to: OffsetDateTime,
-    ): List<UserFullTransaction> = transactionDao.getFull(sortKey, sortOrder, limit, offset, from, to)
+        accountId: String?,
+        categoryId: String?,
+    ): List<UserFullTransaction> =
+        transactionDao.getFull(sortKey, sortOrder, limit, offset, from, to, accountId, categoryId)
 
     companion object {
         const val KEY = "transactionsRepository"

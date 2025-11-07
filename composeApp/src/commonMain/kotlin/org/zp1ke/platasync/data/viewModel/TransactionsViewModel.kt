@@ -50,9 +50,10 @@ class TransactionsViewModel(
     }
 
     fun loadItems(
-        filters: Map<String, String> = emptyMap(),
         sortKey: String = DomainModel.COLUMN_CREATED_AT,
         sortOrder: SortOrder = SortOrder.DESC,
+        accountId: String? = null,
+        categoryId: String? = null,
     ) {
         mutableState.value = mutableState.value.copy(
             screenState = mutableState.value.screenState.copy(isLoading = true)
@@ -60,8 +61,8 @@ class TransactionsViewModel(
         screenModelScope.launch {
             val from = mutableState.value.dateRange.getDateRange().first
             val to = mutableState.value.dateRange.getDateRange().second
-            val items = repository.getFull(sortKey, sortOrder, 1000, 0, from, to)
-            val stats = repository.getBalanceStats(from, to)
+            val items = repository.getFull(sortKey, sortOrder, 1000, 0, from, to, accountId, categoryId)
+            val stats = repository.getBalanceStats(from, to, accountId, categoryId)
             mutableState.value = mutableState.value.copy(
                 screenState = ScreenState(
                     data = items,

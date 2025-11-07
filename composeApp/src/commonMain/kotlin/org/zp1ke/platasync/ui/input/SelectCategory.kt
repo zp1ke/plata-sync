@@ -29,7 +29,7 @@ import platasync.composeapp.generated.resources.transaction_category
 @Composable
 fun SelectCategory(
     selectedCategoryId: String?,
-    transactionType: TransactionType,
+    transactionType: TransactionType?,
     onCategorySelected: (UserCategory) -> Unit,
     modifier: Modifier = Modifier,
     repository: BaseRepository<UserCategory> = koinInject(named(DaoCategoriesRepository.KEY))
@@ -55,8 +55,10 @@ fun SelectCategory(
                 if (query.isNotEmpty()) {
                     filters[UserCategory.COLUMN_NAME] = query
                 }
-                // Filter by transaction type
-                filters[UserCategory.COLUMN_TRANSACTION_TYPES] = transactionType.name
+                // Filter by transaction type only if provided
+                if (transactionType != null) {
+                    filters[UserCategory.COLUMN_TRANSACTION_TYPES] = transactionType.name
+                }
 
                 val allItems = repository.getAllItems(
                     filters = filters,
