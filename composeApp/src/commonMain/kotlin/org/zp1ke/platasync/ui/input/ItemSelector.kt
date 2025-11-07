@@ -1,6 +1,7 @@
 package org.zp1ke.platasync.ui.input
 
 import androidx.compose.foundation.clickable
+import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
@@ -50,7 +51,10 @@ fun <T> ItemSelector(
     Box(
         modifier = modifier
             .fillMaxWidth()
-            .clickable { showDialog = true }
+            .clickable(
+                interactionSource = remember { MutableInteractionSource() },
+                indication = null
+            ) { showDialog = true }
     ) {
         OutlinedTextField(
             value = if (selectedItem != null) itemText(selectedItem) else "",

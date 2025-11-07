@@ -62,6 +62,7 @@ fun TransactionsFilterWidget(
                     horizontalArrangement = Arrangement.spacedBy(Spacing.small),
                     verticalAlignment = Alignment.CenterVertically
                 ) {
+                    // Account selector with clear button
                     SelectAccount(
                         selectedAccountId = selectedAccount?.id,
                         onAccountSelected = { account -> onAccountSelected(account) },
@@ -71,21 +72,16 @@ fun TransactionsFilterWidget(
                     if (selectedAccount != null) {
                         IconButton(
                             onClick = { onAccountSelected(null) },
-                            modifier = Modifier.size(Spacing.medium)
+                            modifier = Modifier.size(Spacing.medium),
                         ) {
                             Icon(
                                 imageVector = Icons.Default.Clear,
-                                contentDescription = stringResource(Res.string.action_clear)
+                                contentDescription = stringResource(Res.string.action_clear),
                             )
                         }
                     }
-                }
-            },
-            {
-                Row(
-                    horizontalArrangement = Arrangement.spacedBy(Spacing.small),
-                    verticalAlignment = Alignment.CenterVertically
-                ) {
+
+                    // Category selector with clear button
                     SelectCategory(
                         selectedCategoryId = selectedCategory?.id,
                         transactionType = null, // Show all categories
@@ -96,11 +92,11 @@ fun TransactionsFilterWidget(
                     if (selectedCategory != null) {
                         IconButton(
                             onClick = { onCategorySelected(null) },
-                            modifier = Modifier.size(Spacing.medium)
+                            modifier = Modifier.size(Spacing.medium),
                         ) {
                             Icon(
                                 imageVector = Icons.Default.Clear,
-                                contentDescription = stringResource(Res.string.action_clear)
+                                contentDescription = stringResource(Res.string.action_clear),
                             )
                         }
                     }
