@@ -83,9 +83,9 @@ class AccountsScreen(
 
         var filterVisible by remember { mutableStateOf(false) }
         var filterName by remember { mutableStateOf("") }
-        var viewMode by remember { mutableStateOf(ViewMode.LIST) }
         var sortField by remember { mutableStateOf(UserAccount.COLUMN_LAST_USED_AT) }
         var sortOrder by remember { mutableStateOf(SortOrder.DESC) }
+        var viewMode by remember { mutableStateOf(ViewMode.GRID) }
         var reloadTrigger by remember { mutableIntStateOf(0) }
 
         // Trigger loadData whenever filter/sort parameters change or reload is requested

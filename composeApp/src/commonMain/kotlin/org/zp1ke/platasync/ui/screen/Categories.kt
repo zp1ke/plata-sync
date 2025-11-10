@@ -88,7 +88,7 @@ class CategoriesScreen(
         var transactionType by remember { mutableStateOf<TransactionType?>(null) }
         var sortField by remember { mutableStateOf(UserCategory.COLUMN_LAST_USED_AT) }
         var sortOrder by remember { mutableStateOf(SortOrder.DESC) }
-        var viewMode by remember { mutableStateOf(ViewMode.LIST) }
+        var viewMode by remember { mutableStateOf(ViewMode.GRID) }
         var reloadTrigger by remember { mutableIntStateOf(0) }
 
         // Trigger loadData whenever filter/sort parameters change or reload is requested

@@ -94,7 +94,7 @@ class TransactionsScreen(
         var sortOrder by remember { mutableStateOf(SortOrder.DESC) }
         var selectedAccount by remember { mutableStateOf<org.zp1ke.platasync.domain.UserAccount?>(null) }
         var selectedCategory by remember { mutableStateOf<org.zp1ke.platasync.domain.UserCategory?>(null) }
-        var viewMode by remember { mutableStateOf(ViewMode.LIST) }
+        var viewMode by remember { mutableStateOf(ViewMode.GRID) }
         var reloadTrigger by remember { mutableIntStateOf(0) }
 
         // Trigger loadData whenever filter/sort parameters change or reload is requested

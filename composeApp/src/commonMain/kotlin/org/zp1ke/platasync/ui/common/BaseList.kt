@@ -33,7 +33,7 @@ fun <T : DomainModel> BaseList(
     items: List<T>,
     actions: ItemActions<T>,
     enabled: Boolean = true,
-    viewMode: ViewMode = ViewMode.LIST,
+    viewMode: ViewMode = ViewMode.GRID,
     emptyStringResource: StringResource,
     editStringResource: StringResource,
     deleteStringResource: StringResource,
