@@ -13,22 +13,20 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.vector.rememberVectorPainter
 import cafe.adriel.voyager.navigator.tab.Tab
 import cafe.adriel.voyager.navigator.tab.TabOptions
+import kotlinx.coroutines.launch
 import org.jetbrains.compose.resources.stringResource
 import org.koin.core.annotation.Factory
 import org.koin.core.annotation.Named
 import org.zp1ke.platasync.data.model.SortOrder
 import org.zp1ke.platasync.data.repository.CategoriesRepository
 import org.zp1ke.platasync.data.repository.DaoCategoriesRepository
+import org.zp1ke.platasync.data.repository.SettingsRepository
 import org.zp1ke.platasync.data.viewModel.CategoriesViewModel
 import org.zp1ke.platasync.domain.DomainModel
 import org.zp1ke.platasync.domain.UserCategory
+import org.zp1ke.platasync.domain.UserSetting
 import org.zp1ke.platasync.model.TransactionType
-import org.zp1ke.platasync.ui.common.BaseList
-import org.zp1ke.platasync.ui.common.ImageIcon
-import org.zp1ke.platasync.ui.common.ItemActions
-import org.zp1ke.platasync.ui.common.TransactionTypeWidget
-import org.zp1ke.platasync.ui.common.ViewMode
-import org.zp1ke.platasync.ui.common.ViewModeToggle
+import org.zp1ke.platasync.ui.common.*
 import org.zp1ke.platasync.ui.feature.categories.CategoriesFilterWidget
 import org.zp1ke.platasync.ui.feature.categories.CategoryDeleteDialog
 import org.zp1ke.platasync.ui.feature.categories.CategoryEditDialog
@@ -41,8 +39,10 @@ val categoryIcon = Icons.Filled.LocalOffer
 @Factory
 class CategoriesScreen(
     @Named(DaoCategoriesRepository.KEY) repository: CategoriesRepository,
+    settingsRepository: SettingsRepository,
 ) : Tab {
     private val screenViewModel: CategoriesViewModel = CategoriesViewModel(repository)
+    private val settings: SettingsRepository = settingsRepository
 
     override val options: TabOptions
         @Composable
@@ -90,6 +90,20 @@ class CategoriesScreen(
         var sortOrder by remember { mutableStateOf(SortOrder.DESC) }
         var viewMode by remember { mutableStateOf(ViewMode.GRID) }
         var reloadTrigger by remember { mutableIntStateOf(0) }
+
+        val coroutineScope = rememberCoroutineScope()
+
+        // Load saved view mode on startup
+        LaunchedEffect(Unit) {
+            viewMode = settings.getViewMode(UserSetting.KEY_VIEW_MODE_CATEGORIES)
+        }
+
+        // Save view mode when it changes
+        LaunchedEffect(viewMode) {
+            coroutineScope.launch {
+                settings.saveViewMode(UserSetting.KEY_VIEW_MODE_CATEGORIES, viewMode)
+            }
+        }
 
         // Trigger loadData whenever filter/sort parameters change or reload is requested
         LaunchedEffect(filterName, transactionType, sortField, sortOrder, reloadTrigger) {

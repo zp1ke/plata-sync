@@ -14,19 +14,18 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import cafe.adriel.voyager.navigator.tab.Tab
 import cafe.adriel.voyager.navigator.tab.TabOptions
+import kotlinx.coroutines.launch
 import org.jetbrains.compose.resources.stringResource
 import org.koin.core.annotation.Factory
 import org.koin.core.annotation.Named
 import org.zp1ke.platasync.data.model.SortOrder
 import org.zp1ke.platasync.data.repository.AccountsRepository
 import org.zp1ke.platasync.data.repository.DaoAccountsRepository
+import org.zp1ke.platasync.data.repository.SettingsRepository
 import org.zp1ke.platasync.data.viewModel.AccountsViewModel
 import org.zp1ke.platasync.domain.UserAccount
-import org.zp1ke.platasync.ui.common.BaseList
-import org.zp1ke.platasync.ui.common.ImageIcon
-import org.zp1ke.platasync.ui.common.ItemActions
-import org.zp1ke.platasync.ui.common.ViewMode
-import org.zp1ke.platasync.ui.common.ViewModeToggle
+import org.zp1ke.platasync.domain.UserSetting
+import org.zp1ke.platasync.ui.common.*
 import org.zp1ke.platasync.ui.feature.accounts.AccountDeleteDialog
 import org.zp1ke.platasync.ui.feature.accounts.AccountEditDialog
 import org.zp1ke.platasync.ui.feature.accounts.AccountsFilterWidget
@@ -39,8 +38,10 @@ val accountIcon = Icons.Filled.AccountBalanceWallet
 @Factory
 class AccountsScreen(
     @Named(DaoAccountsRepository.KEY) repository: AccountsRepository,
+    settingsRepository: SettingsRepository,
 ) : Tab {
     private val screenViewModel: AccountsViewModel = AccountsViewModel(repository)
+    private val settings: SettingsRepository = settingsRepository
 
     override val options: TabOptions
         @Composable
@@ -87,6 +88,20 @@ class AccountsScreen(
         var sortOrder by remember { mutableStateOf(SortOrder.DESC) }
         var viewMode by remember { mutableStateOf(ViewMode.GRID) }
         var reloadTrigger by remember { mutableIntStateOf(0) }
+
+        val coroutineScope = rememberCoroutineScope()
+
+        // Load saved view mode on startup
+        LaunchedEffect(Unit) {
+            viewMode = settings.getViewMode(UserSetting.KEY_VIEW_MODE_ACCOUNTS)
+        }
+
+        // Save view mode when it changes
+        LaunchedEffect(viewMode) {
+            coroutineScope.launch {
+                settings.saveViewMode(UserSetting.KEY_VIEW_MODE_ACCOUNTS, viewMode)
+            }
+        }
 
         // Trigger loadData whenever filter/sort parameters change or reload is requested
         LaunchedEffect(filterName, sortField, sortOrder, reloadTrigger) {

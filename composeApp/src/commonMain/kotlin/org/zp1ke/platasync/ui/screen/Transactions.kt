@@ -14,6 +14,7 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import cafe.adriel.voyager.navigator.tab.Tab
 import cafe.adriel.voyager.navigator.tab.TabOptions
+import kotlinx.coroutines.launch
 import org.jetbrains.compose.resources.stringResource
 import org.koin.core.annotation.Factory
 import org.koin.core.annotation.Named
@@ -21,13 +22,10 @@ import org.zp1ke.platasync.data.model.SortOrder
 import org.zp1ke.platasync.data.model.UserFullTransaction
 import org.zp1ke.platasync.data.repository.*
 import org.zp1ke.platasync.data.viewModel.TransactionsViewModel
+import org.zp1ke.platasync.domain.UserSetting
 import org.zp1ke.platasync.domain.UserTransaction
 import org.zp1ke.platasync.model.TransactionType
-import org.zp1ke.platasync.ui.common.BaseList
-import org.zp1ke.platasync.ui.common.ImageIcon
-import org.zp1ke.platasync.ui.common.ItemActions
-import org.zp1ke.platasync.ui.common.ViewMode
-import org.zp1ke.platasync.ui.common.ViewModeToggle
+import org.zp1ke.platasync.ui.common.*
 import org.zp1ke.platasync.ui.feature.transactions.DateRangePickerDialog
 import org.zp1ke.platasync.ui.feature.transactions.TransactionDeleteDialog
 import org.zp1ke.platasync.ui.feature.transactions.TransactionEditDialog
@@ -45,9 +43,11 @@ class TransactionsScreen(
     @Named(DaoTransactionsRepository.KEY) repository: TransactionsRepository,
     @Named(DaoAccountsRepository.KEY) accountRepository: AccountsRepository,
     @Named(DaoCategoriesRepository.KEY) categoryRepository: CategoriesRepository,
+    settingsRepository: SettingsRepository,
 ) : Tab {
     private val screenViewModel: TransactionsViewModel =
         TransactionsViewModel(repository, accountRepository, categoryRepository)
+    private val settings: SettingsRepository = settingsRepository
 
     override val options: TabOptions
         @Composable
@@ -96,6 +96,20 @@ class TransactionsScreen(
         var selectedCategory by remember { mutableStateOf<org.zp1ke.platasync.domain.UserCategory?>(null) }
         var viewMode by remember { mutableStateOf(ViewMode.GRID) }
         var reloadTrigger by remember { mutableIntStateOf(0) }
+
+        val coroutineScope = rememberCoroutineScope()
+
+        // Load saved view mode on startup
+        LaunchedEffect(Unit) {
+            viewMode = settings.getViewMode(UserSetting.KEY_VIEW_MODE_TRANSACTIONS)
+        }
+
+        // Save view mode when it changes
+        LaunchedEffect(viewMode) {
+            coroutineScope.launch {
+                settings.saveViewMode(UserSetting.KEY_VIEW_MODE_TRANSACTIONS, viewMode)
+            }
+        }
 
         // Trigger loadData whenever filter/sort parameters change or reload is requested
         LaunchedEffect(sortField, sortOrder, selectedAccount, selectedCategory, reloadTrigger) {
