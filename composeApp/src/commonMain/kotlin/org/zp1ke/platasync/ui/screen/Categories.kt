@@ -27,6 +27,8 @@ import org.zp1ke.platasync.ui.common.BaseList
 import org.zp1ke.platasync.ui.common.ImageIcon
 import org.zp1ke.platasync.ui.common.ItemActions
 import org.zp1ke.platasync.ui.common.TransactionTypeWidget
+import org.zp1ke.platasync.ui.common.ViewMode
+import org.zp1ke.platasync.ui.common.ViewModeToggle
 import org.zp1ke.platasync.ui.feature.categories.CategoriesFilterWidget
 import org.zp1ke.platasync.ui.feature.categories.CategoryDeleteDialog
 import org.zp1ke.platasync.ui.feature.categories.CategoryEditDialog
@@ -86,6 +88,7 @@ class CategoriesScreen(
         var transactionType by remember { mutableStateOf<TransactionType?>(null) }
         var sortField by remember { mutableStateOf(UserCategory.COLUMN_LAST_USED_AT) }
         var sortOrder by remember { mutableStateOf(SortOrder.DESC) }
+        var viewMode by remember { mutableStateOf(ViewMode.LIST) }
         var reloadTrigger by remember { mutableIntStateOf(0) }
 
         // Trigger loadData whenever filter/sort parameters change or reload is requested
@@ -175,12 +178,22 @@ class CategoriesScreen(
             titleResource = Res.string.categories_list,
             refreshResource = Res.string.categories_refresh,
             addResource = Res.string.category_add,
+            topActions = listOf(
+                {
+                    ViewModeToggle(
+                        viewMode = viewMode,
+                        onViewModeChange = { viewMode = it },
+                        enabled = !state.isLoading
+                    )
+                }
+            ),
             topWidgetProvider = filterWidgetProvider,
             list = { enabled, actions ->
                 BaseList(
                     items = state.data,
                     actions = actions,
                     enabled = enabled,
+                    viewMode = viewMode,
                     emptyStringResource = if (filterName.isBlank() && transactionType == null) Res.string.categories_empty else Res.string.categories_empty_with_filter,
                     editStringResource = Res.string.category_edit,
                     deleteStringResource = Res.string.category_delete,

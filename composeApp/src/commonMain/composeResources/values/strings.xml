@@ -67,6 +67,9 @@
     <string name="date_range_last_month">Last Month</string>
     <!-- General -->
     <string name="no_items_found">No items found</string>
+    <!-- View Mode -->
+    <string name="view_mode_list">List View</string>
+    <string name="view_mode_grid">Grid View</string>
     <!-- Filters -->
     <string name="sort_by">Sort by</string>
     <string name="sort_order">Order</string>

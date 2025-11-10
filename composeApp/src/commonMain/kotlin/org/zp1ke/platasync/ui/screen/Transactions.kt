@@ -26,6 +26,8 @@ import org.zp1ke.platasync.model.TransactionType
 import org.zp1ke.platasync.ui.common.BaseList
 import org.zp1ke.platasync.ui.common.ImageIcon
 import org.zp1ke.platasync.ui.common.ItemActions
+import org.zp1ke.platasync.ui.common.ViewMode
+import org.zp1ke.platasync.ui.common.ViewModeToggle
 import org.zp1ke.platasync.ui.feature.transactions.DateRangePickerDialog
 import org.zp1ke.platasync.ui.feature.transactions.TransactionDeleteDialog
 import org.zp1ke.platasync.ui.feature.transactions.TransactionEditDialog
@@ -92,6 +94,7 @@ class TransactionsScreen(
         var sortOrder by remember { mutableStateOf(SortOrder.DESC) }
         var selectedAccount by remember { mutableStateOf<org.zp1ke.platasync.domain.UserAccount?>(null) }
         var selectedCategory by remember { mutableStateOf<org.zp1ke.platasync.domain.UserCategory?>(null) }
+        var viewMode by remember { mutableStateOf(ViewMode.LIST) }
         var reloadTrigger by remember { mutableIntStateOf(0) }
 
         // Trigger loadData whenever filter/sort parameters change or reload is requested
@@ -218,6 +221,13 @@ class TransactionsScreen(
             addResource = Res.string.transaction_add,
             topActions = listOf(
                 {
+                    ViewModeToggle(
+                        viewMode = viewMode,
+                        onViewModeChange = { viewMode = it },
+                        enabled = !state.isLoading
+                    )
+                },
+                {
                     TextButton(
                         onClick = {
                             @Suppress("ASSIGNED_VALUE_IS_NEVER_READ")
@@ -239,6 +249,7 @@ class TransactionsScreen(
                     items = state.data,
                     actions = actions,
                     enabled = enabled,
+                    viewMode = viewMode,
                     emptyStringResource = if (isFiltered) Res.string.transactions_empty_with_filter else Res.string.transactions_empty,
                     editStringResource = Res.string.transaction_edit,
                     deleteStringResource = Res.string.transaction_delete,

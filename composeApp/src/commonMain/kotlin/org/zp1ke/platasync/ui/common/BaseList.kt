@@ -3,6 +3,9 @@ package org.zp1ke.platasync.ui.common
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.grid.GridCells
+import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
+import androidx.compose.foundation.lazy.grid.items
 import androidx.compose.foundation.lazy.items
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.DeleteForever
@@ -13,17 +16,24 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.text.style.TextAlign
+import androidx.compose.ui.unit.dp
 import org.jetbrains.compose.resources.StringResource
 import org.jetbrains.compose.resources.stringResource
 import org.zp1ke.platasync.domain.DomainModel
 import org.zp1ke.platasync.ui.theme.Size
 import org.zp1ke.platasync.ui.theme.Spacing
 
+enum class ViewMode {
+    LIST,
+    GRID
+}
+
 @Composable
 fun <T : DomainModel> BaseList(
     items: List<T>,
     actions: ItemActions<T>,
     enabled: Boolean = true,
+    viewMode: ViewMode = ViewMode.LIST,
     emptyStringResource: StringResource,
     editStringResource: StringResource,
     deleteStringResource: StringResource,
@@ -31,54 +41,115 @@ fun <T : DomainModel> BaseList(
     itemSupportingContent: ((T) -> (@Composable () -> Unit))? = null,
     itemLeadingContent: (T) -> (@Composable () -> Unit),
 ) {
-    LazyColumn(
-        verticalArrangement = Arrangement.spacedBy(Spacing.small),
-        modifier = Modifier.padding(horizontal = Spacing.small),
-    ) {
-        items(
-            items = items,
-            key = { it.id() },
-        ) { item ->
-            BaseListItem(
-                onView = { actions.onView(item) },
-                onEdit = { actions.onEdit(item) },
-                onDelete = { actions.onDelete(item) },
-                enabled = enabled,
-                headlineContent = itemHeadlineContent(item),
-                supportingContent = itemSupportingContent?.let { it(item) } ?: {},
-                leadingContent = itemLeadingContent(item),
-                editStringResource = editStringResource,
-                deleteStringResource = deleteStringResource,
-            )
-        }
+    when (viewMode) {
+        ViewMode.LIST -> {
+            LazyColumn(
+                verticalArrangement = Arrangement.spacedBy(Spacing.small),
+                modifier = Modifier.padding(horizontal = Spacing.small),
+            ) {
+                items(
+                    items = items,
+                    key = { it.id() },
+                ) { item ->
+                    BaseListItem(
+                        onView = { actions.onView(item) },
+                        onEdit = { actions.onEdit(item) },
+                        onDelete = { actions.onDelete(item) },
+                        enabled = enabled,
+                        headlineContent = itemHeadlineContent(item),
+                        supportingContent = itemSupportingContent?.let { it(item) } ?: {},
+                        leadingContent = itemLeadingContent(item),
+                        editStringResource = editStringResource,
+                        deleteStringResource = deleteStringResource,
+                    )
+                }
 
-        if (items.isEmpty()) {
-            item {
-                Spacer(modifier = Modifier.height(Size.iconLarge))
+                if (items.isEmpty()) {
+                    item {
+                        Spacer(modifier = Modifier.height(Size.iconLarge))
+                    }
+                }
+
+                if (items.isEmpty() && enabled) {
+                    item {
+                        Text(
+                            text = stringResource(emptyStringResource),
+                            style = MaterialTheme.typography.titleLarge
+                                .copy(color = MaterialTheme.colorScheme.onSurfaceVariant),
+                            textAlign = TextAlign.Center,
+                            modifier = Modifier
+                                .fillMaxWidth()
+                                .padding(horizontal = Spacing.medium),
+                        )
+                    }
+                }
+
+                if (items.isEmpty() && !enabled) {
+                    item {
+                        Box(
+                            modifier = Modifier.fillMaxWidth(),
+                            contentAlignment = Alignment.Center
+                        ) {
+                            LoadingIndicator(size = Size.iconLarge, strokeWidth = Size.strokeMedium)
+                        }
+                    }
+                }
             }
         }
 
-        if (items.isEmpty() && enabled) {
-            item {
-                Text(
-                    text = stringResource(emptyStringResource),
-                    style = MaterialTheme.typography.titleLarge
-                        .copy(color = MaterialTheme.colorScheme.onSurfaceVariant),
-                    textAlign = TextAlign.Center,
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .padding(horizontal = Spacing.medium),
-                )
-            }
-        }
+        ViewMode.GRID -> {
+            LazyVerticalGrid(
+                columns = GridCells.Adaptive(minSize = 300.dp),
+                verticalArrangement = Arrangement.spacedBy(Spacing.small),
+                horizontalArrangement = Arrangement.spacedBy(Spacing.small),
+                modifier = Modifier.padding(horizontal = Spacing.small),
+            ) {
+                items(
+                    items = items,
+                    key = { it.id() },
+                ) { item ->
+                    BaseGridItem(
+                        onView = { actions.onView(item) },
+                        onEdit = { actions.onEdit(item) },
+                        onDelete = { actions.onDelete(item) },
+                        enabled = enabled,
+                        headlineContent = itemHeadlineContent(item),
+                        supportingContent = itemSupportingContent?.let { it(item) } ?: {},
+                        leadingContent = itemLeadingContent(item),
+                        editStringResource = editStringResource,
+                        deleteStringResource = deleteStringResource,
+                    )
+                }
 
-        if (items.isEmpty() && !enabled) {
-            item {
-                Box(
-                    modifier = Modifier.fillMaxWidth(),
-                    contentAlignment = Alignment.Center
-                ) {
-                    LoadingIndicator(size = Size.iconLarge, strokeWidth = Size.strokeMedium)
+                if (items.isEmpty()) {
+                    item {
+                        Spacer(modifier = Modifier.height(Size.iconLarge))
+                    }
+                }
+
+                if (items.isEmpty() && enabled) {
+                    item {
+                        Text(
+                            text = stringResource(emptyStringResource),
+                            style = MaterialTheme.typography.titleLarge
+                                .copy(color = MaterialTheme.colorScheme.onSurfaceVariant),
+                            textAlign = TextAlign.Center,
+                            modifier = Modifier
+                                .fillMaxWidth()
+                                .padding(horizontal = Spacing.medium),
+                        )
+                    }
+                }
+
+                if (items.isEmpty() && !enabled) {
+                    item {
+                        Box(
+                            modifier = Modifier.fillMaxWidth(),
+                            contentAlignment = Alignment.Center
+                        ) {
+                            LoadingIndicator(size = Size.iconLarge, strokeWidth = Size.strokeMedium)
+                        }
+                    }
                 }
             }
         }
@@ -127,4 +198,66 @@ private fun BaseListItem(
             }
         },
     )
+}
+
+@Composable
+private fun BaseGridItem(
+    onView: () -> Unit,
+    onEdit: () -> Unit,
+    onDelete: () -> Unit,
+    enabled: Boolean = true,
+    headlineContent: @Composable () -> Unit,
+    supportingContent: @Composable () -> Unit,
+    leadingContent: @Composable () -> Unit,
+    editStringResource: StringResource,
+    deleteStringResource: StringResource,
+) {
+    Card(
+        modifier = Modifier
+            .fillMaxWidth()
+            .clickable(enabled = enabled, onClick = onView),
+        colors = CardDefaults.cardColors(
+            containerColor = MaterialTheme.colorScheme.surfaceVariant
+        ),
+    ) {
+        Column(
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(Spacing.medium),
+            verticalArrangement = Arrangement.spacedBy(Spacing.small)
+        ) {
+            Row(
+                modifier = Modifier.fillMaxWidth(),
+                horizontalArrangement = Arrangement.SpaceBetween,
+                verticalAlignment = Alignment.CenterVertically
+            ) {
+                Box(modifier = Modifier.padding(end = Spacing.small)) {
+                    leadingContent()
+                }
+                Row {
+                    IconButton(onClick = { onEdit() }, enabled = enabled) {
+                        Icon(
+                            imageVector = Icons.Filled.Edit,
+                            contentDescription = stringResource(editStringResource),
+                            modifier = Modifier.width(Size.iconSmall),
+                        )
+                    }
+                    IconButton(onClick = { onDelete() }, enabled = enabled) {
+                        Icon(
+                            imageVector = Icons.Filled.DeleteForever,
+                            contentDescription = stringResource(deleteStringResource),
+                            modifier = Modifier.width(Size.iconSmall),
+                        )
+                    }
+                }
+            }
+            Column(
+                modifier = Modifier.fillMaxWidth(),
+                verticalArrangement = Arrangement.spacedBy(Spacing.small)
+            ) {
+                headlineContent()
+                supportingContent()
+            }
+        }
+    }
 }

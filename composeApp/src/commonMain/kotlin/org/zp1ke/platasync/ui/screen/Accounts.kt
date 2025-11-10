@@ -25,6 +25,8 @@ import org.zp1ke.platasync.domain.UserAccount
 import org.zp1ke.platasync.ui.common.BaseList
 import org.zp1ke.platasync.ui.common.ImageIcon
 import org.zp1ke.platasync.ui.common.ItemActions
+import org.zp1ke.platasync.ui.common.ViewMode
+import org.zp1ke.platasync.ui.common.ViewModeToggle
 import org.zp1ke.platasync.ui.feature.accounts.AccountDeleteDialog
 import org.zp1ke.platasync.ui.feature.accounts.AccountEditDialog
 import org.zp1ke.platasync.ui.feature.accounts.AccountsFilterWidget
@@ -81,6 +83,7 @@ class AccountsScreen(
 
         var filterVisible by remember { mutableStateOf(false) }
         var filterName by remember { mutableStateOf("") }
+        var viewMode by remember { mutableStateOf(ViewMode.LIST) }
         var sortField by remember { mutableStateOf(UserAccount.COLUMN_LAST_USED_AT) }
         var sortOrder by remember { mutableStateOf(SortOrder.DESC) }
         var reloadTrigger by remember { mutableIntStateOf(0) }
@@ -165,12 +168,22 @@ class AccountsScreen(
                 )
             },
             titleResource = Res.string.accounts_list,
+            topActions = listOf(
+                {
+                    ViewModeToggle(
+                        viewMode = viewMode,
+                        onViewModeChange = { viewMode = it },
+                        enabled = !state.isLoading
+                    )
+                }
+            ),
             subtitleString = state.stats.balance.formatAsMoney(),
             refreshResource = Res.string.accounts_refresh,
             addResource = Res.string.account_add,
             topWidgetProvider = filterWidgetProvider,
             list = { enabled, actions ->
                 BaseList(
+                    viewMode = viewMode,
                     items = state.data,
                     actions = actions,
                     enabled = enabled,
