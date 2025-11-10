@@ -27,9 +27,9 @@ fun <T : DomainModel> BaseList(
     emptyStringResource: StringResource,
     editStringResource: StringResource,
     deleteStringResource: StringResource,
-    headlineContent: (T) -> (@Composable () -> Unit),
-    supportingContent: ((T) -> (@Composable () -> Unit))? = null,
-    leadingContent: (T) -> (@Composable () -> Unit),
+    itemHeadlineContent: (T) -> (@Composable () -> Unit),
+    itemSupportingContent: ((T) -> (@Composable () -> Unit))? = null,
+    itemLeadingContent: (T) -> (@Composable () -> Unit),
 ) {
     LazyColumn(
         verticalArrangement = Arrangement.spacedBy(Spacing.small),
@@ -44,9 +44,9 @@ fun <T : DomainModel> BaseList(
                 onEdit = { actions.onEdit(item) },
                 onDelete = { actions.onDelete(item) },
                 enabled = enabled,
-                headlineContent = headlineContent(item),
-                supportingContent = supportingContent?.let { it(item) } ?: {},
-                leadingContent = leadingContent(item),
+                headlineContent = itemHeadlineContent(item),
+                supportingContent = itemSupportingContent?.let { it(item) } ?: {},
+                leadingContent = itemLeadingContent(item),
                 editStringResource = editStringResource,
                 deleteStringResource = deleteStringResource,
             )

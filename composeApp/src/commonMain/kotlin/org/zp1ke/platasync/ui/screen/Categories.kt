@@ -184,7 +184,7 @@ class CategoriesScreen(
                     emptyStringResource = if (filterName.isBlank() && transactionType == null) Res.string.categories_empty else Res.string.categories_empty_with_filter,
                     editStringResource = Res.string.category_edit,
                     deleteStringResource = Res.string.category_delete,
-                    headlineContent = { category ->
+                    itemHeadlineContent = { category ->
                         {
                             Text(
                                 text = category.name,
@@ -193,7 +193,7 @@ class CategoriesScreen(
                             )
                         }
                     },
-                    supportingContent = { category ->
+                    itemSupportingContent = { category ->
                         {
                             Row(
                                 horizontalArrangement = Arrangement.spacedBy(Spacing.small)
@@ -202,7 +202,7 @@ class CategoriesScreen(
                             }
                         }
                     },
-                    leadingContent = { category ->
+                    itemLeadingContent = { category ->
                         {
                             ImageIcon(category.icon)
                         }

@@ -242,7 +242,7 @@ class TransactionsScreen(
                     emptyStringResource = if (isFiltered) Res.string.transactions_empty_with_filter else Res.string.transactions_empty,
                     editStringResource = Res.string.transaction_edit,
                     deleteStringResource = Res.string.transaction_delete,
-                    headlineContent = { transaction ->
+                    itemHeadlineContent = { transaction ->
                         {
                             Row(modifier = Modifier.fillMaxWidth()) {
                                 ImageIcon(
@@ -279,7 +279,7 @@ class TransactionsScreen(
                             }
                         }
                     },
-                    supportingContent = { trn ->
+                    itemSupportingContent = { trn ->
                         {
                             val isDarkMode = isSystemInDarkTheme()
                             Row(modifier = Modifier.fillMaxWidth()) {
@@ -316,7 +316,7 @@ class TransactionsScreen(
                             }
                         }
                     },
-                    leadingContent = { transaction ->
+                    itemLeadingContent = { transaction ->
                         {
                             val isDarkMode = isSystemInDarkTheme()
                             Icon(

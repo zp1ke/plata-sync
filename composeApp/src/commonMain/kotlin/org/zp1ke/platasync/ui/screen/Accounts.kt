@@ -177,7 +177,7 @@ class AccountsScreen(
                     emptyStringResource = if (filterName.isBlank()) Res.string.accounts_empty else Res.string.accounts_empty_with_filter,
                     editStringResource = Res.string.account_edit,
                     deleteStringResource = Res.string.account_delete,
-                    headlineContent = { account ->
+                    itemHeadlineContent = { account ->
                         {
                             Text(
                                 text = account.name,
@@ -186,7 +186,7 @@ class AccountsScreen(
                             )
                         }
                     },
-                    supportingContent = { account ->
+                    itemSupportingContent = { account ->
                         {
                             Text(
                                 text = account.balance.formatAsMoney(),
@@ -200,7 +200,7 @@ class AccountsScreen(
                             )
                         }
                     },
-                    leadingContent = { account ->
+                    itemLeadingContent = { account ->
                         {
                             ImageIcon(account.icon)
                         }
