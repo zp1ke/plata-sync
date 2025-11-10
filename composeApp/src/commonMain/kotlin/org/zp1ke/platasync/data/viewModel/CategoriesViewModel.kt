@@ -5,30 +5,27 @@ import cafe.adriel.voyager.core.model.screenModelScope
 import kotlinx.coroutines.launch
 import org.zp1ke.platasync.data.model.ScreenState
 import org.zp1ke.platasync.data.model.SortOrder
-import org.zp1ke.platasync.data.repository.AccountsRepository
-import org.zp1ke.platasync.domain.UserAccount
-import org.zp1ke.platasync.model.BalanceStats
+import org.zp1ke.platasync.data.repository.CategoriesRepository
+import org.zp1ke.platasync.domain.UserCategory
 
-data class AccountsScreenState(
-    val screenState: ScreenState<UserAccount>,
-    val stats: BalanceStats,
+data class CategoriesScreenState(
+    val screenState: ScreenState<UserCategory>,
 ) {
-    val data: List<UserAccount>
+    val data: List<UserCategory>
         get() = screenState.data
 
     val isLoading: Boolean
         get() = screenState.isLoading
 }
 
-class AccountsViewModel(
-    private val repository: AccountsRepository,
-) : StateScreenModel<AccountsScreenState>(
-    AccountsScreenState(
+class CategoriesViewModel(
+    private val repository: CategoriesRepository,
+) : StateScreenModel<CategoriesScreenState>(
+    CategoriesScreenState(
         screenState = ScreenState(
             data = listOf(),
             isLoading = false,
         ),
-        stats = BalanceStats(),
     ),
 ) {
     init {
@@ -37,7 +34,7 @@ class AccountsViewModel(
 
     fun loadItems(
         filters: Map<String, String> = emptyMap(),
-        sortKey: String = UserAccount.COLUMN_LAST_USED_AT,
+        sortKey: String = UserCategory.COLUMN_LAST_USED_AT,
         sortOrder: SortOrder = SortOrder.DESC,
     ) {
         mutableState.value = mutableState.value.copy(
@@ -45,18 +42,16 @@ class AccountsViewModel(
         )
         screenModelScope.launch {
             val items = repository.getAllItems(filters, sortKey, sortOrder)
-            val stats = repository.getBalanceStats()
             mutableState.value = mutableState.value.copy(
                 screenState = ScreenState(
                     data = items,
                     isLoading = false,
                 ),
-                stats = stats,
             )
         }
     }
 
-    fun saveItem(item: UserAccount) {
+    fun saveItem(item: UserCategory) {
         mutableState.value = mutableState.value.copy(
             screenState = mutableState.value.screenState.copy(isLoading = true)
         )
@@ -66,7 +61,7 @@ class AccountsViewModel(
         }
     }
 
-    fun deleteItem(item: UserAccount) {
+    fun deleteItem(item: UserCategory) {
         mutableState.value = mutableState.value.copy(
             screenState = mutableState.value.screenState.copy(isLoading = true)
         )

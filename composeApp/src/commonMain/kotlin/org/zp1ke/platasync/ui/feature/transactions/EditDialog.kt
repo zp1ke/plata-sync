@@ -13,7 +13,7 @@ import org.jetbrains.compose.ui.tooling.preview.Preview
 import org.koin.compose.koinInject
 import org.koin.core.qualifier.named
 import org.zp1ke.platasync.data.repository.AccountsRepository
-import org.zp1ke.platasync.data.repository.BaseRepository
+import org.zp1ke.platasync.data.repository.CategoriesRepository
 import org.zp1ke.platasync.data.repository.DaoAccountsRepository
 import org.zp1ke.platasync.data.repository.DaoCategoriesRepository
 import org.zp1ke.platasync.domain.UserAccount
@@ -34,7 +34,7 @@ fun TransactionEditDialog(
     onDismiss: () -> Unit = {},
     onSubmit: (UserTransaction) -> Unit = { _ -> },
     accountRepository: AccountsRepository = koinInject(named(DaoAccountsRepository.KEY)),
-    categoryRepository: BaseRepository<UserCategory> = koinInject(named(DaoCategoriesRepository.KEY))
+    categoryRepository: CategoriesRepository = koinInject(named(DaoCategoriesRepository.KEY))
 ) {
     var account: UserAccount? by remember(transaction) { mutableStateOf(null) }
     var targetAccount: UserAccount? by remember(transaction) { mutableStateOf(null) }

@@ -7,11 +7,14 @@ import org.zp1ke.platasync.data.model.SortOrder
 import org.zp1ke.platasync.data.room.AppDatabase
 import org.zp1ke.platasync.domain.UserCategory
 
+interface CategoriesRepository : BaseRepository<UserCategory> {
+}
+
 @Single
 @Named(DaoCategoriesRepository.KEY)
 class DaoCategoriesRepository(
     database: AppDatabase,
-) : BaseRepository<UserCategory> {
+) : CategoriesRepository {
     private val categoryDao: UserCategoryDao = database.getCategoryDao()
 
     override suspend fun getAllItems(

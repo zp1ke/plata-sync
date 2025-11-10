@@ -3,9 +3,11 @@ package org.zp1ke.platasync.data.viewModel
 import cafe.adriel.voyager.core.model.StateScreenModel
 import cafe.adriel.voyager.core.model.screenModelScope
 import kotlinx.coroutines.launch
+import org.zp1ke.platasync.data.model.ScreenState
 import org.zp1ke.platasync.data.model.SortOrder
 import org.zp1ke.platasync.data.model.UserFullTransaction
 import org.zp1ke.platasync.data.repository.AccountsRepository
+import org.zp1ke.platasync.data.repository.CategoriesRepository
 import org.zp1ke.platasync.data.repository.TransactionsRepository
 import org.zp1ke.platasync.domain.DomainModel
 import org.zp1ke.platasync.domain.UserTransaction
@@ -28,6 +30,7 @@ data class TransactionsScreenState(
 class TransactionsViewModel(
     private val repository: TransactionsRepository,
     private val accountRepository: AccountsRepository,
+    private val categoryRepository: CategoriesRepository,
 ) : StateScreenModel<TransactionsScreenState>(
     TransactionsScreenState(
         screenState = ScreenState(
@@ -94,7 +97,22 @@ class TransactionsViewModel(
                 null
             }
             if (targetAccount != null) {
-                accountRepository.saveItem(targetAccount.copy(balance = item.targetAccountBalanceAfter!!))
+                accountRepository.saveItem(
+                    targetAccount.copy(
+                        balance = item.targetAccountBalanceAfter!!,
+                        lastUsedAt = OffsetDateTime.now()
+                    )
+                )
+            }
+            val category = if (item.categoryId != null) {
+                categoryRepository.getItemById(item.categoryId)
+            } else {
+                null
+            }
+            if (category != null) {
+                categoryRepository.saveItem(
+                    category.copy(lastUsedAt = OffsetDateTime.now())
+                )
             }
             loadItems()
         }

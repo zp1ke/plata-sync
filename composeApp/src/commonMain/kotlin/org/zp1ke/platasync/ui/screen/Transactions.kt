@@ -19,10 +19,7 @@ import org.koin.core.annotation.Factory
 import org.koin.core.annotation.Named
 import org.zp1ke.platasync.data.model.SortOrder
 import org.zp1ke.platasync.data.model.UserFullTransaction
-import org.zp1ke.platasync.data.repository.AccountsRepository
-import org.zp1ke.platasync.data.repository.DaoAccountsRepository
-import org.zp1ke.platasync.data.repository.DaoTransactionsRepository
-import org.zp1ke.platasync.data.repository.TransactionsRepository
+import org.zp1ke.platasync.data.repository.*
 import org.zp1ke.platasync.data.viewModel.TransactionsViewModel
 import org.zp1ke.platasync.domain.UserTransaction
 import org.zp1ke.platasync.model.TransactionType
@@ -45,8 +42,10 @@ val transactionIcon = Icons.Filled.Receipt
 class TransactionsScreen(
     @Named(DaoTransactionsRepository.KEY) repository: TransactionsRepository,
     @Named(DaoAccountsRepository.KEY) accountRepository: AccountsRepository,
+    @Named(DaoCategoriesRepository.KEY) categoryRepository: CategoriesRepository,
 ) : Tab {
-    private val screenViewModel: TransactionsViewModel = TransactionsViewModel(repository, accountRepository)
+    private val screenViewModel: TransactionsViewModel =
+        TransactionsViewModel(repository, accountRepository, categoryRepository)
 
     override val options: TabOptions
         @Composable

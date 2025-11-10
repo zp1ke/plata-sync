@@ -15,7 +15,7 @@ import org.jetbrains.compose.resources.stringResource
 import org.koin.compose.koinInject
 import org.koin.core.qualifier.named
 import org.zp1ke.platasync.data.model.SortOrder
-import org.zp1ke.platasync.data.repository.BaseRepository
+import org.zp1ke.platasync.data.repository.CategoriesRepository
 import org.zp1ke.platasync.data.repository.DaoCategoriesRepository
 import org.zp1ke.platasync.domain.DomainModel
 import org.zp1ke.platasync.domain.UserCategory
@@ -32,7 +32,7 @@ fun SelectCategory(
     transactionType: TransactionType?,
     onCategorySelected: (UserCategory) -> Unit,
     modifier: Modifier = Modifier,
-    repository: BaseRepository<UserCategory> = koinInject(named(DaoCategoriesRepository.KEY))
+    repository: CategoriesRepository = koinInject(named(DaoCategoriesRepository.KEY))
 ) {
     var categories by remember { mutableStateOf<List<UserCategory>>(emptyList()) }
     var isLoading by remember { mutableStateOf(false) }

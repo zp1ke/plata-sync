@@ -20,12 +20,14 @@ interface UserCategoryDao {
         ORDER BY 
             CASE WHEN :sortOrder = '${SortOrder.ASC_VALUE}' THEN
                 CASE :sortKey
+                    WHEN '${UserCategory.COLUMN_LAST_USED_AT}' THEN ${UserCategory.COLUMN_LAST_USED_AT}
                     WHEN '${DomainModel.COLUMN_CREATED_AT}' THEN ${DomainModel.COLUMN_CREATED_AT}
                     WHEN '${UserCategory.COLUMN_NAME}' THEN ${UserCategory.COLUMN_NAME}
                 END
             END ASC,
             CASE WHEN :sortOrder = '${SortOrder.DESC_VALUE}' THEN
                 CASE :sortKey
+                    WHEN '${UserCategory.COLUMN_LAST_USED_AT}' THEN ${UserCategory.COLUMN_LAST_USED_AT}
                     WHEN '${DomainModel.COLUMN_CREATED_AT}' THEN ${DomainModel.COLUMN_CREATED_AT}
                     WHEN '${UserCategory.COLUMN_NAME}' THEN ${UserCategory.COLUMN_NAME}
                 END
@@ -35,7 +37,7 @@ interface UserCategoryDao {
     suspend fun getAll(
         nameFilter: String? = null,
         transactionTypeFilter: String? = null,
-        sortKey: String = DomainModel.COLUMN_CREATED_AT,
+        sortKey: String = UserCategory.COLUMN_LAST_USED_AT,
         sortOrder: SortOrder = SortOrder.DESC,
     ): List<UserCategory>
 

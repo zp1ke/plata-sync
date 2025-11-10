@@ -30,6 +30,7 @@
     <string name="categories_empty_with_filter">No Categories matching filters!</string>
     <string name="categories_refresh">Refresh Categories</string>
     <string name="categories_sort_field_name">Name</string>
+    <string name="categories_sort_field_last_used_at">Last Used at</string>
     <!-- Transaction -->
     <string name="transactions_list">Transactions</string>
     <string name="transaction_add">Add Transaction</string>

@@ -18,13 +18,16 @@ data class UserCategory(
     val name: String,
     val icon: AppIcon,
     @ColumnInfo(name = COLUMN_TRANSACTION_TYPES, index = true)
-    val transactionTypes: List<TransactionType>
+    val transactionTypes: List<TransactionType>,
+    @ColumnInfo(name = COLUMN_LAST_USED_AT, index = true)
+    val lastUsedAt: OffsetDateTime = createdAt,
 ) : DomainModel {
     companion object {
         const val TABLE_NAME = "users_categories"
 
         const val COLUMN_NAME = "name"
         const val COLUMN_TRANSACTION_TYPES = "transaction_types"
+        const val COLUMN_LAST_USED_AT = "last_used_at"
     }
 
     @Ignore

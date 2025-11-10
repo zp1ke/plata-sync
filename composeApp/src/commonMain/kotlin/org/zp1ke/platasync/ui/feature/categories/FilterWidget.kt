@@ -11,7 +11,6 @@ import androidx.compose.runtime.key
 import androidx.compose.ui.Modifier
 import org.jetbrains.compose.resources.stringResource
 import org.zp1ke.platasync.data.model.SortOrder
-import org.zp1ke.platasync.domain.DomainModel
 import org.zp1ke.platasync.domain.UserCategory
 import org.zp1ke.platasync.model.TransactionType
 import org.zp1ke.platasync.ui.common.TransactionTypeWidget
@@ -19,8 +18,8 @@ import org.zp1ke.platasync.ui.input.BaseFilterWidget
 import org.zp1ke.platasync.ui.input.DebouncedTextField
 import org.zp1ke.platasync.ui.theme.Spacing
 import platasync.composeapp.generated.resources.Res
+import platasync.composeapp.generated.resources.categories_sort_field_last_used_at
 import platasync.composeapp.generated.resources.categories_sort_field_name
-import platasync.composeapp.generated.resources.sort_field_created
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -39,7 +38,7 @@ fun CategoriesFilterWidget(
         enabled = enabled,
         sortField = sortField,
         sortFieldOptions = mapOf(
-            DomainModel.COLUMN_CREATED_AT to Res.string.sort_field_created,
+            UserCategory.COLUMN_LAST_USED_AT to Res.string.categories_sort_field_last_used_at,
             UserCategory.COLUMN_NAME to Res.string.categories_sort_field_name,
         ),
         onSortFieldChange = onSortFieldChange,

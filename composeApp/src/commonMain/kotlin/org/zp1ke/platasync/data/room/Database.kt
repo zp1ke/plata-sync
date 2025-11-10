@@ -33,7 +33,6 @@ fun createDatabase(
 
 expect fun getDatabaseBuilder(scope: Scope): RoomDatabase.Builder<AppDatabase>
 
-@Suppress("KotlinNoActualForExpect")
 expect object AppDatabaseConstructor : RoomDatabaseConstructor<AppDatabase> {
     override fun initialize(): AppDatabase
 }

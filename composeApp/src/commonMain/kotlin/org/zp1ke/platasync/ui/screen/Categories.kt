@@ -17,9 +17,9 @@ import org.jetbrains.compose.resources.stringResource
 import org.koin.core.annotation.Factory
 import org.koin.core.annotation.Named
 import org.zp1ke.platasync.data.model.SortOrder
-import org.zp1ke.platasync.data.repository.BaseRepository
+import org.zp1ke.platasync.data.repository.CategoriesRepository
 import org.zp1ke.platasync.data.repository.DaoCategoriesRepository
-import org.zp1ke.platasync.data.viewModel.BaseViewModel
+import org.zp1ke.platasync.data.viewModel.CategoriesViewModel
 import org.zp1ke.platasync.domain.DomainModel
 import org.zp1ke.platasync.domain.UserCategory
 import org.zp1ke.platasync.model.TransactionType
@@ -38,9 +38,9 @@ val categoryIcon = Icons.Filled.LocalOffer
 
 @Factory
 class CategoriesScreen(
-    @Named(DaoCategoriesRepository.KEY) repository: BaseRepository<UserCategory>,
+    @Named(DaoCategoriesRepository.KEY) repository: CategoriesRepository,
 ) : Tab {
-    private val screenViewModel: BaseViewModel<UserCategory> = BaseViewModel(repository)
+    private val screenViewModel: CategoriesViewModel = CategoriesViewModel(repository)
 
     override val options: TabOptions
         @Composable
@@ -84,7 +84,7 @@ class CategoriesScreen(
         var filterVisible by remember { mutableStateOf(false) }
         var filterName by remember { mutableStateOf("") }
         var transactionType by remember { mutableStateOf<TransactionType?>(null) }
-        var sortField by remember { mutableStateOf(DomainModel.COLUMN_CREATED_AT) }
+        var sortField by remember { mutableStateOf(UserCategory.COLUMN_LAST_USED_AT) }
         var sortOrder by remember { mutableStateOf(SortOrder.DESC) }
         var reloadTrigger by remember { mutableIntStateOf(0) }
 

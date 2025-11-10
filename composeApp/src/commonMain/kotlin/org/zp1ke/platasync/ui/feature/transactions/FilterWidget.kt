@@ -16,7 +16,7 @@ import org.koin.compose.koinInject
 import org.koin.core.qualifier.named
 import org.zp1ke.platasync.data.model.SortOrder
 import org.zp1ke.platasync.data.repository.AccountsRepository
-import org.zp1ke.platasync.data.repository.BaseRepository
+import org.zp1ke.platasync.data.repository.CategoriesRepository
 import org.zp1ke.platasync.data.repository.DaoAccountsRepository
 import org.zp1ke.platasync.data.repository.DaoCategoriesRepository
 import org.zp1ke.platasync.domain.UserAccount
@@ -44,7 +44,7 @@ fun TransactionsFilterWidget(
     selectedCategory: UserCategory? = null,
     onCategorySelected: (UserCategory?) -> Unit = {},
     accountRepository: AccountsRepository = koinInject(named(DaoAccountsRepository.KEY)),
-    categoryRepository: BaseRepository<UserCategory> = koinInject(named(DaoCategoriesRepository.KEY))
+    categoryRepository: CategoriesRepository = koinInject(named(DaoCategoriesRepository.KEY))
 ) {
     BaseFilterWidget(
         enabled = enabled,
