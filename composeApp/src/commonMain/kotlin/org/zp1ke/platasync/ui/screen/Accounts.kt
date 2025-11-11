@@ -203,36 +203,14 @@ class AccountsScreen(
                     actions = actions,
                     enabled = enabled,
                     emptyStringResource = if (filterName.isBlank()) Res.string.accounts_empty else Res.string.accounts_empty_with_filter,
-                    editStringResource = Res.string.account_edit,
-                    deleteStringResource = Res.string.account_delete,
-                    itemHeadlineContent = { account ->
-                        {
-                            Text(
-                                text = account.name,
-                                style = MaterialTheme.typography.titleMedium
-                                    .copy(color = MaterialTheme.colorScheme.onSurfaceVariant),
-                            )
-                        }
-                    },
-                    itemSupportingContent = { account ->
-                        {
-                            Text(
-                                text = account.balance.formatAsMoney(),
-                                style = MaterialTheme.typography.bodySmall
-                                    .copy(
-                                        color = MaterialTheme.colorScheme.onSurfaceVariant,
-                                        fontWeight = FontWeight.W500
-                                    ),
-                                modifier = Modifier.fillMaxWidth(0.25f),
-                                textAlign = TextAlign.End
-                            )
-                        }
-                    },
-                    itemLeadingContent = { account ->
-                        {
-                            ImageIcon(account.icon)
-                        }
-                    },
+                    itemContent = { account, mode, itemActions, isEnabled ->
+                        AccountItem(
+                            account = account,
+                            viewMode = mode,
+                            actions = itemActions,
+                            enabled = isEnabled
+                        )
+                    }
                 )
             }
         )
@@ -272,3 +250,44 @@ class AccountsScreen(
         )
     }
 }
+
+@Composable
+private fun AccountItem(
+    account: UserAccount,
+    viewMode: ViewMode,
+    actions: ItemActions<UserAccount>,
+    enabled: Boolean,
+) {
+    BaseItem(
+        viewMode = viewMode,
+        enabled = enabled,
+        onView = { actions.onView(account) },
+        onEdit = { actions.onEdit(account) },
+        onDelete = { actions.onDelete(account) },
+        editStringResource = Res.string.account_edit,
+        deleteStringResource = Res.string.account_delete,
+        leadingContent = {
+            ImageIcon(account.icon)
+        },
+        headlineContent = {
+            Text(
+                text = account.name,
+                style = MaterialTheme.typography.titleMedium
+                    .copy(color = MaterialTheme.colorScheme.onSurfaceVariant),
+            )
+        },
+        supportingContent = {
+            Text(
+                text = account.balance.formatAsMoney(),
+                style = MaterialTheme.typography.bodySmall
+                    .copy(
+                        color = MaterialTheme.colorScheme.onSurfaceVariant,
+                        fontWeight = FontWeight.W500
+                    ),
+                modifier = Modifier.fillMaxWidth(0.25f),
+                textAlign = TextAlign.End
+            )
+        }
+    )
+}
+

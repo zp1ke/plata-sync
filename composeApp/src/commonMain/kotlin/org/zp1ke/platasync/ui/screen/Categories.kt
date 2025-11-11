@@ -209,31 +209,14 @@ class CategoriesScreen(
                     enabled = enabled,
                     viewMode = viewMode,
                     emptyStringResource = if (filterName.isBlank() && transactionType == null) Res.string.categories_empty else Res.string.categories_empty_with_filter,
-                    editStringResource = Res.string.category_edit,
-                    deleteStringResource = Res.string.category_delete,
-                    itemHeadlineContent = { category ->
-                        {
-                            Text(
-                                text = category.name,
-                                style = MaterialTheme.typography.titleMedium
-                                    .copy(color = MaterialTheme.colorScheme.onSurfaceVariant),
-                            )
-                        }
-                    },
-                    itemSupportingContent = { category ->
-                        {
-                            Row(
-                                horizontalArrangement = Arrangement.spacedBy(Spacing.small)
-                            ) {
-                                category.transactionTypes.forEach { TransactionTypeWidget(it) }
-                            }
-                        }
-                    },
-                    itemLeadingContent = { category ->
-                        {
-                            ImageIcon(category.icon)
-                        }
-                    },
+                    itemContent = { category, mode, itemActions, isEnabled ->
+                        CategoryItem(
+                            category = category,
+                            viewMode = mode,
+                            actions = itemActions,
+                            enabled = isEnabled
+                        )
+                    }
                 )
             }
         )
@@ -273,3 +256,39 @@ class CategoriesScreen(
         )
     }
 }
+
+@Composable
+private fun CategoryItem(
+    category: UserCategory,
+    viewMode: ViewMode,
+    actions: ItemActions<UserCategory>,
+    enabled: Boolean,
+) {
+    BaseItem(
+        viewMode = viewMode,
+        enabled = enabled,
+        onView = { actions.onView(category) },
+        onEdit = { actions.onEdit(category) },
+        onDelete = { actions.onDelete(category) },
+        editStringResource = Res.string.category_edit,
+        deleteStringResource = Res.string.category_delete,
+        leadingContent = {
+            ImageIcon(category.icon)
+        },
+        headlineContent = {
+            Text(
+                text = category.name,
+                style = MaterialTheme.typography.titleMedium
+                    .copy(color = MaterialTheme.colorScheme.onSurfaceVariant),
+            )
+        },
+        supportingContent = {
+            Row(
+                horizontalArrangement = Arrangement.spacedBy(Spacing.small)
+            ) {
+                category.transactionTypes.forEach { TransactionTypeWidget(it) }
+            }
+        }
+    )
+}
+

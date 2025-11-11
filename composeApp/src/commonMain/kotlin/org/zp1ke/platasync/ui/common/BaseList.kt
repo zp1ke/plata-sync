@@ -1,20 +1,19 @@
 package org.zp1ke.platasync.ui.common
 
-import androidx.compose.foundation.clickable
-import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.grid.GridCells
 import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
 import androidx.compose.foundation.lazy.grid.items
 import androidx.compose.foundation.lazy.items
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.DeleteForever
-import androidx.compose.material.icons.filled.Edit
-import androidx.compose.material3.*
+import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.draw.clip
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import org.jetbrains.compose.resources.StringResource
@@ -35,11 +34,7 @@ fun <T : DomainModel> BaseList(
     enabled: Boolean = true,
     viewMode: ViewMode = ViewMode.GRID,
     emptyStringResource: StringResource,
-    editStringResource: StringResource,
-    deleteStringResource: StringResource,
-    itemHeadlineContent: (T) -> (@Composable () -> Unit),
-    itemSupportingContent: ((T) -> (@Composable () -> Unit))? = null,
-    itemLeadingContent: (T) -> (@Composable () -> Unit),
+    itemContent: @Composable (item: T, viewMode: ViewMode, actions: ItemActions<T>, enabled: Boolean) -> Unit,
 ) {
     Box(modifier = Modifier.fillMaxSize()) {
         when (viewMode) {
@@ -52,17 +47,7 @@ fun <T : DomainModel> BaseList(
                         items = items,
                         key = { it.id() },
                     ) { item ->
-                        BaseListItem(
-                            onView = { actions.onView(item) },
-                            onEdit = { actions.onEdit(item) },
-                            onDelete = { actions.onDelete(item) },
-                            enabled = enabled,
-                            headlineContent = itemHeadlineContent(item),
-                            supportingContent = itemSupportingContent?.let { it(item) } ?: {},
-                            leadingContent = itemLeadingContent(item),
-                            editStringResource = editStringResource,
-                            deleteStringResource = deleteStringResource,
-                        )
+                        itemContent(item, viewMode, actions, enabled)
                     }
                 }
             }
@@ -78,17 +63,7 @@ fun <T : DomainModel> BaseList(
                         items = items,
                         key = { it.id() },
                     ) { item ->
-                        BaseGridItem(
-                            onView = { actions.onView(item) },
-                            onEdit = { actions.onEdit(item) },
-                            onDelete = { actions.onDelete(item) },
-                            enabled = enabled,
-                            headlineContent = itemHeadlineContent(item),
-                            supportingContent = itemSupportingContent?.let { it(item) } ?: {},
-                            leadingContent = itemLeadingContent(item),
-                            editStringResource = editStringResource,
-                            deleteStringResource = deleteStringResource,
-                        )
+                        itemContent(item, viewMode, actions, enabled)
                     }
                 }
             }
@@ -120,108 +95,3 @@ fun <T : DomainModel> BaseList(
     }
 }
 
-@Composable
-private fun BaseListItem(
-    onView: () -> Unit,
-    onEdit: () -> Unit,
-    onDelete: () -> Unit,
-    enabled: Boolean = true,
-    headlineContent: @Composable () -> Unit,
-    supportingContent: @Composable () -> Unit,
-    leadingContent: @Composable () -> Unit,
-    editStringResource: StringResource,
-    deleteStringResource: StringResource,
-) {
-    ListItem(
-        modifier = Modifier
-            .clip(MaterialTheme.shapes.small)
-            .clickable(enabled = enabled, onClick = onView)
-            .padding(horizontal = Spacing.small),
-        colors = ListItemDefaults.colors(
-            containerColor = MaterialTheme.colorScheme.surfaceVariant
-        ),
-        headlineContent = headlineContent,
-        supportingContent = supportingContent,
-        leadingContent = leadingContent,
-        trailingContent = {
-            Row {
-                IconButton(onClick = { onEdit() }, enabled = enabled) {
-                    Icon(
-                        imageVector = Icons.Filled.Edit,
-                        contentDescription = stringResource(editStringResource),
-                        modifier = Modifier.width(Size.iconSmall),
-                    )
-                }
-                IconButton(onClick = { onDelete() }, enabled = enabled) {
-                    Icon(
-                        imageVector = Icons.Filled.DeleteForever,
-                        contentDescription = stringResource(deleteStringResource),
-                        modifier = Modifier.width(Size.iconSmall),
-                    )
-                }
-            }
-        },
-    )
-}
-
-@Composable
-private fun BaseGridItem(
-    onView: () -> Unit,
-    onEdit: () -> Unit,
-    onDelete: () -> Unit,
-    enabled: Boolean = true,
-    headlineContent: @Composable () -> Unit,
-    supportingContent: @Composable () -> Unit,
-    leadingContent: @Composable () -> Unit,
-    editStringResource: StringResource,
-    deleteStringResource: StringResource,
-) {
-    Card(
-        modifier = Modifier
-            .fillMaxWidth()
-            .clickable(enabled = enabled, onClick = onView),
-        colors = CardDefaults.cardColors(
-            containerColor = MaterialTheme.colorScheme.surfaceVariant
-        ),
-    ) {
-        Column(
-            modifier = Modifier
-                .fillMaxWidth()
-                .padding(Spacing.medium),
-            verticalArrangement = Arrangement.spacedBy(Spacing.small)
-        ) {
-            Row(
-                modifier = Modifier.fillMaxWidth(),
-                horizontalArrangement = Arrangement.SpaceBetween,
-                verticalAlignment = Alignment.CenterVertically
-            ) {
-                Box(modifier = Modifier.padding(end = Spacing.small)) {
-                    leadingContent()
-                }
-                Row {
-                    IconButton(onClick = { onEdit() }, enabled = enabled) {
-                        Icon(
-                            imageVector = Icons.Filled.Edit,
-                            contentDescription = stringResource(editStringResource),
-                            modifier = Modifier.width(Size.iconSmall),
-                        )
-                    }
-                    IconButton(onClick = { onDelete() }, enabled = enabled) {
-                        Icon(
-                            imageVector = Icons.Filled.DeleteForever,
-                            contentDescription = stringResource(deleteStringResource),
-                            modifier = Modifier.width(Size.iconSmall),
-                        )
-                    }
-                }
-            }
-            Column(
-                modifier = Modifier.fillMaxWidth(),
-                verticalArrangement = Arrangement.spacedBy(Spacing.small)
-            ) {
-                headlineContent()
-                supportingContent()
-            }
-        }
-    }
-}
