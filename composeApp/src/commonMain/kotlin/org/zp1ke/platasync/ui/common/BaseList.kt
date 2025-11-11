@@ -41,116 +41,80 @@ fun <T : DomainModel> BaseList(
     itemSupportingContent: ((T) -> (@Composable () -> Unit))? = null,
     itemLeadingContent: (T) -> (@Composable () -> Unit),
 ) {
-    when (viewMode) {
-        ViewMode.LIST -> {
-            LazyColumn(
-                verticalArrangement = Arrangement.spacedBy(Spacing.small),
-                modifier = Modifier.padding(horizontal = Spacing.small),
-            ) {
-                items(
-                    items = items,
-                    key = { it.id() },
-                ) { item ->
-                    BaseListItem(
-                        onView = { actions.onView(item) },
-                        onEdit = { actions.onEdit(item) },
-                        onDelete = { actions.onDelete(item) },
-                        enabled = enabled,
-                        headlineContent = itemHeadlineContent(item),
-                        supportingContent = itemSupportingContent?.let { it(item) } ?: {},
-                        leadingContent = itemLeadingContent(item),
-                        editStringResource = editStringResource,
-                        deleteStringResource = deleteStringResource,
-                    )
-                }
-
-                if (items.isEmpty()) {
-                    item {
-                        Spacer(modifier = Modifier.height(Size.iconLarge))
-                    }
-                }
-
-                if (items.isEmpty() && enabled) {
-                    item {
-                        Text(
-                            text = stringResource(emptyStringResource),
-                            style = MaterialTheme.typography.titleLarge
-                                .copy(color = MaterialTheme.colorScheme.onSurfaceVariant),
-                            textAlign = TextAlign.Center,
-                            modifier = Modifier
-                                .fillMaxWidth()
-                                .padding(horizontal = Spacing.medium),
+    Box(modifier = Modifier.fillMaxSize()) {
+        when (viewMode) {
+            ViewMode.LIST -> {
+                LazyColumn(
+                    verticalArrangement = Arrangement.spacedBy(Spacing.small),
+                    modifier = Modifier.padding(horizontal = Spacing.small),
+                ) {
+                    items(
+                        items = items,
+                        key = { it.id() },
+                    ) { item ->
+                        BaseListItem(
+                            onView = { actions.onView(item) },
+                            onEdit = { actions.onEdit(item) },
+                            onDelete = { actions.onDelete(item) },
+                            enabled = enabled,
+                            headlineContent = itemHeadlineContent(item),
+                            supportingContent = itemSupportingContent?.let { it(item) } ?: {},
+                            leadingContent = itemLeadingContent(item),
+                            editStringResource = editStringResource,
+                            deleteStringResource = deleteStringResource,
                         )
                     }
                 }
+            }
 
-                if (items.isEmpty() && !enabled) {
-                    item {
-                        Box(
-                            modifier = Modifier.fillMaxWidth(),
-                            contentAlignment = Alignment.Center
-                        ) {
-                            LoadingIndicator(size = Size.iconLarge, strokeWidth = Size.strokeMedium)
-                        }
+            ViewMode.GRID -> {
+                LazyVerticalGrid(
+                    columns = GridCells.Adaptive(minSize = 300.dp),
+                    verticalArrangement = Arrangement.spacedBy(Spacing.small),
+                    horizontalArrangement = Arrangement.spacedBy(Spacing.small),
+                    modifier = Modifier.padding(horizontal = Spacing.small),
+                ) {
+                    items(
+                        items = items,
+                        key = { it.id() },
+                    ) { item ->
+                        BaseGridItem(
+                            onView = { actions.onView(item) },
+                            onEdit = { actions.onEdit(item) },
+                            onDelete = { actions.onDelete(item) },
+                            enabled = enabled,
+                            headlineContent = itemHeadlineContent(item),
+                            supportingContent = itemSupportingContent?.let { it(item) } ?: {},
+                            leadingContent = itemLeadingContent(item),
+                            editStringResource = editStringResource,
+                            deleteStringResource = deleteStringResource,
+                        )
                     }
                 }
             }
         }
 
-        ViewMode.GRID -> {
-            LazyVerticalGrid(
-                columns = GridCells.Adaptive(minSize = 300.dp),
-                verticalArrangement = Arrangement.spacedBy(Spacing.small),
-                horizontalArrangement = Arrangement.spacedBy(Spacing.small),
-                modifier = Modifier.padding(horizontal = Spacing.small),
+        if (items.isEmpty() && enabled) {
+            Box(
+                modifier = Modifier.fillMaxSize(),
+                contentAlignment = Alignment.Center
             ) {
-                items(
-                    items = items,
-                    key = { it.id() },
-                ) { item ->
-                    BaseGridItem(
-                        onView = { actions.onView(item) },
-                        onEdit = { actions.onEdit(item) },
-                        onDelete = { actions.onDelete(item) },
-                        enabled = enabled,
-                        headlineContent = itemHeadlineContent(item),
-                        supportingContent = itemSupportingContent?.let { it(item) } ?: {},
-                        leadingContent = itemLeadingContent(item),
-                        editStringResource = editStringResource,
-                        deleteStringResource = deleteStringResource,
-                    )
-                }
+                Text(
+                    text = stringResource(emptyStringResource),
+                    style = MaterialTheme.typography.titleLarge
+                        .copy(color = MaterialTheme.colorScheme.onSurfaceVariant),
+                    textAlign = TextAlign.Center,
+                    modifier = Modifier.padding(horizontal = Spacing.medium),
+                )
+            }
+        }
 
-                if (items.isEmpty()) {
-                    item {
-                        Spacer(modifier = Modifier.height(Size.iconLarge))
-                    }
-                }
-
-                if (items.isEmpty() && enabled) {
-                    item {
-                        Text(
-                            text = stringResource(emptyStringResource),
-                            style = MaterialTheme.typography.titleLarge
-                                .copy(color = MaterialTheme.colorScheme.onSurfaceVariant),
-                            textAlign = TextAlign.Center,
-                            modifier = Modifier
-                                .fillMaxWidth()
-                                .padding(horizontal = Spacing.medium),
-                        )
-                    }
-                }
-
-                if (items.isEmpty() && !enabled) {
-                    item {
-                        Box(
-                            modifier = Modifier.fillMaxWidth(),
-                            contentAlignment = Alignment.Center
-                        ) {
-                            LoadingIndicator(size = Size.iconLarge, strokeWidth = Size.strokeMedium)
-                        }
-                    }
-                }
+        if (items.isEmpty() && !enabled) {
+            Box(
+                modifier = Modifier.fillMaxSize(),
+                contentAlignment = Alignment.Center
+            ) {
+                LoadingIndicator(size = Size.iconLarge, strokeWidth = Size.strokeMedium)
             }
         }
     }
