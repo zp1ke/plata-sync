@@ -25,14 +25,13 @@ import org.zp1ke.platasync.data.viewModel.TransactionsViewModel
 import org.zp1ke.platasync.domain.UserSetting
 import org.zp1ke.platasync.domain.UserTransaction
 import org.zp1ke.platasync.model.TransactionType
-import org.zp1ke.platasync.ui.common.*
-import org.zp1ke.platasync.ui.feature.transactions.DateRangePickerDialog
-import org.zp1ke.platasync.ui.feature.transactions.TransactionDeleteDialog
-import org.zp1ke.platasync.ui.feature.transactions.TransactionEditDialog
-import org.zp1ke.platasync.ui.feature.transactions.TransactionsFilterWidget
+import org.zp1ke.platasync.ui.common.BaseList
+import org.zp1ke.platasync.ui.common.ItemActions
+import org.zp1ke.platasync.ui.common.ViewMode
+import org.zp1ke.platasync.ui.common.ViewModeToggle
+import org.zp1ke.platasync.ui.feature.transactions.*
 import org.zp1ke.platasync.ui.theme.Size
 import org.zp1ke.platasync.ui.theme.Spacing
-import org.zp1ke.platasync.util.formatAsDateTime
 import org.zp1ke.platasync.util.formatAsMoney
 import platasync.composeapp.generated.resources.*
 
@@ -325,101 +324,4 @@ class TransactionsScreen(
             }
         )
     }
-}
-
-@Composable
-private fun TransactionItem(
-    transaction: UserFullTransaction,
-    viewMode: ViewMode,
-    actions: ItemActions<UserFullTransaction>,
-    enabled: Boolean,
-) {
-    val isDarkMode = isSystemInDarkTheme()
-
-    BaseItem(
-        viewMode = viewMode,
-        enabled = enabled,
-        onView = { actions.onView(transaction) },
-        onEdit = { actions.onEdit(transaction) },
-        onDelete = { actions.onDelete(transaction) },
-        editStringResource = Res.string.transaction_edit,
-        deleteStringResource = Res.string.transaction_delete,
-        leadingContent = {
-            Icon(
-                imageVector = transaction.transactionType.icon(),
-                contentDescription = null,
-                tint = transaction.transactionType.color(isDarkMode),
-                modifier = Modifier.size(Size.iconSmall)
-            )
-        },
-        headlineContent = {
-            Row(modifier = Modifier.fillMaxWidth()) {
-                ImageIcon(
-                    transaction.account.icon,
-                    width = Size.iconSmall,
-                    modifier = Modifier.alignByBaseline(),
-                )
-                Text(
-                    text = transaction.account.name,
-                    style = MaterialTheme.typography.titleMedium
-                        .copy(color = MaterialTheme.colorScheme.onSurfaceVariant),
-                    modifier = Modifier.alignByBaseline()
-                )
-                Text(
-                    text = " • ${transaction.transaction.datetime.formatAsDateTime()}",
-                    style = MaterialTheme.typography.bodySmall
-                        .copy(color = MaterialTheme.colorScheme.onSurfaceVariant),
-                    modifier = Modifier.alignByBaseline()
-                )
-                Spacer(modifier = Modifier.weight(1f))
-                if (transaction.category != null) {
-                    ImageIcon(
-                        transaction.category.icon,
-                        width = Size.iconSmall,
-                        modifier = Modifier.alignByBaseline()
-                    )
-                    Text(
-                        text = transaction.category.name,
-                        style = MaterialTheme.typography.titleSmall
-                            .copy(color = MaterialTheme.colorScheme.onSurfaceVariant),
-                        modifier = Modifier.alignByBaseline(),
-                    )
-                }
-            }
-        },
-        supportingContent = {
-            Row(modifier = Modifier.fillMaxWidth()) {
-                Text(
-                    text = transaction.signedAmount.formatAsMoney(),
-                    style = MaterialTheme.typography.bodyMedium
-                        .copy(
-                            color = transaction.transactionType.color(isDarkMode),
-                            fontWeight = FontWeight.W500
-                        ),
-                    modifier = Modifier.alignByBaseline().fillMaxWidth(0.25f),
-                    textAlign = TextAlign.End,
-                )
-                Text(
-                    text = " = ",
-                    style = MaterialTheme.typography.bodyMedium,
-                    modifier = Modifier.alignByBaseline(),
-                )
-                Text(
-                    text = transaction.transaction.accountBalanceAfter.formatAsMoney(),
-                    style = MaterialTheme.typography.bodyMedium
-                        .copy(fontWeight = FontWeight.W500),
-                    modifier = Modifier.alignByBaseline(),
-                )
-                Spacer(modifier = Modifier.weight(1f))
-                if (!transaction.transaction.description.isNullOrBlank()) {
-                    Text(
-                        text = transaction.transaction.description,
-                        style = MaterialTheme.typography.bodySmall
-                            .copy(color = MaterialTheme.colorScheme.onSurfaceVariant),
-                        modifier = Modifier.weight(1f).alignByBaseline()
-                    )
-                }
-            }
-        }
-    )
 }
