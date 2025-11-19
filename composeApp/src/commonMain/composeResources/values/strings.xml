@@ -82,4 +82,11 @@
     <string name="transaction_type_expense">Expense</string>
     <string name="transaction_type_income">Income</string>
     <string name="transaction_type_transfer">Transfer</string>
+    <!-- Settings -->
+    <string name="settings_title">Settings</string>
+    <string name="settings_about">About</string>
+    <string name="settings_version">Version</string>
+    <string name="settings_version_code">Version Code</string>
+    <string name="settings_app_name">Plata Sync</string>
+    <string name="settings_description">A multi-platform expense tracker</string>
 </resources>
