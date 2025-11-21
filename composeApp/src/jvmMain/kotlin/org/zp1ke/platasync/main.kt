@@ -5,6 +5,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.window.Window
 import androidx.compose.ui.window.application
 import androidx.compose.ui.window.rememberWindowState
+import androidx.compose.ui.res.painterResource
 
 fun main() = application {
     val state = rememberWindowState(
@@ -15,6 +16,7 @@ fun main() = application {
         title = "PlataSync",
         state = state,
         resizable = false,
+        icon = painterResource("icon.png"),
     ) {
         App()
     }
