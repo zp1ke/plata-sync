@@ -4,6 +4,9 @@ class AppIcons {
   // Private constructor to prevent instantiation
   const AppIcons._();
 
+  // Actions
+  static const IconData refresh = Icons.refresh;
+
   // Transactions
   static const IconData transactions = Icons.receipt_long;
   static const IconData transactionsOutlined = Icons.receipt_long_outlined;
