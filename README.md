@@ -1,6 +1,6 @@
 # Plata-Sync
 
-A personal finance management application built with Compose Multiplatform.
+A personal finance management application.
 
 ## Features
 
@@ -11,37 +11,9 @@ A personal finance management application built with Compose Multiplatform.
 - 📱 **Multi-View**: Switch between list and grid views for better data visualization
 - 🌙 **Dark Mode**: Full dark mode support with Material 3 design
 - 💾 **Local Storage**: All data stored locally using Room database
-- 🖥️ **Multi-Platform**: Runs on Android and Desktop (JVM)
+- 🖥️ **Multi-Platform**: Runs on Android, Web and Desktop
 
 ## Tech Stack
-
-- **Compose Multiplatform** (1.9.3) - UI framework
-- **Material 3** - Design system
-- **Voyager** (1.1.0) - Navigation and tab management
-- **Room** (2.8.3) - Local database with SQLite
-- **Koin** (4.1.2) - Dependency injection with annotations
-- **KSP** - Code generation
-- **Kotlin Coroutines** - Async operations
-- **AndroidX Lifecycle** - ViewModel and state management
-
-## Project Structure
-
-This is a Kotlin Multiplatform project targeting Android and Desktop (JVM).
-
-* `/composeApp/src` contains the application code:
-  - `commonMain/kotlin` - Shared code for all platforms
-    - `data/` - DAOs, repositories, Room database, and ViewModels
-    - `domain/` - Room entities (UserAccount, UserTransaction, UserCategory, UserSetting)
-    - `model/` - Data models and enums
-    - `ui/` - Composable screens and components
-      - `common/` - Reusable UI components
-      - `feature/` - Feature-specific UI (accounts, transactions, categories)
-      - `input/` - Input components (MoneyField, DebounceTextField)
-      - `screen/` - Main screens (Accounts, Transactions, Categories, Settings)
-      - `theme/` - Theme configuration and colors
-    - `util/` - Utility functions and formatters
-  - `androidMain/kotlin` - Android-specific code
-  - `jvmMain/kotlin` - Desktop-specific code
 
 ## Development
 
@@ -120,7 +92,3 @@ This adds the `.bin` directory to your PATH and sets the `PROJECT_ROOT` environm
 ## License
 
 See [LICENSE](LICENSE) file for details.
-
----
-
-Learn more about [Kotlin Multiplatform](https://www.jetbrains.com/help/kotlin-multiplatform-dev/get-started.html)
