@@ -37,9 +37,28 @@ function do_clean {
 }
 
 function do_deps {
-  log_info "Getting dependencies..."
-  flutter pub get
-  log_success "Dependencies updated"
+  local subcommand="${1:-}"
+
+  case $subcommand in
+    outdated)
+      log_info "Checking for outdated dependencies..."
+      flutter pub outdated
+      ;;
+    upgrade)
+      log_info "Upgrading dependencies..."
+      flutter pub upgrade
+      log_success "Dependencies upgraded"
+      ;;
+    ""|"get")
+      log_info "Getting dependencies..."
+      flutter pub get
+      log_success "Dependencies updated"
+      ;;
+    *)
+      log_error "Unknown deps command: $subcommand (use: get, outdated, upgrade)"
+      exit 1
+      ;;
+  esac
 }
 
 function do_test {
@@ -147,7 +166,7 @@ function help_message {
   echo ""
   echo -e "${GREEN}Commands:${NC}"
   echo -e "  ${YELLOW}clean${NC}                    Clean build artifacts"
-  echo -e "  ${YELLOW}deps${NC}                     Get dependencies"
+  echo -e "  ${YELLOW}deps${NC} [cmd]               Manage dependencies (get|outdated|upgrade)"
   echo -e "  ${YELLOW}test${NC}                     Run tests"
   echo -e "  ${YELLOW}run${NC} [args]               Run application (passes args to flutter run)"
   echo -e "  ${YELLOW}build${NC} <platform> [args]  Build application (android, ios, web, linux, windows, macos)"

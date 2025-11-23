@@ -1,51 +1,41 @@
 # GitHub Copilot Instructions
 
 ## Project Overview
-**Plata-Sync** is a personal finance management application built with Compose Multiplatform.
+**Plata-Sync** is a personal finance management application built with **Flutter**.
 
 ## Platform Support
-- ✅ Android (minSdk: 26, targetSdk: 36)
-- ✅ Desktop (JVM)
-- ❌ iOS (not supported)
+- ✅ Android
+- ✅ iOS
+- ✅ Web
+- ✅ Windows
+- ✅ macOS
+- ✅ Linux
 
 ## Technology Stack
-- **UI**: Compose Multiplatform (1.9.3) with Material 3
-- **Navigation**: Voyager (tab and screen navigation)
-- **Database**: Room (2.8.3) with SQLite
-- **DI**: Koin (4.1.2) with annotations and KSP
-- **Lifecycle**: AndroidX Lifecycle (ViewModel, Compose)
-- **Coroutines**: Kotlinx Coroutines with Swing support for JVM
+- **Framework**: Flutter
+- **Language**: Dart
+- **UI**: Material Design 3
+- **State Management**: *Pending selection* (TBD)
+- **Local Storage**: *Pending selection* (TBD)
 
 ## Architecture
-- **Domain Layer**: Room entities (`UserAccount`, `UserTransaction`, `UserCategory`, `UserSetting`)
-- **Data Layer**: DAOs and Repositories with Koin annotations
-- **Presentation Layer**: Screen ViewModels with state management
-- **UI Layer**: Composable screens organized by feature
+- **Feature-first** directory structure (e.g., `lib/features/<feature_name>`)
+- **Clean Architecture** principles (Data, Domain, Presentation layers)
 
 ## Key Features
 - Account management with balance tracking
 - Transaction management (Income, Expense, Transfer)
-- Category management with icons and transaction type filtering
+- Category management with icons
 - Settings screen
-- Dark mode support
-- Filtering and sorting (name, date, balance)
-- List and Grid view modes
-- Debounced search functionality
-- Date range filtering with presets
-- Money input with decimal handling
-- Platform-specific formatters (currency, dates)
+- Dark/Light mode support
+- Search and Filtering
+- Responsive design for Desktop and Mobile
 
 ## Important Guidelines
-- Use common Compose Multiplatform APIs that work across Android and JVM platforms
-- Avoid iOS-specific or Apple platform code
-- Do not use Android-only APIs in common code (e.g., `BottomNavigation`, Android Context without platform-specific implementations)
-- Use `expect`/`actual` pattern for platform-specific implementations
-- Utilize string resources for internationalization support
-- Follow Material 3 design patterns
-- Use Koin annotations (`@Factory`, `@Single`) for dependency injection
-- Implement Room entities in the `domain` package
-- Store ViewModels in `data.viewModel` package
-- Organize UI features in `ui.feature.<feature>` packages
-- Use `AppIcon` enum for icon references across the app
-- Format money as cents (Int) in database, display with `formatMoney()` utility
-- Use `OffsetDateTime` for timestamps with Room converters
+- Prefer `const` constructors for widgets to improve performance.
+- Use `package:intl` for currency and date formatting.
+- Follow Dart style guide and enabled lints.
+- Keep widgets small, focused, and reusable.
+- Handle platform differences gracefully (e.g., navigation patterns, UI density).
+- Store monetary values as integers (cents) to avoid floating-point errors.
+- Use `flutter_test` for unit and widget tests.
