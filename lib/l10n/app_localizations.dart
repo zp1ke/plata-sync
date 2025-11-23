@@ -99,11 +99,11 @@ abstract class AppL10n {
   /// **'Plata Sync'**
   String get appTitle;
 
-  /// Label for the Home navigation tab
+  /// Label for the Transactions navigation tab
   ///
   /// In en, this message translates to:
-  /// **'Home'**
-  String get navHome;
+  /// **'Transactions'**
+  String get navTransactions;
 
   /// Label for the Accounts navigation tab
   ///
@@ -111,11 +111,17 @@ abstract class AppL10n {
   /// **'Accounts'**
   String get navAccounts;
 
-  /// Text displayed in the body of the Home screen
+  /// Title of the Transactions screen
   ///
   /// In en, this message translates to:
-  /// **'Home Screen'**
-  String get homeScreenBody;
+  /// **'Transactions'**
+  String get transactionsScreenTitle;
+
+  /// Text displayed in the body of the Transactions screen
+  ///
+  /// In en, this message translates to:
+  /// **'Transactions Screen'**
+  String get transactionsScreenBody;
 
   /// Title of the Accounts screen
   ///
@@ -128,6 +134,24 @@ abstract class AppL10n {
   /// In en, this message translates to:
   /// **'Accounts Screen'**
   String get accountsScreenBody;
+
+  /// Label for the Categories navigation tab
+  ///
+  /// In en, this message translates to:
+  /// **'Categories'**
+  String get navCategories;
+
+  /// Title of the Categories screen
+  ///
+  /// In en, this message translates to:
+  /// **'Categories'**
+  String get categoriesScreenTitle;
+
+  /// Text displayed in the body of the Categories screen
+  ///
+  /// In en, this message translates to:
+  /// **'Categories Screen'**
+  String get categoriesScreenBody;
 }
 
 class _AppL10nDelegate extends LocalizationsDelegate<AppL10n> {

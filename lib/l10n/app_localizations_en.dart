@@ -12,17 +12,29 @@ class AppL10nEn extends AppL10n {
   String get appTitle => 'Plata Sync';
 
   @override
-  String get navHome => 'Home';
+  String get navTransactions => 'Transactions';
 
   @override
   String get navAccounts => 'Accounts';
 
   @override
-  String get homeScreenBody => 'Home Screen';
+  String get transactionsScreenTitle => 'Transactions';
+
+  @override
+  String get transactionsScreenBody => 'Transactions Screen';
 
   @override
   String get accountsScreenTitle => 'Accounts';
 
   @override
   String get accountsScreenBody => 'Accounts Screen';
+
+  @override
+  String get navCategories => 'Categories';
+
+  @override
+  String get categoriesScreenTitle => 'Categories';
+
+  @override
+  String get categoriesScreenBody => 'Categories Screen';
 }

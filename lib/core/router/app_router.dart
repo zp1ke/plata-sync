@@ -1,16 +1,18 @@
 import 'package:go_router/go_router.dart';
 import 'package:plata_sync/core/presentation/widgets/scaffold_with_nav_bar.dart';
 import 'package:plata_sync/features/accounts/presentation/screens/accounts_screen.dart';
-import 'package:plata_sync/features/home/presentation/screens/home_screen.dart';
+import 'package:plata_sync/features/categories/presentation/screens/categories_screen.dart';
+import 'package:plata_sync/features/transactions/presentation/screens/transactions_screen.dart';
 
 class AppRoutes {
-  static const home = '/';
+  static const transactions = '/';
   static const accounts = '/accounts';
+  static const categories = '/categories';
 }
 
 class AppRouter {
   static final router = GoRouter(
-    initialLocation: AppRoutes.home,
+    initialLocation: AppRoutes.transactions,
     routes: [
       StatefulShellRoute.indexedStack(
         builder: (context, state, navigationShell) {
@@ -20,8 +22,8 @@ class AppRouter {
           StatefulShellBranch(
             routes: [
               GoRoute(
-                path: AppRoutes.home,
-                builder: (context, state) => const HomeScreen(),
+                path: AppRoutes.transactions,
+                builder: (context, state) => const TransactionsScreen(),
               ),
             ],
           ),
@@ -30,6 +32,14 @@ class AppRouter {
               GoRoute(
                 path: AppRoutes.accounts,
                 builder: (context, state) => const AccountsScreen(),
+              ),
+            ],
+          ),
+          StatefulShellBranch(
+            routes: [
+              GoRoute(
+                path: AppRoutes.categories,
+                builder: (context, state) => const CategoriesScreen(),
               ),
             ],
           ),

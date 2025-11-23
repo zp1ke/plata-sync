@@ -4,17 +4,21 @@
   "@appTitle": {
     "description": "The title of the application"
   },
-  "navHome": "Home",
-  "@navHome": {
-    "description": "Label for the Home navigation tab"
+  "navTransactions": "Transactions",
+  "@navTransactions": {
+    "description": "Label for the Transactions navigation tab"
   },
   "navAccounts": "Accounts",
   "@navAccounts": {
     "description": "Label for the Accounts navigation tab"
   },
-  "homeScreenBody": "Home Screen",
-  "@homeScreenBody": {
-    "description": "Text displayed in the body of the Home screen"
+  "transactionsScreenTitle": "Transactions",
+  "@transactionsScreenTitle": {
+    "description": "Title of the Transactions screen"
+  },
+  "transactionsScreenBody": "Transactions Screen",
+  "@transactionsScreenBody": {
+    "description": "Text displayed in the body of the Transactions screen"
   },
   "accountsScreenTitle": "Accounts",
   "@accountsScreenTitle": {
@@ -23,5 +27,17 @@
   "accountsScreenBody": "Accounts Screen",
   "@accountsScreenBody": {
     "description": "Text displayed in the body of the Accounts screen"
+  },
+  "navCategories": "Categories",
+  "@navCategories": {
+    "description": "Label for the Categories navigation tab"
+  },
+  "categoriesScreenTitle": "Categories",
+  "@categoriesScreenTitle": {
+    "description": "Title of the Categories screen"
+  },
+  "categoriesScreenBody": "Categories Screen",
+  "@categoriesScreenBody": {
+    "description": "Text displayed in the body of the Categories screen"
   }
 }
