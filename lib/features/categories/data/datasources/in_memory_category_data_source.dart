@@ -51,6 +51,10 @@ class InMemoryCategoryDataSource implements CategoryDataSource {
         int comparison = 0;
         if (sort.field == 'name') {
           comparison = a.name.compareTo(b.name);
+        } else if (sort.field == 'lastUsed') {
+          final aDate = a.lastUsed ?? DateTime.fromMillisecondsSinceEpoch(0);
+          final bDate = b.lastUsed ?? DateTime.fromMillisecondsSinceEpoch(0);
+          comparison = aDate.compareTo(bDate);
         }
         return sort.ascending ? comparison : -comparison;
       });
