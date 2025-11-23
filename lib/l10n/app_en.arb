@@ -1,0 +1,27 @@
+{
+  "@@locale": "en",
+  "appTitle": "Plata Sync",
+  "@appTitle": {
+    "description": "The title of the application"
+  },
+  "navHome": "Home",
+  "@navHome": {
+    "description": "Label for the Home navigation tab"
+  },
+  "navAccounts": "Accounts",
+  "@navAccounts": {
+    "description": "Label for the Accounts navigation tab"
+  },
+  "homeScreenBody": "Home Screen",
+  "@homeScreenBody": {
+    "description": "Text displayed in the body of the Home screen"
+  },
+  "accountsScreenTitle": "Accounts",
+  "@accountsScreenTitle": {
+    "description": "Title of the Accounts screen"
+  },
+  "accountsScreenBody": "Accounts Screen",
+  "@accountsScreenBody": {
+    "description": "Text displayed in the body of the Accounts screen"
+  }
+}

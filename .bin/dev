@@ -158,6 +158,12 @@ function do_version {
   log_success "Version updated: $current_version → $new_version"
 }
 
+function do_l10n {
+  log_info "Generating localization files..."
+  flutter gen-l10n
+  log_success "Localization files generated"
+}
+
 function help_message {
   echo -e "${BLUE}plata-sync Development Script (Flutter)${NC}"
   echo ""
@@ -167,6 +173,7 @@ function help_message {
   echo -e "${GREEN}Commands:${NC}"
   echo -e "  ${YELLOW}clean${NC}                    Clean build artifacts"
   echo -e "  ${YELLOW}deps${NC} [cmd]               Manage dependencies (get|outdated|upgrade)"
+  echo -e "  ${YELLOW}l10n${NC}                     Generate localization files"
   echo -e "  ${YELLOW}test${NC}                     Run tests"
   echo -e "  ${YELLOW}run${NC} [args]               Run application (passes args to flutter run)"
   echo -e "  ${YELLOW}build${NC} <platform> [args]  Build application (android, ios, web, linux, windows, macos)"
@@ -185,6 +192,9 @@ function do_start {
       ;;
     deps)
       do_deps "$@"
+      ;;
+    l10n)
+      do_l10n "$@"
       ;;
     test)
       do_test "$@"

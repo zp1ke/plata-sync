@@ -1,13 +1,15 @@
 import 'package:flutter/material.dart';
+import 'package:plata_sync/l10n/app_localizations.dart';
 
 class AccountsScreen extends StatelessWidget {
   const AccountsScreen({super.key});
 
   @override
   Widget build(BuildContext context) {
+    final l10n = AppL10n.of(context);
     return Scaffold(
-      appBar: AppBar(title: const Text('Accounts')),
-      body: const Center(child: Text('Accounts Screen')),
+      appBar: AppBar(title: Text(l10n.accountsScreenTitle)),
+      body: Center(child: Text(l10n.accountsScreenBody)),
     );
   }
 }
