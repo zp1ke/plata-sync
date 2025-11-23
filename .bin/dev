@@ -71,6 +71,7 @@ function do_build {
 }
 
 function do_version {
+  local bump_type="${1:-}"
   local pubspec_file="$root_dir/pubspec.yaml"
 
   if [[ ! -f "$pubspec_file" ]]; then
@@ -81,7 +82,61 @@ function do_version {
   local current_version
   current_version=$(grep -oP '^version: \K.*' "$pubspec_file")
 
-  echo -e "${BLUE}Current Version:${NC} ${GREEN}$current_version${NC}"
+  if [[ -z "$bump_type" ]]; then
+    echo -e "${BLUE}Current Version:${NC} ${GREEN}$current_version${NC}"
+    return 0
+  fi
+
+  # Split version into base and build number (if any)
+  local base_version
+  local build_number
+  if [[ "$current_version" == *"+"* ]]; then
+      base_version=$(echo "$current_version" | cut -d'+' -f1)
+      build_number=$(echo "$current_version" | cut -d'+' -f2)
+  else
+      base_version="$current_version"
+      build_number=""
+  fi
+
+  IFS='.' read -r major minor patch <<< "$base_version"
+
+  # Ensure we have numbers
+  major=${major:-0}
+  minor=${minor:-0}
+  patch=${patch:-0}
+
+  case $bump_type in
+    major)
+      major=$((major + 1))
+      minor=0
+      patch=0
+      ;;
+    minor)
+      minor=$((minor + 1))
+      patch=0
+      ;;
+    patch)
+      patch=$((patch + 1))
+      ;;
+    *)
+      log_error "Invalid bump type: $bump_type (use: major, minor, patch)"
+      exit 1
+      ;;
+  esac
+
+  # Handle build number
+  if [[ -z "$build_number" ]]; then
+      build_number=1
+  else
+      build_number=$((build_number + 1))
+  fi
+
+  local new_version="$major.$minor.$patch+$build_number"
+
+  # Update the file
+  sed -i "s/^version: .*/version: $new_version/" "$pubspec_file"
+
+  log_success "Version updated: $current_version → $new_version"
 }
 
 function help_message {
@@ -96,7 +151,7 @@ function help_message {
   echo -e "  ${YELLOW}test${NC}                     Run tests"
   echo -e "  ${YELLOW}run${NC} [args]               Run application (passes args to flutter run)"
   echo -e "  ${YELLOW}build${NC} <platform> [args]  Build application (android, ios, web, linux, windows, macos)"
-  echo -e "  ${YELLOW}version${NC}                  Display current version"
+  echo -e "  ${YELLOW}version${NC} [type]           Display or bump version (type: major|minor|patch)"
   echo -e "  ${YELLOW}help${NC}                     Show this help message"
   echo ""
 }

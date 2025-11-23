@@ -1,10 +1,11 @@
 name: plata_sync
-description: "A new Flutter project."
+description: "Plata Sync - Personal Financial Management app."
 publish_to: 'none'
-version: 0.1.0
+version: 0.0.1+1
 
 environment:
   sdk: ^3.10.1
+  flutter: 3.38.3
 
 dependencies:
   flutter:
