@@ -23,4 +23,16 @@ class AppIcons {
   // Settings
   static const IconData settings = Icons.settings;
   static const IconData settingsOutlined = Icons.settings_outlined;
+
+  // Map for dynamic icon retrieval
+  static const Map<String, IconData> iconMap = {
+    // categories
+    'shopping_cart': Icons.shopping_cart,
+    'bolt': Icons.bolt,
+    'movie': Icons.movie,
+  };
+
+  static IconData getIcon(String name) {
+    return iconMap[name] ?? Icons.help_outline;
+  }
 }

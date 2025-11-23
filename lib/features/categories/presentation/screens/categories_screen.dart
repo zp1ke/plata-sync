@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:plata_sync/core/di/service_locator.dart';
 import 'package:plata_sync/core/presentation/resources/app_icons.dart';
+import 'package:plata_sync/core/presentation/widgets/object_icon.dart';
 import 'package:plata_sync/features/categories/application/categories_manager.dart';
 import 'package:plata_sync/features/categories/domain/entities/category.dart';
 import 'package:plata_sync/l10n/app_localizations.dart';
@@ -40,8 +41,14 @@ class CategoriesScreen extends WatchingWidget {
     }
     return ListView.builder(
       itemCount: categories.length,
-      itemBuilder: (context, index) =>
-          ListTile(title: Text(categories[index].name)),
+      itemBuilder: (context, index) => ListTile(
+        title: Text(categories[index].name),
+        leading: ObjectIcon(
+          iconName: categories[index].icon,
+          backgroundColorHex: categories[index].backgroundColorHex,
+          iconColorHex: categories[index].iconColorHex,
+        ),
+      ),
     );
   }
 }

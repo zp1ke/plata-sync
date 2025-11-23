@@ -4,9 +4,27 @@ import 'package:plata_sync/features/categories/domain/entities/category.dart';
 
 class InMemoryCategoryDataSource implements CategoryDataSource {
   final Map<String, Category> _items = {
-    '1': Category(id: '1', name: 'Groceries', icon: 'shopping_cart'),
-    '2': Category(id: '2', name: 'Utilities', icon: 'bolt'),
-    '3': Category(id: '3', name: 'Entertainment', icon: 'movie'),
+    '1': Category(
+      id: '1',
+      name: 'Groceries',
+      icon: 'shopping_cart',
+      backgroundColorHex: '#FFEB3B',
+      iconColorHex: '#000000',
+    ),
+    '2': Category(
+      id: '2',
+      name: 'Utilities',
+      icon: 'bolt',
+      backgroundColorHex: '#4CAF50',
+      iconColorHex: '#FFFFFF',
+    ),
+    '3': Category(
+      id: '3',
+      name: 'Entertainment',
+      icon: 'movie',
+      backgroundColorHex: '#2196F3',
+      iconColorHex: '#FFFFFF',
+    ),
   };
 
   @override
