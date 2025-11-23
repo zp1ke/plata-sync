@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
+import 'package:plata_sync/core/presentation/resources/app_icons.dart';
 
 class ScaffoldWithNavBar extends StatelessWidget {
   const ScaffoldWithNavBar({required this.navigationShell, super.key});
@@ -15,13 +16,13 @@ class ScaffoldWithNavBar extends StatelessWidget {
         onDestinationSelected: (index) => _onTap(context, index),
         destinations: const [
           NavigationDestination(
-            icon: Icon(Icons.home_outlined),
-            selectedIcon: Icon(Icons.home),
+            icon: Icon(AppIcons.homeOutlined),
+            selectedIcon: Icon(AppIcons.home),
             label: 'Home',
           ),
           NavigationDestination(
-            icon: Icon(Icons.account_balance_wallet_outlined),
-            selectedIcon: Icon(Icons.account_balance_wallet),
+            icon: Icon(AppIcons.accountsOutlined),
+            selectedIcon: Icon(AppIcons.accounts),
             label: 'Accounts',
           ),
         ],
