@@ -16,4 +16,8 @@ class AppIcons {
   // Categories
   static const IconData categories = Icons.category;
   static const IconData categoriesOutlined = Icons.category_outlined;
+
+  // Settings
+  static const IconData settings = Icons.settings;
+  static const IconData settingsOutlined = Icons.settings_outlined;
 }

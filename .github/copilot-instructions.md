@@ -15,27 +15,30 @@
 - **Framework**: Flutter
 - **Language**: Dart
 - **UI**: Material Design 3
+- **Navigation**: go_router (ShellRoute for bottom navigation)
+- **Localization**: flutter_localizations, intl (AppL10n)
 - **State Management**: *Pending selection* (TBD)
 - **Local Storage**: *Pending selection* (TBD)
 
 ## Architecture
 - **Feature-first** directory structure (e.g., `lib/features/<feature_name>`)
 - **Clean Architecture** principles (Data, Domain, Presentation layers)
+- **Core Module**: Shared resources in `lib/core` (Router, Widgets, Resources)
 
 ## Key Features
-- Account management with balance tracking
-- Transaction management (Income, Expense, Transfer)
-- Category management with icons
-- Settings screen
-- Dark/Light mode support
-- Search and Filtering
-- Responsive design for Desktop and Mobile
+- **Transactions**: Main screen for viewing/managing transactions
+- **Accounts**: Manage bank accounts and balances
+- **Categories**: Manage transaction categories
+- **Settings**: App configuration
+- **Navigation**: Bottom navigation bar with 4 tabs
+- **Internationalization**: English support (expandable)
 
 ## Important Guidelines
-- Prefer `const` constructors for widgets to improve performance.
-- Use `package:intl` for currency and date formatting.
-- Follow Dart style guide and enabled lints.
-- Keep widgets small, focused, and reusable.
-- Handle platform differences gracefully (e.g., navigation patterns, UI density).
-- Store monetary values as integers (cents) to avoid floating-point errors.
-- Use `flutter_test` for unit and widget tests.
+- **Localization**: Always use `AppL10n.of(context)` for UI strings. Define keys in `lib/l10n/app_en.arb`.
+- **Icons**: Use `AppIcons` class in `lib/core/presentation/resources/app_icons.dart` for all app icons.
+- **Navigation**: Use `AppRouter` and `AppRoutes` constants for navigation.
+- **Constructors**: Prefer `const` constructors for widgets.
+- **Formatting**: Use `package:intl` for currency and date formatting.
+- **Style**: Follow Dart style guide and enabled lints.
+- **Data Types**: Store monetary values as integers (cents).
+- **Testing**: Use `flutter_test` for unit and widget tests.

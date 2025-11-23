@@ -2,12 +2,14 @@ import 'package:go_router/go_router.dart';
 import 'package:plata_sync/core/presentation/widgets/scaffold_with_nav_bar.dart';
 import 'package:plata_sync/features/accounts/presentation/screens/accounts_screen.dart';
 import 'package:plata_sync/features/categories/presentation/screens/categories_screen.dart';
+import 'package:plata_sync/features/settings/presentation/screens/settings_screen.dart';
 import 'package:plata_sync/features/transactions/presentation/screens/transactions_screen.dart';
 
 class AppRoutes {
   static const transactions = '/';
   static const accounts = '/accounts';
   static const categories = '/categories';
+  static const settings = '/settings';
 }
 
 class AppRouter {
@@ -40,6 +42,14 @@ class AppRouter {
               GoRoute(
                 path: AppRoutes.categories,
                 builder: (context, state) => const CategoriesScreen(),
+              ),
+            ],
+          ),
+          StatefulShellBranch(
+            routes: [
+              GoRoute(
+                path: AppRoutes.settings,
+                builder: (context, state) => const SettingsScreen(),
               ),
             ],
           ),

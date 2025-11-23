@@ -37,4 +37,13 @@ class AppL10nEn extends AppL10n {
 
   @override
   String get categoriesScreenBody => 'Categories Screen';
+
+  @override
+  String get navSettings => 'Settings';
+
+  @override
+  String get settingsScreenTitle => 'Settings';
+
+  @override
+  String get settingsScreenBody => 'Settings Screen';
 }

@@ -39,5 +39,17 @@
   "categoriesScreenBody": "Categories Screen",
   "@categoriesScreenBody": {
     "description": "Text displayed in the body of the Categories screen"
+  },
+  "navSettings": "Settings",
+  "@navSettings": {
+    "description": "Label for the Settings navigation tab"
+  },
+  "settingsScreenTitle": "Settings",
+  "@settingsScreenTitle": {
+    "description": "Title of the Settings screen"
+  },
+  "settingsScreenBody": "Settings Screen",
+  "@settingsScreenBody": {
+    "description": "Text displayed in the body of the Settings screen"
   }
 }

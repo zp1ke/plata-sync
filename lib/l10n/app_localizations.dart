@@ -152,6 +152,24 @@ abstract class AppL10n {
   /// In en, this message translates to:
   /// **'Categories Screen'**
   String get categoriesScreenBody;
+
+  /// Label for the Settings navigation tab
+  ///
+  /// In en, this message translates to:
+  /// **'Settings'**
+  String get navSettings;
+
+  /// Title of the Settings screen
+  ///
+  /// In en, this message translates to:
+  /// **'Settings'**
+  String get settingsScreenTitle;
+
+  /// Text displayed in the body of the Settings screen
+  ///
+  /// In en, this message translates to:
+  /// **'Settings Screen'**
+  String get settingsScreenBody;
 }
 
 class _AppL10nDelegate extends LocalizationsDelegate<AppL10n> {
