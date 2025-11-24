@@ -59,10 +59,6 @@ class _AppTopBarState extends State<AppTopBar> {
           padding: const EdgeInsets.fromLTRB(12, 0, 12, 10),
           child: SearchBar(
             controller: searchController,
-            elevation: WidgetStateProperty.all(0),
-            shape: WidgetStateProperty.all(
-              RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
-            ),
             hintText: widget.searchHint,
             leading: const Icon(AppIcons.search),
             onChanged: onSearchChanged,

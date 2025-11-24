@@ -12,7 +12,7 @@ class ObjectIcon extends StatelessWidget {
     required this.iconName,
     required this.backgroundColorHex,
     required this.iconColorHex,
-    this.size = 48.0,
+    this.size = 42.0,
   });
 
   Color _parseColor(String hexColor) {
