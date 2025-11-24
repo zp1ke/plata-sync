@@ -1,0 +1,20 @@
+{
+  "version": "0.2.0",
+  "configurations": [
+    {
+      "name": "Flutter: Run (Linux)",
+      "request": "launch",
+      "type": "dart",
+      "program": "${workspaceFolder}/lib/main.dart",
+      "deviceId": "linux"
+    },
+    {
+      "name": "Flutter: Debug (Linux)",
+      "request": "launch",
+      "type": "dart",
+      "program": "${workspaceFolder}/lib/main.dart",
+      "deviceId": "linux",
+      "args": ["--observe"]
+    }
+  ]
+}
