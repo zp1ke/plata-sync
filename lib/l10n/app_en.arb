@@ -85,12 +85,12 @@
   "@categoriesSortLastUsedDesc": {
     "description": "Sort categories by last used descending"
   },
-  "categoriesViewList": "List View",
-  "@categoriesViewList": {
+  "viewList": "List View",
+  "@viewList": {
     "description": "Tooltip for list view"
   },
-  "categoriesViewGrid": "Grid View",
-  "@categoriesViewGrid": {
+  "viewGrid": "Grid View",
+  "@viewGrid": {
     "description": "Tooltip for grid view"
   }
 }

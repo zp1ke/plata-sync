@@ -217,13 +217,13 @@ abstract class AppL10n {
   ///
   /// In en, this message translates to:
   /// **'List View'**
-  String get categoriesViewList;
+  String get viewList;
 
   /// Tooltip for grid view
   ///
   /// In en, this message translates to:
   /// **'Grid View'**
-  String get categoriesViewGrid;
+  String get viewGrid;
 }
 
 class _AppL10nDelegate extends LocalizationsDelegate<AppL10n> {

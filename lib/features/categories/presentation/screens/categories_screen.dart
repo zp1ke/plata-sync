@@ -1,9 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:plata_sync/core/di/service_locator.dart';
-import 'package:plata_sync/core/presentation/resources/app_icons.dart';
+import 'package:plata_sync/core/model/enums/view_mode.dart';
 import 'package:plata_sync/core/presentation/widgets/app_top_bar.dart';
 import 'package:plata_sync/core/presentation/widgets/object_icon.dart';
 import 'package:plata_sync/core/presentation/widgets/sort_selector.dart';
+import 'package:plata_sync/core/presentation/widgets/view_toggle.dart';
 import 'package:plata_sync/features/categories/application/categories_manager.dart';
 import 'package:plata_sync/features/categories/domain/entities/category.dart';
 import 'package:plata_sync/l10n/app_localizations.dart';
@@ -44,7 +45,7 @@ class CategoriesScreen extends WatchingWidget {
   Widget bottomBar(
     BuildContext context,
     CategorySortOrder sortOrder,
-    CategoryViewMode viewMode,
+    ViewMode viewMode,
     CategoriesManager manager,
     AppL10n l10n,
   ) {
@@ -61,7 +62,7 @@ class CategoriesScreen extends WatchingWidget {
         ),
         const SizedBox(width: 8),
         // View toggle
-        viewToggle(viewMode, manager, l10n),
+        ViewToggle(value: viewMode, onChanged: manager.setViewMode),
       ],
     );
   }
@@ -79,37 +80,12 @@ class CategoriesScreen extends WatchingWidget {
     }
   }
 
-  Widget viewToggle(
-    CategoryViewMode viewMode,
-    CategoriesManager manager,
-    AppL10n l10n,
-  ) {
-    return SegmentedButton<CategoryViewMode>(
-      segments: [
-        ButtonSegment(
-          value: CategoryViewMode.list,
-          icon: const Icon(AppIcons.viewList, size: 20),
-          tooltip: l10n.categoriesViewList,
-        ),
-        ButtonSegment(
-          value: CategoryViewMode.grid,
-          icon: const Icon(AppIcons.viewGrid, size: 20),
-          tooltip: l10n.categoriesViewGrid,
-        ),
-      ],
-      selected: {viewMode},
-      onSelectionChanged: (Set<CategoryViewMode> newSelection) {
-        manager.setViewMode(newSelection.first);
-      },
-    );
-  }
-
   Widget content(
     BuildContext context,
     bool isLoading,
     List<Category> categories,
     String currentQuery,
-    CategoryViewMode viewMode,
+    ViewMode viewMode,
   ) {
     final l10n = AppL10n.of(context);
     if (isLoading && categories.isEmpty) {
@@ -125,7 +101,7 @@ class CategoriesScreen extends WatchingWidget {
       return Center(child: Text(l10n.categoriesEmptyState));
     }
 
-    return viewMode == CategoryViewMode.list
+    return viewMode == ViewMode.list
         ? listView(categories)
         : gridView(categories);
   }

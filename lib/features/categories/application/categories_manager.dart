@@ -1,10 +1,9 @@
 import 'package:flutter/foundation.dart' hide Category;
+import 'package:plata_sync/core/model/enums/view_mode.dart';
 import 'package:plata_sync/features/categories/data/interfaces/category_data_source.dart';
 import 'package:plata_sync/features/categories/domain/entities/category.dart';
 
 enum CategorySortOrder { nameAsc, nameDesc, lastUsedAsc, lastUsedDesc }
-
-enum CategoryViewMode { list, grid }
 
 class CategoriesManager {
   final CategoryDataSource _dataSource;
@@ -19,9 +18,7 @@ class CategoriesManager {
   final ValueNotifier<CategorySortOrder> sortOrder = ValueNotifier(
     CategorySortOrder.lastUsedDesc,
   );
-  final ValueNotifier<CategoryViewMode> viewMode = ValueNotifier(
-    CategoryViewMode.list,
-  );
+  final ValueNotifier<ViewMode> viewMode = ValueNotifier(ViewMode.list);
 
   Future<void> loadCategories({String? query}) async {
     isLoading.value = true;
@@ -81,7 +78,7 @@ class CategoriesManager {
     _sortCategories();
   }
 
-  void setViewMode(CategoryViewMode mode) {
+  void setViewMode(ViewMode mode) {
     viewMode.value = mode;
   }
 

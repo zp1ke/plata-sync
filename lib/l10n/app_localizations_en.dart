@@ -71,8 +71,8 @@ class AppL10nEn extends AppL10n {
   String get categoriesSortLastUsedDesc => 'Last Used (Newest)';
 
   @override
-  String get categoriesViewList => 'List View';
+  String get viewList => 'List View';
 
   @override
-  String get categoriesViewGrid => 'Grid View';
+  String get viewGrid => 'Grid View';
 }
