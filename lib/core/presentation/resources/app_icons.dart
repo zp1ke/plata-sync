@@ -8,6 +8,7 @@ class AppIcons {
   static const IconData clear = Icons.clear;
   static const IconData refresh = Icons.refresh;
   static const IconData search = Icons.search;
+  static const IconData searchOff = Icons.search_off;
 
   // Transactions
   static const IconData transactions = Icons.receipt_long;

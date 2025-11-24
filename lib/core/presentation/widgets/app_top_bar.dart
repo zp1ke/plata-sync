@@ -9,6 +9,7 @@ class AppTopBar extends StatefulWidget {
   final ValueChanged<String> onSearchChanged;
   final bool isLoading;
   final VoidCallback? onRefresh;
+  final Widget? bottom;
 
   const AppTopBar({
     super.key,
@@ -17,6 +18,7 @@ class AppTopBar extends StatefulWidget {
     required this.onSearchChanged,
     this.isLoading = false,
     this.onRefresh,
+    this.bottom,
   });
 
   @override
@@ -25,6 +27,7 @@ class AppTopBar extends StatefulWidget {
 
 class _AppTopBarState extends State<AppTopBar> {
   final searchController = TextEditingController();
+  bool isSearching = false;
 
   Timer? debounce;
 
@@ -46,50 +49,77 @@ class _AppTopBarState extends State<AppTopBar> {
     widget.onSearchChanged(query);
   }
 
+  void toggleSearch() {
+    setState(() {
+      isSearching = !isSearching;
+      if (!isSearching) {
+        clearSearch();
+      }
+    });
+  }
+
+  void clearSearch() {
+    searchController.clear();
+    doSearch('');
+  }
+
   @override
   Widget build(BuildContext context) {
     return SliverMainAxisGroup(
       slivers: [
-        SliverAppBar(
-          title: Text(widget.title),
-          pinned: true,
-          actions: [
-            if (widget.onRefresh != null)
-              IconButton(
-                onPressed: widget.isLoading ? null : widget.onRefresh,
-                icon: const Icon(AppIcons.refresh),
-              ),
-          ],
-        ),
-        SliverToBoxAdapter(
-          child: Padding(
-            padding: const EdgeInsets.fromLTRB(12, 0, 12, 10),
-            child: SearchBar(
-              controller: searchController,
-              hintText: widget.searchHint,
-              leading: const Icon(AppIcons.search),
-              onChanged: onSearchChanged,
-              onSubmitted: doSearch,
-              trailing: [
-                if (widget.isLoading)
-                  const SizedBox(
-                    width: 16,
-                    height: 16,
-                    child: CircularProgressIndicator(strokeWidth: 2),
-                  ),
-                if (!widget.isLoading && searchController.text.isNotEmpty)
-                  IconButton(
-                    icon: const Icon(Icons.clear),
-                    onPressed: () {
-                      searchController.clear();
-                      doSearch('');
-                    },
-                  ),
-              ],
+        appBar(),
+        if (widget.bottom != null)
+          SliverToBoxAdapter(
+            child: Padding(
+              padding: const EdgeInsets.fromLTRB(12, 0, 12, 10),
+              child: widget.bottom,
             ),
           ),
-        ),
       ],
+    );
+  }
+
+  Widget appBar() {
+    return SliverAppBar(
+      title: isSearching ? searchField() : Text(widget.title),
+      pinned: true,
+      actions: [
+        if (isSearching)
+          IconButton(
+            icon: const Icon(AppIcons.searchOff),
+            onPressed: toggleSearch,
+          )
+        else ...[
+          IconButton(
+            icon: const Icon(AppIcons.search),
+            onPressed: toggleSearch,
+          ),
+          if (widget.onRefresh != null)
+            IconButton(
+              onPressed: widget.isLoading ? null : widget.onRefresh,
+              icon: const Icon(AppIcons.refresh),
+            ),
+        ],
+      ],
+    );
+  }
+
+  Widget searchField() {
+    return TextField(
+      controller: searchController,
+      autofocus: true,
+      decoration: InputDecoration(
+        prefixIcon: const Icon(AppIcons.search),
+        hintText: widget.searchHint,
+        suffixIcon: (!widget.isLoading && searchController.text.isNotEmpty)
+            ? IconButton(
+                icon: const Icon(AppIcons.clear),
+                onPressed: clearSearch,
+              )
+            : null,
+      ),
+      onChanged: onSearchChanged,
+      onSubmitted: doSearch,
     );
   }
 }
