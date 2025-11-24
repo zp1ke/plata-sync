@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:plata_sync/core/di/service_locator.dart';
-import 'package:plata_sync/core/presentation/resources/app_theme.dart';
+import 'package:plata_sync/core/ui/resources/app_theme.dart';
 import 'package:plata_sync/core/router/app_router.dart';
 import 'package:plata_sync/l10n/app_localizations.dart';
 

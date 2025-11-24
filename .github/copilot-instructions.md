@@ -22,7 +22,7 @@
 
 ## Architecture
 - **Feature-first** directory structure (e.g., `lib/features/<feature_name>`)
-- **Clean Architecture** principles (Data, Domain, Presentation layers)
+- **Clean Architecture** principles (Data, Domain, UI layers)
 - **Core Module**: Shared resources in `lib/core` (Router, Widgets, Resources)
 
 ## Key Features
@@ -35,7 +35,7 @@
 
 ## Important Guidelines
 - **Localization**: Always use `AppL10n.of(context)` for UI strings. Define keys in `lib/l10n/app_en.arb`.
-- **Icons**: Use `AppIcons` class in `lib/core/presentation/resources/app_icons.dart` for all app icons.
+- **Icons**: Use `AppIcons` class in `lib/core/ui/resources/app_icons.dart` for all app icons.
 - **Navigation**: Use `AppRouter` and `AppRoutes` constants for navigation.
 - **Constructors**: Prefer `const` constructors for widgets.
 - **Formatting**: Use `package:intl` for currency and date formatting.
