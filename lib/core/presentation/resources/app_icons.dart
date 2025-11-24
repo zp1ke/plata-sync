@@ -6,6 +6,7 @@ class AppIcons {
 
   // Actions
   static const IconData refresh = Icons.refresh;
+  static const IconData search = Icons.search;
 
   // Transactions
   static const IconData transactions = Icons.receipt_long;

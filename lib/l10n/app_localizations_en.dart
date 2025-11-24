@@ -39,6 +39,9 @@ class AppL10nEn extends AppL10n {
   String get categoriesScreenBody => 'Categories Screen';
 
   @override
+  String get categoriesSearchHint => 'Search Categories';
+
+  @override
   String get navSettings => 'Settings';
 
   @override

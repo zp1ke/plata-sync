@@ -40,6 +40,10 @@
   "@categoriesScreenBody": {
     "description": "Text displayed in the body of the Categories screen"
   },
+  "categoriesSearchHint": "Search Categories",
+  "@categoriesSearchHint": {
+    "description": "Hint text for the Categories search field"
+  },
   "navSettings": "Settings",
   "@navSettings": {
     "description": "Label for the Settings navigation tab"

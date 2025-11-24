@@ -5,17 +5,19 @@ import 'package:plata_sync/features/categories/domain/entities/category.dart';
 class CategoriesManager {
   final CategoryDataSource _dataSource;
 
-  CategoriesManager(this._dataSource) {
-    loadCategories();
-  }
+  CategoriesManager(this._dataSource);
 
   final ValueNotifier<List<Category>> categories = ValueNotifier([]);
   final ValueNotifier<bool> isLoading = ValueNotifier(false);
 
-  Future<void> loadCategories() async {
+  Future<void> loadCategories({String? query}) async {
     isLoading.value = true;
     try {
-      categories.value = await _dataSource.getAll();
+      categories.value = await _dataSource.getAll(
+        filter: query != null && query.isNotEmpty
+            ? {'name': query, 'description': query}
+            : null,
+      );
     } catch (e) {
       debugPrint('Error loading categories: $e');
     } finally {

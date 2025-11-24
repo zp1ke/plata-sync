@@ -57,7 +57,19 @@ class InMemoryCategoryDataSource implements CategoryDataSource {
     if (filter != null) {
       items = items.where((item) {
         for (var entry in filter.entries) {
-          if (entry.key == 'name' && item.name != entry.value) return false;
+          if (entry.key == 'name' &&
+              !item.name.toLowerCase().contains(
+                entry.value.toString().toLowerCase(),
+              )) {
+            return false;
+          }
+          if (entry.key == 'description' &&
+              (item.description == null ||
+                  !item.description!.toLowerCase().contains(
+                    entry.value.toString().toLowerCase(),
+                  ))) {
+            return false;
+          }
           if (entry.key == 'id' && item.id != entry.value) return false;
         }
         return true;

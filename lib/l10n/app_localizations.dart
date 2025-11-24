@@ -153,6 +153,12 @@ abstract class AppL10n {
   /// **'Categories Screen'**
   String get categoriesScreenBody;
 
+  /// Hint text for the Categories search field
+  ///
+  /// In en, this message translates to:
+  /// **'Search Categories'**
+  String get categoriesSearchHint;
+
   /// Label for the Settings navigation tab
   ///
   /// In en, this message translates to:
