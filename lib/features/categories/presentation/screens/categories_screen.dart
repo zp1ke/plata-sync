@@ -18,9 +18,9 @@ class CategoriesScreen extends WatchingWidget {
     final l10n = AppL10n.of(context);
     final manager = getService<CategoriesManager>();
 
-    return Scaffold(
-      body: NestedScrollView(
-        headerSliverBuilder: (context, innerBoxIsScrolled) {
+    return SafeArea(
+      child: NestedScrollView(
+        headerSliverBuilder: (_, _) {
           return [
             AppTopBar(
               title: l10n.categoriesScreenTitle,

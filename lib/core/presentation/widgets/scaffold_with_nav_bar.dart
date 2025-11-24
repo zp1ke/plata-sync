@@ -11,35 +11,33 @@ class ScaffoldWithNavBar extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final l10n = AppL10n.of(context);
-    return SafeArea(
-      child: Scaffold(
-        body: navigationShell,
-        bottomNavigationBar: NavigationBar(
-          selectedIndex: navigationShell.currentIndex,
-          onDestinationSelected: (index) => _onTap(context, index),
-          destinations: [
-            NavigationDestination(
-              icon: const Icon(AppIcons.transactionsOutlined),
-              selectedIcon: const Icon(AppIcons.transactions),
-              label: l10n.navTransactions,
-            ),
-            NavigationDestination(
-              icon: const Icon(AppIcons.accountsOutlined),
-              selectedIcon: const Icon(AppIcons.accounts),
-              label: l10n.navAccounts,
-            ),
-            NavigationDestination(
-              icon: const Icon(AppIcons.categoriesOutlined),
-              selectedIcon: const Icon(AppIcons.categories),
-              label: l10n.navCategories,
-            ),
-            NavigationDestination(
-              icon: const Icon(AppIcons.settingsOutlined),
-              selectedIcon: const Icon(AppIcons.settings),
-              label: l10n.navSettings,
-            ),
-          ],
-        ),
+    return Scaffold(
+      body: navigationShell,
+      bottomNavigationBar: NavigationBar(
+        selectedIndex: navigationShell.currentIndex,
+        onDestinationSelected: (index) => _onTap(context, index),
+        destinations: [
+          NavigationDestination(
+            icon: const Icon(AppIcons.transactionsOutlined),
+            selectedIcon: const Icon(AppIcons.transactions),
+            label: l10n.navTransactions,
+          ),
+          NavigationDestination(
+            icon: const Icon(AppIcons.accountsOutlined),
+            selectedIcon: const Icon(AppIcons.accounts),
+            label: l10n.navAccounts,
+          ),
+          NavigationDestination(
+            icon: const Icon(AppIcons.categoriesOutlined),
+            selectedIcon: const Icon(AppIcons.categories),
+            label: l10n.navCategories,
+          ),
+          NavigationDestination(
+            icon: const Icon(AppIcons.settingsOutlined),
+            selectedIcon: const Icon(AppIcons.settings),
+            label: l10n.navSettings,
+          ),
+        ],
       ),
     );
   }
