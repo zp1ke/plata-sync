@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:hugeicons/hugeicons.dart';
+import 'package:plata_sync/core/ui/resources/app_sizing.dart';
 
 class AppIcons {
   // Private constructor to prevent instantiation
@@ -9,6 +10,7 @@ class AppIcons {
   static final clear = HugeIcon(icon: HugeIcons.strokeRoundedCancel01);
   static final refresh = HugeIcon(icon: HugeIcons.strokeRoundedRefresh);
   static final search = HugeIcon(icon: HugeIcons.strokeRoundedSearch01);
+  static final searchXs = HugeIcon(icon: HugeIcons.strokeRoundedSearch01, size: AppSizing.iconXs);
   static final searchOff = HugeIcon(icon: HugeIcons.strokeRoundedSearchRemove);
   static final sort = HugeIcon(icon: HugeIcons.strokeRoundedSorting01);
   static final viewList = HugeIcon(icon: HugeIcons.strokeRoundedMenu01);
