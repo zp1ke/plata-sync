@@ -49,4 +49,12 @@ class AppL10nEn extends AppL10n {
 
   @override
   String get settingsScreenBody => 'Settings Screen';
+
+  @override
+  String get categoriesEmptyState => 'No categories yet';
+
+  @override
+  String categoriesNoSearchResults(String query) {
+    return 'No results for \"$query\"';
+  }
 }

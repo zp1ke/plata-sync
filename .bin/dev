@@ -61,6 +61,13 @@ function do_deps {
   esac
 }
 
+function do_lint {
+  log_info "Running linter..."
+  dart format lib
+  flutter analyze
+  log_success "Linter completed"
+}
+
 function do_test {
   log_info "Running tests..."
   flutter test
@@ -174,6 +181,7 @@ function help_message {
   echo -e "  ${YELLOW}clean${NC}                    Clean build artifacts"
   echo -e "  ${YELLOW}deps${NC} [cmd]               Manage dependencies (get|outdated|upgrade)"
   echo -e "  ${YELLOW}l10n${NC}                     Generate localization files"
+  echo -e "  ${YELLOW}lint${NC}                     Run linter (format & analyze)"
   echo -e "  ${YELLOW}test${NC}                     Run tests"
   echo -e "  ${YELLOW}run${NC} [args]               Run application (passes args to flutter run)"
   echo -e "  ${YELLOW}build${NC} <platform> [args]  Build application (android, ios, web, linux, windows, macos)"
@@ -195,6 +203,9 @@ function do_start {
       ;;
     l10n)
       do_l10n "$@"
+      ;;
+    lint)
+      do_lint "$@"
       ;;
     test)
       do_test "$@"

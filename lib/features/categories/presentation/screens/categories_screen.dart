@@ -14,6 +14,7 @@ class CategoriesScreen extends WatchingWidget {
   Widget build(BuildContext context) {
     final isLoading = watchValue((CategoriesManager x) => x.isLoading);
     final categories = watchValue((CategoriesManager x) => x.categories);
+    final currentQuery = watchValue((CategoriesManager x) => x.currentQuery);
     final l10n = AppL10n.of(context);
     final manager = getService<CategoriesManager>();
 
@@ -56,7 +57,7 @@ class CategoriesScreen extends WatchingWidget {
             ),
           ];
         },
-        body: content(context, isLoading, categories),
+        body: content(context, isLoading, categories, currentQuery),
       ),
     );
   }
@@ -65,10 +66,22 @@ class CategoriesScreen extends WatchingWidget {
     BuildContext context,
     bool isLoading,
     List<Category> categories,
+    String currentQuery,
   ) {
+    final l10n = AppL10n.of(context);
     if (isLoading && categories.isEmpty) {
       return const Center(child: CircularProgressIndicator.adaptive());
     }
+
+    if (categories.isEmpty) {
+      if (currentQuery.isNotEmpty) {
+        return Center(
+          child: Text(l10n.categoriesNoSearchResults(currentQuery)),
+        );
+      }
+      return Center(child: Text(l10n.categoriesEmptyState));
+    }
+
     return ListView.builder(
       padding: EdgeInsets.zero,
       itemCount: categories.length,

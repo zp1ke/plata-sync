@@ -9,14 +9,17 @@ class CategoriesManager {
 
   final ValueNotifier<List<Category>> categories = ValueNotifier([]);
   final ValueNotifier<bool> isLoading = ValueNotifier(false);
+  final ValueNotifier<String> currentQuery = ValueNotifier('');
 
   Future<void> loadCategories({String? query}) async {
     isLoading.value = true;
+    if (query != null) {
+      currentQuery.value = query;
+    }
     try {
+      final filterQuery = query ?? currentQuery.value;
       categories.value = await _dataSource.getAll(
-        filter: query != null && query.isNotEmpty
-            ? {'name': query, 'description': query}
-            : null,
+        filter: filterQuery.isNotEmpty ? {'name': filterQuery} : null,
       );
     } catch (e) {
       debugPrint('Error loading categories: $e');

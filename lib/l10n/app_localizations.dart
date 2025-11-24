@@ -176,6 +176,18 @@ abstract class AppL10n {
   /// In en, this message translates to:
   /// **'Settings Screen'**
   String get settingsScreenBody;
+
+  /// Message shown when there are no categories
+  ///
+  /// In en, this message translates to:
+  /// **'No categories yet'**
+  String get categoriesEmptyState;
+
+  /// Message shown when search returns no results
+  ///
+  /// In en, this message translates to:
+  /// **'No results for \"{query}\"'**
+  String categoriesNoSearchResults(String query);
 }
 
 class _AppL10nDelegate extends LocalizationsDelegate<AppL10n> {

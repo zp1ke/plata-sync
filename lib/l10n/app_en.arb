@@ -55,5 +55,18 @@
   "settingsScreenBody": "Settings Screen",
   "@settingsScreenBody": {
     "description": "Text displayed in the body of the Settings screen"
+  },
+  "categoriesEmptyState": "No categories yet",
+  "@categoriesEmptyState": {
+    "description": "Message shown when there are no categories"
+  },
+  "categoriesNoSearchResults": "No results for \"{query}\"",
+  "@categoriesNoSearchResults": {
+    "description": "Message shown when search returns no results",
+    "placeholders": {
+      "query": {
+        "type": "String"
+      }
+    }
   }
 }
