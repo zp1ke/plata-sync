@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:plata_sync/core/di/service_locator.dart';
-import 'package:plata_sync/core/presentation/resources/app_icons.dart';
+import 'package:plata_sync/core/presentation/widgets/app_top_bar.dart';
 import 'package:plata_sync/core/presentation/widgets/object_icon.dart';
 import 'package:plata_sync/features/categories/application/categories_manager.dart';
 import 'package:plata_sync/features/categories/domain/entities/category.dart';
@@ -22,38 +22,12 @@ class CategoriesScreen extends WatchingWidget {
       body: NestedScrollView(
         headerSliverBuilder: (context, innerBoxIsScrolled) {
           return [
-            SliverAppBar(
-              title: Text(l10n.categoriesScreenTitle),
-              floating: true,
-              snap: true,
-              pinned: true,
-              bottom: PreferredSize(
-                preferredSize: const Size.fromHeight(48),
-                child: Padding(
-                  padding: const EdgeInsets.fromLTRB(12, 0, 12, 10),
-                  child: SearchBar(
-                    hintText: l10n.categoriesSearchHint,
-                    leading: const Icon(AppIcons.search),
-                    onChanged: (value) {
-                      manager.loadCategories(query: value);
-                    },
-                    trailing: [
-                      if (isLoading)
-                        const SizedBox(
-                          width: 16,
-                          height: 16,
-                          child: CircularProgressIndicator(strokeWidth: 2),
-                        ),
-                    ],
-                  ),
-                ),
-              ),
-              actions: [
-                IconButton(
-                  onPressed: isLoading ? null : () => manager.loadCategories(),
-                  icon: Icon(AppIcons.refresh),
-                ),
-              ],
+            AppTopBar(
+              title: l10n.categoriesScreenTitle,
+              searchHint: l10n.categoriesSearchHint,
+              onSearchChanged: (value) => manager.loadCategories(query: value),
+              isLoading: isLoading,
+              onRefresh: () => manager.loadCategories(),
             ),
           ];
         },

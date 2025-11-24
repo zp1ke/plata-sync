@@ -5,7 +5,9 @@ import 'package:plata_sync/features/categories/domain/entities/category.dart';
 class CategoriesManager {
   final CategoryDataSource _dataSource;
 
-  CategoriesManager(this._dataSource);
+  CategoriesManager(this._dataSource) {
+    loadCategories();
+  }
 
   final ValueNotifier<List<Category>> categories = ValueNotifier([]);
   final ValueNotifier<bool> isLoading = ValueNotifier(false);
