@@ -48,46 +48,47 @@ class _AppTopBarState extends State<AppTopBar> {
 
   @override
   Widget build(BuildContext context) {
-    return SliverAppBar(
-      title: Text(widget.title),
-      floating: true,
-      snap: true,
-      pinned: true,
-      bottom: PreferredSize(
-        preferredSize: const Size.fromHeight(48),
-        child: Padding(
-          padding: const EdgeInsets.fromLTRB(12, 0, 12, 10),
-          child: SearchBar(
-            controller: searchController,
-            hintText: widget.searchHint,
-            leading: const Icon(AppIcons.search),
-            onChanged: onSearchChanged,
-            onSubmitted: doSearch,
-            trailing: [
-              if (widget.isLoading)
-                const SizedBox(
-                  width: 16,
-                  height: 16,
-                  child: CircularProgressIndicator(strokeWidth: 2),
-                ),
-              if (!widget.isLoading && searchController.text.isNotEmpty)
-                IconButton(
-                  icon: const Icon(AppIcons.clear),
-                  onPressed: () {
-                    searchController.clear();
-                    doSearch('');
-                  },
-                ),
-            ],
+    return SliverMainAxisGroup(
+      slivers: [
+        SliverAppBar(
+          title: Text(widget.title),
+          pinned: true,
+          actions: [
+            if (widget.onRefresh != null)
+              IconButton(
+                onPressed: widget.isLoading ? null : widget.onRefresh,
+                icon: const Icon(AppIcons.refresh),
+              ),
+          ],
+        ),
+        SliverToBoxAdapter(
+          child: Padding(
+            padding: const EdgeInsets.fromLTRB(12, 0, 12, 10),
+            child: SearchBar(
+              controller: searchController,
+              hintText: widget.searchHint,
+              leading: const Icon(AppIcons.search),
+              onChanged: onSearchChanged,
+              onSubmitted: doSearch,
+              trailing: [
+                if (widget.isLoading)
+                  const SizedBox(
+                    width: 16,
+                    height: 16,
+                    child: CircularProgressIndicator(strokeWidth: 2),
+                  ),
+                if (!widget.isLoading && searchController.text.isNotEmpty)
+                  IconButton(
+                    icon: const Icon(Icons.clear),
+                    onPressed: () {
+                      searchController.clear();
+                      doSearch('');
+                    },
+                  ),
+              ],
+            ),
           ),
         ),
-      ),
-      actions: [
-        if (widget.onRefresh != null)
-          IconButton(
-            onPressed: widget.isLoading ? null : widget.onRefresh,
-            icon: const Icon(AppIcons.refresh),
-          ),
       ],
     );
   }
