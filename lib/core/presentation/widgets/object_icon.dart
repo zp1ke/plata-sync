@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:plata_sync/core/presentation/resources/app_icons.dart';
+import 'package:plata_sync/core/presentation/resources/app_sizing.dart';
 
 class ObjectIcon extends StatelessWidget {
   final String iconName;
@@ -12,7 +13,7 @@ class ObjectIcon extends StatelessWidget {
     required this.iconName,
     required this.backgroundColorHex,
     required this.iconColorHex,
-    this.size = 42.0,
+    this.size = AppSizing.avatarMd,
   });
 
   Color _parseColor(String hexColor) {

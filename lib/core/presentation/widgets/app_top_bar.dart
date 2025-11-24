@@ -2,6 +2,7 @@ import 'dart:async';
 
 import 'package:flutter/material.dart';
 import 'package:plata_sync/core/presentation/resources/app_icons.dart';
+import 'package:plata_sync/core/presentation/resources/app_spacing.dart';
 
 class AppTopBar extends StatefulWidget {
   final String title;
@@ -71,7 +72,12 @@ class _AppTopBarState extends State<AppTopBar> {
         if (widget.bottom != null)
           SliverToBoxAdapter(
             child: Padding(
-              padding: const EdgeInsets.fromLTRB(12, 0, 12, 10),
+              padding: const EdgeInsets.fromLTRB(
+                AppSpacing.md,
+                AppSpacing.none,
+                AppSpacing.md,
+                AppSpacing.md - 2, // fine-tuned spacing
+              ),
               child: widget.bottom,
             ),
           ),

@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:plata_sync/core/presentation/resources/app_icons.dart';
+import 'package:plata_sync/core/presentation/resources/app_sizing.dart';
+import 'package:plata_sync/core/presentation/resources/app_spacing.dart';
 
 /// A generic sort selector widget that displays a dropdown menu with sort options.
 ///
@@ -31,20 +33,23 @@ class SortSelector<T extends Enum> extends StatelessWidget {
       initialValue: value,
       onSelected: onChanged,
       child: Container(
-        padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
+        padding: const EdgeInsets.symmetric(
+          horizontal: AppSpacing.md,
+          vertical: AppSpacing.sm,
+        ),
         decoration: BoxDecoration(
           border: Border.all(color: Colors.grey.shade300),
-          borderRadius: BorderRadius.circular(8),
+          borderRadius: AppSizing.borderRadiusSm,
         ),
         child: Row(
           mainAxisSize: MainAxisSize.min,
           children: [
-            const Icon(AppIcons.sort, size: 20),
-            const SizedBox(width: 8),
+            const Icon(AppIcons.sort, size: AppSizing.iconSm),
+            AppSpacing.gapHorizontalSm,
             Expanded(
               child: Text(labelBuilder(value), overflow: TextOverflow.ellipsis),
             ),
-            const Icon(Icons.arrow_drop_down, size: 20),
+            const Icon(Icons.arrow_drop_down, size: AppSizing.iconSm),
           ],
         ),
       ),

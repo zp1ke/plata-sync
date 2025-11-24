@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:plata_sync/core/di/service_locator.dart';
 import 'package:plata_sync/core/model/enums/view_mode.dart';
+import 'package:plata_sync/core/presentation/resources/app_sizing.dart';
+import 'package:plata_sync/core/presentation/resources/app_spacing.dart';
 import 'package:plata_sync/core/presentation/widgets/app_top_bar.dart';
 import 'package:plata_sync/core/presentation/widgets/object_icon.dart';
 import 'package:plata_sync/core/presentation/widgets/sort_selector.dart';
@@ -60,7 +62,7 @@ class CategoriesScreen extends WatchingWidget {
             options: CategorySortOrder.values,
           ),
         ),
-        const SizedBox(width: 8),
+        AppSpacing.gapHorizontalSm,
         // View toggle
         ViewToggle(value: viewMode, onChanged: manager.setViewMode),
       ],
@@ -126,12 +128,12 @@ class CategoriesScreen extends WatchingWidget {
 
   Widget gridView(List<Category> categories) {
     return GridView.builder(
-      padding: const EdgeInsets.all(8),
+      padding: AppSpacing.paddingSm,
       gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
         crossAxisCount: 2,
         childAspectRatio: 2.5,
-        crossAxisSpacing: 8,
-        mainAxisSpacing: 8,
+        crossAxisSpacing: AppSpacing.sm,
+        mainAxisSpacing: AppSpacing.sm,
       ),
       itemCount: categories.length,
       itemBuilder: (context, index) {
@@ -141,9 +143,9 @@ class CategoriesScreen extends WatchingWidget {
             onTap: () {
               // TODO: Navigate to category details
             },
-            borderRadius: BorderRadius.circular(12),
+            borderRadius: AppSizing.borderRadiusMd,
             child: Padding(
-              padding: const EdgeInsets.all(12),
+              padding: AppSpacing.paddingMd,
               child: Row(
                 children: [
                   ObjectIcon(
@@ -151,7 +153,7 @@ class CategoriesScreen extends WatchingWidget {
                     backgroundColorHex: category.backgroundColorHex,
                     iconColorHex: category.iconColorHex,
                   ),
-                  const SizedBox(width: 12),
+                  AppSpacing.gapHorizontalMd,
                   Expanded(
                     child: Text(
                       category.name,
