@@ -1,44 +1,59 @@
 import 'package:flutter/material.dart';
+import 'package:hugeicons/hugeicons.dart';
 
 class AppIcons {
   // Private constructor to prevent instantiation
   const AppIcons._();
 
   // Actions
-  static const IconData clear = Icons.clear;
-  static const IconData refresh = Icons.refresh;
-  static const IconData search = Icons.search;
-  static const IconData searchOff = Icons.search_off;
-  static const IconData sort = Icons.sort;
-  static const IconData viewList = Icons.view_list;
-  static const IconData viewGrid = Icons.grid_view;
+  static final clear = HugeIcon(icon: HugeIcons.strokeRoundedCancel01);
+  static final refresh = HugeIcon(icon: HugeIcons.strokeRoundedRefresh);
+  static final search = HugeIcon(icon: HugeIcons.strokeRoundedSearch01);
+  static final searchOff = HugeIcon(icon: HugeIcons.strokeRoundedSearchRemove);
+  static final sort = HugeIcon(icon: HugeIcons.strokeRoundedSorting01);
+  static final viewList = HugeIcon(icon: HugeIcons.strokeRoundedMenu01);
+  static final viewGrid = HugeIcon(icon: HugeIcons.strokeRoundedGridView);
 
   // Transactions
-  static const IconData transactions = Icons.receipt_long;
-  static const IconData transactionsOutlined = Icons.receipt_long_outlined;
+  static final transactions = HugeIcon(icon: HugeIcons.strokeRoundedInvoice);
+  static final transactionsOutlined = HugeIcon(
+    icon: HugeIcons.strokeRoundedInvoice,
+  );
 
   // Accounts
-  static const IconData accounts = Icons.account_balance_wallet;
-  static const IconData accountsOutlined =
-      Icons.account_balance_wallet_outlined;
+  static final accounts = HugeIcon(icon: HugeIcons.strokeRoundedWallet02);
+  static final accountsOutlined = HugeIcon(
+    icon: HugeIcons.strokeRoundedWallet02,
+  );
 
   // Categories
-  static const IconData categories = Icons.category;
-  static const IconData categoriesOutlined = Icons.category_outlined;
+  static final categories = HugeIcon(
+    icon: HugeIcons.strokeRoundedFolderLibrary,
+  );
+  static final categoriesOutlined = HugeIcon(
+    icon: HugeIcons.strokeRoundedFolderLibrary,
+  );
 
   // Settings
-  static const IconData settings = Icons.settings;
-  static const IconData settingsOutlined = Icons.settings_outlined;
+  static final settings = HugeIcon(icon: HugeIcons.strokeRoundedSettings01);
+  static final settingsOutlined = HugeIcon(
+    icon: HugeIcons.strokeRoundedSettings01,
+  );
 
-  // Map for dynamic icon retrieval
-  static const Map<String, IconData> iconMap = {
-    // categories
-    'shopping_cart': Icons.shopping_cart,
-    'bolt': Icons.bolt,
-    'movie': Icons.movie,
+  // Others
+  static final arrowDropDown = HugeIcon(
+    icon: HugeIcons.strokeRoundedArrowDown01,
+  );
+
+  // Map for dynamic icon retrieval by name
+  static const Map<String, dynamic> iconDataMap = {
+    'shopping_cart': HugeIcons.strokeRoundedShoppingCart01,
+    'bolt': HugeIcons.strokeRoundedFlashOff,
+    'movie': HugeIcons.strokeRoundedVideo01,
   };
 
-  static IconData getIcon(String name) {
-    return iconMap[name] ?? Icons.help_outline;
+  static Widget getIcon(String name, {Color? color, double? size}) {
+    final iconData = iconDataMap[name] ?? HugeIcons.strokeRoundedHelpCircle;
+    return HugeIcon(icon: iconData, color: color, size: size);
   }
 }

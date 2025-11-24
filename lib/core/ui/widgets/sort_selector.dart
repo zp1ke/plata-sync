@@ -44,12 +44,12 @@ class SortSelector<T extends Enum> extends StatelessWidget {
         child: Row(
           mainAxisSize: MainAxisSize.min,
           children: [
-            const Icon(AppIcons.sort, size: AppSizing.iconSm),
+            AppIcons.sort,
             AppSpacing.gapHorizontalSm,
             Expanded(
               child: Text(labelBuilder(value), overflow: TextOverflow.ellipsis),
             ),
-            const Icon(Icons.arrow_drop_down, size: AppSizing.iconSm),
+            AppIcons.arrowDropDown,
           ],
         ),
       ),

@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:plata_sync/core/model/enums/view_mode.dart';
 import 'package:plata_sync/core/ui/resources/app_icons.dart';
-import 'package:plata_sync/core/ui/resources/app_sizing.dart';
 import 'package:plata_sync/l10n/app_localizations.dart';
 
 /// A view toggle widget that allows switching between list and grid view modes.
@@ -21,12 +20,12 @@ class ViewToggle extends StatelessWidget {
       segments: [
         ButtonSegment(
           value: ViewMode.list,
-          icon: Icon(AppIcons.viewList, size: AppSizing.iconSm),
+          icon: AppIcons.viewList,
           tooltip: l10n.viewList,
         ),
         ButtonSegment(
           value: ViewMode.grid,
-          icon: Icon(AppIcons.viewGrid, size: AppSizing.iconSm),
+          icon: AppIcons.viewGrid,
           tooltip: l10n.viewGrid,
         ),
       ],

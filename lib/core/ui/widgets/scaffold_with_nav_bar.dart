@@ -18,23 +18,23 @@ class ScaffoldWithNavBar extends StatelessWidget {
         onDestinationSelected: (index) => _onTap(context, index),
         destinations: [
           NavigationDestination(
-            icon: const Icon(AppIcons.transactionsOutlined),
-            selectedIcon: const Icon(AppIcons.transactions),
+            icon: AppIcons.transactionsOutlined,
+            selectedIcon: AppIcons.transactions,
             label: l10n.navTransactions,
           ),
           NavigationDestination(
-            icon: const Icon(AppIcons.accountsOutlined),
-            selectedIcon: const Icon(AppIcons.accounts),
+            icon: AppIcons.accountsOutlined,
+            selectedIcon: AppIcons.accounts,
             label: l10n.navAccounts,
           ),
           NavigationDestination(
-            icon: const Icon(AppIcons.categoriesOutlined),
-            selectedIcon: const Icon(AppIcons.categories),
+            icon: AppIcons.categoriesOutlined,
+            selectedIcon: AppIcons.categories,
             label: l10n.navCategories,
           ),
           NavigationDestination(
-            icon: const Icon(AppIcons.settingsOutlined),
-            selectedIcon: const Icon(AppIcons.settings),
+            icon: AppIcons.settingsOutlined,
+            selectedIcon: AppIcons.settings,
             label: l10n.navSettings,
           ),
         ],
