@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:plata_sync/core/di/service_locator.dart';
+import 'package:plata_sync/core/presentation/resources/app_theme.dart';
 import 'package:plata_sync/core/router/app_router.dart';
 import 'package:plata_sync/l10n/app_localizations.dart';
 
@@ -18,16 +19,8 @@ class MainApp extends StatelessWidget {
       onGenerateTitle: (context) => AppL10n.of(context).appTitle,
       localizationsDelegates: AppL10n.localizationsDelegates,
       supportedLocales: AppL10n.supportedLocales,
-      theme: ThemeData(
-        useMaterial3: true,
-        colorScheme: ColorScheme.fromSeed(seedColor: Colors.blue),
-        searchBarTheme: SearchBarThemeData(
-          elevation: WidgetStateProperty.all(0),
-          shape: WidgetStateProperty.all(
-            RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
-          ),
-        ),
-      ),
+      theme: AppTheme.light,
+      darkTheme: AppTheme.dark,
       routerConfig: AppRouter.router,
     );
   }
