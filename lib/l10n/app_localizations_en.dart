@@ -57,4 +57,22 @@ class AppL10nEn extends AppL10n {
   String categoriesNoSearchResults(String query) {
     return 'No results for \"$query\"';
   }
+
+  @override
+  String get categoriesSortNameAsc => 'Name (A-Z)';
+
+  @override
+  String get categoriesSortNameDesc => 'Name (Z-A)';
+
+  @override
+  String get categoriesSortLastUsedAsc => 'Last Used (Oldest)';
+
+  @override
+  String get categoriesSortLastUsedDesc => 'Last Used (Newest)';
+
+  @override
+  String get categoriesViewList => 'List View';
+
+  @override
+  String get categoriesViewGrid => 'Grid View';
 }

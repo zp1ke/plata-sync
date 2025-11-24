@@ -68,5 +68,29 @@
         "type": "String"
       }
     }
+  },
+  "categoriesSortNameAsc": "Name (A-Z)",
+  "@categoriesSortNameAsc": {
+    "description": "Sort categories by name ascending"
+  },
+  "categoriesSortNameDesc": "Name (Z-A)",
+  "@categoriesSortNameDesc": {
+    "description": "Sort categories by name descending"
+  },
+  "categoriesSortLastUsedAsc": "Last Used (Oldest)",
+  "@categoriesSortLastUsedAsc": {
+    "description": "Sort categories by last used ascending"
+  },
+  "categoriesSortLastUsedDesc": "Last Used (Newest)",
+  "@categoriesSortLastUsedDesc": {
+    "description": "Sort categories by last used descending"
+  },
+  "categoriesViewList": "List View",
+  "@categoriesViewList": {
+    "description": "Tooltip for list view"
+  },
+  "categoriesViewGrid": "Grid View",
+  "@categoriesViewGrid": {
+    "description": "Tooltip for grid view"
   }
 }

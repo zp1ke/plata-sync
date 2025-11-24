@@ -2,6 +2,10 @@ import 'package:flutter/foundation.dart' hide Category;
 import 'package:plata_sync/features/categories/data/interfaces/category_data_source.dart';
 import 'package:plata_sync/features/categories/domain/entities/category.dart';
 
+enum CategorySortOrder { nameAsc, nameDesc, lastUsedAsc, lastUsedDesc }
+
+enum CategoryViewMode { list, grid }
+
 class CategoriesManager {
   final CategoryDataSource _dataSource;
 
@@ -12,6 +16,12 @@ class CategoriesManager {
   final ValueNotifier<List<Category>> categories = ValueNotifier([]);
   final ValueNotifier<bool> isLoading = ValueNotifier(false);
   final ValueNotifier<String> currentQuery = ValueNotifier('');
+  final ValueNotifier<CategorySortOrder> sortOrder = ValueNotifier(
+    CategorySortOrder.lastUsedDesc,
+  );
+  final ValueNotifier<CategoryViewMode> viewMode = ValueNotifier(
+    CategoryViewMode.list,
+  );
 
   Future<void> loadCategories({String? query}) async {
     isLoading.value = true;
@@ -23,6 +33,7 @@ class CategoriesManager {
       categories.value = await _dataSource.getAll(
         filter: filterQuery.isNotEmpty ? {'name': filterQuery} : null,
       );
+      _sortCategories();
     } catch (e) {
       debugPrint('Error loading categories: $e');
     } finally {
@@ -65,8 +76,37 @@ class CategoriesManager {
     }
   }
 
+  void setSortOrder(CategorySortOrder order) {
+    sortOrder.value = order;
+    _sortCategories();
+  }
+
+  void setViewMode(CategoryViewMode mode) {
+    viewMode.value = mode;
+  }
+
+  void _sortCategories() {
+    final sorted = [...categories.value];
+    switch (sortOrder.value) {
+      case CategorySortOrder.nameAsc:
+        sorted.sort((a, b) => a.name.compareTo(b.name));
+      case CategorySortOrder.nameDesc:
+        sorted.sort((a, b) => b.name.compareTo(a.name));
+      case CategorySortOrder.lastUsedAsc:
+        // TODO: Implement last used sorting when the field is available
+        sorted.sort((a, b) => a.name.compareTo(b.name));
+      case CategorySortOrder.lastUsedDesc:
+        // TODO: Implement last used sorting when the field is available
+        sorted.sort((a, b) => b.name.compareTo(a.name));
+    }
+    categories.value = sorted;
+  }
+
   void dispose() {
     categories.dispose();
     isLoading.dispose();
+    currentQuery.dispose();
+    sortOrder.dispose();
+    viewMode.dispose();
   }
 }

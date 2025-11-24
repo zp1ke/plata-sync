@@ -188,6 +188,42 @@ abstract class AppL10n {
   /// In en, this message translates to:
   /// **'No results for \"{query}\"'**
   String categoriesNoSearchResults(String query);
+
+  /// Sort categories by name ascending
+  ///
+  /// In en, this message translates to:
+  /// **'Name (A-Z)'**
+  String get categoriesSortNameAsc;
+
+  /// Sort categories by name descending
+  ///
+  /// In en, this message translates to:
+  /// **'Name (Z-A)'**
+  String get categoriesSortNameDesc;
+
+  /// Sort categories by last used ascending
+  ///
+  /// In en, this message translates to:
+  /// **'Last Used (Oldest)'**
+  String get categoriesSortLastUsedAsc;
+
+  /// Sort categories by last used descending
+  ///
+  /// In en, this message translates to:
+  /// **'Last Used (Newest)'**
+  String get categoriesSortLastUsedDesc;
+
+  /// Tooltip for list view
+  ///
+  /// In en, this message translates to:
+  /// **'List View'**
+  String get categoriesViewList;
+
+  /// Tooltip for grid view
+  ///
+  /// In en, this message translates to:
+  /// **'Grid View'**
+  String get categoriesViewGrid;
 }
 
 class _AppL10nDelegate extends LocalizationsDelegate<AppL10n> {
