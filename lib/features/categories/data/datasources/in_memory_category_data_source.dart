@@ -10,6 +10,7 @@ class InMemoryCategoryDataSource implements CategoryDataSource {
       icon: 'shopping_cart',
       backgroundColorHex: '#FFEB3B',
       iconColorHex: '#000000',
+      lastUsed: DateTime.now(),
     ),
     '2': Category(
       id: '2',
@@ -17,6 +18,7 @@ class InMemoryCategoryDataSource implements CategoryDataSource {
       icon: 'bolt',
       backgroundColorHex: '#4CAF50',
       iconColorHex: '#FFFFFF',
+      lastUsed: DateTime.now(),
     ),
     '3': Category(
       id: '3',
@@ -24,6 +26,7 @@ class InMemoryCategoryDataSource implements CategoryDataSource {
       icon: 'movie',
       backgroundColorHex: '#2196F3',
       iconColorHex: '#FFFFFF',
+      lastUsed: DateTime.now(),
     ),
   };
 
@@ -82,9 +85,7 @@ class InMemoryCategoryDataSource implements CategoryDataSource {
         if (sort.field == 'name') {
           comparison = a.name.compareTo(b.name);
         } else if (sort.field == 'lastUsed') {
-          final aDate = a.lastUsed ?? DateTime.fromMillisecondsSinceEpoch(0);
-          final bDate = b.lastUsed ?? DateTime.fromMillisecondsSinceEpoch(0);
-          comparison = aDate.compareTo(bDate);
+          comparison = a.lastUsed.compareTo(b.lastUsed);
         }
         return sort.ascending ? comparison : -comparison;
       });

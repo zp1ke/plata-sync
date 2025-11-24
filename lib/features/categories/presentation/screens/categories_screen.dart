@@ -3,6 +3,7 @@ import 'package:plata_sync/core/di/service_locator.dart';
 import 'package:plata_sync/core/presentation/resources/app_icons.dart';
 import 'package:plata_sync/core/presentation/widgets/app_top_bar.dart';
 import 'package:plata_sync/core/presentation/widgets/object_icon.dart';
+import 'package:plata_sync/core/presentation/widgets/sort_selector.dart';
 import 'package:plata_sync/features/categories/application/categories_manager.dart';
 import 'package:plata_sync/features/categories/domain/entities/category.dart';
 import 'package:plata_sync/l10n/app_localizations.dart';
@@ -50,60 +51,17 @@ class CategoriesScreen extends WatchingWidget {
     return Row(
       children: [
         // Sort selector
-        Expanded(child: sortSelector(sortOrder, manager, l10n)),
+        Expanded(
+          child: SortSelector<CategorySortOrder>(
+            value: sortOrder,
+            onChanged: manager.setSortOrder,
+            labelBuilder: (order) => sortLabel(order, l10n),
+            options: CategorySortOrder.values,
+          ),
+        ),
         const SizedBox(width: 8),
         // View toggle
         viewToggle(viewMode, manager, l10n),
-      ],
-    );
-  }
-
-  Widget sortSelector(
-    CategorySortOrder sortOrder,
-    CategoriesManager manager,
-    AppL10n l10n,
-  ) {
-    return PopupMenuButton<CategorySortOrder>(
-      initialValue: sortOrder,
-      onSelected: (value) => manager.setSortOrder(value),
-      child: Container(
-        padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
-        decoration: BoxDecoration(
-          border: Border.all(color: Colors.grey.shade300),
-          borderRadius: BorderRadius.circular(8),
-        ),
-        child: Row(
-          mainAxisSize: MainAxisSize.min,
-          children: [
-            const Icon(AppIcons.sort, size: 20),
-            const SizedBox(width: 8),
-            Expanded(
-              child: Text(
-                sortLabel(sortOrder, l10n),
-                overflow: TextOverflow.ellipsis,
-              ),
-            ),
-            const Icon(Icons.arrow_drop_down, size: 20),
-          ],
-        ),
-      ),
-      itemBuilder: (context) => [
-        PopupMenuItem(
-          value: CategorySortOrder.lastUsedDesc,
-          child: Text(l10n.categoriesSortLastUsedDesc),
-        ),
-        PopupMenuItem(
-          value: CategorySortOrder.lastUsedAsc,
-          child: Text(l10n.categoriesSortLastUsedAsc),
-        ),
-        PopupMenuItem(
-          value: CategorySortOrder.nameAsc,
-          child: Text(l10n.categoriesSortNameAsc),
-        ),
-        PopupMenuItem(
-          value: CategorySortOrder.nameDesc,
-          child: Text(l10n.categoriesSortNameDesc),
-        ),
       ],
     );
   }

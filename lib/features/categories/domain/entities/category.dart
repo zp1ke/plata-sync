@@ -6,8 +6,8 @@ class Category extends Equatable {
   final String icon;
   final String backgroundColorHex;
   final String iconColorHex;
+  final DateTime lastUsed;
   final String? description;
-  final DateTime? lastUsed;
 
   const Category({
     required this.id,
@@ -15,8 +15,8 @@ class Category extends Equatable {
     required this.icon,
     required this.backgroundColorHex,
     required this.iconColorHex,
+    required this.lastUsed,
     this.description,
-    this.lastUsed,
   });
 
   Category copyWith({

@@ -93,11 +93,9 @@ class CategoriesManager {
       case CategorySortOrder.nameDesc:
         sorted.sort((a, b) => b.name.compareTo(a.name));
       case CategorySortOrder.lastUsedAsc:
-        // TODO: Implement last used sorting when the field is available
-        sorted.sort((a, b) => a.name.compareTo(b.name));
+        sorted.sort((a, b) => a.lastUsed.compareTo(b.lastUsed));
       case CategorySortOrder.lastUsedDesc:
-        // TODO: Implement last used sorting when the field is available
-        sorted.sort((a, b) => b.name.compareTo(a.name));
+        sorted.sort((a, b) => b.lastUsed.compareTo(a.lastUsed));
     }
     categories.value = sorted;
   }
