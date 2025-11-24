@@ -24,19 +24,26 @@ class AppTopBar extends StatefulWidget {
 }
 
 class _AppTopBarState extends State<AppTopBar> {
-  Timer? _debounce;
+  final searchController = TextEditingController();
+
+  Timer? debounce;
 
   @override
   void dispose() {
-    _debounce?.cancel();
+    debounce?.cancel();
     super.dispose();
   }
 
-  void _onSearchChanged(String query) {
-    if (_debounce?.isActive ?? false) _debounce!.cancel();
-    _debounce = Timer(const Duration(milliseconds: 500), () {
+  void onSearchChanged(String query) {
+    if (debounce?.isActive ?? false) debounce!.cancel();
+    debounce = Timer(const Duration(milliseconds: 500), () {
       widget.onSearchChanged(query);
     });
+  }
+
+  void doSearch(String query) {
+    debounce?.cancel();
+    widget.onSearchChanged(query);
   }
 
   @override
@@ -51,15 +58,29 @@ class _AppTopBarState extends State<AppTopBar> {
         child: Padding(
           padding: const EdgeInsets.fromLTRB(12, 0, 12, 10),
           child: SearchBar(
+            controller: searchController,
+            elevation: WidgetStateProperty.all(0),
+            shape: WidgetStateProperty.all(
+              RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
+            ),
             hintText: widget.searchHint,
             leading: const Icon(AppIcons.search),
-            onChanged: _onSearchChanged,
+            onChanged: onSearchChanged,
+            onSubmitted: doSearch,
             trailing: [
               if (widget.isLoading)
                 const SizedBox(
                   width: 16,
                   height: 16,
                   child: CircularProgressIndicator(strokeWidth: 2),
+                ),
+              if (!widget.isLoading && searchController.text.isNotEmpty)
+                IconButton(
+                  icon: const Icon(AppIcons.clear),
+                  onPressed: () {
+                    searchController.clear();
+                    doSearch('');
+                  },
                 ),
             ],
           ),

@@ -5,6 +5,7 @@ class AppIcons {
   const AppIcons._();
 
   // Actions
+  static const IconData clear = Icons.clear;
   static const IconData refresh = Icons.refresh;
   static const IconData search = Icons.search;
 
