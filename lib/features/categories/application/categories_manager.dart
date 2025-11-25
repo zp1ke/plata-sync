@@ -3,7 +3,15 @@ import 'package:plata_sync/core/model/enums/view_mode.dart';
 import 'package:plata_sync/features/categories/data/interfaces/category_data_source.dart';
 import 'package:plata_sync/features/categories/domain/entities/category.dart';
 
-enum CategorySortOrder { nameAsc, nameDesc, lastUsedAsc, lastUsedDesc }
+enum CategorySortOrder {
+  nameAsc(isDescending: false),
+  nameDesc(isDescending: true),
+  lastUsedAsc(isDescending: false),
+  lastUsedDesc(isDescending: true);
+
+  final bool isDescending;
+  const CategorySortOrder({required this.isDescending});
+}
 
 class CategoriesManager {
   final CategoryDataSource _dataSource;

@@ -17,6 +17,7 @@ class ViewToggle extends StatelessWidget {
   Widget build(BuildContext context) {
     final l10n = AppL10n.of(context);
     return SegmentedButton<ViewMode>(
+      showSelectedIcon: false,
       segments: [
         ButtonSegment(
           value: ViewMode.list,

@@ -109,7 +109,10 @@ class _AppTopBarState extends State<AppTopBar> {
       controller: searchController,
       autofocus: true,
       decoration: InputDecoration(
-        prefix: Padding(padding: EdgeInsets.only(right: AppSpacing.xs), child: AppIcons.searchXs),
+        prefix: Padding(
+          padding: EdgeInsets.only(right: AppSpacing.xs),
+          child: AppIcons.searchXs,
+        ),
         hintText: widget.searchHint,
         suffixIcon: (!widget.isLoading && searchController.text.isNotEmpty)
             ? IconButton(icon: AppIcons.clear, onPressed: clearSearch)

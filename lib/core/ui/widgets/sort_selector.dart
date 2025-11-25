@@ -16,6 +16,9 @@ class SortSelector<T extends Enum> extends StatelessWidget {
   /// Function that returns the display label for a given sort option.
   final String Function(T) labelBuilder;
 
+  /// Function that returns the icon widget for a given sort option.
+  final Widget Function(T) sortIconBuilder;
+
   /// List of all available sort options.
   final List<T> options;
 
@@ -24,6 +27,7 @@ class SortSelector<T extends Enum> extends StatelessWidget {
     required this.value,
     required this.onChanged,
     required this.labelBuilder,
+    required this.sortIconBuilder,
     required this.options,
   });
 
@@ -44,7 +48,7 @@ class SortSelector<T extends Enum> extends StatelessWidget {
         child: Row(
           mainAxisSize: MainAxisSize.min,
           children: [
-            AppIcons.sort,
+            sortIconBuilder(value),
             AppSpacing.gapHorizontalSm,
             Expanded(
               child: Text(labelBuilder(value), overflow: TextOverflow.ellipsis),

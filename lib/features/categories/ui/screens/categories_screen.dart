@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:plata_sync/core/di/service_locator.dart';
 import 'package:plata_sync/core/model/enums/view_mode.dart';
+import 'package:plata_sync/core/ui/resources/app_icons.dart';
 import 'package:plata_sync/core/ui/resources/app_sizing.dart';
 import 'package:plata_sync/core/ui/resources/app_spacing.dart';
 import 'package:plata_sync/core/ui/widgets/app_top_bar.dart';
@@ -59,6 +60,9 @@ class CategoriesScreen extends WatchingWidget {
             value: sortOrder,
             onChanged: manager.setSortOrder,
             labelBuilder: (order) => sortLabel(order, l10n),
+            sortIconBuilder: (order) => order.isDescending
+                ? AppIcons.sortDescending
+                : AppIcons.sortAscending,
             options: CategorySortOrder.values,
           ),
         ),
