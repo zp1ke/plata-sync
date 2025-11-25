@@ -74,9 +74,9 @@ class _AppTopBarState extends State<AppTopBar> {
             child: Padding(
               padding: const EdgeInsets.fromLTRB(
                 AppSpacing.md,
-                AppSpacing.none,
                 AppSpacing.md,
-                AppSpacing.md - 2, // fine-tuned spacing
+                AppSpacing.md,
+                AppSpacing.sm,
               ),
               child: widget.bottom,
             ),
@@ -108,7 +108,9 @@ class _AppTopBarState extends State<AppTopBar> {
     return TextField(
       controller: searchController,
       autofocus: true,
+      textInputAction: TextInputAction.search,
       decoration: InputDecoration(
+        isDense: true,
         prefix: Padding(
           padding: EdgeInsets.only(right: AppSpacing.xs),
           child: AppIcons.searchXs,
