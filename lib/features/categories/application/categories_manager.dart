@@ -28,6 +28,17 @@ class CategoriesManager {
   );
   final ValueNotifier<ViewMode> viewMode = ValueNotifier(ViewMode.list);
 
+  Future<void> createSampleData() async {
+    isLoading.value = true;
+    try {
+      await _dataSource.createSampleData();
+      await loadCategories();
+    } catch (e) {
+      debugPrint('Error creating sample data: $e');
+      rethrow;
+    }
+  }
+
   Future<void> loadCategories({String? query}) async {
     isLoading.value = true;
     if (query != null) {
@@ -81,16 +92,6 @@ class CategoriesManager {
     }
   }
 
-  Future<void> createSampleData() async {
-    try {
-      await _dataSource.createSampleData();
-      await loadCategories();
-    } catch (e) {
-      debugPrint('Error creating sample data: $e');
-      rethrow;
-    }
-  }
-
   void setSortOrder(CategorySortOrder order) {
     sortOrder.value = order;
     _sortCategories();
@@ -108,9 +109,9 @@ class CategoriesManager {
       case CategorySortOrder.nameDesc:
         sorted.sort((a, b) => b.name.compareTo(a.name));
       case CategorySortOrder.lastUsedAsc:
-        sorted.sort((a, b) => a.lastUsed.compareTo(b.lastUsed));
+        sorted.sort((a, b) => a.compareByDateTo(b));
       case CategorySortOrder.lastUsedDesc:
-        sorted.sort((a, b) => b.lastUsed.compareTo(a.lastUsed));
+        sorted.sort((a, b) => b.compareByDateTo(a));
     }
     categories.value = sorted;
   }

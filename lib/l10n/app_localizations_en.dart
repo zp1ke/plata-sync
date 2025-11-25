@@ -85,4 +85,62 @@ class AppL10nEn extends AppL10n {
 
   @override
   String get no => 'No';
+
+  @override
+  String get edit => 'Edit';
+
+  @override
+  String get delete => 'Delete';
+
+  @override
+  String get duplicate => 'Duplicate';
+
+  @override
+  String get categoriesDetailsId => 'ID';
+
+  @override
+  String get categoriesDetailsLastUsed => 'Last Used';
+
+  @override
+  String get categoriesDetailsIcon => 'Icon';
+
+  @override
+  String get categoriesDetailsBackgroundColor => 'Background';
+
+  @override
+  String get categoriesDetailsIconColor => 'Icon Color';
+
+  @override
+  String get copy => 'Copy';
+
+  @override
+  String categoryDuplicated(String categoryName) {
+    return 'Category \"$categoryName\" duplicated successfully.';
+  }
+
+  @override
+  String categoryDuplicateFailed(String categoryName, String error) {
+    return 'Failed to duplicate category \"$categoryName\": $error';
+  }
+
+  @override
+  String categoriesDeleteConfirmation(String categoryName) {
+    return 'Are you sure you want to delete \"$categoryName\"?';
+  }
+
+  @override
+  String categoryDeleted(String categoryName) {
+    return 'Category \"$categoryName\" deleted successfully.';
+  }
+
+  @override
+  String categoryDeleteFailed(String categoryName, String error) {
+    return 'Failed to delete category \"$categoryName\": $error';
+  }
+
+  @override
+  String get never => 'Never';
+
+  @override
+  String get categoriesDetailsCreatedAt => 'Created At';
 }

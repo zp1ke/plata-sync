@@ -104,5 +104,100 @@
   "no": "No",
   "@no": {
     "description": "Negative response"
+  },
+  "edit": "Edit",
+  "@edit": {
+    "description": "Edit action"
+  },
+  "delete": "Delete",
+  "@delete": {
+    "description": "Delete action"
+  },
+  "duplicate": "Duplicate",
+  "@duplicate": {
+    "description": "Duplicate action"
+  },
+  "categoriesDetailsId": "ID",
+  "@categoriesDetailsId": {
+    "description": "Label for category ID field"
+  },
+  "categoriesDetailsLastUsed": "Last Used",
+  "@categoriesDetailsLastUsed": {
+    "description": "Label for category last used field"
+  },
+  "categoriesDetailsIcon": "Icon",
+  "@categoriesDetailsIcon": {
+    "description": "Label for category icon field"
+  },
+  "categoriesDetailsBackgroundColor": "Background",
+  "@categoriesDetailsBackgroundColor": {
+    "description": "Label for category background color field"
+  },
+  "categoriesDetailsIconColor": "Icon Color",
+  "@categoriesDetailsIconColor": {
+    "description": "Label for category icon color field"
+  },
+  "copy": "Copy",
+  "@copy": {
+    "description": "Label for copy action"
+  },
+  "categoryDuplicated": "Category \"{categoryName}\" duplicated successfully.",
+  "@categoryDuplicated": {
+    "description": "Message shown when a category is duplicated successfully",
+    "placeholders": {
+      "categoryName": {
+        "type": "String"
+      }
+    }
+  },
+  "categoryDuplicateFailed": "Failed to duplicate category \"{categoryName}\": {error}",
+  "@categoryDuplicateFailed": {
+    "description": "Message shown when duplicating a category fails",
+    "placeholders": {
+      "categoryName": {
+        "type": "String"
+      },
+      "error": {
+        "type": "String"
+      }
+    }
+  },
+  "categoriesDeleteConfirmation": "Are you sure you want to delete \"{categoryName}\"?",
+  "@categoriesDeleteConfirmation": {
+    "description": "Confirmation message for deleting a category",
+    "placeholders": {
+      "categoryName": {
+        "type": "String"
+      }
+    }
+  },
+  "categoryDeleted": "Category \"{categoryName}\" deleted successfully.",
+  "@categoryDeleted": {
+    "description": "Message shown when a category is deleted successfully",
+    "placeholders": {
+      "categoryName": {
+        "type": "String"
+      }
+    }
+  },
+  "categoryDeleteFailed": "Failed to delete category \"{categoryName}\": {error}",
+  "@categoryDeleteFailed": {
+    "description": "Message shown when deleting a category fails",
+    "placeholders": {
+      "categoryName": {
+        "type": "String"
+      },
+      "error": {
+        "type": "String"
+      }
+    }
+  },
+  "never": "Never",
+  "@never": {
+    "description": "Indicates that something has never occurred"
+  },
+  "categoriesDetailsCreatedAt": "Created At",
+  "@categoriesDetailsCreatedAt": {
+    "description": "Label for category created at field"
   }
 }

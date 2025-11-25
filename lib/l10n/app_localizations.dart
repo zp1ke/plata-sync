@@ -242,6 +242,102 @@ abstract class AppL10n {
   /// In en, this message translates to:
   /// **'No'**
   String get no;
+
+  /// Edit action
+  ///
+  /// In en, this message translates to:
+  /// **'Edit'**
+  String get edit;
+
+  /// Delete action
+  ///
+  /// In en, this message translates to:
+  /// **'Delete'**
+  String get delete;
+
+  /// Duplicate action
+  ///
+  /// In en, this message translates to:
+  /// **'Duplicate'**
+  String get duplicate;
+
+  /// Label for category ID field
+  ///
+  /// In en, this message translates to:
+  /// **'ID'**
+  String get categoriesDetailsId;
+
+  /// Label for category last used field
+  ///
+  /// In en, this message translates to:
+  /// **'Last Used'**
+  String get categoriesDetailsLastUsed;
+
+  /// Label for category icon field
+  ///
+  /// In en, this message translates to:
+  /// **'Icon'**
+  String get categoriesDetailsIcon;
+
+  /// Label for category background color field
+  ///
+  /// In en, this message translates to:
+  /// **'Background'**
+  String get categoriesDetailsBackgroundColor;
+
+  /// Label for category icon color field
+  ///
+  /// In en, this message translates to:
+  /// **'Icon Color'**
+  String get categoriesDetailsIconColor;
+
+  /// Label for copy action
+  ///
+  /// In en, this message translates to:
+  /// **'Copy'**
+  String get copy;
+
+  /// Message shown when a category is duplicated successfully
+  ///
+  /// In en, this message translates to:
+  /// **'Category \"{categoryName}\" duplicated successfully.'**
+  String categoryDuplicated(String categoryName);
+
+  /// Message shown when duplicating a category fails
+  ///
+  /// In en, this message translates to:
+  /// **'Failed to duplicate category \"{categoryName}\": {error}'**
+  String categoryDuplicateFailed(String categoryName, String error);
+
+  /// Confirmation message for deleting a category
+  ///
+  /// In en, this message translates to:
+  /// **'Are you sure you want to delete \"{categoryName}\"?'**
+  String categoriesDeleteConfirmation(String categoryName);
+
+  /// Message shown when a category is deleted successfully
+  ///
+  /// In en, this message translates to:
+  /// **'Category \"{categoryName}\" deleted successfully.'**
+  String categoryDeleted(String categoryName);
+
+  /// Message shown when deleting a category fails
+  ///
+  /// In en, this message translates to:
+  /// **'Failed to delete category \"{categoryName}\": {error}'**
+  String categoryDeleteFailed(String categoryName, String error);
+
+  /// Indicates that something has never occurred
+  ///
+  /// In en, this message translates to:
+  /// **'Never'**
+  String get never;
+
+  /// Label for category created at field
+  ///
+  /// In en, this message translates to:
+  /// **'Created At'**
+  String get categoriesDetailsCreatedAt;
 }
 
 class _AppL10nDelegate extends LocalizationsDelegate<AppL10n> {

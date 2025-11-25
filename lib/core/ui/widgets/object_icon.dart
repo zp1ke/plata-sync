@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:plata_sync/core/ui/resources/app_icons.dart';
 import 'package:plata_sync/core/ui/resources/app_sizing.dart';
-import 'package:plata_sync/core/utils/color_extensions.dart';
+import 'package:plata_sync/core/utils/colors.dart';
 
 class ObjectIcon extends StatelessWidget {
   final String iconName;

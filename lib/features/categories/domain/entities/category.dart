@@ -1,26 +1,42 @@
 import 'package:equatable/equatable.dart';
+import 'package:plata_sync/core/utils/random.dart';
 
 class Category extends Equatable {
   final String id;
+  final DateTime createdAt;
   final String name;
   final String icon;
   final String backgroundColorHex;
   final String iconColorHex;
-  final DateTime lastUsed;
+  final DateTime? lastUsed;
   final String? description;
 
   const Category({
     required this.id,
+    required this.createdAt,
     required this.name,
     required this.icon,
     required this.backgroundColorHex,
     required this.iconColorHex,
-    required this.lastUsed,
+    this.lastUsed,
     this.description,
   });
 
+  Category.create({
+    String? id,
+    DateTime? createdAt,
+    required this.name,
+    required this.icon,
+    required this.backgroundColorHex,
+    required this.iconColorHex,
+    this.description,
+  }) : id = id ?? randomId(),
+       createdAt = createdAt ?? DateTime.now(),
+       lastUsed = null;
+
   Category copyWith({
     String? id,
+    DateTime? createdAt,
     String? name,
     String? icon,
     String? backgroundColorHex,
@@ -30,6 +46,7 @@ class Category extends Equatable {
   }) {
     return Category(
       id: id ?? this.id,
+      createdAt: createdAt ?? this.createdAt,
       name: name ?? this.name,
       icon: icon ?? this.icon,
       backgroundColorHex: backgroundColorHex ?? this.backgroundColorHex,
@@ -41,4 +58,17 @@ class Category extends Equatable {
 
   @override
   List<Object?> get props => [id];
+
+  /// Compares this category to another by lastUsed date, falling back to createdAt if lastUsed is null.
+  /// Returns a negative integer if this category is earlier than [b],
+  /// zero if they are equal, and a positive integer if this category is later than [b].
+  /// If both lastUsed dates are null, compares by createdAt date.
+  int compareByDateTo(Category b) {
+    if (lastUsed == null && b.lastUsed == null) {
+      return createdAt.compareTo(b.createdAt);
+    }
+    if (lastUsed == null) return -1;
+    if (b.lastUsed == null) return 1;
+    return lastUsed!.compareTo(b.lastUsed!);
+  }
 }

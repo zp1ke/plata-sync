@@ -6,8 +6,10 @@ import 'package:plata_sync/core/ui/resources/app_spacing.dart';
 import 'package:plata_sync/core/ui/widgets/app_top_bar.dart';
 import 'package:plata_sync/core/ui/widgets/sort_selector.dart';
 import 'package:plata_sync/core/ui/widgets/view_toggle.dart';
+import 'package:plata_sync/core/utils/random.dart';
 import 'package:plata_sync/features/categories/application/categories_manager.dart';
 import 'package:plata_sync/features/categories/domain/entities/category.dart';
+import 'package:plata_sync/features/categories/ui/widgets/category_details_dialog.dart';
 import 'package:plata_sync/features/categories/ui/widgets/category_grid_view.dart';
 import 'package:plata_sync/features/categories/ui/widgets/category_list_view.dart';
 import 'package:plata_sync/l10n/app_localizations.dart';
@@ -145,7 +147,107 @@ class CategoriesScreen extends WatchingWidget {
     }
 
     return viewMode == ViewMode.list
-        ? CategoryListView(categories: categories)
-        : CategoryGridView(categories: categories);
+        ? CategoryListView(
+            categories: categories,
+            onTap: (category) => showCategoryDetails(context, category),
+          )
+        : CategoryGridView(
+            categories: categories,
+            onTap: (category) => showCategoryDetails(context, category),
+          );
+  }
+
+  void showCategoryDetails(BuildContext context, Category category) {
+    showDialog(
+      context: context,
+      builder: (context) => CategoryDetailsDialog(
+        category: category,
+        onEdit: () => handleEdit(context, category),
+        onDuplicate: () => handleDuplicate(context, category),
+        onDelete: () => handleDelete(context, category),
+      ),
+    );
+  }
+
+  void handleEdit(BuildContext context, Category category) {
+    // TODO: Implement edit functionality
+    ScaffoldMessenger.of(context).showSnackBar(
+      SnackBar(content: Text('Edit ${category.name} - Not implemented yet')),
+    );
+  }
+
+  void handleDuplicate(BuildContext context, Category category) async {
+    final l10n = AppL10n.of(context);
+    final manager = getService<CategoriesManager>();
+    try {
+      final duplicated = category.copyWith(
+        id: randomId(),
+        createdAt: DateTime.now(),
+        name: '${category.name} (${l10n.copy})',
+        lastUsed: null,
+      );
+      await manager.addCategory(duplicated);
+      if (context.mounted) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(content: Text(l10n.categoryDuplicated(category.name))),
+        );
+      }
+    } catch (e) {
+      if (context.mounted) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            content: Text(
+              l10n.categoryDuplicateFailed(category.name, e.toString()),
+            ),
+          ),
+        );
+      }
+    }
+  }
+
+  void handleDelete(BuildContext context, Category category) async {
+    final l10n = AppL10n.of(context);
+    final confirmed = await showDialog<bool>(
+      context: context,
+      builder: (context) => AlertDialog(
+        title: Text(l10n.delete),
+        content: Text(l10n.categoriesDeleteConfirmation(category.name)),
+        actions: [
+          TextButton(
+            onPressed: () => Navigator.of(context).pop(false),
+            child: Text(l10n.no),
+          ),
+          FilledButton(
+            onPressed: () => Navigator.of(context).pop(true),
+            style: FilledButton.styleFrom(
+              backgroundColor: Theme.of(context).colorScheme.error,
+            ),
+            child: Text(l10n.delete),
+          ),
+        ],
+      ),
+    );
+
+    if (confirmed == true && context.mounted) {
+      final manager = getService<CategoriesManager>();
+      try {
+        await manager.deleteCategory(category.id);
+        if (context.mounted) {
+          ScaffoldMessenger.of(context).showSnackBar(
+            SnackBar(content: Text(l10n.categoryDeleted(category.name))),
+          );
+        }
+      } catch (e) {
+        if (context.mounted) {
+          ScaffoldMessenger.of(context).showSnackBar(
+            SnackBar(
+              content: Text(
+                l10n.categoryDeleteFailed(category.name, e.toString()),
+              ),
+            ),
+          );
+        }
+      }
+    }
   }
 }

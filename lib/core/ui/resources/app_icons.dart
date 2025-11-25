@@ -10,6 +10,9 @@ class AppIcons {
 
   // Actions
   static final clear = HugeIcon(icon: HugeIcons.strokeRoundedCancel01);
+  static final copy = HugeIcon(icon: HugeIcons.strokeRoundedCopy01);
+  static final edit = HugeIcon(icon: HugeIcons.strokeRoundedPencilEdit02);
+  static final delete = HugeIcon(icon: HugeIcons.strokeRoundedDelete04);
   static final refresh = HugeIcon(icon: HugeIcons.strokeRoundedRefresh);
   static final search = HugeIcon(icon: HugeIcons.strokeRoundedSearch01);
   static final searchXs = HugeIcon(

@@ -60,7 +60,7 @@ class InMemoryCategoryDataSource extends CategoryDataSource {
         if (sort.field == 'name') {
           comparison = a.name.compareTo(b.name);
         } else if (sort.field == 'lastUsed') {
-          comparison = a.lastUsed.compareTo(b.lastUsed);
+          comparison = a.compareByDateTo(b);
         }
         return sort.ascending ? comparison : -comparison;
       });

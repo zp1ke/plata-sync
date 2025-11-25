@@ -5,31 +5,25 @@ abstract class CategoryDataSource extends DataSource<Category> {
   @override
   Future<void> createSampleData() async {
     final samples = [
-      Category(
-        id: '1',
+      Category.create(
         name: 'Groceries',
         icon: 'shopping_cart',
         backgroundColorHex: '#FFF9C4',
         iconColorHex: '#F9A825',
-        lastUsed: DateTime.now(),
         description: 'Items to buy from the supermarket',
       ),
-      Category(
-        id: '2',
+      Category.create(
         name: 'Utilities',
         icon: 'bolt',
         backgroundColorHex: '#E8F5E9',
         iconColorHex: '#4CAF50',
-        lastUsed: DateTime.now(),
         description: 'Monthly bills and subscriptions',
       ),
-      Category(
-        id: '3',
+      Category.create(
         name: 'Entertainment',
         icon: 'movie',
         backgroundColorHex: '#E3F2FD',
         iconColorHex: '#2196F3',
-        lastUsed: DateTime.now(),
         description: 'Movies, games, and other fun activities',
       ),
     ];

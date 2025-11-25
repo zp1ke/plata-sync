@@ -52,4 +52,7 @@ class AppSizing {
   static const double gridSpacingSm = 8.0;
   static const double gridSpacingMd = 12.0;
   static const double gridSpacingLg = 16.0;
+
+  // Standard box widths
+  static const double boxWidthSm = 100.0;
 }

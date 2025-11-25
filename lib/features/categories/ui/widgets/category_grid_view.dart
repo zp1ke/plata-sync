@@ -6,8 +6,9 @@ import 'package:plata_sync/features/categories/domain/entities/category.dart';
 
 class CategoryGridView extends StatelessWidget {
   final List<Category> categories;
+  final void Function(Category category)? onTap;
 
-  const CategoryGridView({required this.categories, super.key});
+  const CategoryGridView({required this.categories, this.onTap, super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -24,9 +25,7 @@ class CategoryGridView extends StatelessWidget {
         final category = categories[index];
         return Card(
           child: InkWell(
-            onTap: () {
-              // TODO: Navigate to category details
-            },
+            onTap: onTap != null ? () => onTap!(category) : null,
             borderRadius: AppSizing.borderRadiusMd,
             child: Padding(
               padding: AppSpacing.paddingMd,
