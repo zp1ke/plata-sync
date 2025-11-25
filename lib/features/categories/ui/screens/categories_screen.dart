@@ -24,11 +24,22 @@ class CategoriesScreen extends WatchingWidget {
     final sortOrder = watchValue((CategoriesManager x) => x.sortOrder);
     final viewMode = watchValue((CategoriesManager x) => x.viewMode);
     final l10n = AppL10n.of(context);
-    final manager = getService<CategoriesManager>();
+
+    // Show sample data dialog once when categories are empty
+    callOnceAfterThisBuild((context) {
+      if (categories.isEmpty && currentQuery.isEmpty) {
+        WidgetsBinding.instance.addPostFrameCallback((_) {
+          if (context.mounted) {
+            showSampleDataDialog(context, l10n);
+          }
+        });
+      }
+    });
 
     return SafeArea(
       child: NestedScrollView(
         headerSliverBuilder: (_, _) {
+          final manager = getService<CategoriesManager>();
           return [
             AppTopBar(
               title: l10n.categoriesScreenTitle,
@@ -43,6 +54,32 @@ class CategoriesScreen extends WatchingWidget {
         body: content(context, isLoading, categories, currentQuery, viewMode),
       ),
     );
+  }
+
+  Future<void> showSampleDataDialog(BuildContext context, AppL10n l10n) async {
+    final l10n = AppL10n.of(context);
+    final result = await showDialog<bool>(
+      context: context,
+      builder: (context) => AlertDialog(
+        title: Text(l10n.categoriesEmptyState),
+        content: Text(l10n.categoriesAddSampleDataPrompt),
+        actions: [
+          TextButton(
+            onPressed: () => Navigator.of(context).pop(false),
+            child: Text(l10n.no),
+          ),
+          FilledButton(
+            onPressed: () => Navigator.of(context).pop(true),
+            child: Text(l10n.yes),
+          ),
+        ],
+      ),
+    );
+
+    if (result == true && context.mounted) {
+      final manager = getService<CategoriesManager>();
+      await manager.createSampleData();
+    }
   }
 
   Widget bottomBar(

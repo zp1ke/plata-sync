@@ -81,6 +81,16 @@ class CategoriesManager {
     }
   }
 
+  Future<void> createSampleData() async {
+    try {
+      await _dataSource.createSampleData();
+      await loadCategories();
+    } catch (e) {
+      debugPrint('Error creating sample data: $e');
+      rethrow;
+    }
+  }
+
   void setSortOrder(CategorySortOrder order) {
     sortOrder.value = order;
     _sortCategories();

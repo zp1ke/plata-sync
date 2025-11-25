@@ -44,6 +44,10 @@
   "@categoriesSearchHint": {
     "description": "Hint text for the Categories search field"
   },
+  "categoriesAddSampleDataPrompt": "Would you like to add sample categories to get started?",
+  "@categoriesAddSampleDataPrompt": {
+    "description": "Prompt asking the user if they want to add sample categories"
+  },
   "navSettings": "Settings",
   "@navSettings": {
     "description": "Label for the Settings navigation tab"
@@ -92,5 +96,13 @@
   "viewGrid": "Grid View",
   "@viewGrid": {
     "description": "Tooltip for grid view"
+  },
+  "yes": "Yes",
+  "@yes": {
+    "description": "Affirmative response"
+  },
+  "no": "No",
+  "@no": {
+    "description": "Negative response"
   }
 }

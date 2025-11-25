@@ -2,33 +2,8 @@ import 'package:plata_sync/core/data/models/sort_param.dart';
 import 'package:plata_sync/features/categories/data/interfaces/category_data_source.dart';
 import 'package:plata_sync/features/categories/domain/entities/category.dart';
 
-class InMemoryCategoryDataSource implements CategoryDataSource {
-  final Map<String, Category> _items = {
-    '1': Category(
-      id: '1',
-      name: 'Groceries',
-      icon: 'shopping_cart',
-      backgroundColorHex: '#FFF9C4',
-      iconColorHex: '#F9A825',
-      lastUsed: DateTime.now(),
-    ),
-    '2': Category(
-      id: '2',
-      name: 'Utilities',
-      icon: 'bolt',
-      backgroundColorHex: '#E8F5E9',
-      iconColorHex: '#4CAF50',
-      lastUsed: DateTime.now(),
-    ),
-    '3': Category(
-      id: '3',
-      name: 'Entertainment',
-      icon: 'movie',
-      backgroundColorHex: '#E3F2FD',
-      iconColorHex: '#2196F3',
-      lastUsed: DateTime.now(),
-    ),
-  };
+class InMemoryCategoryDataSource extends CategoryDataSource {
+  final Map<String, Category> _items = {};
 
   @override
   Future<Category> create(Category item) async {

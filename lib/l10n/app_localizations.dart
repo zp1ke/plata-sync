@@ -159,6 +159,12 @@ abstract class AppL10n {
   /// **'Search Categories'**
   String get categoriesSearchHint;
 
+  /// Prompt asking the user if they want to add sample categories
+  ///
+  /// In en, this message translates to:
+  /// **'Would you like to add sample categories to get started?'**
+  String get categoriesAddSampleDataPrompt;
+
   /// Label for the Settings navigation tab
   ///
   /// In en, this message translates to:
@@ -224,6 +230,18 @@ abstract class AppL10n {
   /// In en, this message translates to:
   /// **'Grid View'**
   String get viewGrid;
+
+  /// Affirmative response
+  ///
+  /// In en, this message translates to:
+  /// **'Yes'**
+  String get yes;
+
+  /// Negative response
+  ///
+  /// In en, this message translates to:
+  /// **'No'**
+  String get no;
 }
 
 class _AppL10nDelegate extends LocalizationsDelegate<AppL10n> {

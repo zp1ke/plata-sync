@@ -68,7 +68,6 @@ class AppIcons {
 
   static Widget getIcon(String name, {Color? color, double? size}) {
     final iconData = iconDataMap[name] ?? HugeIcons.strokeRoundedHelpCircle;
-    debugPrint('Getting icon for name: $name, color: $color, size: $size');
     return HugeIcon(icon: iconData, color: color, size: size);
   }
 }

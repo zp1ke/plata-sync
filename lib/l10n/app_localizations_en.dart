@@ -42,6 +42,10 @@ class AppL10nEn extends AppL10n {
   String get categoriesSearchHint => 'Search Categories';
 
   @override
+  String get categoriesAddSampleDataPrompt =>
+      'Would you like to add sample categories to get started?';
+
+  @override
   String get navSettings => 'Settings';
 
   @override
@@ -75,4 +79,10 @@ class AppL10nEn extends AppL10n {
 
   @override
   String get viewGrid => 'Grid View';
+
+  @override
+  String get yes => 'Yes';
+
+  @override
+  String get no => 'No';
 }
