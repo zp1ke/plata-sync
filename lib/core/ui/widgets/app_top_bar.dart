@@ -4,6 +4,8 @@ import 'package:flutter/material.dart';
 import 'package:plata_sync/core/ui/resources/app_icons.dart';
 import 'package:plata_sync/core/ui/resources/app_spacing.dart';
 
+import '../resources/app_sizing.dart';
+
 class AppTopBar extends StatefulWidget {
   final String title;
   final String searchHint;
@@ -90,9 +92,18 @@ class _AppTopBarState extends State<AppTopBar> {
       title: isSearching ? searchField() : Text(widget.title),
       pinned: true,
       actions: [
+        if (widget.isLoading)
+          IconButton(
+            onPressed: null,
+            icon: SizedBox(
+              height: AppSizing.iconSm,
+              width: AppSizing.iconSm,
+              child: const CircularProgressIndicator.adaptive(),
+            ),
+          ),
         if (isSearching)
-          IconButton(icon: AppIcons.searchOff, onPressed: toggleSearch)
-        else ...[
+          IconButton(icon: AppIcons.searchOff, onPressed: toggleSearch),
+        if (!isSearching) ...[
           IconButton(icon: AppIcons.search, onPressed: toggleSearch),
           if (widget.onRefresh != null)
             IconButton(
