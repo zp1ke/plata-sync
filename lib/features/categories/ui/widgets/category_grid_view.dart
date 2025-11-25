@@ -1,0 +1,73 @@
+import 'package:flutter/material.dart';
+import 'package:plata_sync/core/ui/resources/app_sizing.dart';
+import 'package:plata_sync/core/ui/resources/app_spacing.dart';
+import 'package:plata_sync/core/ui/widgets/object_icon.dart';
+import 'package:plata_sync/features/categories/domain/entities/category.dart';
+
+class CategoryGridView extends StatelessWidget {
+  final List<Category> categories;
+
+  const CategoryGridView({required this.categories, super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return GridView.builder(
+      padding: AppSpacing.paddingSm,
+      gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+        crossAxisCount: 2,
+        childAspectRatio: 2.2,
+        crossAxisSpacing: AppSpacing.sm,
+        mainAxisSpacing: AppSpacing.sm,
+      ),
+      itemCount: categories.length,
+      itemBuilder: (context, index) {
+        final category = categories[index];
+        return Card(
+          child: InkWell(
+            onTap: () {
+              // TODO: Navigate to category details
+            },
+            borderRadius: AppSizing.borderRadiusMd,
+            child: Padding(
+              padding: AppSpacing.paddingMd,
+              child: Row(
+                children: [
+                  ObjectIcon(
+                    iconName: category.icon,
+                    backgroundColorHex: category.backgroundColorHex,
+                    iconColorHex: category.iconColorHex,
+                  ),
+                  AppSpacing.gapHorizontalMd,
+                  Expanded(
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      mainAxisSize: MainAxisSize.min,
+                      children: [
+                        Text(
+                          category.name,
+                          overflow: TextOverflow.ellipsis,
+                          style: const TextStyle(fontWeight: FontWeight.w500),
+                        ),
+                        if (category.description != null &&
+                            category.description!.isNotEmpty) ...[
+                          const SizedBox(height: 2),
+                          Text(
+                            category.description!,
+                            style: Theme.of(context).textTheme.bodySmall,
+                            maxLines: 1,
+                            overflow: TextOverflow.ellipsis,
+                          ),
+                        ],
+                      ],
+                    ),
+                  ),
+                ],
+              ),
+            ),
+          ),
+        );
+      },
+    );
+  }
+}
