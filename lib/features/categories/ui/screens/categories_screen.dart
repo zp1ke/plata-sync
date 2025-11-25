@@ -62,16 +62,16 @@ class CategoriesScreen extends WatchingWidget {
     final l10n = AppL10n.of(context);
     final result = await showDialog<bool>(
       context: context,
-      builder: (context) => AlertDialog(
+      builder: (dialogContext) => AlertDialog(
         title: Text(l10n.categoriesEmptyState),
         content: Text(l10n.categoriesAddSampleDataPrompt),
         actions: [
           TextButton(
-            onPressed: () => Navigator.of(context).pop(false),
+            onPressed: () => Navigator.of(dialogContext).pop(false),
             child: Text(l10n.no),
           ),
           FilledButton(
-            onPressed: () => Navigator.of(context).pop(true),
+            onPressed: () => Navigator.of(dialogContext).pop(true),
             child: Text(l10n.yes),
           ),
         ],
@@ -160,7 +160,7 @@ class CategoriesScreen extends WatchingWidget {
   void showCategoryDetails(BuildContext context, Category category) {
     showDialog(
       context: context,
-      builder: (context) => CategoryDetailsDialog(
+      builder: (_) => CategoryDetailsDialog(
         category: category,
         onEdit: () => handleEdit(context, category),
         onDuplicate: () => handleDuplicate(context, category),
@@ -209,18 +209,18 @@ class CategoriesScreen extends WatchingWidget {
     final l10n = AppL10n.of(context);
     final confirmed = await showDialog<bool>(
       context: context,
-      builder: (context) => AlertDialog(
+      builder: (dialogContext) => AlertDialog(
         title: Text(l10n.delete),
         content: Text(l10n.categoriesDeleteConfirmation(category.name)),
         actions: [
           TextButton(
-            onPressed: () => Navigator.of(context).pop(false),
+            onPressed: () => Navigator.of(dialogContext).pop(false),
             child: Text(l10n.no),
           ),
           FilledButton(
-            onPressed: () => Navigator.of(context).pop(true),
+            onPressed: () => Navigator.of(dialogContext).pop(true),
             style: FilledButton.styleFrom(
-              backgroundColor: Theme.of(context).colorScheme.error,
+              backgroundColor: Theme.of(dialogContext).colorScheme.error,
             ),
             child: Text(l10n.delete),
           ),
@@ -228,7 +228,7 @@ class CategoriesScreen extends WatchingWidget {
       ),
     );
 
-    if (confirmed == true && context.mounted) {
+    if (confirmed == true) {
       final manager = getService<CategoriesManager>();
       try {
         await manager.deleteCategory(category.id);
