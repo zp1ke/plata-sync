@@ -84,7 +84,6 @@ class CategoryDetailsDialog extends StatelessWidget {
             foregroundColor: Theme.of(context).colorScheme.error,
           ),
         ),
-        const Spacer(),
         TextButton.icon(
           onPressed: () {
             Navigator.of(context).pop();

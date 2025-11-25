@@ -2,34 +2,18 @@
   "version": "0.2.0",
   "configurations": [
     {
-      "name": "Flutter: Run (Linux)",
+      "name": "Run Linux",
       "request": "launch",
       "type": "dart",
       "program": "${workspaceFolder}/lib/main.dart",
       "deviceId": "linux"
     },
     {
-      "name": "Flutter: Debug (Linux)",
-      "request": "launch",
-      "type": "dart",
-      "program": "${workspaceFolder}/lib/main.dart",
-      "deviceId": "linux",
-      "args": ["--observe"]
-    },
-    {
-      "name": "Flutter: Run (Android)",
+      "name": "Run Android",
       "request": "launch",
       "type": "dart",
       "program": "${workspaceFolder}/lib/main.dart",
       "flutterMode": "debug"
-    },
-    {
-      "name": "Flutter: Debug (Android)",
-      "request": "launch",
-      "type": "dart",
-      "program": "${workspaceFolder}/lib/main.dart",
-      "flutterMode": "debug",
-      "args": ["--observe"]
     }
   ]
 }

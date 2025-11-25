@@ -61,6 +61,7 @@ class CategoriesManager {
     try {
       final newCategory = await _dataSource.create(category);
       categories.value = [...categories.value, newCategory];
+      _sortCategories();
     } catch (e) {
       debugPrint('Error adding category: $e');
       rethrow;
@@ -86,6 +87,7 @@ class CategoriesManager {
     try {
       await _dataSource.delete(id);
       categories.value = categories.value.where((c) => c.id != id).toList();
+      _sortCategories();
     } catch (e) {
       debugPrint('Error deleting category: $e');
       rethrow;
