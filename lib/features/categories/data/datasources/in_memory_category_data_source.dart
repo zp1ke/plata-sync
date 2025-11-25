@@ -3,11 +3,13 @@ import 'package:plata_sync/features/categories/data/interfaces/category_data_sou
 import 'package:plata_sync/features/categories/domain/entities/category.dart';
 
 class InMemoryCategoryDataSource extends CategoryDataSource {
+  static const _delay = Duration(milliseconds: 500);
+
   final Map<String, Category> _items = {};
 
   @override
   Future<Category> create(Category item) async {
-    await Future.delayed(const Duration(milliseconds: 300));
+    await Future.delayed(_delay);
     if (_items.containsKey(item.id)) {
       throw Exception('Category with id ${item.id} already exists');
     }
@@ -17,7 +19,7 @@ class InMemoryCategoryDataSource extends CategoryDataSource {
 
   @override
   Future<void> delete(String id) async {
-    await Future.delayed(const Duration(milliseconds: 300));
+    await Future.delayed(_delay);
     if (!_items.containsKey(id)) {
       throw Exception('Category with id $id not found');
     }
@@ -29,7 +31,7 @@ class InMemoryCategoryDataSource extends CategoryDataSource {
     Map<String, dynamic>? filter,
     SortParam? sort,
   }) async {
-    await Future.delayed(const Duration(milliseconds: 300));
+    await Future.delayed(_delay);
     var items = _items.values.toList();
 
     if (filter != null) {
@@ -71,13 +73,13 @@ class InMemoryCategoryDataSource extends CategoryDataSource {
 
   @override
   Future<Category?> read(String id) async {
-    await Future.delayed(const Duration(milliseconds: 300));
+    await Future.delayed(_delay);
     return _items[id];
   }
 
   @override
   Future<Category> update(Category item) async {
-    await Future.delayed(const Duration(milliseconds: 300));
+    await Future.delayed(_delay);
     if (!_items.containsKey(item.id)) {
       throw Exception('Category with id ${item.id} not found');
     }

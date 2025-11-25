@@ -49,7 +49,14 @@ class CategoriesScreen extends WatchingWidget {
               onSearchChanged: (value) => manager.loadCategories(query: value),
               isLoading: isLoading,
               onRefresh: () => manager.loadCategories(),
-              bottom: bottomBar(context, sortOrder, viewMode, manager, l10n),
+              bottom: bottomBar(
+                context,
+                sortOrder,
+                viewMode,
+                manager,
+                l10n,
+                isLoading,
+              ),
             ),
           ];
         },
@@ -90,6 +97,7 @@ class CategoriesScreen extends WatchingWidget {
     ViewMode viewMode,
     CategoriesManager manager,
     AppL10n l10n,
+    bool isLoading,
   ) {
     return Row(
       children: [
@@ -97,7 +105,7 @@ class CategoriesScreen extends WatchingWidget {
         Expanded(
           child: SortSelector<CategorySortOrder>(
             value: sortOrder,
-            onChanged: manager.setSortOrder,
+            onChanged: isLoading ? null : manager.setSortOrder,
             labelBuilder: (order) => sortLabel(order, l10n),
             sortIconBuilder: (order) => order.isDescending
                 ? AppIcons.sortDescending
@@ -107,7 +115,10 @@ class CategoriesScreen extends WatchingWidget {
         ),
         AppSpacing.gapHorizontalSm,
         // View toggle
-        ViewToggle(value: viewMode, onChanged: manager.setViewMode),
+        ViewToggle(
+          value: viewMode,
+          onChanged: isLoading ? null : manager.setViewMode,
+        ),
       ],
     );
   }
@@ -149,11 +160,15 @@ class CategoriesScreen extends WatchingWidget {
     return viewMode == ViewMode.list
         ? CategoryListView(
             categories: categories,
-            onTap: (category) => showCategoryDetails(context, category),
+            onTap: isLoading
+                ? null
+                : (category) => showCategoryDetails(context, category),
           )
         : CategoryGridView(
             categories: categories,
-            onTap: (category) => showCategoryDetails(context, category),
+            onTap: isLoading
+                ? null
+                : (category) => showCategoryDetails(context, category),
           );
   }
 

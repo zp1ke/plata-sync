@@ -11,7 +11,7 @@ class SortSelector<T extends Enum> extends StatelessWidget {
   final T value;
 
   /// Callback when a sort option is selected.
-  final ValueChanged<T> onChanged;
+  final ValueChanged<T>? onChanged;
 
   /// Function that returns the display label for a given sort option.
   final String Function(T) labelBuilder;
@@ -34,6 +34,7 @@ class SortSelector<T extends Enum> extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return PopupMenuButton<T>(
+      enabled: onChanged != null,
       initialValue: value,
       onSelected: onChanged,
       child: Container(

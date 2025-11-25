@@ -9,7 +9,7 @@ class ViewToggle extends StatelessWidget {
   final ViewMode value;
 
   /// Callback when the view mode changes
-  final ValueChanged<ViewMode> onChanged;
+  final ValueChanged<ViewMode>? onChanged;
 
   const ViewToggle({super.key, required this.value, required this.onChanged});
 
@@ -31,9 +31,11 @@ class ViewToggle extends StatelessWidget {
         ),
       ],
       selected: {value},
-      onSelectionChanged: (Set<ViewMode> newSelection) {
-        onChanged(newSelection.first);
-      },
+      onSelectionChanged: onChanged != null
+          ? (Set<ViewMode> newSelection) {
+              onChanged!(newSelection.first);
+            }
+          : null,
     );
   }
 }
