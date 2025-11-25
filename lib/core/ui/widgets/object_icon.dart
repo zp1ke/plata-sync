@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:plata_sync/core/ui/resources/app_icons.dart';
 import 'package:plata_sync/core/ui/resources/app_sizing.dart';
+import 'package:plata_sync/core/utils/color_extensions.dart';
 
 class ObjectIcon extends StatelessWidget {
   final String iconName;
@@ -16,22 +17,10 @@ class ObjectIcon extends StatelessWidget {
     this.size = AppSizing.avatarMd,
   });
 
-  Color _parseColor(String hexColor) {
-    try {
-      var hex = hexColor.toUpperCase().replaceAll('#', '');
-      if (hex.length == 6) {
-        hex = 'FF$hex';
-      }
-      return Color(int.parse(hex, radix: 16));
-    } catch (e) {
-      return Colors.grey;
-    }
-  }
-
   @override
   Widget build(BuildContext context) {
-    final bgColor = _parseColor(backgroundColorHex);
-    final fgColor = _parseColor(iconColorHex);
+    final bgColor = ColorExtensions.fromHex(backgroundColorHex);
+    final fgColor = ColorExtensions.fromHex(iconColorHex);
     final iconWidget = AppIcons.getIcon(
       iconName,
       color: fgColor,
