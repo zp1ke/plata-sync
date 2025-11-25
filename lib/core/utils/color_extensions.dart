@@ -15,6 +15,8 @@ extension ColorExtensions on Color {
       var hex = hexColor.toUpperCase().replaceAll('#', '');
       if (hex.length == 6) {
         hex = 'FF$hex';
+      } else if (hex.length != 8) {
+        return Colors.grey;
       }
       return Color(int.parse(hex, radix: 16));
     } catch (e) {
