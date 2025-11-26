@@ -195,4 +195,76 @@ class AppL10nEn extends AppL10n {
   String categoryUpdateFailed(String error) {
     return 'Failed to update category: $error';
   }
+
+  @override
+  String get iconShoppingCart => 'Shopping Cart';
+
+  @override
+  String get iconBolt => 'Bolt';
+
+  @override
+  String get iconMovie => 'Movie';
+
+  @override
+  String get iconRestaurant => 'Restaurant';
+
+  @override
+  String get iconHome => 'Home';
+
+  @override
+  String get iconCar => 'Car';
+
+  @override
+  String get iconFlight => 'Flight';
+
+  @override
+  String get iconGift => 'Gift';
+
+  @override
+  String get iconMedical => 'Medical';
+
+  @override
+  String get iconEducation => 'Education';
+
+  @override
+  String get iconEntertainment => 'Entertainment';
+
+  @override
+  String get iconTravel => 'Travel';
+
+  @override
+  String get iconFitness => 'Fitness';
+
+  @override
+  String get iconCoffee => 'Coffee';
+
+  @override
+  String get iconShoppingBag => 'Shopping Bag';
+
+  @override
+  String get iconMusic => 'Music';
+
+  @override
+  String get iconPets => 'Pets';
+
+  @override
+  String get iconTransportation => 'Transportation';
+
+  @override
+  String get iconFood => 'Food';
+
+  @override
+  String get iconClothing => 'Clothing';
+
+  @override
+  String get iconHealth => 'Health';
+
+  @override
+  String get iconSalary => 'Salary';
+
+  @override
+  String get iconFlashOn => 'Flash On';
+
+  @override
+  String get iconUnknown => 'Unknown';
 }

@@ -273,5 +273,101 @@
         "type": "String"
       }
     }
+  },
+  "iconShoppingCart": "Shopping Cart",
+  "@iconShoppingCart": {
+    "description": "Label for shopping cart icon"
+  },
+  "iconBolt": "Bolt",
+  "@iconBolt": {
+    "description": "Label for bolt icon"
+  },
+  "iconMovie": "Movie",
+  "@iconMovie": {
+    "description": "Label for movie icon"
+  },
+  "iconRestaurant": "Restaurant",
+  "@iconRestaurant": {
+    "description": "Label for restaurant icon"
+  },
+  "iconHome": "Home",
+  "@iconHome": {
+    "description": "Label for home icon"
+  },
+  "iconCar": "Car",
+  "@iconCar": {
+    "description": "Label for car icon"
+  },
+  "iconFlight": "Flight",
+  "@iconFlight": {
+    "description": "Label for flight icon"
+  },
+  "iconGift": "Gift",
+  "@iconGift": {
+    "description": "Label for gift icon"
+  },
+  "iconMedical": "Medical",
+  "@iconMedical": {
+    "description": "Label for medical icon"
+  },
+  "iconEducation": "Education",
+  "@iconEducation": {
+    "description": "Label for education icon"
+  },
+  "iconEntertainment": "Entertainment",
+  "@iconEntertainment": {
+    "description": "Label for entertainment icon"
+  },
+  "iconTravel": "Travel",
+  "@iconTravel": {
+    "description": "Label for travel icon"
+  },
+  "iconFitness": "Fitness",
+  "@iconFitness": {
+    "description": "Label for fitness icon"
+  },
+  "iconCoffee": "Coffee",
+  "@iconCoffee": {
+    "description": "Label for coffee icon"
+  },
+  "iconShoppingBag": "Shopping Bag",
+  "@iconShoppingBag": {
+    "description": "Label for shopping bag icon"
+  },
+  "iconMusic": "Music",
+  "@iconMusic": {
+    "description": "Label for music icon"
+  },
+  "iconPets": "Pets",
+  "@iconPets": {
+    "description": "Label for pets icon"
+  },
+  "iconTransportation": "Transportation",
+  "@iconTransportation": {
+    "description": "Label for transportation icon"
+  },
+  "iconFood": "Food",
+  "@iconFood": {
+    "description": "Label for food icon"
+  },
+  "iconClothing": "Clothing",
+  "@iconClothing": {
+    "description": "Label for clothing icon"
+  },
+  "iconHealth": "Health",
+  "@iconHealth": {
+    "description": "Label for health icon"
+  },
+  "iconSalary": "Salary",
+  "@iconSalary": {
+    "description": "Label for salary icon"
+  },
+  "iconFlashOn": "Flash On",
+  "@iconFlashOn": {
+    "description": "Label for flash on icon"
+  },
+  "iconUnknown": "Unknown",
+  "@iconUnknown": {
+    "description": "Label for unknown icon"
   }
 }

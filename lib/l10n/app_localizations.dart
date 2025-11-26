@@ -434,6 +434,150 @@ abstract class AppL10n {
   /// In en, this message translates to:
   /// **'Failed to update category: {error}'**
   String categoryUpdateFailed(String error);
+
+  /// Label for shopping cart icon
+  ///
+  /// In en, this message translates to:
+  /// **'Shopping Cart'**
+  String get iconShoppingCart;
+
+  /// Label for bolt icon
+  ///
+  /// In en, this message translates to:
+  /// **'Bolt'**
+  String get iconBolt;
+
+  /// Label for movie icon
+  ///
+  /// In en, this message translates to:
+  /// **'Movie'**
+  String get iconMovie;
+
+  /// Label for restaurant icon
+  ///
+  /// In en, this message translates to:
+  /// **'Restaurant'**
+  String get iconRestaurant;
+
+  /// Label for home icon
+  ///
+  /// In en, this message translates to:
+  /// **'Home'**
+  String get iconHome;
+
+  /// Label for car icon
+  ///
+  /// In en, this message translates to:
+  /// **'Car'**
+  String get iconCar;
+
+  /// Label for flight icon
+  ///
+  /// In en, this message translates to:
+  /// **'Flight'**
+  String get iconFlight;
+
+  /// Label for gift icon
+  ///
+  /// In en, this message translates to:
+  /// **'Gift'**
+  String get iconGift;
+
+  /// Label for medical icon
+  ///
+  /// In en, this message translates to:
+  /// **'Medical'**
+  String get iconMedical;
+
+  /// Label for education icon
+  ///
+  /// In en, this message translates to:
+  /// **'Education'**
+  String get iconEducation;
+
+  /// Label for entertainment icon
+  ///
+  /// In en, this message translates to:
+  /// **'Entertainment'**
+  String get iconEntertainment;
+
+  /// Label for travel icon
+  ///
+  /// In en, this message translates to:
+  /// **'Travel'**
+  String get iconTravel;
+
+  /// Label for fitness icon
+  ///
+  /// In en, this message translates to:
+  /// **'Fitness'**
+  String get iconFitness;
+
+  /// Label for coffee icon
+  ///
+  /// In en, this message translates to:
+  /// **'Coffee'**
+  String get iconCoffee;
+
+  /// Label for shopping bag icon
+  ///
+  /// In en, this message translates to:
+  /// **'Shopping Bag'**
+  String get iconShoppingBag;
+
+  /// Label for music icon
+  ///
+  /// In en, this message translates to:
+  /// **'Music'**
+  String get iconMusic;
+
+  /// Label for pets icon
+  ///
+  /// In en, this message translates to:
+  /// **'Pets'**
+  String get iconPets;
+
+  /// Label for transportation icon
+  ///
+  /// In en, this message translates to:
+  /// **'Transportation'**
+  String get iconTransportation;
+
+  /// Label for food icon
+  ///
+  /// In en, this message translates to:
+  /// **'Food'**
+  String get iconFood;
+
+  /// Label for clothing icon
+  ///
+  /// In en, this message translates to:
+  /// **'Clothing'**
+  String get iconClothing;
+
+  /// Label for health icon
+  ///
+  /// In en, this message translates to:
+  /// **'Health'**
+  String get iconHealth;
+
+  /// Label for salary icon
+  ///
+  /// In en, this message translates to:
+  /// **'Salary'**
+  String get iconSalary;
+
+  /// Label for flash on icon
+  ///
+  /// In en, this message translates to:
+  /// **'Flash On'**
+  String get iconFlashOn;
+
+  /// Label for unknown icon
+  ///
+  /// In en, this message translates to:
+  /// **'Unknown'**
+  String get iconUnknown;
 }
 
 class _AppL10nDelegate extends LocalizationsDelegate<AppL10n> {

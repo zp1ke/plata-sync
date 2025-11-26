@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:plata_sync/core/model/object_icon_data.dart';
+import 'package:plata_sync/core/ui/resources/app_icons.dart';
 import 'package:plata_sync/core/ui/resources/app_sizing.dart';
 import 'package:plata_sync/core/ui/resources/app_spacing.dart';
 import 'package:plata_sync/core/ui/widgets/object_icon.dart';
@@ -21,14 +22,14 @@ class ObjectIconEditor extends StatefulWidget {
 }
 
 class _ObjectIconEditorState extends State<ObjectIconEditor> {
-  late TextEditingController _iconController;
+  late String _selectedIconName;
   late TextEditingController _backgroundColorController;
   late TextEditingController _iconColorController;
 
   @override
   void initState() {
     super.initState();
-    _iconController = TextEditingController(text: widget.initialData.iconName);
+    _selectedIconName = widget.initialData.iconName;
     _backgroundColorController = TextEditingController(
       text: widget.initialData.backgroundColorHex,
     );
@@ -36,17 +37,14 @@ class _ObjectIconEditorState extends State<ObjectIconEditor> {
       text: widget.initialData.iconColorHex,
     );
 
-    _iconController.addListener(_notifyChange);
     _backgroundColorController.addListener(_notifyChange);
     _iconColorController.addListener(_notifyChange);
   }
 
   @override
   void dispose() {
-    _iconController.removeListener(_notifyChange);
     _backgroundColorController.removeListener(_notifyChange);
     _iconColorController.removeListener(_notifyChange);
-    _iconController.dispose();
     _backgroundColorController.dispose();
     _iconColorController.dispose();
     super.dispose();
@@ -55,7 +53,7 @@ class _ObjectIconEditorState extends State<ObjectIconEditor> {
   void _notifyChange() {
     widget.onChanged(
       ObjectIconData(
-        iconName: _iconController.text,
+        iconName: _selectedIconName,
         backgroundColorHex: _backgroundColorController.text,
         iconColorHex: _iconColorController.text,
       ),
@@ -72,9 +70,7 @@ class _ObjectIconEditorState extends State<ObjectIconEditor> {
         // Preview
         Center(
           child: ObjectIcon.raw(
-            iconName: _iconController.text.isNotEmpty
-                ? _iconController.text
-                : widget.initialData.iconName,
+            iconName: _selectedIconName,
             backgroundColorHex: _backgroundColorController.text.isNotEmpty
                 ? _backgroundColorController.text
                 : widget.initialData.backgroundColorHex,
@@ -85,16 +81,36 @@ class _ObjectIconEditorState extends State<ObjectIconEditor> {
           ),
         ),
         AppSpacing.gapVerticalLg,
-        // Icon field
-        TextFormField(
-          controller: _iconController,
+        // Icon selector
+        DropdownButtonFormField<String>(
+          initialValue: _selectedIconName,
           decoration: InputDecoration(
             labelText: l10n.categoriesEditIcon,
             border: const OutlineInputBorder(),
             helperText: l10n.categoriesEditIconHelper,
           ),
+          items: AppIcons.iconDataMap.keys.map((String iconName) {
+            return DropdownMenuItem<String>(
+              value: iconName,
+              child: Row(
+                children: [
+                  AppIcons.getIcon(iconName, size: AppSizing.iconMd),
+                  AppSpacing.gapHorizontalMd,
+                  Text(AppIcons.getIconLabel(iconName, l10n)),
+                ],
+              ),
+            );
+          }).toList(),
+          onChanged: (String? newValue) {
+            if (newValue != null) {
+              setState(() {
+                _selectedIconName = newValue;
+              });
+              _notifyChange();
+            }
+          },
           validator: (value) {
-            if (value == null || value.trim().isEmpty) {
+            if (value == null || value.isEmpty) {
               return l10n.categoriesEditIconRequired;
             }
             return null;
