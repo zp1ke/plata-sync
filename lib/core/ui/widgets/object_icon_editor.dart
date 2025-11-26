@@ -3,8 +3,8 @@ import 'package:plata_sync/core/model/object_icon_data.dart';
 import 'package:plata_sync/core/ui/resources/app_icons.dart';
 import 'package:plata_sync/core/ui/resources/app_sizing.dart';
 import 'package:plata_sync/core/ui/resources/app_spacing.dart';
+import 'package:plata_sync/core/ui/widgets/color_picker_field.dart';
 import 'package:plata_sync/core/ui/widgets/object_icon.dart';
-import 'package:plata_sync/core/utils/colors.dart';
 import 'package:plata_sync/l10n/app_localizations.dart';
 
 class ObjectIconEditor extends StatefulWidget {
@@ -23,39 +23,23 @@ class ObjectIconEditor extends StatefulWidget {
 
 class _ObjectIconEditorState extends State<ObjectIconEditor> {
   late String _selectedIconName;
-  late TextEditingController _backgroundColorController;
-  late TextEditingController _iconColorController;
+  late String _backgroundColor;
+  late String _iconColor;
 
   @override
   void initState() {
     super.initState();
     _selectedIconName = widget.initialData.iconName;
-    _backgroundColorController = TextEditingController(
-      text: widget.initialData.backgroundColorHex,
-    );
-    _iconColorController = TextEditingController(
-      text: widget.initialData.iconColorHex,
-    );
-
-    _backgroundColorController.addListener(_notifyChange);
-    _iconColorController.addListener(_notifyChange);
-  }
-
-  @override
-  void dispose() {
-    _backgroundColorController.removeListener(_notifyChange);
-    _iconColorController.removeListener(_notifyChange);
-    _backgroundColorController.dispose();
-    _iconColorController.dispose();
-    super.dispose();
+    _backgroundColor = widget.initialData.backgroundColorHex;
+    _iconColor = widget.initialData.iconColorHex;
   }
 
   void _notifyChange() {
     widget.onChanged(
       ObjectIconData(
         iconName: _selectedIconName,
-        backgroundColorHex: _backgroundColorController.text,
-        iconColorHex: _iconColorController.text,
+        backgroundColorHex: _backgroundColor,
+        iconColorHex: _iconColor,
       ),
     );
   }
@@ -71,12 +55,8 @@ class _ObjectIconEditorState extends State<ObjectIconEditor> {
         Center(
           child: ObjectIcon.raw(
             iconName: _selectedIconName,
-            backgroundColorHex: _backgroundColorController.text.isNotEmpty
-                ? _backgroundColorController.text
-                : widget.initialData.backgroundColorHex,
-            iconColorHex: _iconColorController.text.isNotEmpty
-                ? _iconColorController.text
-                : widget.initialData.iconColorHex,
+            backgroundColorHex: _backgroundColor,
+            iconColorHex: _iconColor,
             size: AppSizing.avatarXl,
           ),
         ),
@@ -121,77 +101,29 @@ class _ObjectIconEditorState extends State<ObjectIconEditor> {
         Row(
           children: [
             Expanded(
-              child: TextFormField(
-                controller: _backgroundColorController,
-                decoration: InputDecoration(
-                  labelText: l10n.categoriesEditBackgroundColor,
-                  border: const OutlineInputBorder(),
-                  helperText: l10n.categoriesEditColorHelper,
-                  prefixIcon: Padding(
-                    padding: const EdgeInsets.all(AppSpacing.md),
-                    child: Container(
-                      width: AppSizing.iconMd,
-                      height: AppSizing.iconMd,
-                      decoration: BoxDecoration(
-                        color: ColorExtensions.fromHex(
-                          _backgroundColorController.text,
-                        ),
-                        shape: BoxShape.circle,
-                        border: Border.all(
-                          color: Theme.of(
-                            context,
-                          ).colorScheme.outline.withValues(alpha: 0.3),
-                        ),
-                      ),
-                    ),
-                  ),
-                ),
-                validator: (value) {
-                  if (value == null || value.trim().isEmpty) {
-                    return l10n.categoriesEditColorRequired;
-                  }
-                  if (!ColorExtensions.isValidHex(value)) {
-                    return l10n.categoriesEditColorInvalid;
-                  }
-                  return null;
+              child: ColorPickerField(
+                label: l10n.categoriesEditBackgroundColor,
+                helperText: l10n.categoriesEditColorHelper,
+                value: _backgroundColor,
+                onChanged: (color) {
+                  setState(() {
+                    _backgroundColor = color;
+                  });
+                  _notifyChange();
                 },
               ),
             ),
             AppSpacing.gapHorizontalMd,
             Expanded(
-              child: TextFormField(
-                controller: _iconColorController,
-                decoration: InputDecoration(
-                  labelText: l10n.categoriesEditIconColor,
-                  border: const OutlineInputBorder(),
-                  helperText: l10n.categoriesEditColorHelper,
-                  prefixIcon: Padding(
-                    padding: const EdgeInsets.all(AppSpacing.md),
-                    child: Container(
-                      width: AppSizing.iconMd,
-                      height: AppSizing.iconMd,
-                      decoration: BoxDecoration(
-                        color: ColorExtensions.fromHex(
-                          _iconColorController.text,
-                        ),
-                        shape: BoxShape.circle,
-                        border: Border.all(
-                          color: Theme.of(
-                            context,
-                          ).colorScheme.outline.withValues(alpha: 0.3),
-                        ),
-                      ),
-                    ),
-                  ),
-                ),
-                validator: (value) {
-                  if (value == null || value.trim().isEmpty) {
-                    return l10n.categoriesEditColorRequired;
-                  }
-                  if (!ColorExtensions.isValidHex(value)) {
-                    return l10n.categoriesEditColorInvalid;
-                  }
-                  return null;
+              child: ColorPickerField(
+                label: l10n.categoriesEditIconColor,
+                helperText: l10n.categoriesEditColorHelper,
+                value: _iconColor,
+                onChanged: (color) {
+                  setState(() {
+                    _iconColor = color;
+                  });
+                  _notifyChange();
                 },
               ),
             ),
