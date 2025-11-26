@@ -27,12 +27,7 @@ class CategoryDetailsDialog extends StatelessWidget {
     return AlertDialog(
       title: Row(
         children: [
-          ObjectIcon(
-            iconName: category.icon,
-            backgroundColorHex: category.backgroundColorHex,
-            iconColorHex: category.iconColorHex,
-            size: AppSizing.avatarSm,
-          ),
+          ObjectIcon(iconData: category.iconData, size: AppSizing.avatarSm),
           AppSpacing.gapHorizontalMd,
           Expanded(
             child: Text(

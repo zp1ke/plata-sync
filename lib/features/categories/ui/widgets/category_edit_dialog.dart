@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:plata_sync/core/model/object_icon_data.dart';
 import 'package:plata_sync/core/ui/resources/app_spacing.dart';
-import 'package:plata_sync/core/ui/widgets/object_icon.dart';
+import 'package:plata_sync/core/ui/widgets/object_icon_editor.dart';
 import 'package:plata_sync/features/categories/domain/entities/category.dart';
 import 'package:plata_sync/l10n/app_localizations.dart';
 
@@ -21,9 +22,7 @@ class CategoryEditDialog extends StatefulWidget {
 class _CategoryEditDialogState extends State<CategoryEditDialog> {
   late final TextEditingController _nameController;
   late final TextEditingController _descriptionController;
-  late final TextEditingController _iconController;
-  late final TextEditingController _backgroundColorController;
-  late final TextEditingController _iconColorController;
+  late ObjectIconData _iconData;
   final _formKey = GlobalKey<FormState>();
 
   @override
@@ -33,22 +32,13 @@ class _CategoryEditDialogState extends State<CategoryEditDialog> {
     _descriptionController = TextEditingController(
       text: widget.category.description ?? '',
     );
-    _iconController = TextEditingController(text: widget.category.icon);
-    _backgroundColorController = TextEditingController(
-      text: widget.category.backgroundColorHex,
-    );
-    _iconColorController = TextEditingController(
-      text: widget.category.iconColorHex,
-    );
+    _iconData = widget.category.iconData;
   }
 
   @override
   void dispose() {
     _nameController.dispose();
     _descriptionController.dispose();
-    _iconController.dispose();
-    _backgroundColorController.dispose();
-    _iconColorController.dispose();
     super.dispose();
   }
 
@@ -64,37 +54,6 @@ class _CategoryEditDialogState extends State<CategoryEditDialog> {
           child: Column(
             mainAxisSize: MainAxisSize.min,
             children: [
-              // Preview
-              ValueListenableBuilder(
-                valueListenable: _iconController,
-                builder: (context, iconValue, _) {
-                  return ValueListenableBuilder(
-                    valueListenable: _backgroundColorController,
-                    builder: (context, bgColorValue, _) {
-                      return ValueListenableBuilder(
-                        valueListenable: _iconColorController,
-                        builder: (context, iconColorValue, _) {
-                          return Center(
-                            child: ObjectIcon(
-                              iconName: iconValue.text.isNotEmpty
-                                  ? iconValue.text
-                                  : widget.category.icon,
-                              backgroundColorHex: bgColorValue.text.isNotEmpty
-                                  ? bgColorValue.text
-                                  : widget.category.backgroundColorHex,
-                              iconColorHex: iconColorValue.text.isNotEmpty
-                                  ? iconColorValue.text
-                                  : widget.category.iconColorHex,
-                              size: 64,
-                            ),
-                          );
-                        },
-                      );
-                    },
-                  );
-                },
-              ),
-              AppSpacing.gapVerticalLg,
               // Name field
               TextFormField(
                 controller: _nameController,
@@ -120,50 +79,26 @@ class _CategoryEditDialogState extends State<CategoryEditDialog> {
                 maxLines: 3,
               ),
               AppSpacing.gapVerticalMd,
-              // Icon field
-              TextFormField(
-                controller: _iconController,
-                decoration: InputDecoration(
-                  labelText: l10n.categoriesEditIcon,
-                  border: const OutlineInputBorder(),
-                  helperText: l10n.categoriesEditIconHelper,
-                ),
-                validator: (value) {
+              // Icon editor
+              ObjectIconEditor(
+                initialData: _iconData,
+                onChanged: (data) {
+                  setState(() {
+                    _iconData = data;
+                  });
+                },
+                iconLabel: l10n.categoriesEditIcon,
+                iconHint: l10n.categoriesEditIconHelper,
+                backgroundColorLabel: l10n.categoriesEditBackgroundColor,
+                iconColorLabel: l10n.categoriesEditIconColor,
+                colorHint: l10n.categoriesEditColorHelper,
+                iconValidator: (value) {
                   if (value == null || value.trim().isEmpty) {
                     return l10n.categoriesEditIconRequired;
                   }
                   return null;
                 },
-              ),
-              AppSpacing.gapVerticalMd,
-              // Background color field
-              TextFormField(
-                controller: _backgroundColorController,
-                decoration: InputDecoration(
-                  labelText: l10n.categoriesEditBackgroundColor,
-                  border: const OutlineInputBorder(),
-                  helperText: l10n.categoriesEditColorHelper,
-                ),
-                validator: (value) {
-                  if (value == null || value.trim().isEmpty) {
-                    return l10n.categoriesEditColorRequired;
-                  }
-                  if (!_isValidHexColor(value)) {
-                    return l10n.categoriesEditColorInvalid;
-                  }
-                  return null;
-                },
-              ),
-              AppSpacing.gapVerticalMd,
-              // Icon color field
-              TextFormField(
-                controller: _iconColorController,
-                decoration: InputDecoration(
-                  labelText: l10n.categoriesEditIconColor,
-                  border: const OutlineInputBorder(),
-                  helperText: l10n.categoriesEditColorHelper,
-                ),
-                validator: (value) {
+                colorValidator: (value) {
                   if (value == null || value.trim().isEmpty) {
                     return l10n.categoriesEditColorRequired;
                   }
@@ -200,9 +135,7 @@ class _CategoryEditDialogState extends State<CategoryEditDialog> {
         description: _descriptionController.text.trim().isEmpty
             ? null
             : _descriptionController.text.trim(),
-        icon: _iconController.text.trim(),
-        backgroundColorHex: _backgroundColorController.text.trim(),
-        iconColorHex: _iconColorController.text.trim(),
+        iconData: _iconData,
       );
       Navigator.of(context).pop();
       widget.onSave(updatedCategory);

@@ -26,11 +26,7 @@ class CategoryListView extends StatelessWidget {
               padding: AppSpacing.paddingMd,
               child: Row(
                 children: [
-                  ObjectIcon(
-                    iconName: category.icon,
-                    backgroundColorHex: category.backgroundColorHex,
-                    iconColorHex: category.iconColorHex,
-                  ),
+                  ObjectIcon(iconData: category.iconData),
                   AppSpacing.gapHorizontalMd,
                   Expanded(
                     child: Column(

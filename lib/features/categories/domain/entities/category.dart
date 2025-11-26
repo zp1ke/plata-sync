@@ -1,13 +1,12 @@
 import 'package:equatable/equatable.dart';
+import 'package:plata_sync/core/model/object_icon_data.dart';
 import 'package:plata_sync/core/utils/random.dart';
 
 class Category extends Equatable {
   final String id;
   final DateTime createdAt;
   final String name;
-  final String icon;
-  final String backgroundColorHex;
-  final String iconColorHex;
+  final ObjectIconData iconData;
   final DateTime? lastUsed;
   final String? description;
 
@@ -15,9 +14,7 @@ class Category extends Equatable {
     required this.id,
     required this.createdAt,
     required this.name,
-    required this.icon,
-    required this.backgroundColorHex,
-    required this.iconColorHex,
+    required this.iconData,
     this.lastUsed,
     this.description,
   });
@@ -26,9 +23,7 @@ class Category extends Equatable {
     String? id,
     DateTime? createdAt,
     required this.name,
-    required this.icon,
-    required this.backgroundColorHex,
-    required this.iconColorHex,
+    required this.iconData,
     this.description,
   }) : id = id ?? randomId(),
        createdAt = createdAt ?? DateTime.now(),
@@ -38,9 +33,7 @@ class Category extends Equatable {
     String? id,
     DateTime? createdAt,
     String? name,
-    String? icon,
-    String? backgroundColorHex,
-    String? iconColorHex,
+    ObjectIconData? iconData,
     String? description,
     DateTime? lastUsed,
   }) {
@@ -48,9 +41,7 @@ class Category extends Equatable {
       id: id ?? this.id,
       createdAt: createdAt ?? this.createdAt,
       name: name ?? this.name,
-      icon: icon ?? this.icon,
-      backgroundColorHex: backgroundColorHex ?? this.backgroundColorHex,
-      iconColorHex: iconColorHex ?? this.iconColorHex,
+      iconData: iconData ?? this.iconData,
       description: description ?? this.description,
       lastUsed: lastUsed ?? this.lastUsed,
     );

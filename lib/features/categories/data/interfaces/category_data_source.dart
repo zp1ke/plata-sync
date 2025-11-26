@@ -1,4 +1,5 @@
 import 'package:plata_sync/core/data/interfaces/data_source.dart';
+import 'package:plata_sync/core/model/object_icon_data.dart';
 import 'package:plata_sync/features/categories/domain/entities/category.dart';
 
 abstract class CategoryDataSource extends DataSource<Category> {
@@ -7,23 +8,29 @@ abstract class CategoryDataSource extends DataSource<Category> {
     final samples = [
       Category.create(
         name: 'Groceries',
-        icon: 'shopping_cart',
-        backgroundColorHex: '#FFF9C4',
-        iconColorHex: '#F9A825',
+        iconData: ObjectIconData(
+          iconName: 'shopping_cart',
+          backgroundColorHex: '#FFF9C4',
+          iconColorHex: '#F9A825',
+        ),
         description: 'Items to buy from the supermarket',
       ),
       Category.create(
         name: 'Utilities',
-        icon: 'bolt',
-        backgroundColorHex: '#E8F5E9',
-        iconColorHex: '#4CAF50',
+        iconData: ObjectIconData(
+          iconName: 'flash_on',
+          backgroundColorHex: '#FFEBEE',
+          iconColorHex: '#E53935',
+        ),
         description: 'Monthly bills and subscriptions',
       ),
       Category.create(
         name: 'Entertainment',
-        icon: 'movie',
-        backgroundColorHex: '#E3F2FD',
-        iconColorHex: '#2196F3',
+        iconData: ObjectIconData(
+          iconName: 'movie',
+          backgroundColorHex: '#E3F2FD',
+          iconColorHex: '#2196F3',
+        ),
         description: 'Movies, games, and other fun activities',
       ),
     ];
