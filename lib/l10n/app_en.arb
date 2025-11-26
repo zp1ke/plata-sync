@@ -199,5 +199,79 @@
   "categoriesDetailsCreatedAt": "Created At",
   "@categoriesDetailsCreatedAt": {
     "description": "Label for category created at field"
+  },
+  "cancel": "Cancel",
+  "@cancel": {
+    "description": "Cancel action"
+  },
+  "save": "Save",
+  "@save": {
+    "description": "Save action"
+  },
+  "categoriesEditTitle": "Edit Category",
+  "@categoriesEditTitle": {
+    "description": "Title for category edit dialog"
+  },
+  "categoriesEditName": "Name",
+  "@categoriesEditName": {
+    "description": "Label for category name field in edit dialog"
+  },
+  "categoriesEditNameRequired": "Name is required",
+  "@categoriesEditNameRequired": {
+    "description": "Validation message when name is empty"
+  },
+  "categoriesEditDescription": "Description",
+  "@categoriesEditDescription": {
+    "description": "Label for category description field in edit dialog"
+  },
+  "categoriesEditIcon": "Icon",
+  "@categoriesEditIcon": {
+    "description": "Label for category icon field in edit dialog"
+  },
+  "categoriesEditIconHelper": "e.g., shopping_cart, bolt, movie",
+  "@categoriesEditIconHelper": {
+    "description": "Helper text for icon field"
+  },
+  "categoriesEditIconRequired": "Icon is required",
+  "@categoriesEditIconRequired": {
+    "description": "Validation message when icon is empty"
+  },
+  "categoriesEditBackgroundColor": "Background Color",
+  "@categoriesEditBackgroundColor": {
+    "description": "Label for background color field in edit dialog"
+  },
+  "categoriesEditIconColor": "Icon Color",
+  "@categoriesEditIconColor": {
+    "description": "Label for icon color field in edit dialog"
+  },
+  "categoriesEditColorHelper": "Hex color (e.g., #FF5733 or FF5733)",
+  "@categoriesEditColorHelper": {
+    "description": "Helper text for color fields"
+  },
+  "categoriesEditColorRequired": "Color is required",
+  "@categoriesEditColorRequired": {
+    "description": "Validation message when color is empty"
+  },
+  "categoriesEditColorInvalid": "Invalid hex color format",
+  "@categoriesEditColorInvalid": {
+    "description": "Validation message when color format is invalid"
+  },
+  "categoryUpdated": "Category \"{categoryName}\" updated successfully.",
+  "@categoryUpdated": {
+    "description": "Message shown when a category is updated successfully",
+    "placeholders": {
+      "categoryName": {
+        "type": "String"
+      }
+    }
+  },
+  "categoryUpdateFailed": "Failed to update category: {error}",
+  "@categoryUpdateFailed": {
+    "description": "Message shown when updating a category fails",
+    "placeholders": {
+      "error": {
+        "type": "String"
+      }
+    }
   }
 }

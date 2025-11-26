@@ -10,6 +10,7 @@ import 'package:plata_sync/core/utils/random.dart';
 import 'package:plata_sync/features/categories/application/categories_manager.dart';
 import 'package:plata_sync/features/categories/domain/entities/category.dart';
 import 'package:plata_sync/features/categories/ui/widgets/category_details_dialog.dart';
+import 'package:plata_sync/features/categories/ui/widgets/category_edit_dialog.dart';
 import 'package:plata_sync/features/categories/ui/widgets/category_grid_view.dart';
 import 'package:plata_sync/features/categories/ui/widgets/category_list_view.dart';
 import 'package:plata_sync/l10n/app_localizations.dart';
@@ -185,9 +186,33 @@ class CategoriesScreen extends WatchingWidget {
   }
 
   void handleEdit(BuildContext context, Category category) {
-    // TODO: Implement edit functionality
-    ScaffoldMessenger.of(context).showSnackBar(
-      SnackBar(content: Text('Edit ${category.name} - Not implemented yet')),
+    showDialog(
+      context: context,
+      builder: (_) => CategoryEditDialog(
+        category: category,
+        onSave: (updatedCategory) async {
+          final l10n = AppL10n.of(context);
+          final manager = getService<CategoriesManager>();
+          try {
+            await manager.updateCategory(updatedCategory);
+            if (context.mounted) {
+              ScaffoldMessenger.of(context).showSnackBar(
+                SnackBar(
+                  content: Text(l10n.categoryUpdated(updatedCategory.name)),
+                ),
+              );
+            }
+          } catch (e) {
+            if (context.mounted) {
+              ScaffoldMessenger.of(context).showSnackBar(
+                SnackBar(
+                  content: Text(l10n.categoryUpdateFailed(e.toString())),
+                ),
+              );
+            }
+          }
+        },
+      ),
     );
   }
 

@@ -143,4 +143,56 @@ class AppL10nEn extends AppL10n {
 
   @override
   String get categoriesDetailsCreatedAt => 'Created At';
+
+  @override
+  String get cancel => 'Cancel';
+
+  @override
+  String get save => 'Save';
+
+  @override
+  String get categoriesEditTitle => 'Edit Category';
+
+  @override
+  String get categoriesEditName => 'Name';
+
+  @override
+  String get categoriesEditNameRequired => 'Name is required';
+
+  @override
+  String get categoriesEditDescription => 'Description';
+
+  @override
+  String get categoriesEditIcon => 'Icon';
+
+  @override
+  String get categoriesEditIconHelper => 'e.g., shopping_cart, bolt, movie';
+
+  @override
+  String get categoriesEditIconRequired => 'Icon is required';
+
+  @override
+  String get categoriesEditBackgroundColor => 'Background Color';
+
+  @override
+  String get categoriesEditIconColor => 'Icon Color';
+
+  @override
+  String get categoriesEditColorHelper => 'Hex color (e.g., #FF5733 or FF5733)';
+
+  @override
+  String get categoriesEditColorRequired => 'Color is required';
+
+  @override
+  String get categoriesEditColorInvalid => 'Invalid hex color format';
+
+  @override
+  String categoryUpdated(String categoryName) {
+    return 'Category \"$categoryName\" updated successfully.';
+  }
+
+  @override
+  String categoryUpdateFailed(String error) {
+    return 'Failed to update category: $error';
+  }
 }

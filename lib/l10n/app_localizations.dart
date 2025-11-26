@@ -338,6 +338,102 @@ abstract class AppL10n {
   /// In en, this message translates to:
   /// **'Created At'**
   String get categoriesDetailsCreatedAt;
+
+  /// Cancel action
+  ///
+  /// In en, this message translates to:
+  /// **'Cancel'**
+  String get cancel;
+
+  /// Save action
+  ///
+  /// In en, this message translates to:
+  /// **'Save'**
+  String get save;
+
+  /// Title for category edit dialog
+  ///
+  /// In en, this message translates to:
+  /// **'Edit Category'**
+  String get categoriesEditTitle;
+
+  /// Label for category name field in edit dialog
+  ///
+  /// In en, this message translates to:
+  /// **'Name'**
+  String get categoriesEditName;
+
+  /// Validation message when name is empty
+  ///
+  /// In en, this message translates to:
+  /// **'Name is required'**
+  String get categoriesEditNameRequired;
+
+  /// Label for category description field in edit dialog
+  ///
+  /// In en, this message translates to:
+  /// **'Description'**
+  String get categoriesEditDescription;
+
+  /// Label for category icon field in edit dialog
+  ///
+  /// In en, this message translates to:
+  /// **'Icon'**
+  String get categoriesEditIcon;
+
+  /// Helper text for icon field
+  ///
+  /// In en, this message translates to:
+  /// **'e.g., shopping_cart, bolt, movie'**
+  String get categoriesEditIconHelper;
+
+  /// Validation message when icon is empty
+  ///
+  /// In en, this message translates to:
+  /// **'Icon is required'**
+  String get categoriesEditIconRequired;
+
+  /// Label for background color field in edit dialog
+  ///
+  /// In en, this message translates to:
+  /// **'Background Color'**
+  String get categoriesEditBackgroundColor;
+
+  /// Label for icon color field in edit dialog
+  ///
+  /// In en, this message translates to:
+  /// **'Icon Color'**
+  String get categoriesEditIconColor;
+
+  /// Helper text for color fields
+  ///
+  /// In en, this message translates to:
+  /// **'Hex color (e.g., #FF5733 or FF5733)'**
+  String get categoriesEditColorHelper;
+
+  /// Validation message when color is empty
+  ///
+  /// In en, this message translates to:
+  /// **'Color is required'**
+  String get categoriesEditColorRequired;
+
+  /// Validation message when color format is invalid
+  ///
+  /// In en, this message translates to:
+  /// **'Invalid hex color format'**
+  String get categoriesEditColorInvalid;
+
+  /// Message shown when a category is updated successfully
+  ///
+  /// In en, this message translates to:
+  /// **'Category \"{categoryName}\" updated successfully.'**
+  String categoryUpdated(String categoryName);
+
+  /// Message shown when updating a category fails
+  ///
+  /// In en, this message translates to:
+  /// **'Failed to update category: {error}'**
+  String categoryUpdateFailed(String error);
 }
 
 class _AppL10nDelegate extends LocalizationsDelegate<AppL10n> {
