@@ -46,7 +46,7 @@ class CategoryGridView extends StatelessWidget {
                         ),
                         if (category.description != null &&
                             category.description!.isNotEmpty) ...[
-                          const SizedBox(height: 2),
+                          SizedBox(height: AppSpacing.xs),
                           Text(
                             category.description!,
                             style: Theme.of(context).textTheme.bodySmall,

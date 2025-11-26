@@ -128,10 +128,10 @@ class _ObjectIconEditorState extends State<ObjectIconEditor> {
                   border: const OutlineInputBorder(),
                   helperText: l10n.categoriesEditColorHelper,
                   prefixIcon: Padding(
-                    padding: const EdgeInsets.all(12.0),
+                    padding: const EdgeInsets.all(AppSpacing.md),
                     child: Container(
-                      width: 24,
-                      height: 24,
+                      width: AppSizing.iconMd,
+                      height: AppSizing.iconMd,
                       decoration: BoxDecoration(
                         color: ColorExtensions.fromHex(
                           _backgroundColorController.text,

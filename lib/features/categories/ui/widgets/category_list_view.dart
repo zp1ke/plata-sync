@@ -39,7 +39,7 @@ class CategoryListView extends StatelessWidget {
                         ),
                         if (category.description != null &&
                             category.description!.isNotEmpty) ...[
-                          const SizedBox(height: 4),
+                          SizedBox(height: AppSpacing.xs),
                           Text(
                             category.description!,
                             style: Theme.of(context).textTheme.bodySmall,
