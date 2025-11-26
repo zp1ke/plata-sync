@@ -87,26 +87,6 @@ class _CategoryEditDialogState extends State<CategoryEditDialog> {
                     _iconData = data;
                   });
                 },
-                iconLabel: l10n.categoriesEditIcon,
-                iconHint: l10n.categoriesEditIconHelper,
-                backgroundColorLabel: l10n.categoriesEditBackgroundColor,
-                iconColorLabel: l10n.categoriesEditIconColor,
-                colorHint: l10n.categoriesEditColorHelper,
-                iconValidator: (value) {
-                  if (value == null || value.trim().isEmpty) {
-                    return l10n.categoriesEditIconRequired;
-                  }
-                  return null;
-                },
-                colorValidator: (value) {
-                  if (value == null || value.trim().isEmpty) {
-                    return l10n.categoriesEditColorRequired;
-                  }
-                  if (!_isValidHexColor(value)) {
-                    return l10n.categoriesEditColorInvalid;
-                  }
-                  return null;
-                },
               ),
             ],
           ),
@@ -120,12 +100,6 @@ class _CategoryEditDialogState extends State<CategoryEditDialog> {
         FilledButton(onPressed: _handleSave, child: Text(l10n.save)),
       ],
     );
-  }
-
-  bool _isValidHexColor(String value) {
-    final hex = value.replaceAll('#', '');
-    return RegExp(r'^[0-9A-Fa-f]{6}$').hasMatch(hex) ||
-        RegExp(r'^[0-9A-Fa-f]{8}$').hasMatch(hex);
   }
 
   void _handleSave() {

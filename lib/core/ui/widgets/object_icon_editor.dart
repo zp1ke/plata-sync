@@ -1,29 +1,18 @@
 import 'package:flutter/material.dart';
 import 'package:plata_sync/core/model/object_icon_data.dart';
+import 'package:plata_sync/core/ui/resources/app_sizing.dart';
 import 'package:plata_sync/core/ui/resources/app_spacing.dart';
 import 'package:plata_sync/core/ui/widgets/object_icon.dart';
+import 'package:plata_sync/core/utils/colors.dart';
+import 'package:plata_sync/l10n/app_localizations.dart';
 
 class ObjectIconEditor extends StatefulWidget {
   final ObjectIconData initialData;
   final ValueChanged<ObjectIconData> onChanged;
-  final String? iconLabel;
-  final String? iconHint;
-  final String? backgroundColorLabel;
-  final String? iconColorLabel;
-  final String? colorHint;
-  final String? Function(String?)? iconValidator;
-  final String? Function(String?)? colorValidator;
 
   const ObjectIconEditor({
     required this.initialData,
     required this.onChanged,
-    this.iconLabel,
-    this.iconHint,
-    this.backgroundColorLabel,
-    this.iconColorLabel,
-    this.colorHint,
-    this.iconValidator,
-    this.colorValidator,
     super.key,
   });
 
@@ -75,6 +64,8 @@ class _ObjectIconEditorState extends State<ObjectIconEditor> {
 
   @override
   Widget build(BuildContext context) {
+    final l10n = AppL10n.of(context);
+
     return Column(
       mainAxisSize: MainAxisSize.min,
       children: [
@@ -90,7 +81,7 @@ class _ObjectIconEditorState extends State<ObjectIconEditor> {
             iconColorHex: _iconColorController.text.isNotEmpty
                 ? _iconColorController.text
                 : widget.initialData.iconColorHex,
-            size: 64,
+            size: AppSizing.avatarXl,
           ),
         ),
         AppSpacing.gapVerticalLg,
@@ -98,11 +89,16 @@ class _ObjectIconEditorState extends State<ObjectIconEditor> {
         TextFormField(
           controller: _iconController,
           decoration: InputDecoration(
-            labelText: widget.iconLabel ?? 'Icon',
+            labelText: l10n.categoriesEditIcon,
             border: const OutlineInputBorder(),
-            helperText: widget.iconHint,
+            helperText: l10n.categoriesEditIconHelper,
           ),
-          validator: widget.iconValidator,
+          validator: (value) {
+            if (value == null || value.trim().isEmpty) {
+              return l10n.categoriesEditIconRequired;
+            }
+            return null;
+          },
         ),
         AppSpacing.gapVerticalMd,
         // Color fields in a row
@@ -112,18 +108,18 @@ class _ObjectIconEditorState extends State<ObjectIconEditor> {
               child: TextFormField(
                 controller: _backgroundColorController,
                 decoration: InputDecoration(
-                  labelText: widget.backgroundColorLabel ?? 'Background Color',
+                  labelText: l10n.categoriesEditBackgroundColor,
                   border: const OutlineInputBorder(),
-                  helperText: widget.colorHint,
+                  helperText: l10n.categoriesEditColorHelper,
                   prefixIcon: Padding(
                     padding: const EdgeInsets.all(12.0),
                     child: Container(
                       width: 24,
                       height: 24,
                       decoration: BoxDecoration(
-                        color:
-                            _parseColor(_backgroundColorController.text) ??
-                            Colors.grey,
+                        color: ColorExtensions.fromHex(
+                          _backgroundColorController.text,
+                        ),
                         shape: BoxShape.circle,
                         border: Border.all(
                           color: Theme.of(
@@ -134,7 +130,15 @@ class _ObjectIconEditorState extends State<ObjectIconEditor> {
                     ),
                   ),
                 ),
-                validator: widget.colorValidator,
+                validator: (value) {
+                  if (value == null || value.trim().isEmpty) {
+                    return l10n.categoriesEditColorRequired;
+                  }
+                  if (!ColorExtensions.isValidHex(value)) {
+                    return l10n.categoriesEditColorInvalid;
+                  }
+                  return null;
+                },
               ),
             ),
             AppSpacing.gapHorizontalMd,
@@ -142,18 +146,18 @@ class _ObjectIconEditorState extends State<ObjectIconEditor> {
               child: TextFormField(
                 controller: _iconColorController,
                 decoration: InputDecoration(
-                  labelText: widget.iconColorLabel ?? 'Icon Color',
+                  labelText: l10n.categoriesEditIconColor,
                   border: const OutlineInputBorder(),
-                  helperText: widget.colorHint,
+                  helperText: l10n.categoriesEditColorHelper,
                   prefixIcon: Padding(
-                    padding: const EdgeInsets.all(12.0),
+                    padding: const EdgeInsets.all(AppSpacing.md),
                     child: Container(
-                      width: 24,
-                      height: 24,
+                      width: AppSizing.iconMd,
+                      height: AppSizing.iconMd,
                       decoration: BoxDecoration(
-                        color:
-                            _parseColor(_iconColorController.text) ??
-                            Colors.grey,
+                        color: ColorExtensions.fromHex(
+                          _iconColorController.text,
+                        ),
                         shape: BoxShape.circle,
                         border: Border.all(
                           color: Theme.of(
@@ -164,26 +168,20 @@ class _ObjectIconEditorState extends State<ObjectIconEditor> {
                     ),
                   ),
                 ),
-                validator: widget.colorValidator,
+                validator: (value) {
+                  if (value == null || value.trim().isEmpty) {
+                    return l10n.categoriesEditColorRequired;
+                  }
+                  if (!ColorExtensions.isValidHex(value)) {
+                    return l10n.categoriesEditColorInvalid;
+                  }
+                  return null;
+                },
               ),
             ),
           ],
         ),
       ],
     );
-  }
-
-  Color? _parseColor(String hexColor) {
-    try {
-      final hex = hexColor.replaceAll('#', '');
-      if (hex.length == 6) {
-        return Color(int.parse('FF$hex', radix: 16));
-      } else if (hex.length == 8) {
-        return Color(int.parse(hex, radix: 16));
-      }
-      return null;
-    } catch (e) {
-      return null;
-    }
   }
 }

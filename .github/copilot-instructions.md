@@ -36,6 +36,7 @@
 ## Important Guidelines
 - **Localization**: Always use `AppL10n.of(context)` for UI strings. Define keys in `lib/l10n/app_en.arb`.
 - **Icons**: Use `AppIcons` class in `lib/core/ui/resources/app_icons.dart` for all app icons.
+- **Sizing & Spacing**: Use `AppSizing` for sizes (icons, avatars, radius) and `AppSpacing` for spacing/padding. Avoid hardcoded values.
 - **Navigation**: Use `AppRouter` and `AppRoutes` constants for navigation.
 - **Constructors**: Prefer `const` constructors for widgets.
 - **Formatting**: Use `package:intl` for currency and date formatting.

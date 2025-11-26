@@ -23,4 +23,19 @@ extension ColorExtensions on Color {
       return Colors.grey;
     }
   }
+
+  /// Validates if a string is a valid hex color.
+  ///
+  /// Supports formats:
+  /// - `#RRGGBB`
+  /// - `RRGGBB`
+  /// - `#AARRGGBB`
+  /// - `AARRGGBB`
+  ///
+  /// Returns `true` if valid, `false` otherwise.
+  static bool isValidHex(String hexColor) {
+    final hex = hexColor.replaceAll('#', '');
+    return RegExp(r'^[0-9A-Fa-f]{6}$').hasMatch(hex) ||
+        RegExp(r'^[0-9A-Fa-f]{8}$').hasMatch(hex);
+  }
 }
