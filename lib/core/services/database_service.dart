@@ -1,5 +1,7 @@
+import 'dart:io';
+
 import 'package:path/path.dart';
-import 'package:sqflite/sqflite.dart';
+import 'package:sqflite_common_ffi/sqflite_ffi.dart';
 
 /// Service for managing the SQLite database
 class DatabaseService {
@@ -7,6 +9,14 @@ class DatabaseService {
   static const int _databaseVersion = 1;
 
   Database? _database;
+
+  /// Initialize sqflite for desktop platforms
+  DatabaseService() {
+    if (Platform.isLinux || Platform.isWindows || Platform.isMacOS) {
+      sqfliteFfiInit();
+      databaseFactory = databaseFactoryFfi;
+    }
+  }
 
   /// Get the database instance
   Future<Database> get database async {
