@@ -236,18 +236,20 @@ class _TabletCategoriesScreenState extends State<_TabletCategoriesScreen> {
           ),
         ),
       ),
-      floatingActionButton: FloatingActionButton.extended(
-        onPressed: isLoading
-            ? null
-            : () {
-                setState(() {
-                  selectedCategory = null;
-                  isEditing = true;
-                });
-              },
-        icon: AppIcons.add,
-        label: Text(l10n.categoriesAddButton),
-      ),
+      floatingActionButton: isEditing
+          ? null
+          : FloatingActionButton.extended(
+              onPressed: isLoading
+                  ? null
+                  : () {
+                      setState(() {
+                        selectedCategory = null;
+                        isEditing = true;
+                      });
+                    },
+              icon: AppIcons.add,
+              label: Text(l10n.categoriesAddButton),
+            ),
     );
   }
 
