@@ -1,8 +1,19 @@
 import 'package:plata_sync/core/data/interfaces/data_source.dart';
+import 'package:plata_sync/core/model/enums/data_source_type.dart';
 import 'package:plata_sync/core/model/object_icon_data.dart';
+import 'package:plata_sync/features/categories/data/datasources/in_memory_category_data_source.dart';
 import 'package:plata_sync/features/categories/domain/entities/category.dart';
 
 abstract class CategoryDataSource extends DataSource<Category> {
+  static CategoryDataSource createDataSource(DataSourceType dataSourceType) {
+    switch (dataSourceType) {
+      case DataSourceType.inMemory:
+        return InMemoryCategoryDataSource();
+      case DataSourceType.local:
+        throw UnimplementedError('Local data source is not implemented yet');
+    }
+  }
+
   @override
   Future<void> createSampleData() async {
     final samples = [

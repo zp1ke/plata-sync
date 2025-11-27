@@ -1,5 +1,5 @@
 /// Enumeration of available data source types
-enum DataSource {
+enum DataSourceType {
   /// In-memory data source (data lost on app restart)
   inMemory,
 
@@ -7,10 +7,10 @@ enum DataSource {
   local;
 
   /// Get DataSource from string
-  static DataSource fromKey(String name) {
-    return DataSource.values.firstWhere(
+  static DataSourceType fromKey(String name) {
+    return DataSourceType.values.firstWhere(
       (source) => source.name == name,
-      orElse: () => DataSource.inMemory,
+      orElse: () => DataSourceType.inMemory,
     );
   }
 }

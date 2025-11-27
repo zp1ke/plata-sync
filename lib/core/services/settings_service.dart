@@ -1,4 +1,4 @@
-import 'package:plata_sync/core/model/enums/data_source.dart';
+import 'package:plata_sync/core/model/enums/data_source_type.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 /// Service for managing application settings using SharedPreferences
@@ -10,14 +10,14 @@ class SettingsService {
   SettingsService(this._prefs);
 
   /// Get the current data source setting
-  DataSource getDataSource() {
+  DataSourceType getDataSource() {
     final key = _prefs.getString(_keyDataSource);
-    if (key == null) return DataSource.inMemory;
-    return DataSource.fromKey(key);
+    if (key == null) return DataSourceType.inMemory;
+    return DataSourceType.fromKey(key);
   }
 
   /// Set the data source setting
-  Future<bool> setDataSource(DataSource source) async {
+  Future<bool> setDataSource(DataSourceType source) async {
     return await _prefs.setString(_keyDataSource, source.name);
   }
 
