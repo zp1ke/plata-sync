@@ -4,8 +4,9 @@ import 'package:plata_sync/core/ui/resources/app_theme.dart';
 import 'package:plata_sync/core/router/app_router.dart';
 import 'package:plata_sync/l10n/app_localizations.dart';
 
-void main() {
-  setupServiceLocator();
+void main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+  await setupServiceLocator();
   runApp(const MainApp());
 }
 

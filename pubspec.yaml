@@ -18,6 +18,7 @@ dependencies:
   go_router: ^17.0.0
   hugeicons: ^1.1.1
   intl: ^0.20.2
+  shared_preferences: ^2.3.5
   uuid: ^4.5.2
   watch_it: ^2.3.1
 
