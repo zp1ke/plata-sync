@@ -105,6 +105,10 @@
   "@no": {
     "description": "Negative response"
   },
+  "optional": "optional",
+  "@optional": {
+    "description": "Label indicating a field is optional"
+  },
   "edit": "Edit",
   "@edit": {
     "description": "Edit action"

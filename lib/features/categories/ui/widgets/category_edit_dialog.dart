@@ -73,8 +73,9 @@ class _CategoryEditDialogState extends State<CategoryEditDialog> {
                 // Name field
                 TextFormField(
                   controller: nameController,
+                  textInputAction: TextInputAction.next,
                   decoration: InputDecoration(
-                    labelText: l10n.categoriesEditName,
+                    labelText: '${l10n.categoriesEditName} *',
                     border: const OutlineInputBorder(),
                   ),
                   maxLength: 100,
@@ -89,7 +90,8 @@ class _CategoryEditDialogState extends State<CategoryEditDialog> {
                 TextFormField(
                   controller: descriptionController,
                   decoration: InputDecoration(
-                    labelText: l10n.categoriesEditDescription,
+                    labelText:
+                        '${l10n.categoriesEditDescription} (${l10n.optional})',
                     border: const OutlineInputBorder(),
                   ),
                   maxLength: 300,

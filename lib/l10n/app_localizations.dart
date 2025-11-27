@@ -243,6 +243,12 @@ abstract class AppL10n {
   /// **'No'**
   String get no;
 
+  /// Label indicating a field is optional
+  ///
+  /// In en, this message translates to:
+  /// **'optional'**
+  String get optional;
+
   /// Edit action
   ///
   /// In en, this message translates to:

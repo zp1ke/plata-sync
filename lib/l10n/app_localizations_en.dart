@@ -87,6 +87,9 @@ class AppL10nEn extends AppL10n {
   String get no => 'No';
 
   @override
+  String get optional => 'optional';
+
+  @override
   String get edit => 'Edit';
 
   @override
