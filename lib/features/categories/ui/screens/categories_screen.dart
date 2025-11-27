@@ -39,29 +39,37 @@ class CategoriesScreen extends WatchingWidget {
       }
     });
 
-    return SafeArea(
-      child: NestedScrollView(
-        headerSliverBuilder: (_, _) {
-          final manager = getService<CategoriesManager>();
-          return [
-            AppTopBar(
-              title: l10n.categoriesScreenTitle,
-              searchHint: l10n.categoriesSearchHint,
-              onSearchChanged: (value) => manager.loadCategories(query: value),
-              isLoading: isLoading,
-              onRefresh: () => manager.loadCategories(),
-              bottom: bottomBar(
-                context,
-                sortOrder,
-                viewMode,
-                manager,
-                l10n,
-                isLoading,
+    return Scaffold(
+      body: SafeArea(
+        child: NestedScrollView(
+          headerSliverBuilder: (_, _) {
+            final manager = getService<CategoriesManager>();
+            return [
+              AppTopBar(
+                title: l10n.categoriesScreenTitle,
+                searchHint: l10n.categoriesSearchHint,
+                onSearchChanged: (value) =>
+                    manager.loadCategories(query: value),
+                isLoading: isLoading,
+                onRefresh: () => manager.loadCategories(),
+                bottom: bottomBar(
+                  context,
+                  sortOrder,
+                  viewMode,
+                  manager,
+                  l10n,
+                  isLoading,
+                ),
               ),
-            ),
-          ];
-        },
-        body: content(context, isLoading, categories, currentQuery, viewMode),
+            ];
+          },
+          body: content(context, isLoading, categories, currentQuery, viewMode),
+        ),
+      ),
+      floatingActionButton: FloatingActionButton.extended(
+        onPressed: isLoading ? null : () => handleCreate(context),
+        icon: AppIcons.add,
+        label: Text(l10n.categoriesAddButton),
       ),
     );
   }
@@ -181,6 +189,34 @@ class CategoriesScreen extends WatchingWidget {
         onEdit: () => handleEdit(context, category),
         onDuplicate: () => handleDuplicate(context, category),
         onDelete: () => handleDelete(context, category),
+      ),
+    );
+  }
+
+  void handleCreate(BuildContext context) {
+    showDialog(
+      context: context,
+      builder: (_) => CategoryEditDialog(
+        onSave: (newCategory) async {
+          final l10n = AppL10n.of(context);
+          final manager = getService<CategoriesManager>();
+          try {
+            await manager.addCategory(newCategory);
+            if (context.mounted) {
+              ScaffoldMessenger.of(context).showSnackBar(
+                SnackBar(content: Text(l10n.categoryCreated(newCategory.name))),
+              );
+            }
+          } catch (e) {
+            if (context.mounted) {
+              ScaffoldMessenger.of(context).showSnackBar(
+                SnackBar(
+                  content: Text(l10n.categoryCreateFailed(e.toString())),
+                ),
+              );
+            }
+          }
+        },
       ),
     );
   }

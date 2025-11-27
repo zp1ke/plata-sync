@@ -190,6 +190,19 @@ class AppL10nEn extends AppL10n {
   String get categoriesEditColorInvalid => 'Invalid hex color format';
 
   @override
+  String get categoriesAddButton => 'Add Category';
+
+  @override
+  String categoryCreated(String categoryName) {
+    return 'Category \"$categoryName\" created successfully.';
+  }
+
+  @override
+  String categoryCreateFailed(String error) {
+    return 'Failed to create category: $error';
+  }
+
+  @override
   String categoryUpdated(String categoryName) {
     return 'Category \"$categoryName\" updated successfully.';
   }

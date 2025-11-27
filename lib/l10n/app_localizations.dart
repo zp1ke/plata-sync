@@ -429,6 +429,24 @@ abstract class AppL10n {
   /// **'Invalid hex color format'**
   String get categoriesEditColorInvalid;
 
+  /// Label for the add category button
+  ///
+  /// In en, this message translates to:
+  /// **'Add Category'**
+  String get categoriesAddButton;
+
+  /// Message shown when a category is created successfully
+  ///
+  /// In en, this message translates to:
+  /// **'Category \"{categoryName}\" created successfully.'**
+  String categoryCreated(String categoryName);
+
+  /// Message shown when creating a category fails
+  ///
+  /// In en, this message translates to:
+  /// **'Failed to create category: {error}'**
+  String categoryCreateFailed(String error);
+
   /// Message shown when a category is updated successfully
   ///
   /// In en, this message translates to:

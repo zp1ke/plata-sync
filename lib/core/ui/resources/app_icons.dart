@@ -10,6 +10,7 @@ class AppIcons {
   const AppIcons._();
 
   // Actions
+  static final add = HugeIcon(icon: HugeIcons.strokeRoundedAdd01);
   static final clear = HugeIcon(icon: HugeIcons.strokeRoundedCancel01);
   static final copy = HugeIcon(icon: HugeIcons.strokeRoundedCopy01);
   static final edit = HugeIcon(icon: HugeIcons.strokeRoundedPencilEdit02);

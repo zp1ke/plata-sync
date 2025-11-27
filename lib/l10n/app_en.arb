@@ -260,6 +260,28 @@
   "@categoriesEditColorInvalid": {
     "description": "Validation message when color format is invalid"
   },
+  "categoriesAddButton": "Add Category",
+  "@categoriesAddButton": {
+    "description": "Label for the add category button"
+  },
+  "categoryCreated": "Category \"{categoryName}\" created successfully.",
+  "@categoryCreated": {
+    "description": "Message shown when a category is created successfully",
+    "placeholders": {
+      "categoryName": {
+        "type": "String"
+      }
+    }
+  },
+  "categoryCreateFailed": "Failed to create category: {error}",
+  "@categoryCreateFailed": {
+    "description": "Message shown when creating a category fails",
+    "placeholders": {
+      "error": {
+        "type": "String"
+      }
+    }
+  },
   "categoryUpdated": "Category \"{categoryName}\" updated successfully.",
   "@categoryUpdated": {
     "description": "Message shown when a category is updated successfully",
