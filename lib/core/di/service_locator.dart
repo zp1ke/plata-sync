@@ -1,4 +1,5 @@
 import 'package:get_it/get_it.dart';
+import 'package:plata_sync/core/services/database_service.dart';
 import 'package:plata_sync/core/services/settings_service.dart';
 import 'package:plata_sync/features/categories/application/categories_manager.dart';
 import 'package:plata_sync/features/categories/data/interfaces/category_data_source.dart';
@@ -15,10 +16,14 @@ Future<void> setupServiceLocator() async {
   final settingsService = SettingsService(prefs);
   getIt.registerSingleton<SettingsService>(settingsService);
 
+  // Database Service
+  final databaseService = DatabaseService();
+  getIt.registerSingleton<DatabaseService>(databaseService);
+
   // Data Sources
   final dataSourceType = settingsService.getDataSource();
   getIt.registerSingleton<CategoryDataSource>(
-    CategoryDataSource.createDataSource(dataSourceType),
+    CategoryDataSource.createDataSource(dataSourceType, databaseService),
   );
 
   // Managers
