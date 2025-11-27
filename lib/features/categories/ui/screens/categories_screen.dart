@@ -2,10 +2,13 @@ import 'package:flutter/material.dart';
 import 'package:plata_sync/core/di/service_locator.dart';
 import 'package:plata_sync/core/model/enums/view_mode.dart';
 import 'package:plata_sync/core/ui/resources/app_icons.dart';
+import 'package:plata_sync/core/ui/resources/app_sizing.dart';
 import 'package:plata_sync/core/ui/resources/app_spacing.dart';
 import 'package:plata_sync/core/ui/widgets/app_top_bar.dart';
+import 'package:plata_sync/core/ui/widgets/responsive_layout.dart';
 import 'package:plata_sync/core/ui/widgets/sort_selector.dart';
 import 'package:plata_sync/core/ui/widgets/view_toggle.dart';
+import 'package:plata_sync/core/utils/colors.dart';
 import 'package:plata_sync/core/utils/random.dart';
 import 'package:plata_sync/features/categories/application/categories_manager.dart';
 import 'package:plata_sync/features/categories/domain/entities/category.dart';
@@ -21,6 +24,19 @@ class CategoriesScreen extends WatchingWidget {
 
   @override
   Widget build(BuildContext context) {
+    return ResponsiveLayout(
+      mobile: (context) => const _MobileCategoriesScreen(),
+      tabletOrLarger: (context) => const _TabletCategoriesScreen(),
+    );
+  }
+}
+
+// Mobile implementation - uses dialogs
+class _MobileCategoriesScreen extends WatchingWidget {
+  const _MobileCategoriesScreen();
+
+  @override
+  Widget build(BuildContext context) {
     final isLoading = watchValue((CategoriesManager x) => x.isLoading);
     final categories = watchValue((CategoriesManager x) => x.categories);
     final currentQuery = watchValue((CategoriesManager x) => x.currentQuery);
@@ -28,12 +44,11 @@ class CategoriesScreen extends WatchingWidget {
     final viewMode = watchValue((CategoriesManager x) => x.viewMode);
     final l10n = AppL10n.of(context);
 
-    // Show sample data dialog once when categories are empty
     callOnceAfterThisBuild((context) {
       if (categories.isEmpty && currentQuery.isEmpty) {
         WidgetsBinding.instance.addPostFrameCallback((_) {
           if (context.mounted) {
-            showSampleDataDialog(context, l10n);
+            _showSampleDataDialog(context);
           }
         });
       }
@@ -52,7 +67,7 @@ class CategoriesScreen extends WatchingWidget {
                     manager.loadCategories(query: value),
                 isLoading: isLoading,
                 onRefresh: () => manager.loadCategories(),
-                bottom: bottomBar(
+                bottom: _buildBottomBar(
                   context,
                   sortOrder,
                   viewMode,
@@ -63,89 +78,54 @@ class CategoriesScreen extends WatchingWidget {
               ),
             ];
           },
-          body: content(context, isLoading, categories, currentQuery, viewMode),
+          body: _buildContent(
+            context,
+            isLoading,
+            categories,
+            currentQuery,
+            viewMode,
+          ),
         ),
       ),
-      floatingActionButton: FloatingActionButton.extended(
-        onPressed: isLoading ? null : () => handleCreate(context),
-        icon: AppIcons.add,
-        label: Text(l10n.categoriesAddButton),
+      floatingActionButton: FloatingActionButton(
+        onPressed: isLoading ? null : () => _handleCreate(context),
+        child: AppIcons.add,
       ),
     );
   }
 
-  Future<void> showSampleDataDialog(BuildContext context, AppL10n l10n) async {
-    final l10n = AppL10n.of(context);
-    final result = await showDialog<bool>(
+  void _handleCreate(BuildContext context) {
+    showDialog(
       context: context,
-      builder: (dialogContext) => AlertDialog(
-        title: Text(l10n.categoriesEmptyState),
-        content: Text(l10n.categoriesAddSampleDataPrompt),
-        actions: [
-          TextButton(
-            onPressed: () => Navigator.of(dialogContext).pop(false),
-            child: Text(l10n.no),
-          ),
-          FilledButton(
-            onPressed: () => Navigator.of(dialogContext).pop(true),
-            child: Text(l10n.yes),
-          ),
-        ],
+      builder: (_) => CategoryEditDialog(
+        onSave: (newCategory) => _handleSaveCreate(context, newCategory),
       ),
     );
-
-    if (result == true && context.mounted) {
-      final manager = getService<CategoriesManager>();
-      await manager.createSampleData();
-    }
   }
 
-  Widget bottomBar(
-    BuildContext context,
-    CategorySortOrder sortOrder,
-    ViewMode viewMode,
-    CategoriesManager manager,
-    AppL10n l10n,
-    bool isLoading,
-  ) {
-    return Row(
-      children: [
-        // Sort selector
-        Expanded(
-          child: SortSelector<CategorySortOrder>(
-            value: sortOrder,
-            onChanged: isLoading ? null : manager.setSortOrder,
-            labelBuilder: (order) => sortLabel(order, l10n),
-            sortIconBuilder: (order) => order.isDescending
-                ? AppIcons.sortDescending
-                : AppIcons.sortAscending,
-            options: CategorySortOrder.values,
-          ),
-        ),
-        AppSpacing.gapHorizontalSm,
-        // View toggle
-        ViewToggle(
-          value: viewMode,
-          onChanged: isLoading ? null : manager.setViewMode,
-        ),
-      ],
+  void _showCategoryDetails(BuildContext context, Category category) {
+    showDialog(
+      context: context,
+      builder: (_) => CategoryDetailsDialog(
+        category: category,
+        onEdit: () => _handleEdit(context, category),
+        onDuplicate: () => _handleDuplicate(context, category),
+        onDelete: () => _handleDelete(context, category),
+      ),
     );
   }
 
-  String sortLabel(CategorySortOrder sortOrder, AppL10n l10n) {
-    switch (sortOrder) {
-      case CategorySortOrder.nameAsc:
-        return l10n.categoriesSortNameAsc;
-      case CategorySortOrder.nameDesc:
-        return l10n.categoriesSortNameDesc;
-      case CategorySortOrder.lastUsedAsc:
-        return l10n.categoriesSortLastUsedAsc;
-      case CategorySortOrder.lastUsedDesc:
-        return l10n.categoriesSortLastUsedDesc;
-    }
+  void _handleEdit(BuildContext context, Category category) {
+    showDialog(
+      context: context,
+      builder: (_) => CategoryEditDialog(
+        category: category,
+        onSave: (updatedCategory) => _handleSaveEdit(context, updatedCategory),
+      ),
+    );
   }
 
-  Widget content(
+  Widget _buildContent(
     BuildContext context,
     bool isLoading,
     List<Category> categories,
@@ -171,101 +151,524 @@ class CategoriesScreen extends WatchingWidget {
             categories: categories,
             onTap: isLoading
                 ? null
-                : (category) => showCategoryDetails(context, category),
+                : (category) => _showCategoryDetails(context, category),
           )
         : CategoryGridView(
             categories: categories,
             onTap: isLoading
                 ? null
-                : (category) => showCategoryDetails(context, category),
+                : (category) => _showCategoryDetails(context, category),
           );
   }
+}
 
-  void showCategoryDetails(BuildContext context, Category category) {
-    showDialog(
-      context: context,
-      builder: (_) => CategoryDetailsDialog(
-        category: category,
-        onEdit: () => handleEdit(context, category),
-        onDuplicate: () => handleDuplicate(context, category),
-        onDelete: () => handleDelete(context, category),
-      ),
-    );
-  }
+// Tablet implementation - uses master-detail layout
+class _TabletCategoriesScreen extends WatchingStatefulWidget {
+  const _TabletCategoriesScreen();
 
-  void handleCreate(BuildContext context) {
-    showDialog(
-      context: context,
-      builder: (_) => CategoryEditDialog(
-        onSave: (newCategory) async {
-          final l10n = AppL10n.of(context);
-          final manager = getService<CategoriesManager>();
-          try {
-            await manager.addCategory(newCategory);
-            if (context.mounted) {
-              ScaffoldMessenger.of(context).showSnackBar(
-                SnackBar(content: Text(l10n.categoryCreated(newCategory.name))),
-              );
-            }
-          } catch (e) {
-            if (context.mounted) {
-              ScaffoldMessenger.of(context).showSnackBar(
-                SnackBar(
-                  content: Text(l10n.categoryCreateFailed(e.toString())),
-                ),
-              );
-            }
-          }
-        },
-      ),
-    );
-  }
+  @override
+  State<_TabletCategoriesScreen> createState() =>
+      _TabletCategoriesScreenState();
+}
 
-  void handleEdit(BuildContext context, Category category) {
-    showDialog(
-      context: context,
-      builder: (_) => CategoryEditDialog(
-        category: category,
-        onSave: (updatedCategory) async {
-          final l10n = AppL10n.of(context);
-          final manager = getService<CategoriesManager>();
-          try {
-            await manager.updateCategory(updatedCategory);
-            if (context.mounted) {
-              ScaffoldMessenger.of(context).showSnackBar(
-                SnackBar(
-                  content: Text(l10n.categoryUpdated(updatedCategory.name)),
-                ),
-              );
-            }
-          } catch (e) {
-            if (context.mounted) {
-              ScaffoldMessenger.of(context).showSnackBar(
-                SnackBar(
-                  content: Text(l10n.categoryUpdateFailed(e.toString())),
-                ),
-              );
-            }
-          }
-        },
-      ),
-    );
-  }
+class _TabletCategoriesScreenState extends State<_TabletCategoriesScreen> {
+  Category? selectedCategory;
+  bool isEditing = false;
 
-  void handleDuplicate(BuildContext context, Category category) async {
+  @override
+  Widget build(BuildContext context) {
+    final isLoading = watchValue((CategoriesManager x) => x.isLoading);
+    final categories = watchValue((CategoriesManager x) => x.categories);
+    final currentQuery = watchValue((CategoriesManager x) => x.currentQuery);
+    final sortOrder = watchValue((CategoriesManager x) => x.sortOrder);
+    final viewMode = watchValue((CategoriesManager x) => x.viewMode);
     final l10n = AppL10n.of(context);
+
+    callOnceAfterThisBuild((context) {
+      if (categories.isEmpty && currentQuery.isEmpty) {
+        WidgetsBinding.instance.addPostFrameCallback((_) {
+          if (context.mounted) {
+            _showSampleDataDialog(context);
+          }
+        });
+      }
+    });
+
+    return Scaffold(
+      body: SafeArea(
+        child: MasterDetailLayout(
+          master: NestedScrollView(
+            headerSliverBuilder: (_, _) {
+              final manager = getService<CategoriesManager>();
+              return [
+                AppTopBar(
+                  title: l10n.categoriesScreenTitle,
+                  searchHint: l10n.categoriesSearchHint,
+                  onSearchChanged: (value) =>
+                      manager.loadCategories(query: value),
+                  isLoading: isLoading,
+                  onRefresh: () => manager.loadCategories(),
+                  bottom: _buildBottomBar(
+                    context,
+                    sortOrder,
+                    viewMode,
+                    manager,
+                    l10n,
+                    isLoading,
+                  ),
+                ),
+              ];
+            },
+            body: _buildContent(
+              context,
+              isLoading,
+              categories,
+              currentQuery,
+              viewMode,
+              selectedCategoryId: selectedCategory?.id,
+            ),
+          ),
+          detail: _buildDetailPane(),
+          detailPlaceholder: Center(
+            child: Text(
+              l10n.categoriesSelectPrompt,
+              style: Theme.of(context).textTheme.bodyLarge,
+            ),
+          ),
+        ),
+      ),
+      floatingActionButton: FloatingActionButton.extended(
+        onPressed: isLoading
+            ? null
+            : () {
+                setState(() {
+                  selectedCategory = null;
+                  isEditing = true;
+                });
+              },
+        icon: AppIcons.add,
+        label: Text(l10n.categoriesAddButton),
+      ),
+    );
+  }
+
+  Widget? _buildDetailPane() {
+    if (selectedCategory == null && !isEditing) return null;
+
+    if (isEditing) {
+      return _buildEditView();
+    }
+
+    return _buildDetailsView();
+  }
+
+  Widget _buildDetailsView() {
+    final category = selectedCategory!;
+    final l10n = AppL10n.of(context);
+
+    return Column(
+      children: [
+        // Header with actions
+        Container(
+          padding: const EdgeInsets.all(AppSpacing.md),
+          decoration: BoxDecoration(
+            border: Border(
+              bottom: BorderSide(color: Theme.of(context).dividerColor),
+            ),
+          ),
+          child: Row(
+            children: [
+              Expanded(
+                child: Text(
+                  category.name,
+                  style: Theme.of(context).textTheme.titleLarge,
+                ),
+              ),
+              IconButton(
+                onPressed: () {
+                  setState(() {
+                    isEditing = true;
+                  });
+                },
+                icon: AppIcons.edit,
+                tooltip: l10n.edit,
+              ),
+              IconButton(
+                onPressed: () => _handleDuplicate(context, category),
+                icon: AppIcons.copy,
+                tooltip: l10n.duplicate,
+              ),
+              IconButton(
+                onPressed: () => _handleDelete(context, category),
+                icon: AppIcons.delete,
+                tooltip: l10n.delete,
+              ),
+            ],
+          ),
+        ),
+        // Content
+        Expanded(
+          child: SingleChildScrollView(
+            padding: const EdgeInsets.all(AppSpacing.lg),
+            child: _buildCategoryDetails(category),
+          ),
+        ),
+      ],
+    );
+  }
+
+  Widget _buildCategoryDetails(Category category) {
+    final l10n = AppL10n.of(context);
+
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      spacing: AppSpacing.lg,
+      children: [
+        // Icon preview
+        Center(
+          child: Container(
+            width: AppSizing.iconPreviewSize,
+            height: AppSizing.iconPreviewSize,
+            decoration: BoxDecoration(
+              color: ColorExtensions.fromHex(
+                category.iconData.backgroundColorHex,
+              ),
+              borderRadius: AppSizing.borderRadiusXl,
+            ),
+            child: Center(
+              child: AppIcons.getIcon(
+                category.iconData.iconName,
+                color: ColorExtensions.fromHex(category.iconData.iconColorHex),
+                size: AppSizing.iconXl * 1.5,
+              ),
+            ),
+          ),
+        ),
+        // Description
+        if (category.description != null && category.description!.isNotEmpty)
+          Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            spacing: AppSpacing.xs,
+            children: [
+              Text(
+                l10n.categoriesEditDescription,
+                style: Theme.of(context).textTheme.labelLarge,
+              ),
+              Text(
+                category.description!,
+                style: Theme.of(context).textTheme.bodyMedium,
+              ),
+            ],
+          ),
+        // Last used
+        if (category.lastUsed != null)
+          Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            spacing: AppSpacing.xs,
+            children: [
+              Text(
+                l10n.categoriesLastUsed,
+                style: Theme.of(context).textTheme.labelLarge,
+              ),
+              Text(
+                category.lastUsed!.toString(),
+                style: Theme.of(context).textTheme.bodyMedium,
+              ),
+            ],
+          ),
+      ],
+    );
+  }
+
+  Widget _buildEditView() {
+    final l10n = AppL10n.of(context);
+
+    return Column(
+      children: [
+        // Header
+        Container(
+          padding: const EdgeInsets.all(AppSpacing.md),
+          decoration: BoxDecoration(
+            border: Border(
+              bottom: BorderSide(color: Theme.of(context).dividerColor),
+            ),
+          ),
+          child: Row(
+            children: [
+              Expanded(
+                child: Text(
+                  selectedCategory == null
+                      ? l10n.categoriesCreateTitle
+                      : l10n.categoriesEditTitle,
+                  style: Theme.of(context).textTheme.titleLarge,
+                ),
+              ),
+              TextButton(
+                onPressed: () {
+                  setState(() {
+                    if (selectedCategory == null) {
+                      isEditing = false;
+                    } else {
+                      isEditing = false;
+                    }
+                  });
+                },
+                child: Text(l10n.cancel),
+              ),
+            ],
+          ),
+        ),
+        // Form
+        Expanded(
+          child: SingleChildScrollView(
+            padding: const EdgeInsets.all(AppSpacing.lg),
+            child: _buildEditForm(),
+          ),
+        ),
+      ],
+    );
+  }
+
+  Widget _buildEditForm() {
+    return CategoryEditDialog(
+      category: selectedCategory,
+      onSave: (updatedCategory) async {
+        if (selectedCategory == null) {
+          await _handleSaveCreate(context, updatedCategory);
+        } else {
+          await _handleSaveEdit(context, updatedCategory);
+        }
+        setState(() {
+          selectedCategory = updatedCategory;
+          isEditing = false;
+        });
+      },
+    );
+  }
+
+  Widget _buildContent(
+    BuildContext context,
+    bool isLoading,
+    List<Category> categories,
+    String currentQuery,
+    ViewMode viewMode, {
+    String? selectedCategoryId,
+  }) {
+    final l10n = AppL10n.of(context);
+    if (isLoading && categories.isEmpty) {
+      return const Center(child: CircularProgressIndicator.adaptive());
+    }
+
+    if (categories.isEmpty) {
+      if (currentQuery.isNotEmpty) {
+        return Center(
+          child: Text(l10n.categoriesNoSearchResults(currentQuery)),
+        );
+      }
+      return Center(child: Text(l10n.categoriesEmptyState));
+    }
+
+    return viewMode == ViewMode.list
+        ? CategoryListView(
+            categories: categories,
+            selectedCategoryId: selectedCategoryId,
+            onTap: isLoading
+                ? null
+                : (category) {
+                    setState(() {
+                      selectedCategory = category;
+                      isEditing = false;
+                    });
+                  },
+          )
+        : CategoryGridView(
+            categories: categories,
+            selectedCategoryId: selectedCategoryId,
+            onTap: isLoading
+                ? null
+                : (category) {
+                    setState(() {
+                      selectedCategory = category;
+                      isEditing = false;
+                    });
+                  },
+          );
+  }
+}
+
+// Shared helper methods
+Future<void> _showSampleDataDialog(BuildContext context) async {
+  final l10n = AppL10n.of(context);
+  final result = await showDialog<bool>(
+    context: context,
+    builder: (dialogContext) => AlertDialog(
+      title: Text(l10n.categoriesEmptyState),
+      content: Text(l10n.categoriesAddSampleDataPrompt),
+      actions: [
+        TextButton(
+          onPressed: () => Navigator.of(dialogContext).pop(false),
+          child: Text(l10n.no),
+        ),
+        FilledButton(
+          onPressed: () => Navigator.of(dialogContext).pop(true),
+          child: Text(l10n.yes),
+        ),
+      ],
+    ),
+  );
+
+  if (result == true && context.mounted) {
+    final manager = getService<CategoriesManager>();
+    await manager.createSampleData();
+  }
+}
+
+Widget _buildBottomBar(
+  BuildContext context,
+  CategorySortOrder sortOrder,
+  ViewMode viewMode,
+  CategoriesManager manager,
+  AppL10n l10n,
+  bool isLoading,
+) {
+  return Row(
+    children: [
+      Expanded(
+        child: SortSelector<CategorySortOrder>(
+          value: sortOrder,
+          onChanged: isLoading ? null : manager.setSortOrder,
+          labelBuilder: (order) => _sortLabel(order, l10n),
+          sortIconBuilder: (order) => order.isDescending
+              ? AppIcons.sortDescending
+              : AppIcons.sortAscending,
+          options: CategorySortOrder.values,
+        ),
+      ),
+      AppSpacing.gapHorizontalSm,
+      ViewToggle(
+        value: viewMode,
+        onChanged: isLoading ? null : manager.setViewMode,
+      ),
+    ],
+  );
+}
+
+String _sortLabel(CategorySortOrder sortOrder, AppL10n l10n) {
+  switch (sortOrder) {
+    case CategorySortOrder.nameAsc:
+      return l10n.categoriesSortNameAsc;
+    case CategorySortOrder.nameDesc:
+      return l10n.categoriesSortNameDesc;
+    case CategorySortOrder.lastUsedAsc:
+      return l10n.categoriesSortLastUsedAsc;
+    case CategorySortOrder.lastUsedDesc:
+      return l10n.categoriesSortLastUsedDesc;
+  }
+}
+
+Future<void> _handleSaveCreate(
+  BuildContext context,
+  Category newCategory,
+) async {
+  final l10n = AppL10n.of(context);
+  final manager = getService<CategoriesManager>();
+  try {
+    await manager.addCategory(newCategory);
+    if (context.mounted) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text(l10n.categoryCreated(newCategory.name))),
+      );
+    }
+  } catch (e) {
+    if (context.mounted) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text(l10n.categoryCreateFailed(e.toString()))),
+      );
+    }
+  }
+}
+
+Future<void> _handleSaveEdit(
+  BuildContext context,
+  Category updatedCategory,
+) async {
+  final l10n = AppL10n.of(context);
+  final manager = getService<CategoriesManager>();
+  try {
+    await manager.updateCategory(updatedCategory);
+    if (context.mounted) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text(l10n.categoryUpdated(updatedCategory.name))),
+      );
+    }
+  } catch (e) {
+    if (context.mounted) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text(l10n.categoryUpdateFailed(e.toString()))),
+      );
+    }
+  }
+}
+
+Future<void> _handleDuplicate(BuildContext context, Category category) async {
+  final l10n = AppL10n.of(context);
+  final manager = getService<CategoriesManager>();
+  try {
+    final duplicated = category.copyWith(
+      id: randomId(),
+      createdAt: DateTime.now(),
+      name: '${category.name} (${l10n.copy})',
+      lastUsed: null,
+    );
+    await manager.addCategory(duplicated);
+    if (context.mounted) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text(l10n.categoryDuplicated(category.name))),
+      );
+    }
+  } catch (e) {
+    if (context.mounted) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          content: Text(
+            l10n.categoryDuplicateFailed(category.name, e.toString()),
+          ),
+        ),
+      );
+    }
+  }
+}
+
+Future<void> _handleDelete(BuildContext context, Category category) async {
+  final l10n = AppL10n.of(context);
+  final confirmed = await showDialog<bool>(
+    context: context,
+    builder: (dialogContext) => AlertDialog(
+      title: Text(l10n.delete),
+      content: Text(l10n.categoriesDeleteConfirmation(category.name)),
+      actions: [
+        TextButton(
+          onPressed: () => Navigator.of(dialogContext).pop(false),
+          child: Text(l10n.no),
+        ),
+        FilledButton(
+          onPressed: () => Navigator.of(dialogContext).pop(true),
+          style: FilledButton.styleFrom(
+            backgroundColor: Theme.of(dialogContext).colorScheme.error,
+          ),
+          child: Text(l10n.delete),
+        ),
+      ],
+    ),
+  );
+
+  if (confirmed == true) {
     final manager = getService<CategoriesManager>();
     try {
-      final duplicated = category.copyWith(
-        id: randomId(),
-        createdAt: DateTime.now(),
-        name: '${category.name} (${l10n.copy})',
-        lastUsed: null,
-      );
-      await manager.addCategory(duplicated);
+      await manager.deleteCategory(category.id);
       if (context.mounted) {
         ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(content: Text(l10n.categoryDuplicated(category.name))),
+          SnackBar(content: Text(l10n.categoryDeleted(category.name))),
         );
       }
     } catch (e) {
@@ -273,56 +676,10 @@ class CategoriesScreen extends WatchingWidget {
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(
             content: Text(
-              l10n.categoryDuplicateFailed(category.name, e.toString()),
+              l10n.categoryDeleteFailed(category.name, e.toString()),
             ),
           ),
         );
-      }
-    }
-  }
-
-  void handleDelete(BuildContext context, Category category) async {
-    final l10n = AppL10n.of(context);
-    final confirmed = await showDialog<bool>(
-      context: context,
-      builder: (dialogContext) => AlertDialog(
-        title: Text(l10n.delete),
-        content: Text(l10n.categoriesDeleteConfirmation(category.name)),
-        actions: [
-          TextButton(
-            onPressed: () => Navigator.of(dialogContext).pop(false),
-            child: Text(l10n.no),
-          ),
-          FilledButton(
-            onPressed: () => Navigator.of(dialogContext).pop(true),
-            style: FilledButton.styleFrom(
-              backgroundColor: Theme.of(dialogContext).colorScheme.error,
-            ),
-            child: Text(l10n.delete),
-          ),
-        ],
-      ),
-    );
-
-    if (confirmed == true) {
-      final manager = getService<CategoriesManager>();
-      try {
-        await manager.deleteCategory(category.id);
-        if (context.mounted) {
-          ScaffoldMessenger.of(context).showSnackBar(
-            SnackBar(content: Text(l10n.categoryDeleted(category.name))),
-          );
-        }
-      } catch (e) {
-        if (context.mounted) {
-          ScaffoldMessenger.of(context).showSnackBar(
-            SnackBar(
-              content: Text(
-                l10n.categoryDeleteFailed(category.name, e.toString()),
-              ),
-            ),
-          );
-        }
       }
     }
   }

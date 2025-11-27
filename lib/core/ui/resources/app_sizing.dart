@@ -45,6 +45,9 @@ class AppSizing {
   static const double avatarLg = 48.0;
   static const double avatarXl = 64.0;
 
+  // Icon preview size (for detail views)
+  static const double iconPreviewSize = 120.0;
+
   // Minimum touch target size (accessibility)
   static const double minTouchTarget = 48.0;
 

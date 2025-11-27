@@ -64,6 +64,14 @@
   "@categoriesEmptyState": {
     "description": "Message shown when there are no categories"
   },
+  "categoriesSelectPrompt": "Select a category to view details",
+  "@categoriesSelectPrompt": {
+    "description": "Prompt shown in detail pane when no category is selected"
+  },
+  "categoriesLastUsed": "Last Used",
+  "@categoriesLastUsed": {
+    "description": "Label for last used date field"
+  },
   "categoriesNoSearchResults": "No results for \"{query}\"",
   "@categoriesNoSearchResults": {
     "description": "Message shown when search returns no results",

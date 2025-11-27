@@ -189,6 +189,18 @@ abstract class AppL10n {
   /// **'No categories yet'**
   String get categoriesEmptyState;
 
+  /// Prompt shown in detail pane when no category is selected
+  ///
+  /// In en, this message translates to:
+  /// **'Select a category to view details'**
+  String get categoriesSelectPrompt;
+
+  /// Label for last used date field
+  ///
+  /// In en, this message translates to:
+  /// **'Last Used'**
+  String get categoriesLastUsed;
+
   /// Message shown when search returns no results
   ///
   /// In en, this message translates to:

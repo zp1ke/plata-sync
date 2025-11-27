@@ -58,6 +58,12 @@ class AppL10nEn extends AppL10n {
   String get categoriesEmptyState => 'No categories yet';
 
   @override
+  String get categoriesSelectPrompt => 'Select a category to view details';
+
+  @override
+  String get categoriesLastUsed => 'Last Used';
+
+  @override
   String categoriesNoSearchResults(String query) {
     return 'No results for \"$query\"';
   }

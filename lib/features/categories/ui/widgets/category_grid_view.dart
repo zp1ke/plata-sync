@@ -7,8 +7,14 @@ import 'package:plata_sync/features/categories/domain/entities/category.dart';
 class CategoryGridView extends StatelessWidget {
   final List<Category> categories;
   final void Function(Category category)? onTap;
+  final String? selectedCategoryId;
 
-  const CategoryGridView({required this.categories, this.onTap, super.key});
+  const CategoryGridView({
+    required this.categories,
+    this.onTap,
+    this.selectedCategoryId,
+    super.key,
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -23,7 +29,11 @@ class CategoryGridView extends StatelessWidget {
       itemCount: categories.length,
       itemBuilder: (context, index) {
         final category = categories[index];
+        final isSelected = selectedCategoryId == category.id;
         return Card(
+          color: isSelected
+              ? Theme.of(context).colorScheme.primaryContainer
+              : null,
           child: InkWell(
             onTap: onTap != null ? () => onTap!(category) : null,
             borderRadius: AppSizing.borderRadiusMd,
