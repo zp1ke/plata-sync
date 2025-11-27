@@ -32,8 +32,16 @@ class CategoriesScreen extends WatchingWidget {
 }
 
 // Mobile implementation - uses dialogs
-class _MobileCategoriesScreen extends WatchingWidget {
+class _MobileCategoriesScreen extends WatchingStatefulWidget {
   const _MobileCategoriesScreen();
+
+  @override
+  State<_MobileCategoriesScreen> createState() =>
+      _MobileCategoriesScreenState();
+}
+
+class _MobileCategoriesScreenState extends State<_MobileCategoriesScreen> {
+  bool _hasShownSampleDialog = false;
 
   @override
   Widget build(BuildContext context) {
@@ -44,15 +52,18 @@ class _MobileCategoriesScreen extends WatchingWidget {
     final viewMode = watchValue((CategoriesManager x) => x.viewMode);
     final l10n = AppL10n.of(context);
 
-    callOnceAfterThisBuild((context) {
-      if (categories.isEmpty && currentQuery.isEmpty && !isLoading) {
-        WidgetsBinding.instance.addPostFrameCallback((_) {
-          if (context.mounted) {
-            _showSampleDataDialog(context);
-          }
-        });
-      }
-    });
+    // Show sample data dialog once after initial load completes with no data
+    if (!_hasShownSampleDialog &&
+        !isLoading &&
+        categories.isEmpty &&
+        currentQuery.isEmpty) {
+      _hasShownSampleDialog = true;
+      WidgetsBinding.instance.addPostFrameCallback((_) {
+        if (mounted) {
+          _showSampleDataDialog(context);
+        }
+      });
+    }
 
     return Scaffold(
       body: SafeArea(
@@ -176,6 +187,7 @@ class _TabletCategoriesScreenState extends State<_TabletCategoriesScreen> {
   bool isEditing = false;
   final _editFormKey = GlobalKey<CategoryEditFormState>();
   bool _canSave = false;
+  bool _hasShownSampleDialog = false;
 
   @override
   Widget build(BuildContext context) {
@@ -186,15 +198,18 @@ class _TabletCategoriesScreenState extends State<_TabletCategoriesScreen> {
     final viewMode = watchValue((CategoriesManager x) => x.viewMode);
     final l10n = AppL10n.of(context);
 
-    callOnceAfterThisBuild((context) {
-      if (categories.isEmpty && currentQuery.isEmpty && !isLoading) {
-        WidgetsBinding.instance.addPostFrameCallback((_) {
-          if (context.mounted) {
-            _showSampleDataDialog(context);
-          }
-        });
-      }
-    });
+    // Show sample data dialog once after initial load completes with no data
+    if (!_hasShownSampleDialog &&
+        !isLoading &&
+        categories.isEmpty &&
+        currentQuery.isEmpty) {
+      _hasShownSampleDialog = true;
+      WidgetsBinding.instance.addPostFrameCallback((_) {
+        if (mounted) {
+          _showSampleDataDialog(context);
+        }
+      });
+    }
 
     return Scaffold(
       body: SafeArea(
