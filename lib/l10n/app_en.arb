@@ -96,6 +96,22 @@
   "@settingsDataSourceChangeMessage": {
     "description": "Message for data source change confirmation dialog"
   },
+  "settingsDataSourceChangedTitle": "Data Source Changed",
+  "@settingsDataSourceChangedTitle": {
+    "description": "Title for data source changed notification"
+  },
+  "restartingApp": "Restarting App",
+  "@restartingApp": {
+    "description": "Title for restart notification after data source change"
+  },
+  "settingsDataSourceChangedRestartingMessage": "The data source has been changed. Restarting the app to apply changes.",
+  "@settingsDataSourceChangedRestartingMessage": {
+    "description": "Message for restart notification after data source change and during restart"
+  },
+  "settingsDataSourceChangedMessage": "The data source has been changed. Please restart the app to apply changes.",
+  "@settingsDataSourceChangedMessage": {
+    "description": "Message for restart notification after data source change"
+  },
   "categoriesEmptyState": "No categories yet",
   "@categoriesEmptyState": {
     "description": "Message shown when there are no categories"

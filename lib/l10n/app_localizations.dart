@@ -237,6 +237,30 @@ abstract class AppL10n {
   /// **'Changing the data source will require an app restart. Your current data will not be transferred automatically between different data sources.'**
   String get settingsDataSourceChangeMessage;
 
+  /// Title for data source changed notification
+  ///
+  /// In en, this message translates to:
+  /// **'Data Source Changed'**
+  String get settingsDataSourceChangedTitle;
+
+  /// Title for restart notification after data source change
+  ///
+  /// In en, this message translates to:
+  /// **'Restarting App'**
+  String get restartingApp;
+
+  /// Message for restart notification after data source change and during restart
+  ///
+  /// In en, this message translates to:
+  /// **'The data source has been changed. Restarting the app to apply changes.'**
+  String get settingsDataSourceChangedRestartingMessage;
+
+  /// Message for restart notification after data source change
+  ///
+  /// In en, this message translates to:
+  /// **'The data source has been changed. Please restart the app to apply changes.'**
+  String get settingsDataSourceChangedMessage;
+
   /// Message shown when there are no categories
   ///
   /// In en, this message translates to:

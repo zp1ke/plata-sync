@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
 import 'package:plata_sync/core/di/service_locator.dart';
 import 'package:plata_sync/core/model/enums/data_source_type.dart';
@@ -6,6 +8,7 @@ import 'package:plata_sync/core/ui/resources/app_icons.dart';
 import 'package:plata_sync/core/ui/resources/app_sizing.dart';
 import 'package:plata_sync/core/ui/resources/app_spacing.dart';
 import 'package:plata_sync/l10n/app_localizations.dart';
+import 'package:restart_app/restart_app.dart';
 import 'package:watch_it/watch_it.dart';
 
 class SettingsScreen extends StatelessWidget {
@@ -104,6 +107,8 @@ class _DataSourceSettingState extends State<_DataSourceSetting> {
         setState(() {
           _selectedDataSource = newValue;
         });
+
+        restartApp();
       }
     } catch (e) {
       if (mounted) {
@@ -117,6 +122,34 @@ class _DataSourceSettingState extends State<_DataSourceSetting> {
           _isChanging = false;
         });
       }
+    }
+  }
+
+  void restartApp() {
+    final l10n = AppL10n.of(context);
+    if (Platform.isAndroid || Platform.isIOS) {
+      Restart.restartApp(
+        webOrigin: null,
+        notificationTitle: l10n.restartingApp,
+        notificationBody: l10n.settingsDataSourceChangedRestartingMessage,
+      );
+    } else {
+      // For desktop platforms, just show a dialog so user restart manually
+      showDialog<void>(
+        context: context,
+        builder: (context) => AlertDialog(
+          title: Text(l10n.settingsDataSourceChangedTitle),
+          content: Text(l10n.settingsDataSourceChangedMessage),
+          actions: [
+            FilledButton(
+              onPressed: () {
+                Navigator.of(context).pop();
+              },
+              child: Text(l10n.ok),
+            ),
+          ],
+        ),
+      );
     }
   }
 

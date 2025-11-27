@@ -85,6 +85,20 @@ class AppL10nEn extends AppL10n {
       'Changing the data source will require an app restart. Your current data will not be transferred automatically between different data sources.';
 
   @override
+  String get settingsDataSourceChangedTitle => 'Data Source Changed';
+
+  @override
+  String get restartingApp => 'Restarting App';
+
+  @override
+  String get settingsDataSourceChangedRestartingMessage =>
+      'The data source has been changed. Restarting the app to apply changes.';
+
+  @override
+  String get settingsDataSourceChangedMessage =>
+      'The data source has been changed. Please restart the app to apply changes.';
+
+  @override
   String get categoriesEmptyState => 'No categories yet';
 
   @override
