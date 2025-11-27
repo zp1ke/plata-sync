@@ -57,6 +57,9 @@ class AppIcons {
   static final settingsOutlined = HugeIcon(
     icon: HugeIcons.strokeRoundedSettings01,
   );
+  static final info = HugeIcon(icon: HugeIcons.strokeRoundedInformationCircle);
+  static final database = HugeIcon(icon: HugeIcons.strokeRoundedDatabase01);
+  static final memory = HugeIcon(icon: HugeIcons.strokeRoundedCpuCharge);
 
   // Others
   static final arrowDropDown = HugeIcon(

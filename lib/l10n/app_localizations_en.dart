@@ -52,7 +52,37 @@ class AppL10nEn extends AppL10n {
   String get settingsScreenTitle => 'Settings';
 
   @override
-  String get settingsScreenBody => 'Settings Screen';
+  String get settingsSectionApp => 'App';
+
+  @override
+  String get settingsSectionData => 'Data';
+
+  @override
+  String get settingsAppVersion => 'Version';
+
+  @override
+  String get settingsDataSource => 'Data Source';
+
+  @override
+  String get settingsDataSourceInMemory => 'In-Memory';
+
+  @override
+  String get settingsDataSourceInMemoryDesc =>
+      'Data is stored temporarily and will be lost when the app closes';
+
+  @override
+  String get settingsDataSourceLocal => 'Local Database';
+
+  @override
+  String get settingsDataSourceLocalDesc =>
+      'Data is stored persistently in a local SQLite database';
+
+  @override
+  String get settingsDataSourceChangeTitle => 'Change Data Source?';
+
+  @override
+  String get settingsDataSourceChangeMessage =>
+      'Changing the data source will require an app restart. Your current data will not be transferred automatically between different data sources.';
 
   @override
   String get categoriesEmptyState => 'No categories yet';
@@ -91,6 +121,9 @@ class AppL10nEn extends AppL10n {
 
   @override
   String get no => 'No';
+
+  @override
+  String get ok => 'OK';
 
   @override
   String get optional => 'optional';

@@ -56,9 +56,45 @@
   "@settingsScreenTitle": {
     "description": "Title of the Settings screen"
   },
-  "settingsScreenBody": "Settings Screen",
-  "@settingsScreenBody": {
-    "description": "Text displayed in the body of the Settings screen"
+  "settingsSectionApp": "App",
+  "@settingsSectionApp": {
+    "description": "Section header for app settings"
+  },
+  "settingsSectionData": "Data",
+  "@settingsSectionData": {
+    "description": "Section header for data settings"
+  },
+  "settingsAppVersion": "Version",
+  "@settingsAppVersion": {
+    "description": "Label for app version setting"
+  },
+  "settingsDataSource": "Data Source",
+  "@settingsDataSource": {
+    "description": "Label for data source setting"
+  },
+  "settingsDataSourceInMemory": "In-Memory",
+  "@settingsDataSourceInMemory": {
+    "description": "Label for in-memory data source option"
+  },
+  "settingsDataSourceInMemoryDesc": "Data is stored temporarily and will be lost when the app closes",
+  "@settingsDataSourceInMemoryDesc": {
+    "description": "Description for in-memory data source option"
+  },
+  "settingsDataSourceLocal": "Local Database",
+  "@settingsDataSourceLocal": {
+    "description": "Label for local database data source option"
+  },
+  "settingsDataSourceLocalDesc": "Data is stored persistently in a local SQLite database",
+  "@settingsDataSourceLocalDesc": {
+    "description": "Description for local database data source option"
+  },
+  "settingsDataSourceChangeTitle": "Change Data Source?",
+  "@settingsDataSourceChangeTitle": {
+    "description": "Title for data source change confirmation dialog"
+  },
+  "settingsDataSourceChangeMessage": "Changing the data source will require an app restart. Your current data will not be transferred automatically between different data sources.",
+  "@settingsDataSourceChangeMessage": {
+    "description": "Message for data source change confirmation dialog"
   },
   "categoriesEmptyState": "No categories yet",
   "@categoriesEmptyState": {
@@ -112,6 +148,10 @@
   "no": "No",
   "@no": {
     "description": "Negative response"
+  },
+  "ok": "OK",
+  "@ok": {
+    "description": "Acknowledgment response"
   },
   "optional": "optional",
   "@optional": {

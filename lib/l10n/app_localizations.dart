@@ -177,11 +177,65 @@ abstract class AppL10n {
   /// **'Settings'**
   String get settingsScreenTitle;
 
-  /// Text displayed in the body of the Settings screen
+  /// Section header for app settings
   ///
   /// In en, this message translates to:
-  /// **'Settings Screen'**
-  String get settingsScreenBody;
+  /// **'App'**
+  String get settingsSectionApp;
+
+  /// Section header for data settings
+  ///
+  /// In en, this message translates to:
+  /// **'Data'**
+  String get settingsSectionData;
+
+  /// Label for app version setting
+  ///
+  /// In en, this message translates to:
+  /// **'Version'**
+  String get settingsAppVersion;
+
+  /// Label for data source setting
+  ///
+  /// In en, this message translates to:
+  /// **'Data Source'**
+  String get settingsDataSource;
+
+  /// Label for in-memory data source option
+  ///
+  /// In en, this message translates to:
+  /// **'In-Memory'**
+  String get settingsDataSourceInMemory;
+
+  /// Description for in-memory data source option
+  ///
+  /// In en, this message translates to:
+  /// **'Data is stored temporarily and will be lost when the app closes'**
+  String get settingsDataSourceInMemoryDesc;
+
+  /// Label for local database data source option
+  ///
+  /// In en, this message translates to:
+  /// **'Local Database'**
+  String get settingsDataSourceLocal;
+
+  /// Description for local database data source option
+  ///
+  /// In en, this message translates to:
+  /// **'Data is stored persistently in a local SQLite database'**
+  String get settingsDataSourceLocalDesc;
+
+  /// Title for data source change confirmation dialog
+  ///
+  /// In en, this message translates to:
+  /// **'Change Data Source?'**
+  String get settingsDataSourceChangeTitle;
+
+  /// Message for data source change confirmation dialog
+  ///
+  /// In en, this message translates to:
+  /// **'Changing the data source will require an app restart. Your current data will not be transferred automatically between different data sources.'**
+  String get settingsDataSourceChangeMessage;
 
   /// Message shown when there are no categories
   ///
@@ -254,6 +308,12 @@ abstract class AppL10n {
   /// In en, this message translates to:
   /// **'No'**
   String get no;
+
+  /// Acknowledgment response
+  ///
+  /// In en, this message translates to:
+  /// **'OK'**
+  String get ok;
 
   /// Label indicating a field is optional
   ///
