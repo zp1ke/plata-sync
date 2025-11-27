@@ -67,7 +67,6 @@ class _ObjectIconEditorState extends State<ObjectIconEditor> {
           decoration: InputDecoration(
             labelText: l10n.categoriesEditIcon,
             border: const OutlineInputBorder(),
-            helperText: l10n.categoriesEditIconHelper,
           ),
           items: AppIcons.iconDataMap.keys.map((String iconName) {
             return DropdownMenuItem<String>(
@@ -103,7 +102,6 @@ class _ObjectIconEditorState extends State<ObjectIconEditor> {
             Expanded(
               child: ColorPickerField(
                 label: l10n.categoriesEditBackgroundColor,
-                helperText: l10n.categoriesEditColorHelper,
                 value: _backgroundColor,
                 onChanged: (color) {
                   setState(() {
@@ -117,7 +115,6 @@ class _ObjectIconEditorState extends State<ObjectIconEditor> {
             Expanded(
               child: ColorPickerField(
                 label: l10n.categoriesEditIconColor,
-                helperText: l10n.categoriesEditColorHelper,
                 value: _iconColor,
                 onChanged: (color) {
                   setState(() {

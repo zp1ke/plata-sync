@@ -55,4 +55,7 @@ class AppSizing {
 
   // Standard box widths
   static const double boxWidthSm = 100.0;
+
+  // Dialog constraints
+  static const double dialogMaxWidth = 600.0;
 }

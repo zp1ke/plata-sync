@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:plata_sync/core/model/object_icon_data.dart';
+import 'package:plata_sync/core/ui/resources/app_sizing.dart';
 import 'package:plata_sync/core/ui/resources/app_spacing.dart';
 import 'package:plata_sync/core/ui/widgets/object_icon_editor.dart';
 import 'package:plata_sync/features/categories/domain/entities/category.dart';
@@ -20,25 +21,25 @@ class CategoryEditDialog extends StatefulWidget {
 }
 
 class _CategoryEditDialogState extends State<CategoryEditDialog> {
-  late final TextEditingController _nameController;
-  late final TextEditingController _descriptionController;
-  late ObjectIconData _iconData;
-  final _formKey = GlobalKey<FormState>();
+  late final TextEditingController nameController;
+  late final TextEditingController descriptionController;
+  late ObjectIconData iconData;
+  final formKey = GlobalKey<FormState>();
 
   @override
   void initState() {
     super.initState();
-    _nameController = TextEditingController(text: widget.category.name);
-    _descriptionController = TextEditingController(
+    nameController = TextEditingController(text: widget.category.name);
+    descriptionController = TextEditingController(
       text: widget.category.description ?? '',
     );
-    _iconData = widget.category.iconData;
+    iconData = widget.category.iconData;
   }
 
   @override
   void dispose() {
-    _nameController.dispose();
-    _descriptionController.dispose();
+    nameController.dispose();
+    descriptionController.dispose();
     super.dispose();
   }
 
@@ -48,47 +49,52 @@ class _CategoryEditDialogState extends State<CategoryEditDialog> {
 
     return AlertDialog(
       title: Text(l10n.categoriesEditTitle),
-      content: SingleChildScrollView(
-        child: Form(
-          key: _formKey,
-          child: Column(
-            mainAxisSize: MainAxisSize.min,
-            children: [
-              // Name field
-              TextFormField(
-                controller: _nameController,
-                decoration: InputDecoration(
-                  labelText: l10n.categoriesEditName,
-                  border: const OutlineInputBorder(),
+      content: ConstrainedBox(
+        constraints: const BoxConstraints(maxWidth: AppSizing.dialogMaxWidth),
+        child: SingleChildScrollView(
+          child: Form(
+            key: formKey,
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                // Name field
+                TextFormField(
+                  controller: nameController,
+                  decoration: InputDecoration(
+                    labelText: l10n.categoriesEditName,
+                    border: const OutlineInputBorder(),
+                  ),
+                  maxLength: 100,
+                  validator: (value) {
+                    if (value == null || value.trim().isEmpty) {
+                      return l10n.categoriesEditNameRequired;
+                    }
+                    return null;
+                  },
                 ),
-                validator: (value) {
-                  if (value == null || value.trim().isEmpty) {
-                    return l10n.categoriesEditNameRequired;
-                  }
-                  return null;
-                },
-              ),
-              AppSpacing.gapVerticalMd,
-              // Description field
-              TextFormField(
-                controller: _descriptionController,
-                decoration: InputDecoration(
-                  labelText: l10n.categoriesEditDescription,
-                  border: const OutlineInputBorder(),
+                AppSpacing.gapVerticalMd,
+                // Description field
+                TextFormField(
+                  controller: descriptionController,
+                  decoration: InputDecoration(
+                    labelText: l10n.categoriesEditDescription,
+                    border: const OutlineInputBorder(),
+                  ),
+                  maxLength: 300,
+                  maxLines: 3,
                 ),
-                maxLines: 3,
-              ),
-              AppSpacing.gapVerticalMd,
-              // Icon editor
-              ObjectIconEditor(
-                initialData: _iconData,
-                onChanged: (data) {
-                  setState(() {
-                    _iconData = data;
-                  });
-                },
-              ),
-            ],
+                AppSpacing.gapVerticalMd,
+                // Icon editor
+                ObjectIconEditor(
+                  initialData: iconData,
+                  onChanged: (data) {
+                    setState(() {
+                      iconData = data;
+                    });
+                  },
+                ),
+              ],
+            ),
           ),
         ),
       ),
@@ -97,19 +103,19 @@ class _CategoryEditDialogState extends State<CategoryEditDialog> {
           onPressed: () => Navigator.of(context).pop(),
           child: Text(l10n.cancel),
         ),
-        FilledButton(onPressed: _handleSave, child: Text(l10n.save)),
+        FilledButton(onPressed: handleSave, child: Text(l10n.save)),
       ],
     );
   }
 
-  void _handleSave() {
-    if (_formKey.currentState?.validate() ?? false) {
+  void handleSave() {
+    if (formKey.currentState?.validate() ?? false) {
       final updatedCategory = widget.category.copyWith(
-        name: _nameController.text.trim(),
-        description: _descriptionController.text.trim().isEmpty
+        name: nameController.text.trim(),
+        description: descriptionController.text.trim().isEmpty
             ? null
-            : _descriptionController.text.trim(),
-        iconData: _iconData,
+            : descriptionController.text.trim(),
+        iconData: iconData,
       );
       Navigator.of(context).pop();
       widget.onSave(updatedCategory);
