@@ -9,10 +9,9 @@ class DatabaseService {
   static const int _databaseVersion = 1;
 
   Database? _database;
-
-  /// Initialize sqflite for desktop platforms
   DatabaseService() {
     if (Platform.isLinux || Platform.isWindows || Platform.isMacOS) {
+      /// Initialize sqflite for desktop platforms
       sqfliteFfiInit();
       databaseFactory = databaseFactoryFfi;
     }

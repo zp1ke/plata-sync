@@ -13,20 +13,22 @@ class CategoryEditForm extends StatefulWidget {
   final void Function(Category category) onSave;
   final VoidCallback? onCancel;
   final bool showActions;
+  final ValueChanged<bool>? onFormValidChanged;
 
   const CategoryEditForm({
     this.category,
     required this.onSave,
     this.onCancel,
     this.showActions = true,
+    this.onFormValidChanged,
     super.key,
   });
 
   @override
-  State<CategoryEditForm> createState() => _CategoryEditFormState();
+  State<CategoryEditForm> createState() => CategoryEditFormState();
 }
 
-class _CategoryEditFormState extends State<CategoryEditForm> {
+class CategoryEditFormState extends State<CategoryEditForm> {
   late final TextEditingController nameController;
   late final TextEditingController descriptionController;
   late ObjectIconData iconData;
@@ -68,73 +70,76 @@ class _CategoryEditFormState extends State<CategoryEditForm> {
     return Center(
       child: ConstrainedBox(
         constraints: const BoxConstraints(maxWidth: AppSizing.dialogMaxWidth),
-        child: Form(
-          key: formKey,
-          child: Column(
-            mainAxisSize: MainAxisSize.min,
-            spacing: AppSpacing.md,
-            children: [
-              // Name field
-              TextFormField(
-                controller: nameController,
-                textInputAction: TextInputAction.next,
-                decoration: InputDecoration(
-                  labelText: '${l10n.categoriesEditName} *',
-                  border: const OutlineInputBorder(),
+        child: FocusTraversalGroup(
+          policy: OrderedTraversalPolicy(),
+          child: Form(
+            key: formKey,
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
+              spacing: AppSpacing.md,
+              children: [
+                // Name field
+                TextFormField(
+                  controller: nameController,
+                  textInputAction: TextInputAction.next,
+                  decoration: InputDecoration(
+                    labelText: '${l10n.categoriesEditName} *',
+                    border: const OutlineInputBorder(),
+                  ),
+                  maxLength: 100,
+                  validator: (value) {
+                    if (value == null || value.trim().isEmpty) {
+                      return l10n.categoriesEditNameRequired;
+                    }
+                    return null;
+                  },
                 ),
-                maxLength: 100,
-                validator: (value) {
-                  if (value == null || value.trim().isEmpty) {
-                    return l10n.categoriesEditNameRequired;
-                  }
-                  return null;
-                },
-              ),
-              // Description field
-              TextFormField(
-                controller: descriptionController,
-                decoration: InputDecoration(
-                  labelText:
-                      '${l10n.categoriesEditDescription} (${l10n.optional})',
-                  border: const OutlineInputBorder(),
+                // Description field
+                TextFormField(
+                  controller: descriptionController,
+                  decoration: InputDecoration(
+                    labelText:
+                        '${l10n.categoriesEditDescription} (${l10n.optional})',
+                    border: const OutlineInputBorder(),
+                  ),
+                  maxLength: 300,
+                  maxLines: 3,
                 ),
-                maxLength: 300,
-                maxLines: 3,
-              ),
-              // Icon editor
-              ObjectIconEditor(
-                initialData: iconData,
-                onChanged: (data) {
-                  setState(() {
-                    iconData = data;
-                  });
-                },
-              ),
-              // Actions (optional - for inline use)
-              if (widget.showActions)
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.end,
-                  spacing: AppSpacing.sm,
-                  children: [
-                    if (widget.onCancel != null)
-                      TextButton(
-                        onPressed: widget.onCancel,
-                        child: Text(l10n.cancel),
+                // Icon editor
+                ObjectIconEditor(
+                  initialData: iconData,
+                  onChanged: (data) {
+                    setState(() {
+                      iconData = data;
+                    });
+                  },
+                ),
+                // Actions (optional - for inline use)
+                if (widget.showActions)
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.end,
+                    spacing: AppSpacing.sm,
+                    children: [
+                      if (widget.onCancel != null)
+                        TextButton(
+                          onPressed: widget.onCancel,
+                          child: Text(l10n.cancel),
+                        ),
+                      FilledButton(
+                        onPressed: isFormValid ? handleSave : null,
+                        child: Text(l10n.save),
                       ),
-                    FilledButton(
-                      onPressed: isFormValid ? _handleSave : null,
-                      child: Text(l10n.save),
-                    ),
-                  ],
-                ),
-            ],
+                    ],
+                  ),
+              ],
+            ),
           ),
         ),
       ),
     );
   }
 
-  void _handleSave() {
+  void handleSave() {
     if (formKey.currentState?.validate() ?? false) {
       final category = widget.category != null
           ? widget.category!.copyWith(
@@ -161,6 +166,7 @@ class _CategoryEditFormState extends State<CategoryEditForm> {
       setState(() {
         isFormValid = isValid;
       });
+      widget.onFormValidChanged?.call(isValid);
     }
   }
 }

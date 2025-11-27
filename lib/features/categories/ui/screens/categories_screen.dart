@@ -174,6 +174,8 @@ class _TabletCategoriesScreen extends WatchingStatefulWidget {
 class _TabletCategoriesScreenState extends State<_TabletCategoriesScreen> {
   Category? selectedCategory;
   bool isEditing = false;
+  final _editFormKey = GlobalKey<CategoryEditFormState>();
+  bool _canSave = false;
 
   @override
   Widget build(BuildContext context) {
@@ -325,6 +327,10 @@ class _TabletCategoriesScreenState extends State<_TabletCategoriesScreen> {
   Widget _buildEditView() {
     final l10n = AppL10n.of(context);
 
+    void triggerSave() {
+      _editFormKey.currentState?.handleSave();
+    }
+
     return Column(
       children: [
         // Header
@@ -348,14 +354,15 @@ class _TabletCategoriesScreenState extends State<_TabletCategoriesScreen> {
               TextButton(
                 onPressed: () {
                   setState(() {
-                    if (selectedCategory == null) {
-                      isEditing = false;
-                    } else {
-                      isEditing = false;
-                    }
+                    isEditing = false;
                   });
                 },
                 child: Text(l10n.cancel),
+              ),
+              const SizedBox(width: AppSpacing.sm),
+              FilledButton(
+                onPressed: _canSave ? triggerSave : null,
+                child: Text(l10n.save),
               ),
             ],
           ),
@@ -365,8 +372,14 @@ class _TabletCategoriesScreenState extends State<_TabletCategoriesScreen> {
           child: SingleChildScrollView(
             padding: const EdgeInsets.all(AppSpacing.lg),
             child: CategoryEditForm(
+              key: _editFormKey,
               category: selectedCategory,
               showActions: false,
+              onFormValidChanged: (isValid) {
+                setState(() {
+                  _canSave = isValid;
+                });
+              },
               onSave: (updatedCategory) async {
                 if (selectedCategory == null) {
                   await _handleSaveCreate(context, updatedCategory);
