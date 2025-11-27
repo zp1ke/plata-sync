@@ -50,6 +50,7 @@ class _ObjectIconEditorState extends State<ObjectIconEditor> {
 
     return Column(
       mainAxisSize: MainAxisSize.min,
+      spacing: AppSpacing.lg,
       children: [
         // Preview
         Center(
@@ -60,7 +61,6 @@ class _ObjectIconEditorState extends State<ObjectIconEditor> {
             size: AppSizing.avatarXl,
           ),
         ),
-        AppSpacing.gapVerticalLg,
         // Icon selector
         DropdownButtonFormField<String>(
           initialValue: _selectedIconName,
@@ -95,9 +95,9 @@ class _ObjectIconEditorState extends State<ObjectIconEditor> {
             return null;
           },
         ),
-        AppSpacing.gapVerticalMd,
         // Color fields in a row
         Row(
+          spacing: AppSpacing.md,
           children: [
             Expanded(
               child: ColorPickerField(
@@ -111,7 +111,6 @@ class _ObjectIconEditorState extends State<ObjectIconEditor> {
                 },
               ),
             ),
-            AppSpacing.gapHorizontalMd,
             Expanded(
               child: ColorPickerField(
                 label: l10n.categoriesEditIconColor,

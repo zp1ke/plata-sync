@@ -56,6 +56,7 @@ class _CategoryEditDialogState extends State<CategoryEditDialog> {
             key: formKey,
             child: Column(
               mainAxisSize: MainAxisSize.min,
+              spacing: AppSpacing.md,
               children: [
                 // Name field
                 TextFormField(
@@ -72,7 +73,6 @@ class _CategoryEditDialogState extends State<CategoryEditDialog> {
                     return null;
                   },
                 ),
-                AppSpacing.gapVerticalMd,
                 // Description field
                 TextFormField(
                   controller: descriptionController,
@@ -83,7 +83,6 @@ class _CategoryEditDialogState extends State<CategoryEditDialog> {
                   maxLength: 300,
                   maxLines: 3,
                 ),
-                AppSpacing.gapVerticalMd,
                 // Icon editor
                 ObjectIconEditor(
                   initialData: iconData,

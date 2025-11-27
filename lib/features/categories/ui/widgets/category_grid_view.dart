@@ -30,14 +30,15 @@ class CategoryGridView extends StatelessWidget {
             child: Padding(
               padding: AppSpacing.paddingMd,
               child: Row(
+                spacing: AppSpacing.md,
                 children: [
                   ObjectIcon(iconData: category.iconData),
-                  AppSpacing.gapHorizontalMd,
                   Expanded(
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       mainAxisAlignment: MainAxisAlignment.center,
                       mainAxisSize: MainAxisSize.min,
+                      spacing: AppSpacing.xs,
                       children: [
                         Text(
                           category.name,
@@ -45,15 +46,13 @@ class CategoryGridView extends StatelessWidget {
                           style: const TextStyle(fontWeight: FontWeight.w500),
                         ),
                         if (category.description != null &&
-                            category.description!.isNotEmpty) ...[
-                          SizedBox(height: AppSpacing.xs),
+                            category.description!.isNotEmpty)
                           Text(
                             category.description!,
                             style: Theme.of(context).textTheme.bodySmall,
                             maxLines: 1,
                             overflow: TextOverflow.ellipsis,
                           ),
-                        ],
                       ],
                     ),
                   ),
