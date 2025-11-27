@@ -14,6 +14,7 @@ class SettingsScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final l10n = AppL10n.of(context);
+    final settingsService = getService<SettingsService>();
 
     return Scaffold(
       appBar: AppBar(title: Text(l10n.settingsScreenTitle)),
@@ -27,7 +28,7 @@ class SettingsScreen extends StatelessWidget {
               ListTile(
                 leading: AppIcons.info,
                 title: Text(l10n.settingsAppVersion),
-                subtitle: const Text('0.0.1+1'),
+                subtitle: Text(settingsService.getAppVersion()),
               ),
               const Divider(),
 

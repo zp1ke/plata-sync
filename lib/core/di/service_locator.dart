@@ -1,4 +1,5 @@
 import 'package:get_it/get_it.dart';
+import 'package:package_info_plus/package_info_plus.dart';
 import 'package:plata_sync/core/services/database_service.dart';
 import 'package:plata_sync/core/services/settings_service.dart';
 import 'package:plata_sync/features/categories/application/categories_manager.dart';
@@ -10,10 +11,12 @@ final getIt = GetIt.instance;
 Future<void> setupServiceLocator() async {
   // SharedPreferences (async initialization)
   final prefs = await SharedPreferences.getInstance();
-  getIt.registerSingleton<SharedPreferences>(prefs);
+
+  // PackageInfo (async initialization)
+  final packageInfo = await PackageInfo.fromPlatform();
 
   // Settings Service
-  final settingsService = SettingsService(prefs);
+  final settingsService = SettingsService(prefs, packageInfo);
   getIt.registerSingleton<SettingsService>(settingsService);
 
   // Database Service
