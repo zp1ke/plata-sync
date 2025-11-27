@@ -13,6 +13,7 @@ import 'package:plata_sync/features/categories/domain/entities/category.dart';
 import 'package:plata_sync/features/categories/ui/widgets/category_details_dialog.dart';
 import 'package:plata_sync/features/categories/ui/widgets/category_details_view.dart';
 import 'package:plata_sync/features/categories/ui/widgets/category_edit_dialog.dart';
+import 'package:plata_sync/features/categories/ui/widgets/category_edit_form.dart';
 import 'package:plata_sync/features/categories/ui/widgets/category_grid_view.dart';
 import 'package:plata_sync/features/categories/ui/widgets/category_list_view.dart';
 import 'package:plata_sync/l10n/app_localizations.dart';
@@ -363,27 +364,24 @@ class _TabletCategoriesScreenState extends State<_TabletCategoriesScreen> {
         Expanded(
           child: SingleChildScrollView(
             padding: const EdgeInsets.all(AppSpacing.lg),
-            child: _buildEditForm(),
+            child: CategoryEditForm(
+              category: selectedCategory,
+              showActions: false,
+              onSave: (updatedCategory) async {
+                if (selectedCategory == null) {
+                  await _handleSaveCreate(context, updatedCategory);
+                } else {
+                  await _handleSaveEdit(context, updatedCategory);
+                }
+                setState(() {
+                  selectedCategory = updatedCategory;
+                  isEditing = false;
+                });
+              },
+            ),
           ),
         ),
       ],
-    );
-  }
-
-  Widget _buildEditForm() {
-    return CategoryEditDialog(
-      category: selectedCategory,
-      onSave: (updatedCategory) async {
-        if (selectedCategory == null) {
-          await _handleSaveCreate(context, updatedCategory);
-        } else {
-          await _handleSaveEdit(context, updatedCategory);
-        }
-        setState(() {
-          selectedCategory = updatedCategory;
-          isEditing = false;
-        });
-      },
     );
   }
 
