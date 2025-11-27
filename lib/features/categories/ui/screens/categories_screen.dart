@@ -2,17 +2,16 @@ import 'package:flutter/material.dart';
 import 'package:plata_sync/core/di/service_locator.dart';
 import 'package:plata_sync/core/model/enums/view_mode.dart';
 import 'package:plata_sync/core/ui/resources/app_icons.dart';
-import 'package:plata_sync/core/ui/resources/app_sizing.dart';
 import 'package:plata_sync/core/ui/resources/app_spacing.dart';
 import 'package:plata_sync/core/ui/widgets/app_top_bar.dart';
 import 'package:plata_sync/core/ui/widgets/responsive_layout.dart';
 import 'package:plata_sync/core/ui/widgets/sort_selector.dart';
 import 'package:plata_sync/core/ui/widgets/view_toggle.dart';
-import 'package:plata_sync/core/utils/colors.dart';
 import 'package:plata_sync/core/utils/random.dart';
 import 'package:plata_sync/features/categories/application/categories_manager.dart';
 import 'package:plata_sync/features/categories/domain/entities/category.dart';
 import 'package:plata_sync/features/categories/ui/widgets/category_details_dialog.dart';
+import 'package:plata_sync/features/categories/ui/widgets/category_details_view.dart';
 import 'package:plata_sync/features/categories/ui/widgets/category_edit_dialog.dart';
 import 'package:plata_sync/features/categories/ui/widgets/category_grid_view.dart';
 import 'package:plata_sync/features/categories/ui/widgets/category_list_view.dart';
@@ -285,6 +284,19 @@ class _TabletCategoriesScreenState extends State<_TabletCategoriesScreen> {
                 ),
               ),
               IconButton(
+                onPressed: () => _handleDelete(context, category),
+                icon: AppIcons.delete,
+                tooltip: l10n.delete,
+                style: TextButton.styleFrom(
+                  foregroundColor: Theme.of(context).colorScheme.error,
+                ),
+              ),
+              IconButton(
+                onPressed: () => _handleDuplicate(context, category),
+                icon: AppIcons.copy,
+                tooltip: l10n.duplicate,
+              ),
+              IconButton(
                 onPressed: () {
                   setState(() {
                     isEditing = true;
@@ -293,16 +305,6 @@ class _TabletCategoriesScreenState extends State<_TabletCategoriesScreen> {
                 icon: AppIcons.edit,
                 tooltip: l10n.edit,
               ),
-              IconButton(
-                onPressed: () => _handleDuplicate(context, category),
-                icon: AppIcons.copy,
-                tooltip: l10n.duplicate,
-              ),
-              IconButton(
-                onPressed: () => _handleDelete(context, category),
-                icon: AppIcons.delete,
-                tooltip: l10n.delete,
-              ),
             ],
           ),
         ),
@@ -310,72 +312,9 @@ class _TabletCategoriesScreenState extends State<_TabletCategoriesScreen> {
         Expanded(
           child: SingleChildScrollView(
             padding: const EdgeInsets.all(AppSpacing.lg),
-            child: _buildCategoryDetails(category),
+            child: CategoryDetailsView(category: category, showLargeIcon: true),
           ),
         ),
-      ],
-    );
-  }
-
-  Widget _buildCategoryDetails(Category category) {
-    final l10n = AppL10n.of(context);
-
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      spacing: AppSpacing.lg,
-      children: [
-        // Icon preview
-        Center(
-          child: Container(
-            width: AppSizing.iconPreviewSize,
-            height: AppSizing.iconPreviewSize,
-            decoration: BoxDecoration(
-              color: ColorExtensions.fromHex(
-                category.iconData.backgroundColorHex,
-              ),
-              borderRadius: AppSizing.borderRadiusXl,
-            ),
-            child: Center(
-              child: AppIcons.getIcon(
-                category.iconData.iconName,
-                color: ColorExtensions.fromHex(category.iconData.iconColorHex),
-                size: AppSizing.iconXl * 1.5,
-              ),
-            ),
-          ),
-        ),
-        // Description
-        if (category.description != null && category.description!.isNotEmpty)
-          Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            spacing: AppSpacing.xs,
-            children: [
-              Text(
-                l10n.categoriesEditDescription,
-                style: Theme.of(context).textTheme.labelLarge,
-              ),
-              Text(
-                category.description!,
-                style: Theme.of(context).textTheme.bodyMedium,
-              ),
-            ],
-          ),
-        // Last used
-        if (category.lastUsed != null)
-          Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            spacing: AppSpacing.xs,
-            children: [
-              Text(
-                l10n.categoriesLastUsed,
-                style: Theme.of(context).textTheme.labelLarge,
-              ),
-              Text(
-                category.lastUsed!.toString(),
-                style: Theme.of(context).textTheme.bodyMedium,
-              ),
-            ],
-          ),
       ],
     );
   }
