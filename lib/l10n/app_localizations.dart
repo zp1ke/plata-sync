@@ -357,6 +357,12 @@ abstract class AppL10n {
   /// **'Edit Category'**
   String get categoriesEditTitle;
 
+  /// Title for category create dialog
+  ///
+  /// In en, this message translates to:
+  /// **'Create Category'**
+  String get categoriesCreateTitle;
+
   /// Label for category name field in edit dialog
   ///
   /// In en, this message translates to:

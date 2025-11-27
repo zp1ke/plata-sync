@@ -7,14 +7,10 @@ import 'package:plata_sync/features/categories/domain/entities/category.dart';
 import 'package:plata_sync/l10n/app_localizations.dart';
 
 class CategoryEditDialog extends StatefulWidget {
-  final Category category;
+  final Category? category;
   final void Function(Category updatedCategory) onSave;
 
-  const CategoryEditDialog({
-    required this.category,
-    required this.onSave,
-    super.key,
-  });
+  const CategoryEditDialog({this.category, required this.onSave, super.key});
 
   @override
   State<CategoryEditDialog> createState() => _CategoryEditDialogState();
@@ -25,19 +21,31 @@ class _CategoryEditDialogState extends State<CategoryEditDialog> {
   late final TextEditingController descriptionController;
   late ObjectIconData iconData;
   final formKey = GlobalKey<FormState>();
+  bool isFormValid = false;
 
   @override
   void initState() {
     super.initState();
-    nameController = TextEditingController(text: widget.category.name);
+    nameController = TextEditingController(text: widget.category?.name ?? '');
     descriptionController = TextEditingController(
-      text: widget.category.description ?? '',
+      text: widget.category?.description ?? '',
     );
-    iconData = widget.category.iconData;
+    iconData =
+        widget.category?.iconData ??
+        const ObjectIconData(
+          iconName: 'shopping_cart',
+          backgroundColorHex: 'E3F2FD',
+          iconColorHex: '2196F3',
+        );
+
+    nameController.addListener(validateForm);
+    // Validate initial state
+    WidgetsBinding.instance.addPostFrameCallback((_) => validateForm());
   }
 
   @override
   void dispose() {
+    nameController.removeListener(validateForm);
     nameController.dispose();
     descriptionController.dispose();
     super.dispose();
@@ -48,7 +56,11 @@ class _CategoryEditDialogState extends State<CategoryEditDialog> {
     final l10n = AppL10n.of(context);
 
     return AlertDialog(
-      title: Text(l10n.categoriesEditTitle),
+      title: Text(
+        widget.category == null
+            ? l10n.categoriesCreateTitle
+            : l10n.categoriesEditTitle,
+      ),
       content: ConstrainedBox(
         constraints: const BoxConstraints(maxWidth: AppSizing.dialogMaxWidth),
         child: SingleChildScrollView(
@@ -102,22 +114,42 @@ class _CategoryEditDialogState extends State<CategoryEditDialog> {
           onPressed: () => Navigator.of(context).pop(),
           child: Text(l10n.cancel),
         ),
-        FilledButton(onPressed: handleSave, child: Text(l10n.save)),
+        FilledButton(
+          onPressed: isFormValid ? handleSave : null,
+          child: Text(l10n.save),
+        ),
       ],
     );
   }
 
   void handleSave() {
     if (formKey.currentState?.validate() ?? false) {
-      final updatedCategory = widget.category.copyWith(
-        name: nameController.text.trim(),
-        description: descriptionController.text.trim().isEmpty
-            ? null
-            : descriptionController.text.trim(),
-        iconData: iconData,
-      );
+      final category = widget.category != null
+          ? widget.category!.copyWith(
+              name: nameController.text.trim(),
+              description: descriptionController.text.trim().isEmpty
+                  ? null
+                  : descriptionController.text.trim(),
+              iconData: iconData,
+            )
+          : Category.create(
+              name: nameController.text.trim(),
+              description: descriptionController.text.trim().isEmpty
+                  ? null
+                  : descriptionController.text.trim(),
+              iconData: iconData,
+            );
       Navigator.of(context).pop();
-      widget.onSave(updatedCategory);
+      widget.onSave(category);
+    }
+  }
+
+  void validateForm() {
+    final isValid = nameController.text.trim().isNotEmpty;
+    if (isValid != isFormValid) {
+      setState(() {
+        isFormValid = isValid;
+      });
     }
   }
 }

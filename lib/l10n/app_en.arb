@@ -212,6 +212,10 @@
   "@categoriesEditTitle": {
     "description": "Title for category edit dialog"
   },
+  "categoriesCreateTitle": "Create Category",
+  "@categoriesCreateTitle": {
+    "description": "Title for category create dialog"
+  },
   "categoriesEditName": "Name",
   "@categoriesEditName": {
     "description": "Label for category name field in edit dialog"

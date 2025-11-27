@@ -154,6 +154,9 @@ class AppL10nEn extends AppL10n {
   String get categoriesEditTitle => 'Edit Category';
 
   @override
+  String get categoriesCreateTitle => 'Create Category';
+
+  @override
   String get categoriesEditName => 'Name';
 
   @override
