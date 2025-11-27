@@ -45,7 +45,7 @@ class _MobileCategoriesScreen extends WatchingWidget {
     final l10n = AppL10n.of(context);
 
     callOnceAfterThisBuild((context) {
-      if (categories.isEmpty && currentQuery.isEmpty) {
+      if (categories.isEmpty && currentQuery.isEmpty && !isLoading) {
         WidgetsBinding.instance.addPostFrameCallback((_) {
           if (context.mounted) {
             _showSampleDataDialog(context);
@@ -187,7 +187,7 @@ class _TabletCategoriesScreenState extends State<_TabletCategoriesScreen> {
     final l10n = AppL10n.of(context);
 
     callOnceAfterThisBuild((context) {
-      if (categories.isEmpty && currentQuery.isEmpty) {
+      if (categories.isEmpty && currentQuery.isEmpty && !isLoading) {
         WidgetsBinding.instance.addPostFrameCallback((_) {
           if (context.mounted) {
             _showSampleDataDialog(context);

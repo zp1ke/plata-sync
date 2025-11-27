@@ -14,7 +14,7 @@ class SettingsService {
   /// Get the current data source setting
   DataSourceType getDataSource() {
     final key = _prefs.getString(_keyDataSource);
-    if (key == null) return DataSourceType.inMemory;
+    if (key == null) return DataSourceType.local;
     return DataSourceType.fromKey(key);
   }
 
