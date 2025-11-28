@@ -2,12 +2,12 @@ import 'package:flutter/material.dart';
 import 'package:plata_sync/core/ui/resources/app_sizing.dart';
 import 'package:plata_sync/core/ui/resources/app_spacing.dart';
 import 'package:plata_sync/core/ui/widgets/currency_input_field.dart';
+import 'package:plata_sync/core/ui/widgets/date_time_picker_field.dart';
 import 'package:plata_sync/features/transactions/domain/entities/transaction.dart';
 import 'package:plata_sync/features/transactions/ui/widgets/account_selector.dart';
 import 'package:plata_sync/features/transactions/ui/widgets/category_selector.dart';
+import 'package:plata_sync/features/transactions/ui/widgets/transaction_type_selector.dart';
 import 'package:plata_sync/l10n/app_localizations.dart';
-
-enum TransactionType { expense, income, transfer }
 
 class TransactionEditForm extends StatefulWidget {
   final Transaction? transaction;
@@ -113,26 +113,11 @@ class TransactionEditFormState extends State<TransactionEditForm> {
             spacing: AppSpacing.lg,
             children: [
               // Transaction type selector
-              SegmentedButton<TransactionType>(
-                showSelectedIcon: false,
-                segments: [
-                  ButtonSegment(
-                    value: TransactionType.expense,
-                    label: Text(l10n.transactionTypeExpense),
-                  ),
-                  ButtonSegment(
-                    value: TransactionType.income,
-                    label: Text(l10n.transactionTypeIncome),
-                  ),
-                  ButtonSegment(
-                    value: TransactionType.transfer,
-                    label: Text(l10n.transactionTypeTransfer),
-                  ),
-                ],
-                selected: {_type},
-                onSelectionChanged: (Set<TransactionType> newSelection) {
+              TransactionTypeSelector(
+                type: _type,
+                onChanged: (TransactionType newType) {
                   setState(() {
-                    _type = newSelection.first;
+                    _type = newType;
                     if (_type == TransactionType.transfer) {
                       _categoryId = null;
                     } else {
@@ -143,41 +128,14 @@ class TransactionEditFormState extends State<TransactionEditForm> {
               ),
 
               // Date and time picker
-              InkWell(
-                onTap: () async {
-                  final date = await showDatePicker(
-                    context: context,
-                    initialDate: _createdAt,
-                    firstDate: DateTime(2000),
-                    lastDate: DateTime.now().add(const Duration(days: 365)),
-                  );
-                  if (date != null && context.mounted) {
-                    final time = await showTimePicker(
-                      context: context,
-                      initialTime: TimeOfDay.fromDateTime(_createdAt),
-                    );
-                    if (time != null) {
-                      setState(() {
-                        _createdAt = DateTime(
-                          date.year,
-                          date.month,
-                          date.day,
-                          time.hour,
-                          time.minute,
-                        );
-                      });
-                    }
-                  }
+              DateTimePickerField(
+                dateTime: _createdAt,
+                label: l10n.transactionDateLabel,
+                onChanged: (DateTime newDateTime) {
+                  setState(() {
+                    _createdAt = newDateTime;
+                  });
                 },
-                child: InputDecorator(
-                  decoration: InputDecoration(
-                    labelText: l10n.transactionDateLabel,
-                    border: const OutlineInputBorder(),
-                  ),
-                  child: Text(
-                    '${l10n.transactionDateFormat(_createdAt)} ${TimeOfDay.fromDateTime(_createdAt).format(context)}',
-                  ),
-                ),
               ),
 
               // Account selector
