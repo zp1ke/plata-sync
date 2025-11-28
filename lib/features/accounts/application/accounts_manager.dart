@@ -96,6 +96,15 @@ class AccountsManager {
     }
   }
 
+  Future<Account?> getAccountById(String id) async {
+    try {
+      return await _dataSource.read(id);
+    } catch (e) {
+      debugPrint('Error getting account by id: $e');
+      return null;
+    }
+  }
+
   void setSortOrder(AccountSortOrder order) {
     sortOrder.value = order;
     _sortAccounts();

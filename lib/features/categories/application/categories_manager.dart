@@ -94,6 +94,15 @@ class CategoriesManager {
     }
   }
 
+  Future<Category?> getCategoryById(String id) async {
+    try {
+      return await _dataSource.read(id);
+    } catch (e) {
+      debugPrint('Error getting category by id: $e');
+      return null;
+    }
+  }
+
   void setSortOrder(CategorySortOrder order) {
     sortOrder.value = order;
     _sortCategories();
