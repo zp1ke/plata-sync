@@ -131,7 +131,7 @@ class _TransactionListViewState extends State<TransactionListView> {
                             ),
                             const Spacer(),
                             Text(
-                              DateFormat.MMMd().format(transaction.createdAt),
+                              '${DateFormat.MMMd().format(transaction.createdAt)} ${DateFormat.Hm().format(transaction.createdAt)}',
                               style: Theme.of(context).textTheme.bodySmall,
                             ),
                           ],

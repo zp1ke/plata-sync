@@ -196,7 +196,7 @@ class _TransactionGridItemState extends State<_TransactionGridItem> {
                     ),
                   ),
                   Text(
-                    DateFormat.MMMd().format(widget.transaction.createdAt),
+                    '${DateFormat.MMMd().format(widget.transaction.createdAt)} ${DateFormat.Hm().format(widget.transaction.createdAt)}',
                     style: Theme.of(context).textTheme.bodySmall,
                   ),
                 ],

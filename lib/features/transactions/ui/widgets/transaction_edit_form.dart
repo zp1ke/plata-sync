@@ -141,7 +141,7 @@ class TransactionEditFormState extends State<TransactionEditForm> {
                 },
               ),
 
-              // Date picker
+              // Date and time picker
               InkWell(
                 onTap: () async {
                   final date = await showDatePicker(
@@ -150,16 +150,22 @@ class TransactionEditFormState extends State<TransactionEditForm> {
                     firstDate: DateTime(2000),
                     lastDate: DateTime.now().add(const Duration(days: 365)),
                   );
-                  if (date != null) {
-                    setState(() {
-                      _createdAt = DateTime(
-                        date.year,
-                        date.month,
-                        date.day,
-                        _createdAt.hour,
-                        _createdAt.minute,
-                      );
-                    });
+                  if (date != null && context.mounted) {
+                    final time = await showTimePicker(
+                      context: context,
+                      initialTime: TimeOfDay.fromDateTime(_createdAt),
+                    );
+                    if (time != null) {
+                      setState(() {
+                        _createdAt = DateTime(
+                          date.year,
+                          date.month,
+                          date.day,
+                          time.hour,
+                          time.minute,
+                        );
+                      });
+                    }
                   }
                 },
                 child: InputDecorator(
@@ -167,7 +173,9 @@ class TransactionEditFormState extends State<TransactionEditForm> {
                     labelText: l10n.transactionDateLabel,
                     border: const OutlineInputBorder(),
                   ),
-                  child: Text(l10n.transactionDateFormat(_createdAt)),
+                  child: Text(
+                    '${l10n.transactionDateFormat(_createdAt)} ${TimeOfDay.fromDateTime(_createdAt).format(context)}',
+                  ),
                 ),
               ),
 
