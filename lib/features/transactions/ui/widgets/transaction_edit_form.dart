@@ -114,6 +114,7 @@ class TransactionEditFormState extends State<TransactionEditForm> {
             children: [
               // Transaction type selector
               SegmentedButton<TransactionType>(
+                showSelectedIcon: false,
                 segments: [
                   ButtonSegment(
                     value: TransactionType.expense,

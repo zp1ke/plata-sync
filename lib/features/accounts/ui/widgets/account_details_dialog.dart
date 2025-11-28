@@ -25,6 +25,7 @@ class AccountDetailsDialog extends StatelessWidget {
   Widget build(BuildContext context) {
     final l10n = AppL10n.of(context);
     return AlertDialog(
+      insetPadding: AppSpacing.paddingMd,
       title: Row(
         children: [
           ObjectIcon(iconData: account.iconData, size: AppSizing.avatarSm),
