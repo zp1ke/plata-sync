@@ -497,4 +497,65 @@ class AppL10nEn extends AppL10n {
 
   @override
   String get selectFieldCancel => 'Cancel';
+
+  @override
+  String get transactionTypeExpense => 'Expense';
+
+  @override
+  String get transactionTypeIncome => 'Income';
+
+  @override
+  String get transactionTypeTransfer => 'Transfer';
+
+  @override
+  String get transactionDateLabel => 'Date';
+
+  @override
+  String transactionDateFormat(DateTime date) {
+    final intl.DateFormat dateDateFormat = intl.DateFormat.yMMMd(localeName);
+    final String dateString = dateDateFormat.format(date);
+
+    return '$dateString';
+  }
+
+  @override
+  String get transactionAccountRequired => 'Account is required';
+
+  @override
+  String get transactionTargetAccountRequired => 'Target account is required';
+
+  @override
+  String get transactionTargetAccountSameError =>
+      'Target account must be different from source account';
+
+  @override
+  String get transactionAmountLabel => 'Amount';
+
+  @override
+  String get transactionAmountRequired => 'Amount is required';
+
+  @override
+  String get transactionAmountMustBePositive =>
+      'Amount must be greater than zero';
+
+  @override
+  String get transactionNotesLabel => 'Notes';
+
+  @override
+  String get transactionNotesHint => 'Add optional notes';
+
+  @override
+  String get saveButton => 'Save';
+
+  @override
+  String get transactionCreateTitle => 'New Transaction';
+
+  @override
+  String get transactionEditTitle => 'Edit Transaction';
+
+  @override
+  String get transactionTargetAccountLabel => 'To Account';
+
+  @override
+  String get transactionIdLabel => 'Transaction ID';
 }

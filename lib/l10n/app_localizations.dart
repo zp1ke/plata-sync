@@ -974,6 +974,114 @@ abstract class AppL10n {
   /// In en, this message translates to:
   /// **'Cancel'**
   String get selectFieldCancel;
+
+  /// Label for expense transaction type
+  ///
+  /// In en, this message translates to:
+  /// **'Expense'**
+  String get transactionTypeExpense;
+
+  /// Label for income transaction type
+  ///
+  /// In en, this message translates to:
+  /// **'Income'**
+  String get transactionTypeIncome;
+
+  /// Label for transfer transaction type
+  ///
+  /// In en, this message translates to:
+  /// **'Transfer'**
+  String get transactionTypeTransfer;
+
+  /// Label for transaction date field
+  ///
+  /// In en, this message translates to:
+  /// **'Date'**
+  String get transactionDateLabel;
+
+  /// Format for displaying transaction date
+  ///
+  /// In en, this message translates to:
+  /// **'{date}'**
+  String transactionDateFormat(DateTime date);
+
+  /// Validation message when account is not selected
+  ///
+  /// In en, this message translates to:
+  /// **'Account is required'**
+  String get transactionAccountRequired;
+
+  /// Validation message when target account is not selected for transfer
+  ///
+  /// In en, this message translates to:
+  /// **'Target account is required'**
+  String get transactionTargetAccountRequired;
+
+  /// Validation message when target account is same as source account
+  ///
+  /// In en, this message translates to:
+  /// **'Target account must be different from source account'**
+  String get transactionTargetAccountSameError;
+
+  /// Label for transaction amount field
+  ///
+  /// In en, this message translates to:
+  /// **'Amount'**
+  String get transactionAmountLabel;
+
+  /// Validation message when amount is not entered
+  ///
+  /// In en, this message translates to:
+  /// **'Amount is required'**
+  String get transactionAmountRequired;
+
+  /// Validation message when amount is zero or negative
+  ///
+  /// In en, this message translates to:
+  /// **'Amount must be greater than zero'**
+  String get transactionAmountMustBePositive;
+
+  /// Label for transaction notes field
+  ///
+  /// In en, this message translates to:
+  /// **'Notes'**
+  String get transactionNotesLabel;
+
+  /// Hint text for transaction notes field
+  ///
+  /// In en, this message translates to:
+  /// **'Add optional notes'**
+  String get transactionNotesHint;
+
+  /// Text for save button
+  ///
+  /// In en, this message translates to:
+  /// **'Save'**
+  String get saveButton;
+
+  /// Title for create transaction dialog
+  ///
+  /// In en, this message translates to:
+  /// **'New Transaction'**
+  String get transactionCreateTitle;
+
+  /// Title for edit transaction dialog
+  ///
+  /// In en, this message translates to:
+  /// **'Edit Transaction'**
+  String get transactionEditTitle;
+
+  /// Label for target account in transfer
+  ///
+  /// In en, this message translates to:
+  /// **'To Account'**
+  String get transactionTargetAccountLabel;
+
+  /// Label for transaction ID field
+  ///
+  /// In en, this message translates to:
+  /// **'Transaction ID'**
+  String get transactionIdLabel;
 }
 
 class _AppL10nDelegate extends LocalizationsDelegate<AppL10n> {

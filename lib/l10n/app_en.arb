@@ -699,5 +699,83 @@
   "selectFieldCancel": "Cancel",
   "@selectFieldCancel": {
     "description": "Cancel button text for select field dialog"
+  },
+  "transactionTypeExpense": "Expense",
+  "@transactionTypeExpense": {
+    "description": "Label for expense transaction type"
+  },
+  "transactionTypeIncome": "Income",
+  "@transactionTypeIncome": {
+    "description": "Label for income transaction type"
+  },
+  "transactionTypeTransfer": "Transfer",
+  "@transactionTypeTransfer": {
+    "description": "Label for transfer transaction type"
+  },
+  "transactionDateLabel": "Date",
+  "@transactionDateLabel": {
+    "description": "Label for transaction date field"
+  },
+  "transactionDateFormat": "{date}",
+  "@transactionDateFormat": {
+    "description": "Format for displaying transaction date",
+    "placeholders": {
+      "date": {
+        "type": "DateTime",
+        "format": "yMMMd"
+      }
+    }
+  },
+  "transactionAccountRequired": "Account is required",
+  "@transactionAccountRequired": {
+    "description": "Validation message when account is not selected"
+  },
+  "transactionTargetAccountRequired": "Target account is required",
+  "@transactionTargetAccountRequired": {
+    "description": "Validation message when target account is not selected for transfer"
+  },
+  "transactionTargetAccountSameError": "Target account must be different from source account",
+  "@transactionTargetAccountSameError": {
+    "description": "Validation message when target account is same as source account"
+  },
+  "transactionAmountLabel": "Amount",
+  "@transactionAmountLabel": {
+    "description": "Label for transaction amount field"
+  },
+  "transactionAmountRequired": "Amount is required",
+  "@transactionAmountRequired": {
+    "description": "Validation message when amount is not entered"
+  },
+  "transactionAmountMustBePositive": "Amount must be greater than zero",
+  "@transactionAmountMustBePositive": {
+    "description": "Validation message when amount is zero or negative"
+  },
+  "transactionNotesLabel": "Notes",
+  "@transactionNotesLabel": {
+    "description": "Label for transaction notes field"
+  },
+  "transactionNotesHint": "Add optional notes",
+  "@transactionNotesHint": {
+    "description": "Hint text for transaction notes field"
+  },
+  "saveButton": "Save",
+  "@saveButton": {
+    "description": "Text for save button"
+  },
+  "transactionCreateTitle": "New Transaction",
+  "@transactionCreateTitle": {
+    "description": "Title for create transaction dialog"
+  },
+  "transactionEditTitle": "Edit Transaction",
+  "@transactionEditTitle": {
+    "description": "Title for edit transaction dialog"
+  },
+  "transactionTargetAccountLabel": "To Account",
+  "@transactionTargetAccountLabel": {
+    "description": "Label for target account in transfer"
+  },
+  "transactionIdLabel": "Transaction ID",
+  "@transactionIdLabel": {
+    "description": "Label for transaction ID field"
   }
 }
