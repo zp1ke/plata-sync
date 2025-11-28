@@ -570,7 +570,7 @@ abstract class AppL10n {
   /// Label for account icon field in edit dialog
   ///
   /// In en, this message translates to:
-  /// **'Icon'**
+  /// **'Account Icon'**
   String get accountsEditIcon;
 
   /// Validation message when icon is empty
@@ -714,7 +714,7 @@ abstract class AppL10n {
   /// Label for category icon field in edit dialog
   ///
   /// In en, this message translates to:
-  /// **'Icon'**
+  /// **'Category Icon'**
   String get categoriesEditIcon;
 
   /// Helper text for icon field
@@ -956,6 +956,24 @@ abstract class AppL10n {
   /// In en, this message translates to:
   /// **'Unknown'**
   String get iconUnknown;
+
+  /// Default search hint for select field widget
+  ///
+  /// In en, this message translates to:
+  /// **'Search...'**
+  String get selectFieldSearchHint;
+
+  /// Message shown when select field search returns no results
+  ///
+  /// In en, this message translates to:
+  /// **'No results found'**
+  String get selectFieldNoResults;
+
+  /// Cancel button text for select field dialog
+  ///
+  /// In en, this message translates to:
+  /// **'Cancel'**
+  String get selectFieldCancel;
 }
 
 class _AppL10nDelegate extends LocalizationsDelegate<AppL10n> {

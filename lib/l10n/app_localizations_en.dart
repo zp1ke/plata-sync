@@ -277,7 +277,7 @@ class AppL10nEn extends AppL10n {
   String get accountsEditInitialBalanceInvalid => 'Invalid amount format';
 
   @override
-  String get accountsEditIcon => 'Icon';
+  String get accountsEditIcon => 'Account Icon';
 
   @override
   String get accountsEditIconRequired => 'Icon is required';
@@ -359,7 +359,7 @@ class AppL10nEn extends AppL10n {
   String get categoriesEditDescription => 'Description';
 
   @override
-  String get categoriesEditIcon => 'Icon';
+  String get categoriesEditIcon => 'Category Icon';
 
   @override
   String get categoriesEditIconHelper => 'e.g., shopping_cart, bolt, movie';
@@ -488,4 +488,13 @@ class AppL10nEn extends AppL10n {
 
   @override
   String get iconUnknown => 'Unknown';
+
+  @override
+  String get selectFieldSearchHint => 'Search...';
+
+  @override
+  String get selectFieldNoResults => 'No results found';
+
+  @override
+  String get selectFieldCancel => 'Cancel';
 }

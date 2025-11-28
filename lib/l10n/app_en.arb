@@ -377,7 +377,7 @@
   "@accountsEditInitialBalanceInvalid": {
     "description": "Validation message when initial balance format is invalid"
   },
-  "accountsEditIcon": "Icon",
+  "accountsEditIcon": "Account Icon",
   "@accountsEditIcon": {
     "description": "Label for account icon field in edit dialog"
   },
@@ -504,7 +504,7 @@
   "@categoriesEditDescription": {
     "description": "Label for category description field in edit dialog"
   },
-  "categoriesEditIcon": "Icon",
+  "categoriesEditIcon": "Category Icon",
   "@categoriesEditIcon": {
     "description": "Label for category icon field in edit dialog"
   },
@@ -687,5 +687,17 @@
   "iconUnknown": "Unknown",
   "@iconUnknown": {
     "description": "Label for unknown icon"
+  },
+  "selectFieldSearchHint": "Search...",
+  "@selectFieldSearchHint": {
+    "description": "Default search hint for select field widget"
+  },
+  "selectFieldNoResults": "No results found",
+  "@selectFieldNoResults": {
+    "description": "Message shown when select field search returns no results"
+  },
+  "selectFieldCancel": "Cancel",
+  "@selectFieldCancel": {
+    "description": "Cancel button text for select field dialog"
   }
 }

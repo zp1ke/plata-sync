@@ -65,6 +65,7 @@ class AppIcons {
   static final arrowDropDown = HugeIcon(
     icon: HugeIcons.strokeRoundedArrowDown01,
   );
+  static final arrowDropDownXs = Icon(Icons.arrow_drop_down);
   static final arrowDropUp = HugeIcon(icon: HugeIcons.strokeRoundedArrowUp01);
 
   static Widget getIcon(String name, {Color? color, double? size}) {

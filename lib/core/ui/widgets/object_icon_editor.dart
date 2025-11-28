@@ -5,6 +5,7 @@ import 'package:plata_sync/core/ui/resources/app_sizing.dart';
 import 'package:plata_sync/core/ui/resources/app_spacing.dart';
 import 'package:plata_sync/core/ui/widgets/color_picker_field.dart';
 import 'package:plata_sync/core/ui/widgets/object_icon.dart';
+import 'package:plata_sync/core/ui/widgets/select_field.dart';
 import 'package:plata_sync/l10n/app_localizations.dart';
 
 class ObjectIconEditor extends StatefulWidget {
@@ -70,31 +71,28 @@ class _ObjectIconEditorState extends State<ObjectIconEditor> {
           ),
         ),
         // Icon selector
-        DropdownButtonFormField<String>(
-          initialValue: _selectedIconName,
-          decoration: InputDecoration(
-            labelText: widget.iconLabel,
-            border: const OutlineInputBorder(),
-          ),
-          items: AppIcons.iconDataMap.keys.map((String iconName) {
-            return DropdownMenuItem<String>(
-              value: iconName,
-              child: Row(
-                children: [
-                  AppIcons.getIcon(iconName, size: AppSizing.iconMd),
-                  AppSpacing.gapHorizontalMd,
-                  Text(AppIcons.getIconLabel(iconName, l10n)),
-                ],
+        SelectField<String>(
+          value: _selectedIconName,
+          options: AppIcons.iconDataMap.keys.toList(),
+          label: widget.iconLabel,
+          itemLabelBuilder: (iconName) => AppIcons.getIconLabel(iconName, l10n),
+          itemBuilder: (iconName) => Row(
+            children: [
+              AppIcons.getIcon(iconName, size: AppSizing.iconMd),
+              AppSpacing.gapHorizontalMd,
+              Expanded(
+                child: Text(
+                  AppIcons.getIconLabel(iconName, l10n),
+                  overflow: TextOverflow.ellipsis,
+                ),
               ),
-            );
-          }).toList(),
-          onChanged: (String? newValue) {
-            if (newValue != null) {
-              setState(() {
-                _selectedIconName = newValue;
-              });
-              _notifyChange();
-            }
+            ],
+          ),
+          onChanged: (String newValue) {
+            setState(() {
+              _selectedIconName = newValue;
+            });
+            _notifyChange();
           },
           validator: (value) {
             if (value == null || value.isEmpty) {
