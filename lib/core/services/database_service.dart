@@ -39,6 +39,9 @@ class DatabaseService {
 
   /// Create database tables
   Future<void> _onCreate(Database db, int version) async {
+    // Enable foreign key constraints
+    await db.execute('PRAGMA foreign_keys = ON');
+
     await db.execute('''
       CREATE TABLE categories (
         id TEXT PRIMARY KEY,
@@ -64,6 +67,38 @@ class DatabaseService {
         description TEXT,
         balance INTEGER NOT NULL DEFAULT 0
       )
+    ''');
+
+    await db.execute('''
+      CREATE TABLE transactions (
+        id TEXT PRIMARY KEY,
+        created_at INTEGER NOT NULL,
+        account_id TEXT NOT NULL,
+        category_id TEXT,
+        amount INTEGER NOT NULL,
+        target_account_id TEXT,
+        notes TEXT,
+        FOREIGN KEY (account_id) REFERENCES accounts(id) ON DELETE CASCADE,
+        FOREIGN KEY (category_id) REFERENCES categories(id) ON DELETE SET NULL,
+        FOREIGN KEY (target_account_id) REFERENCES accounts(id) ON DELETE CASCADE
+      )
+    ''');
+
+    // Create indexes for foreign keys to improve query performance
+    await db.execute('''
+      CREATE INDEX idx_transactions_account_id ON transactions(account_id)
+    ''');
+
+    await db.execute('''
+      CREATE INDEX idx_transactions_category_id ON transactions(category_id)
+    ''');
+
+    await db.execute('''
+      CREATE INDEX idx_transactions_target_account_id ON transactions(target_account_id)
+    ''');
+
+    await db.execute('''
+      CREATE INDEX idx_transactions_created_at ON transactions(created_at)
     ''');
   }
 

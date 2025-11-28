@@ -1,0 +1,149 @@
+import 'package:plata_sync/core/data/models/sort_param.dart';
+import 'package:plata_sync/core/services/database_service.dart';
+import 'package:plata_sync/features/transactions/data/interfaces/transaction_data_source.dart';
+import 'package:plata_sync/features/transactions/domain/entities/transaction.dart'
+    as model;
+import 'package:sqflite/sqflite.dart';
+
+class LocalTransactionDataSource extends TransactionDataSource {
+  final DatabaseService _databaseService;
+
+  LocalTransactionDataSource(this._databaseService);
+
+  static const String _tableName = 'transactions';
+
+  /// Convert a Transaction to a database map
+  Map<String, dynamic> _toMap(model.Transaction transaction) {
+    return {
+      'id': transaction.id,
+      'created_at': transaction.createdAt.millisecondsSinceEpoch,
+      'account_id': transaction.accountId,
+      'category_id': transaction.categoryId,
+      'amount': transaction.amount,
+      'target_account_id': transaction.targetAccountId,
+      'notes': transaction.notes,
+    };
+  }
+
+  /// Convert a database map to a Transaction
+  model.Transaction _fromMap(Map<String, dynamic> map) {
+    return model.Transaction(
+      id: map['id'] as String,
+      createdAt: DateTime.fromMillisecondsSinceEpoch(map['created_at'] as int),
+      accountId: map['account_id'] as String,
+      categoryId: map['category_id'] as String?,
+      amount: map['amount'] as int,
+      targetAccountId: map['target_account_id'] as String?,
+      notes: map['notes'] as String?,
+    );
+  }
+
+  @override
+  Future<model.Transaction> create(model.Transaction item) async {
+    final db = await _databaseService.database;
+    await db.insert(
+      _tableName,
+      _toMap(item),
+      conflictAlgorithm: ConflictAlgorithm.fail,
+    );
+    return item;
+  }
+
+  @override
+  Future<void> delete(String id) async {
+    final db = await _databaseService.database;
+    final count = await db.delete(_tableName, where: 'id = ?', whereArgs: [id]);
+    if (count == 0) {
+      throw Exception('Transaction with id $id not found');
+    }
+  }
+
+  @override
+  Future<List<model.Transaction>> getAll({
+    Map<String, dynamic>? filter,
+    SortParam? sort,
+  }) async {
+    final db = await _databaseService.database;
+
+    String? where;
+    List<dynamic>? whereArgs;
+
+    if (filter != null) {
+      final conditions = <String>[];
+      final args = <dynamic>[];
+
+      if (filter.containsKey('id')) {
+        conditions.add('id = ?');
+        args.add(filter['id']);
+      }
+
+      if (filter.containsKey('accountId')) {
+        conditions.add('account_id = ?');
+        args.add(filter['accountId']);
+      }
+
+      if (filter.containsKey('categoryId')) {
+        conditions.add('category_id = ?');
+        args.add(filter['categoryId']);
+      }
+
+      if (filter.containsKey('targetAccountId')) {
+        conditions.add('target_account_id = ?');
+        args.add(filter['targetAccountId']);
+      }
+
+      if (conditions.isNotEmpty) {
+        where = conditions.join(' AND ');
+        whereArgs = args;
+      }
+    }
+
+    String? orderBy;
+    if (sort != null) {
+      final direction = sort.ascending ? 'ASC' : 'DESC';
+      if (sort.field == 'createdAt') {
+        orderBy = 'created_at $direction';
+      } else if (sort.field == 'amount') {
+        orderBy = 'amount $direction';
+      }
+    }
+
+    final List<Map<String, dynamic>> maps = await db.query(
+      _tableName,
+      where: where,
+      whereArgs: whereArgs,
+      orderBy: orderBy,
+    );
+
+    return maps.map((map) => _fromMap(map)).toList();
+  }
+
+  @override
+  Future<model.Transaction?> read(String id) async {
+    final db = await _databaseService.database;
+    final List<Map<String, dynamic>> maps = await db.query(
+      _tableName,
+      where: 'id = ?',
+      whereArgs: [id],
+      limit: 1,
+    );
+
+    if (maps.isEmpty) return null;
+    return _fromMap(maps.first);
+  }
+
+  @override
+  Future<model.Transaction> update(model.Transaction item) async {
+    final db = await _databaseService.database;
+    final count = await db.update(
+      _tableName,
+      _toMap(item),
+      where: 'id = ?',
+      whereArgs: [item.id],
+    );
+    if (count == 0) {
+      throw Exception('Transaction with id ${item.id} not found');
+    }
+    return item;
+  }
+}

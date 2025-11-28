@@ -6,6 +6,8 @@ import 'package:plata_sync/features/accounts/application/accounts_manager.dart';
 import 'package:plata_sync/features/accounts/data/interfaces/account_data_source.dart';
 import 'package:plata_sync/features/categories/application/categories_manager.dart';
 import 'package:plata_sync/features/categories/data/interfaces/category_data_source.dart';
+import 'package:plata_sync/features/transactions/application/transactions_manager.dart';
+import 'package:plata_sync/features/transactions/data/interfaces/transaction_data_source.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 final getIt = GetIt.instance;
@@ -27,19 +29,31 @@ Future<void> setupServiceLocator() async {
 
   // Data Sources
   final dataSourceType = settingsService.getDataSource();
-  getIt.registerSingleton<CategoryDataSource>(
-    CategoryDataSource.createDataSource(dataSourceType, databaseService),
+  final categoryDataSource = CategoryDataSource.createDataSource(
+    dataSourceType,
+    databaseService,
   );
-  getIt.registerSingleton<AccountDataSource>(
-    AccountDataSource.createDataSource(dataSourceType, databaseService),
+  getIt.registerSingleton<CategoryDataSource>(categoryDataSource);
+  final accountDataSource = AccountDataSource.createDataSource(
+    dataSourceType,
+    databaseService,
   );
+  getIt.registerSingleton<AccountDataSource>(accountDataSource);
+  final transactionDataSource = TransactionDataSource.createDataSource(
+    dataSourceType,
+    databaseService,
+  );
+  getIt.registerSingleton<TransactionDataSource>(transactionDataSource);
 
   // Managers
   getIt.registerLazySingleton<CategoriesManager>(
-    () => CategoriesManager(getIt<CategoryDataSource>()),
+    () => CategoriesManager(categoryDataSource),
   );
   getIt.registerLazySingleton<AccountsManager>(
-    () => AccountsManager(getIt<AccountDataSource>()),
+    () => AccountsManager(accountDataSource),
+  );
+  getIt.registerLazySingleton<TransactionsManager>(
+    () => TransactionsManager(transactionDataSource),
   );
 }
 
