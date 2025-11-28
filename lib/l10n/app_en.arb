@@ -696,6 +696,10 @@
   "@selectFieldNoResults": {
     "description": "Message shown when select field search returns no results"
   },
+  "none": "None",
+  "@none": {
+    "description": "Label for no selection or empty option"
+  },
   "selectFieldCancel": "Cancel",
   "@selectFieldCancel": {
     "description": "Cancel button text for select field dialog"
@@ -725,6 +729,22 @@
         "format": "yMMMd"
       }
     }
+  },
+  "transactionAccountLabel": "Account",
+  "@transactionAccountLabel": {
+    "description": "Label for account field in transaction form"
+  },
+  "transactionSourceAccountLabel": "Source Account",
+  "@transactionSourceAccountLabel": {
+    "description": "Label for source account field in transfer transaction"
+  },
+  "transactionTargetAccountLabel": "Target Account",
+  "@transactionTargetAccountLabel": {
+    "description": "Label for target account field in transfer transaction"
+  },
+  "transactionCategoryLabel": "Category",
+  "@transactionCategoryLabel": {
+    "description": "Label for category field in transaction form"
   },
   "transactionAccountRequired": "Account is required",
   "@transactionAccountRequired": {

@@ -182,6 +182,9 @@ class TransactionEditFormState extends State<TransactionEditForm> {
               // Account selector
               AccountSelector(
                 accountId: _accountId,
+                label: _type == TransactionType.transfer
+                    ? l10n.transactionSourceAccountLabel
+                    : null,
                 onChanged: (accountId) {
                   setState(() {
                     _accountId = accountId;
@@ -210,6 +213,7 @@ class TransactionEditFormState extends State<TransactionEditForm> {
               if (_type == TransactionType.transfer)
                 AccountSelector(
                   accountId: _targetAccountId,
+                  label: l10n.transactionTargetAccountLabel,
                   onChanged: (accountId) {
                     setState(() {
                       _targetAccountId = accountId;

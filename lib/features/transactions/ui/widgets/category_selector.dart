@@ -57,7 +57,7 @@ class _CategorySelectorState extends State<CategorySelector> {
       return TextFormField(
         enabled: false,
         decoration: InputDecoration(
-          labelText: l10n.categoriesScreenTitle,
+          labelText: l10n.transactionCategoryLabel,
           hintText: l10n.categoriesAddSampleDataPrompt,
           border: const OutlineInputBorder(),
         ),
@@ -72,13 +72,12 @@ class _CategorySelectorState extends State<CategorySelector> {
     return SelectField<Category?>(
       value: selectedCategory,
       options: widget.required ? _categories : [null, ..._categories],
-      label: l10n.categoriesScreenTitle,
-      itemLabelBuilder: (category) =>
-          category?.name ?? l10n.selectFieldNoResults,
+      label: l10n.transactionCategoryLabel,
+      itemLabelBuilder: (category) => category?.name ?? l10n.none,
       itemBuilder: (category) {
         if (category == null) {
           return Text(
-            '(${l10n.selectFieldNoResults})',
+            '(${l10n.none})',
             style: const TextStyle(fontStyle: FontStyle.italic),
           );
         }

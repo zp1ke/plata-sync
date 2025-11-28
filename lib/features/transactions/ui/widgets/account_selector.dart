@@ -14,12 +14,14 @@ class AccountSelector extends StatefulWidget {
   final ValueChanged<String> onChanged;
   final String? Function(String?)? validator;
   final bool enabled;
+  final String? label;
 
   const AccountSelector({
     required this.accountId,
     required this.onChanged,
     this.validator,
     this.enabled = true,
+    this.label,
     super.key,
   });
 
@@ -50,12 +52,13 @@ class _AccountSelectorState extends State<AccountSelector> {
   @override
   Widget build(BuildContext context) {
     final l10n = AppL10n.of(context);
+    final labelText = widget.label ?? l10n.transactionAccountLabel;
 
     if (_accounts.isEmpty) {
       return TextFormField(
         enabled: false,
         decoration: InputDecoration(
-          labelText: l10n.accountsScreenTitle,
+          labelText: labelText,
           hintText: l10n.accountsEmptyState,
           border: const OutlineInputBorder(),
         ),
@@ -70,7 +73,7 @@ class _AccountSelectorState extends State<AccountSelector> {
     return SelectField<Account>(
       value: selectedAccount,
       options: _accounts,
-      label: l10n.accountsScreenTitle,
+      label: labelText,
       itemLabelBuilder: (account) => account.name,
       itemBuilder: (account) => Row(
         children: [

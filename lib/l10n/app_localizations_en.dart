@@ -496,6 +496,9 @@ class AppL10nEn extends AppL10n {
   String get selectFieldNoResults => 'No results found';
 
   @override
+  String get none => 'None';
+
+  @override
   String get selectFieldCancel => 'Cancel';
 
   @override
@@ -517,6 +520,18 @@ class AppL10nEn extends AppL10n {
 
     return '$dateString';
   }
+
+  @override
+  String get transactionAccountLabel => 'Account';
+
+  @override
+  String get transactionSourceAccountLabel => 'Source Account';
+
+  @override
+  String get transactionTargetAccountLabel => 'To Account';
+
+  @override
+  String get transactionCategoryLabel => 'Category';
 
   @override
   String get transactionAccountRequired => 'Account is required';
@@ -552,9 +567,6 @@ class AppL10nEn extends AppL10n {
 
   @override
   String get transactionEditTitle => 'Edit Transaction';
-
-  @override
-  String get transactionTargetAccountLabel => 'To Account';
 
   @override
   String get transactionIdLabel => 'Transaction ID';

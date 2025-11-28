@@ -969,6 +969,12 @@ abstract class AppL10n {
   /// **'No results found'**
   String get selectFieldNoResults;
 
+  /// Label for no selection or empty option
+  ///
+  /// In en, this message translates to:
+  /// **'None'**
+  String get none;
+
   /// Cancel button text for select field dialog
   ///
   /// In en, this message translates to:
@@ -1004,6 +1010,30 @@ abstract class AppL10n {
   /// In en, this message translates to:
   /// **'{date}'**
   String transactionDateFormat(DateTime date);
+
+  /// Label for account field in transaction form
+  ///
+  /// In en, this message translates to:
+  /// **'Account'**
+  String get transactionAccountLabel;
+
+  /// Label for source account field in transfer transaction
+  ///
+  /// In en, this message translates to:
+  /// **'Source Account'**
+  String get transactionSourceAccountLabel;
+
+  /// Label for target account in transfer
+  ///
+  /// In en, this message translates to:
+  /// **'To Account'**
+  String get transactionTargetAccountLabel;
+
+  /// Label for category field in transaction form
+  ///
+  /// In en, this message translates to:
+  /// **'Category'**
+  String get transactionCategoryLabel;
 
   /// Validation message when account is not selected
   ///
@@ -1070,12 +1100,6 @@ abstract class AppL10n {
   /// In en, this message translates to:
   /// **'Edit Transaction'**
   String get transactionEditTitle;
-
-  /// Label for target account in transfer
-  ///
-  /// In en, this message translates to:
-  /// **'To Account'**
-  String get transactionTargetAccountLabel;
 
   /// Label for transaction ID field
   ///
