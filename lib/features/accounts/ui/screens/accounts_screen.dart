@@ -7,6 +7,7 @@ import 'package:plata_sync/core/ui/widgets/app_top_bar.dart';
 import 'package:plata_sync/core/ui/widgets/responsive_layout.dart';
 import 'package:plata_sync/core/ui/widgets/sort_selector.dart';
 import 'package:plata_sync/core/ui/widgets/view_toggle.dart';
+import 'package:plata_sync/core/utils/numbers.dart';
 import 'package:plata_sync/core/utils/random.dart';
 import 'package:plata_sync/features/accounts/application/accounts_manager.dart';
 import 'package:plata_sync/features/accounts/domain/entities/account.dart';
@@ -37,6 +38,17 @@ class _MobileAccountsScreen extends WatchingStatefulWidget {
 
   @override
   State<_MobileAccountsScreen> createState() => _MobileAccountsScreenState();
+}
+
+String _title(AppL10n l10n, List<Account> accounts) {
+  if (accounts.isEmpty) {
+    return l10n.accountsScreenTitle;
+  }
+  final totalBalance = accounts.fold<int>(
+    0,
+    (sum, account) => sum + account.balance,
+  );
+  return '${l10n.accountsScreenTitle} · ${NumberFormatters.formatCompactCurrency(totalBalance)}';
 }
 
 class _MobileAccountsScreenState extends State<_MobileAccountsScreen> {
@@ -71,7 +83,7 @@ class _MobileAccountsScreenState extends State<_MobileAccountsScreen> {
             final manager = getService<AccountsManager>();
             return [
               AppTopBar(
-                title: l10n.accountsScreenTitle,
+                title: _title(l10n, accounts),
                 searchHint: l10n.accountsSearchHint,
                 onSearchChanged: (value) => manager.loadAccounts(query: value),
                 isLoading: isLoading,
@@ -214,7 +226,7 @@ class _TabletAccountsScreenState extends State<_TabletAccountsScreen> {
               final manager = getService<AccountsManager>();
               return [
                 AppTopBar(
-                  title: l10n.accountsScreenTitle,
+                  title: _title(l10n, accounts),
                   searchHint: l10n.accountsSearchHint,
                   onSearchChanged: (value) =>
                       manager.loadAccounts(query: value),
