@@ -5,13 +5,13 @@ import 'package:plata_sync/core/model/object_icon_data.dart';
 import 'package:plata_sync/core/ui/resources/app_sizing.dart';
 import 'package:plata_sync/core/ui/resources/app_spacing.dart';
 import 'package:plata_sync/core/ui/resources/app_theme.dart';
+import 'package:plata_sync/core/ui/widgets/object_icon.dart';
 import 'package:plata_sync/core/utils/numbers.dart';
 import 'package:plata_sync/features/accounts/application/accounts_manager.dart';
 import 'package:plata_sync/features/accounts/domain/entities/account.dart';
 import 'package:plata_sync/features/categories/application/categories_manager.dart';
 import 'package:plata_sync/features/categories/domain/entities/category.dart';
 import 'package:plata_sync/features/transactions/domain/entities/transaction.dart';
-import 'package:plata_sync/l10n/app_localizations.dart';
 
 class TransactionGridView extends StatelessWidget {
   final List<Transaction> transactions;
@@ -134,7 +134,6 @@ class _TransactionGridItemState extends State<_TransactionGridItem> {
 
   @override
   Widget build(BuildContext context) {
-    final l10n = AppL10n.of(context);
     final colorScheme = Theme.of(context).colorScheme;
 
     Color getTypeColor() {
@@ -144,16 +143,6 @@ class _TransactionGridItemState extends State<_TransactionGridItem> {
         return colorScheme.income;
       } else {
         return colorScheme.transfer;
-      }
-    }
-
-    String getTypeLabel() {
-      if (widget.transaction.isExpense) {
-        return l10n.transactionTypeExpense;
-      } else if (widget.transaction.isIncome) {
-        return l10n.transactionTypeIncome;
-      } else {
-        return l10n.transactionTypeTransfer;
       }
     }
 
@@ -168,62 +157,75 @@ class _TransactionGridItemState extends State<_TransactionGridItem> {
         borderRadius: AppSizing.borderRadiusMd,
         child: Padding(
           padding: AppSpacing.paddingMd,
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            mainAxisAlignment: MainAxisAlignment.center,
-            mainAxisSize: MainAxisSize.min,
-            spacing: AppSpacing.xs,
+          child: Row(
+            crossAxisAlignment: CrossAxisAlignment.center,
+            spacing: AppSpacing.sm,
             children: [
-              Row(
-                children: [
-                  Container(
-                    width: 8,
-                    height: 8,
-                    decoration: BoxDecoration(
-                      color: getTypeColor(),
-                      shape: BoxShape.circle,
+              Expanded(
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  mainAxisSize: MainAxisSize.min,
+                  spacing: AppSpacing.xs,
+                  children: [
+                    Row(
+                      children: [
+                        if (category != null) ...[
+                          ObjectIcon(
+                            iconData: category!.iconData,
+                            size: AppSizing.iconXs,
+                          ),
+                          AppSpacing.gapHorizontalXs,
+                        ],
+                        Expanded(
+                          child: Text(
+                            category?.name ?? '',
+                            overflow: TextOverflow.ellipsis,
+                            style: Theme.of(context).textTheme.bodySmall
+                                ?.copyWith(
+                                  fontWeight: FontWeight.w500,
+                                  color: getTypeColor(),
+                                ),
+                          ),
+                        ),
+                        Text(
+                          '${DateFormat.MMMd().format(widget.transaction.createdAt)} ${DateFormat.Hm().format(widget.transaction.createdAt)}',
+                          style: Theme.of(context).textTheme.bodySmall,
+                        ),
+                      ],
                     ),
-                  ),
-                  AppSpacing.gapHorizontalSm,
-                  Expanded(
-                    child: Text(
-                      getTypeLabel(),
-                      overflow: TextOverflow.ellipsis,
-                      style: Theme.of(context).textTheme.bodySmall?.copyWith(
-                        fontWeight: FontWeight.w500,
+                    Text(
+                      NumberFormatters.formatCompactCurrency(
+                        widget.transaction.amount,
+                      ),
+                      style: Theme.of(context).textTheme.titleMedium?.copyWith(
+                        fontWeight: FontWeight.bold,
                         color: getTypeColor(),
                       ),
                     ),
-                  ),
-                  Text(
-                    '${DateFormat.MMMd().format(widget.transaction.createdAt)} ${DateFormat.Hm().format(widget.transaction.createdAt)}',
-                    style: Theme.of(context).textTheme.bodySmall,
-                  ),
-                ],
+                    if (account != null)
+                      Row(
+                        children: [
+                          ObjectIcon(
+                            iconData: account!.iconData,
+                            size: AppSizing.iconXs,
+                          ),
+                          AppSpacing.gapHorizontalXs,
+                          Expanded(
+                            child: Text(
+                              widget.transaction.isTransfer &&
+                                      targetAccount != null
+                                  ? '${account!.name} → ${targetAccount!.name}'
+                                  : account!.name,
+                              overflow: TextOverflow.ellipsis,
+                              style: Theme.of(context).textTheme.bodySmall,
+                            ),
+                          ),
+                        ],
+                      ),
+                  ],
+                ),
               ),
-              Text(
-                NumberFormatters.formatCompactCurrency(
-                  widget.transaction.amount,
-                ),
-                style: Theme.of(context).textTheme.titleMedium?.copyWith(
-                  fontWeight: FontWeight.bold,
-                  color: getTypeColor(),
-                ),
-              ),
-              if (account != null)
-                Text(
-                  widget.transaction.isTransfer && targetAccount != null
-                      ? '${account!.name} → ${targetAccount!.name}'
-                      : account!.name,
-                  overflow: TextOverflow.ellipsis,
-                  style: Theme.of(context).textTheme.bodySmall,
-                ),
-              if (category != null)
-                Text(
-                  category!.name,
-                  overflow: TextOverflow.ellipsis,
-                  style: Theme.of(context).textTheme.bodySmall,
-                ),
             ],
           ),
         ),

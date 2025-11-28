@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:plata_sync/core/di/service_locator.dart';
+import 'package:plata_sync/core/ui/resources/app_sizing.dart';
 import 'package:plata_sync/core/ui/resources/app_spacing.dart';
 import 'package:plata_sync/core/ui/resources/app_theme.dart';
+import 'package:plata_sync/core/ui/widgets/object_icon.dart';
 import 'package:plata_sync/core/utils/numbers.dart';
 import 'package:plata_sync/features/accounts/application/accounts_manager.dart';
 import 'package:plata_sync/features/accounts/domain/entities/account.dart';
@@ -76,16 +78,12 @@ class _TransactionListViewState extends State<TransactionListView> {
             ? _accountsMap[transaction.targetAccountId]
             : null;
 
-        String typeLabel;
         Color typeColor;
         if (transaction.isTransfer) {
-          typeLabel = l10n.transactionTypeTransfer;
           typeColor = Theme.of(context).colorScheme.transfer;
         } else if (transaction.isExpense) {
-          typeLabel = l10n.transactionTypeExpense;
           typeColor = Theme.of(context).colorScheme.expense;
         } else {
-          typeLabel = l10n.transactionTypeIncome;
           typeColor = Theme.of(context).colorScheme.income;
         }
 
@@ -103,15 +101,16 @@ class _TransactionListViewState extends State<TransactionListView> {
               child: Row(
                 spacing: AppSpacing.md,
                 children: [
-                  // Type indicator
-                  Container(
-                    width: 4,
-                    height: 48,
-                    decoration: BoxDecoration(
-                      color: typeColor,
-                      borderRadius: BorderRadius.circular(2),
+                  // Type indicator for transfers
+                  if (transaction.isTransfer)
+                    Container(
+                      width: 4,
+                      height: 48,
+                      decoration: BoxDecoration(
+                        color: typeColor,
+                        borderRadius: BorderRadius.circular(2),
+                      ),
                     ),
-                  ),
                   // Content
                   Expanded(
                     child: Column(
@@ -121,29 +120,39 @@ class _TransactionListViewState extends State<TransactionListView> {
                       children: [
                         Row(
                           children: [
-                            Text(
-                              typeLabel,
-                              style: Theme.of(context).textTheme.bodySmall
-                                  ?.copyWith(
-                                    color: typeColor,
-                                    fontWeight: FontWeight.w600,
-                                  ),
-                            ),
-                            const Spacer(),
+                            if (category != null) ...[
+                              ObjectIcon(
+                                iconData: category.iconData,
+                                size: AppSizing.iconSm,
+                              ),
+                              AppSpacing.gapHorizontalXs,
+                            ],
+                            if (category != null)
+                              Expanded(
+                                child: Text(
+                                  category.name,
+                                  style: Theme.of(context).textTheme.bodyMedium
+                                      ?.copyWith(
+                                        fontWeight: FontWeight.w500,
+                                        color: typeColor,
+                                      ),
+                                ),
+                              ),
                             Text(
                               '${DateFormat.MMMd().format(transaction.createdAt)} ${DateFormat.Hm().format(transaction.createdAt)}',
                               style: Theme.of(context).textTheme.bodySmall,
                             ),
                           ],
                         ),
-                        if (category != null)
-                          Text(
-                            category.name,
-                            style: Theme.of(context).textTheme.bodyMedium
-                                ?.copyWith(fontWeight: FontWeight.w500),
-                          ),
                         Row(
                           children: [
+                            if (account != null) ...[
+                              ObjectIcon(
+                                iconData: account.iconData,
+                                size: AppSizing.iconXs,
+                              ),
+                              AppSpacing.gapHorizontalXs,
+                            ],
                             Text(
                               account?.name ?? l10n.accountsEmptyState,
                               style: Theme.of(context).textTheme.bodySmall,
@@ -153,6 +162,11 @@ class _TransactionListViewState extends State<TransactionListView> {
                                 ' → ',
                                 style: Theme.of(context).textTheme.bodySmall,
                               ),
+                              ObjectIcon(
+                                iconData: targetAccount.iconData,
+                                size: AppSizing.iconXs,
+                              ),
+                              AppSpacing.gapHorizontalXs,
                               Text(
                                 targetAccount.name,
                                 style: Theme.of(context).textTheme.bodySmall,
