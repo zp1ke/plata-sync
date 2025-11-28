@@ -338,5 +338,17 @@ class AppL10nEn extends AppL10n {
   String get iconFlashOn => 'Flash On';
 
   @override
+  String get iconAccountBalance => 'Account Balance';
+
+  @override
+  String get iconSavings => 'Savings';
+
+  @override
+  String get iconCreditCard => 'Credit Card';
+
+  @override
+  String get iconPayments => 'Payments';
+
+  @override
   String get iconUnknown => 'Unknown';
 }

@@ -460,6 +460,22 @@
   "@iconFlashOn": {
     "description": "Label for flash on icon"
   },
+  "iconAccountBalance": "Account Balance",
+  "@iconAccountBalance": {
+    "description": "Label for account balance icon"
+  },
+  "iconSavings": "Savings",
+  "@iconSavings": {
+    "description": "Label for savings icon"
+  },
+  "iconCreditCard": "Credit Card",
+  "@iconCreditCard": {
+    "description": "Label for credit card icon"
+  },
+  "iconPayments": "Payments",
+  "@iconPayments": {
+    "description": "Label for payments icon"
+  },
   "iconUnknown": "Unknown",
   "@iconUnknown": {
     "description": "Label for unknown icon"

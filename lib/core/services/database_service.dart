@@ -51,6 +51,20 @@ class DatabaseService {
         description TEXT
       )
     ''');
+
+    await db.execute('''
+      CREATE TABLE accounts (
+        id TEXT PRIMARY KEY,
+        created_at INTEGER NOT NULL,
+        name TEXT NOT NULL,
+        icon_name TEXT NOT NULL,
+        background_color_hex TEXT NOT NULL,
+        icon_color_hex TEXT NOT NULL,
+        last_used INTEGER,
+        description TEXT,
+        balance INTEGER NOT NULL DEFAULT 0
+      )
+    ''');
   }
 
   /// Handle database upgrades

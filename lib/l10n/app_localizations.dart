@@ -699,6 +699,30 @@ abstract class AppL10n {
   /// **'Flash On'**
   String get iconFlashOn;
 
+  /// Label for account balance icon
+  ///
+  /// In en, this message translates to:
+  /// **'Account Balance'**
+  String get iconAccountBalance;
+
+  /// Label for savings icon
+  ///
+  /// In en, this message translates to:
+  /// **'Savings'**
+  String get iconSavings;
+
+  /// Label for credit card icon
+  ///
+  /// In en, this message translates to:
+  /// **'Credit Card'**
+  String get iconCreditCard;
+
+  /// Label for payments icon
+  ///
+  /// In en, this message translates to:
+  /// **'Payments'**
+  String get iconPayments;
+
   /// Label for unknown icon
   ///
   /// In en, this message translates to:

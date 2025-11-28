@@ -74,6 +74,14 @@ class AppIcons {
 
   static String getIconLabel(String name, AppL10n l10n) {
     switch (name) {
+      case 'account_balance':
+        return l10n.iconAccountBalance;
+      case 'savings':
+        return l10n.iconSavings;
+      case 'credit_card':
+        return l10n.iconCreditCard;
+      case 'payments':
+        return l10n.iconPayments;
       case 'shopping_cart':
         return l10n.iconShoppingCart;
       case 'bolt':
@@ -127,6 +135,10 @@ class AppIcons {
 
   // Map for dynamic icon retrieval by name
   static final Map<String, dynamic> iconDataMap = {
+    'account_balance': HugeIcons.strokeRoundedBank,
+    'savings': HugeIcons.strokeRoundedMoneySavingJar,
+    'credit_card': HugeIcons.strokeRoundedCreditCard,
+    'payments': HugeIcons.strokeRoundedCashback,
     'shopping_cart': HugeIcons.strokeRoundedShoppingCart01,
     'bolt': HugeIcons.strokeRoundedFlashOff,
     'movie': HugeIcons.strokeRoundedVideo01,
