@@ -2,6 +2,8 @@ import 'package:get_it/get_it.dart';
 import 'package:package_info_plus/package_info_plus.dart';
 import 'package:plata_sync/core/services/database_service.dart';
 import 'package:plata_sync/core/services/settings_service.dart';
+import 'package:plata_sync/features/accounts/application/accounts_manager.dart';
+import 'package:plata_sync/features/accounts/data/interfaces/account_data_source.dart';
 import 'package:plata_sync/features/categories/application/categories_manager.dart';
 import 'package:plata_sync/features/categories/data/interfaces/category_data_source.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -28,10 +30,16 @@ Future<void> setupServiceLocator() async {
   getIt.registerSingleton<CategoryDataSource>(
     CategoryDataSource.createDataSource(dataSourceType, databaseService),
   );
+  getIt.registerSingleton<AccountDataSource>(
+    AccountDataSource.createDataSource(dataSourceType, databaseService),
+  );
 
   // Managers
   getIt.registerLazySingleton<CategoriesManager>(
     () => CategoriesManager(getIt<CategoryDataSource>()),
+  );
+  getIt.registerLazySingleton<AccountsManager>(
+    () => AccountsManager(getIt<AccountDataSource>()),
   );
 }
 

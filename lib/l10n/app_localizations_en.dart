@@ -27,6 +27,90 @@ class AppL10nEn extends AppL10n {
   String get accountsScreenTitle => 'Accounts';
 
   @override
+  String get accountsSearchHint => 'Search accounts...';
+
+  @override
+  String get accountsEmptyState => 'No accounts yet';
+
+  @override
+  String accountsNoSearchResults(String query) {
+    return 'No accounts found for \"$query\"';
+  }
+
+  @override
+  String get accountsSelectPrompt => 'Select an account to view details';
+
+  @override
+  String get accountsAddButton => 'Add Account';
+
+  @override
+  String get accountsAddSampleDataPrompt =>
+      'Would you like to add some sample accounts to get started?';
+
+  @override
+  String get accountsSortNameAsc => 'Name (A-Z)';
+
+  @override
+  String get accountsSortNameDesc => 'Name (Z-A)';
+
+  @override
+  String get accountsSortLastUsedAsc => 'Last Used (Oldest)';
+
+  @override
+  String get accountsSortLastUsedDesc => 'Last Used (Recent)';
+
+  @override
+  String get accountsSortBalanceAsc => 'Balance (Low to High)';
+
+  @override
+  String get accountsSortBalanceDesc => 'Balance (High to Low)';
+
+  @override
+  String accountCreated(String name) {
+    return 'Account \"$name\" created';
+  }
+
+  @override
+  String accountCreateFailed(String error) {
+    return 'Failed to create account: $error';
+  }
+
+  @override
+  String accountUpdated(String name) {
+    return 'Account \"$name\" updated';
+  }
+
+  @override
+  String accountUpdateFailed(String error) {
+    return 'Failed to update account: $error';
+  }
+
+  @override
+  String accountDeleted(String name) {
+    return 'Account \"$name\" deleted';
+  }
+
+  @override
+  String accountDeleteFailed(String name, String error) {
+    return 'Failed to delete account \"$name\": $error';
+  }
+
+  @override
+  String accountsDeleteConfirmation(String name) {
+    return 'Are you sure you want to delete \"$name\"?';
+  }
+
+  @override
+  String accountDuplicated(String name) {
+    return 'Account \"$name\" duplicated';
+  }
+
+  @override
+  String accountDuplicateFailed(String name, String error) {
+    return 'Failed to duplicate account \"$name\": $error';
+  }
+
+  @override
   String get accountsScreenBody => 'Accounts Screen';
 
   @override
@@ -150,6 +234,47 @@ class AppL10nEn extends AppL10n {
 
   @override
   String get duplicate => 'Duplicate';
+
+  @override
+  String get accountsDetailsId => 'ID';
+
+  @override
+  String get accountsDetailsBalance => 'Balance';
+
+  @override
+  String get accountsDetailsCreatedAt => 'Created';
+
+  @override
+  String get accountsDetailsLastUsed => 'Last Used';
+
+  @override
+  String get accountsEditTitle => 'Edit Account';
+
+  @override
+  String get accountsCreateTitle => 'Create Account';
+
+  @override
+  String get accountsEditName => 'Name';
+
+  @override
+  String get accountsEditNameRequired => 'Name is required';
+
+  @override
+  String get accountsEditDescription => 'Description';
+
+  @override
+  String get accountsEditInitialBalance => 'Initial Balance';
+
+  @override
+  String get accountsEditInitialBalanceHelper =>
+      'Enter the starting balance for this account';
+
+  @override
+  String get accountsEditInitialBalanceRequired =>
+      'Initial balance is required';
+
+  @override
+  String get accountsEditInitialBalanceInvalid => 'Invalid amount format';
 
   @override
   String get categoriesDetailsId => 'ID';

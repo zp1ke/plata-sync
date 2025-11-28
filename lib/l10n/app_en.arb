@@ -24,6 +24,146 @@
   "@accountsScreenTitle": {
     "description": "Title of the Accounts screen"
   },
+  "accountsSearchHint": "Search accounts...",
+  "@accountsSearchHint": {
+    "description": "Hint text for account search field"
+  },
+  "accountsEmptyState": "No accounts yet",
+  "@accountsEmptyState": {
+    "description": "Message shown when there are no accounts"
+  },
+  "accountsNoSearchResults": "No accounts found for \"{query}\"",
+  "@accountsNoSearchResults": {
+    "description": "Message shown when search returns no results",
+    "placeholders": {
+      "query": {
+        "type": "String"
+      }
+    }
+  },
+  "accountsSelectPrompt": "Select an account to view details",
+  "@accountsSelectPrompt": {
+    "description": "Prompt shown in detail pane when no account is selected"
+  },
+  "accountsAddButton": "Add Account",
+  "@accountsAddButton": {
+    "description": "Label for add account button"
+  },
+  "accountsAddSampleDataPrompt": "Would you like to add some sample accounts to get started?",
+  "@accountsAddSampleDataPrompt": {
+    "description": "Prompt to add sample accounts"
+  },
+  "accountsSortNameAsc": "Name (A-Z)",
+  "@accountsSortNameAsc": {
+    "description": "Sort accounts by name ascending"
+  },
+  "accountsSortNameDesc": "Name (Z-A)",
+  "@accountsSortNameDesc": {
+    "description": "Sort accounts by name descending"
+  },
+  "accountsSortLastUsedAsc": "Last Used (Oldest)",
+  "@accountsSortLastUsedAsc": {
+    "description": "Sort accounts by last used ascending"
+  },
+  "accountsSortLastUsedDesc": "Last Used (Recent)",
+  "@accountsSortLastUsedDesc": {
+    "description": "Sort accounts by last used descending"
+  },
+  "accountsSortBalanceAsc": "Balance (Low to High)",
+  "@accountsSortBalanceAsc": {
+    "description": "Sort accounts by balance ascending"
+  },
+  "accountsSortBalanceDesc": "Balance (High to Low)",
+  "@accountsSortBalanceDesc": {
+    "description": "Sort accounts by balance descending"
+  },
+  "accountCreated": "Account \"{name}\" created",
+  "@accountCreated": {
+    "description": "Success message when account is created",
+    "placeholders": {
+      "name": {
+        "type": "String"
+      }
+    }
+  },
+  "accountCreateFailed": "Failed to create account: {error}",
+  "@accountCreateFailed": {
+    "description": "Error message when account creation fails",
+    "placeholders": {
+      "error": {
+        "type": "String"
+      }
+    }
+  },
+  "accountUpdated": "Account \"{name}\" updated",
+  "@accountUpdated": {
+    "description": "Success message when account is updated",
+    "placeholders": {
+      "name": {
+        "type": "String"
+      }
+    }
+  },
+  "accountUpdateFailed": "Failed to update account: {error}",
+  "@accountUpdateFailed": {
+    "description": "Error message when account update fails",
+    "placeholders": {
+      "error": {
+        "type": "String"
+      }
+    }
+  },
+  "accountDeleted": "Account \"{name}\" deleted",
+  "@accountDeleted": {
+    "description": "Success message when account is deleted",
+    "placeholders": {
+      "name": {
+        "type": "String"
+      }
+    }
+  },
+  "accountDeleteFailed": "Failed to delete account \"{name}\": {error}",
+  "@accountDeleteFailed": {
+    "description": "Error message when account deletion fails",
+    "placeholders": {
+      "name": {
+        "type": "String"
+      },
+      "error": {
+        "type": "String"
+      }
+    }
+  },
+  "accountsDeleteConfirmation": "Are you sure you want to delete \"{name}\"?",
+  "@accountsDeleteConfirmation": {
+    "description": "Confirmation message when deleting an account",
+    "placeholders": {
+      "name": {
+        "type": "String"
+      }
+    }
+  },
+  "accountDuplicated": "Account \"{name}\" duplicated",
+  "@accountDuplicated": {
+    "description": "Success message when account is duplicated",
+    "placeholders": {
+      "name": {
+        "type": "String"
+      }
+    }
+  },
+  "accountDuplicateFailed": "Failed to duplicate account \"{name}\": {error}",
+  "@accountDuplicateFailed": {
+    "description": "Error message when account duplication fails",
+    "placeholders": {
+      "name": {
+        "type": "String"
+      },
+      "error": {
+        "type": "String"
+      }
+    }
+  },
   "accountsScreenBody": "Accounts Screen",
   "@accountsScreenBody": {
     "description": "Text displayed in the body of the Accounts screen"
@@ -184,6 +324,58 @@
   "duplicate": "Duplicate",
   "@duplicate": {
     "description": "Duplicate action"
+  },
+  "accountsDetailsId": "ID",
+  "@accountsDetailsId": {
+    "description": "Label for account ID field"
+  },
+  "accountsDetailsBalance": "Balance",
+  "@accountsDetailsBalance": {
+    "description": "Label for account balance field"
+  },
+  "accountsDetailsCreatedAt": "Created",
+  "@accountsDetailsCreatedAt": {
+    "description": "Label for account created at field"
+  },
+  "accountsDetailsLastUsed": "Last Used",
+  "@accountsDetailsLastUsed": {
+    "description": "Label for account last used field"
+  },
+  "accountsEditTitle": "Edit Account",
+  "@accountsEditTitle": {
+    "description": "Title for account edit dialog"
+  },
+  "accountsCreateTitle": "Create Account",
+  "@accountsCreateTitle": {
+    "description": "Title for account create dialog"
+  },
+  "accountsEditName": "Name",
+  "@accountsEditName": {
+    "description": "Label for account name field in edit dialog"
+  },
+  "accountsEditNameRequired": "Name is required",
+  "@accountsEditNameRequired": {
+    "description": "Validation message when name is empty"
+  },
+  "accountsEditDescription": "Description",
+  "@accountsEditDescription": {
+    "description": "Label for account description field in edit dialog"
+  },
+  "accountsEditInitialBalance": "Initial Balance",
+  "@accountsEditInitialBalance": {
+    "description": "Label for account initial balance field"
+  },
+  "accountsEditInitialBalanceHelper": "Enter the starting balance for this account",
+  "@accountsEditInitialBalanceHelper": {
+    "description": "Helper text for initial balance field"
+  },
+  "accountsEditInitialBalanceRequired": "Initial balance is required",
+  "@accountsEditInitialBalanceRequired": {
+    "description": "Validation message when initial balance is empty"
+  },
+  "accountsEditInitialBalanceInvalid": "Invalid amount format",
+  "@accountsEditInitialBalanceInvalid": {
+    "description": "Validation message when initial balance format is invalid"
   },
   "categoriesDetailsId": "ID",
   "@categoriesDetailsId": {

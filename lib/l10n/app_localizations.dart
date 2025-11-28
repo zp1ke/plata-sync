@@ -129,6 +129,132 @@ abstract class AppL10n {
   /// **'Accounts'**
   String get accountsScreenTitle;
 
+  /// Hint text for account search field
+  ///
+  /// In en, this message translates to:
+  /// **'Search accounts...'**
+  String get accountsSearchHint;
+
+  /// Message shown when there are no accounts
+  ///
+  /// In en, this message translates to:
+  /// **'No accounts yet'**
+  String get accountsEmptyState;
+
+  /// Message shown when search returns no results
+  ///
+  /// In en, this message translates to:
+  /// **'No accounts found for \"{query}\"'**
+  String accountsNoSearchResults(String query);
+
+  /// Prompt shown in detail pane when no account is selected
+  ///
+  /// In en, this message translates to:
+  /// **'Select an account to view details'**
+  String get accountsSelectPrompt;
+
+  /// Label for add account button
+  ///
+  /// In en, this message translates to:
+  /// **'Add Account'**
+  String get accountsAddButton;
+
+  /// Prompt to add sample accounts
+  ///
+  /// In en, this message translates to:
+  /// **'Would you like to add some sample accounts to get started?'**
+  String get accountsAddSampleDataPrompt;
+
+  /// Sort accounts by name ascending
+  ///
+  /// In en, this message translates to:
+  /// **'Name (A-Z)'**
+  String get accountsSortNameAsc;
+
+  /// Sort accounts by name descending
+  ///
+  /// In en, this message translates to:
+  /// **'Name (Z-A)'**
+  String get accountsSortNameDesc;
+
+  /// Sort accounts by last used ascending
+  ///
+  /// In en, this message translates to:
+  /// **'Last Used (Oldest)'**
+  String get accountsSortLastUsedAsc;
+
+  /// Sort accounts by last used descending
+  ///
+  /// In en, this message translates to:
+  /// **'Last Used (Recent)'**
+  String get accountsSortLastUsedDesc;
+
+  /// Sort accounts by balance ascending
+  ///
+  /// In en, this message translates to:
+  /// **'Balance (Low to High)'**
+  String get accountsSortBalanceAsc;
+
+  /// Sort accounts by balance descending
+  ///
+  /// In en, this message translates to:
+  /// **'Balance (High to Low)'**
+  String get accountsSortBalanceDesc;
+
+  /// Success message when account is created
+  ///
+  /// In en, this message translates to:
+  /// **'Account \"{name}\" created'**
+  String accountCreated(String name);
+
+  /// Error message when account creation fails
+  ///
+  /// In en, this message translates to:
+  /// **'Failed to create account: {error}'**
+  String accountCreateFailed(String error);
+
+  /// Success message when account is updated
+  ///
+  /// In en, this message translates to:
+  /// **'Account \"{name}\" updated'**
+  String accountUpdated(String name);
+
+  /// Error message when account update fails
+  ///
+  /// In en, this message translates to:
+  /// **'Failed to update account: {error}'**
+  String accountUpdateFailed(String error);
+
+  /// Success message when account is deleted
+  ///
+  /// In en, this message translates to:
+  /// **'Account \"{name}\" deleted'**
+  String accountDeleted(String name);
+
+  /// Error message when account deletion fails
+  ///
+  /// In en, this message translates to:
+  /// **'Failed to delete account \"{name}\": {error}'**
+  String accountDeleteFailed(String name, String error);
+
+  /// Confirmation message when deleting an account
+  ///
+  /// In en, this message translates to:
+  /// **'Are you sure you want to delete \"{name}\"?'**
+  String accountsDeleteConfirmation(String name);
+
+  /// Success message when account is duplicated
+  ///
+  /// In en, this message translates to:
+  /// **'Account \"{name}\" duplicated'**
+  String accountDuplicated(String name);
+
+  /// Error message when account duplication fails
+  ///
+  /// In en, this message translates to:
+  /// **'Failed to duplicate account \"{name}\": {error}'**
+  String accountDuplicateFailed(String name, String error);
+
   /// Text displayed in the body of the Accounts screen
   ///
   /// In en, this message translates to:
@@ -362,6 +488,84 @@ abstract class AppL10n {
   /// In en, this message translates to:
   /// **'Duplicate'**
   String get duplicate;
+
+  /// Label for account ID field
+  ///
+  /// In en, this message translates to:
+  /// **'ID'**
+  String get accountsDetailsId;
+
+  /// Label for account balance field
+  ///
+  /// In en, this message translates to:
+  /// **'Balance'**
+  String get accountsDetailsBalance;
+
+  /// Label for account created at field
+  ///
+  /// In en, this message translates to:
+  /// **'Created'**
+  String get accountsDetailsCreatedAt;
+
+  /// Label for account last used field
+  ///
+  /// In en, this message translates to:
+  /// **'Last Used'**
+  String get accountsDetailsLastUsed;
+
+  /// Title for account edit dialog
+  ///
+  /// In en, this message translates to:
+  /// **'Edit Account'**
+  String get accountsEditTitle;
+
+  /// Title for account create dialog
+  ///
+  /// In en, this message translates to:
+  /// **'Create Account'**
+  String get accountsCreateTitle;
+
+  /// Label for account name field in edit dialog
+  ///
+  /// In en, this message translates to:
+  /// **'Name'**
+  String get accountsEditName;
+
+  /// Validation message when name is empty
+  ///
+  /// In en, this message translates to:
+  /// **'Name is required'**
+  String get accountsEditNameRequired;
+
+  /// Label for account description field in edit dialog
+  ///
+  /// In en, this message translates to:
+  /// **'Description'**
+  String get accountsEditDescription;
+
+  /// Label for account initial balance field
+  ///
+  /// In en, this message translates to:
+  /// **'Initial Balance'**
+  String get accountsEditInitialBalance;
+
+  /// Helper text for initial balance field
+  ///
+  /// In en, this message translates to:
+  /// **'Enter the starting balance for this account'**
+  String get accountsEditInitialBalanceHelper;
+
+  /// Validation message when initial balance is empty
+  ///
+  /// In en, this message translates to:
+  /// **'Initial balance is required'**
+  String get accountsEditInitialBalanceRequired;
+
+  /// Validation message when initial balance format is invalid
+  ///
+  /// In en, this message translates to:
+  /// **'Invalid amount format'**
+  String get accountsEditInitialBalanceInvalid;
 
   /// Label for category ID field
   ///
