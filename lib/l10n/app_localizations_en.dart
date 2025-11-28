@@ -277,6 +277,18 @@ class AppL10nEn extends AppL10n {
   String get accountsEditInitialBalanceInvalid => 'Invalid amount format';
 
   @override
+  String get accountsEditIcon => 'Icon';
+
+  @override
+  String get accountsEditIconRequired => 'Icon is required';
+
+  @override
+  String get accountsEditBackgroundColor => 'Background Color';
+
+  @override
+  String get accountsEditIconColor => 'Icon Color';
+
+  @override
   String get categoriesDetailsId => 'ID';
 
   @override

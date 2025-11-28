@@ -108,6 +108,10 @@ class CategoryEditFormState extends State<CategoryEditForm> {
                 // Icon editor
                 ObjectIconEditor(
                   initialData: iconData,
+                  iconLabel: l10n.categoriesEditIcon,
+                  iconRequiredMessage: l10n.categoriesEditIconRequired,
+                  backgroundColorLabel: l10n.categoriesEditBackgroundColor,
+                  iconColorLabel: l10n.categoriesEditIconColor,
                   onChanged: (data) {
                     setState(() {
                       iconData = data;

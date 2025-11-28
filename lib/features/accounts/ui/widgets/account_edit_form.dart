@@ -136,6 +136,10 @@ class AccountEditFormState extends State<AccountEditForm> {
                 // Icon editor
                 ObjectIconEditor(
                   initialData: iconData,
+                  iconLabel: l10n.accountsEditIcon,
+                  iconRequiredMessage: l10n.accountsEditIconRequired,
+                  backgroundColorLabel: l10n.accountsEditBackgroundColor,
+                  iconColorLabel: l10n.accountsEditIconColor,
                   onChanged: (data) {
                     setState(() {
                       iconData = data;

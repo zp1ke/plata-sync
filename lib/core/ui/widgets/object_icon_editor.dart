@@ -10,10 +10,18 @@ import 'package:plata_sync/l10n/app_localizations.dart';
 class ObjectIconEditor extends StatefulWidget {
   final ObjectIconData initialData;
   final ValueChanged<ObjectIconData> onChanged;
+  final String iconLabel;
+  final String iconRequiredMessage;
+  final String backgroundColorLabel;
+  final String iconColorLabel;
 
   const ObjectIconEditor({
     required this.initialData,
     required this.onChanged,
+    required this.iconLabel,
+    required this.iconRequiredMessage,
+    required this.backgroundColorLabel,
+    required this.iconColorLabel,
     super.key,
   });
 
@@ -65,7 +73,7 @@ class _ObjectIconEditorState extends State<ObjectIconEditor> {
         DropdownButtonFormField<String>(
           initialValue: _selectedIconName,
           decoration: InputDecoration(
-            labelText: l10n.categoriesEditIcon,
+            labelText: widget.iconLabel,
             border: const OutlineInputBorder(),
           ),
           items: AppIcons.iconDataMap.keys.map((String iconName) {
@@ -90,7 +98,7 @@ class _ObjectIconEditorState extends State<ObjectIconEditor> {
           },
           validator: (value) {
             if (value == null || value.isEmpty) {
-              return l10n.categoriesEditIconRequired;
+              return widget.iconRequiredMessage;
             }
             return null;
           },
@@ -101,7 +109,7 @@ class _ObjectIconEditorState extends State<ObjectIconEditor> {
           children: [
             Expanded(
               child: ColorPickerField(
-                label: l10n.categoriesEditBackgroundColor,
+                label: widget.backgroundColorLabel,
                 value: _backgroundColor,
                 onChanged: (color) {
                   setState(() {
@@ -113,7 +121,7 @@ class _ObjectIconEditorState extends State<ObjectIconEditor> {
             ),
             Expanded(
               child: ColorPickerField(
-                label: l10n.categoriesEditIconColor,
+                label: widget.iconColorLabel,
                 value: _iconColor,
                 onChanged: (color) {
                   setState(() {

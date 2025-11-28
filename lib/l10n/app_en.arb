@@ -377,6 +377,22 @@
   "@accountsEditInitialBalanceInvalid": {
     "description": "Validation message when initial balance format is invalid"
   },
+  "accountsEditIcon": "Icon",
+  "@accountsEditIcon": {
+    "description": "Label for account icon field in edit dialog"
+  },
+  "accountsEditIconRequired": "Icon is required",
+  "@accountsEditIconRequired": {
+    "description": "Validation message when icon is empty"
+  },
+  "accountsEditBackgroundColor": "Background Color",
+  "@accountsEditBackgroundColor": {
+    "description": "Label for background color field in edit dialog"
+  },
+  "accountsEditIconColor": "Icon Color",
+  "@accountsEditIconColor": {
+    "description": "Label for icon color field in edit dialog"
+  },
   "categoriesDetailsId": "ID",
   "@categoriesDetailsId": {
     "description": "Label for category ID field"

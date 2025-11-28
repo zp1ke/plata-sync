@@ -567,6 +567,30 @@ abstract class AppL10n {
   /// **'Invalid amount format'**
   String get accountsEditInitialBalanceInvalid;
 
+  /// Label for account icon field in edit dialog
+  ///
+  /// In en, this message translates to:
+  /// **'Icon'**
+  String get accountsEditIcon;
+
+  /// Validation message when icon is empty
+  ///
+  /// In en, this message translates to:
+  /// **'Icon is required'**
+  String get accountsEditIconRequired;
+
+  /// Label for background color field in edit dialog
+  ///
+  /// In en, this message translates to:
+  /// **'Background Color'**
+  String get accountsEditBackgroundColor;
+
+  /// Label for icon color field in edit dialog
+  ///
+  /// In en, this message translates to:
+  /// **'Icon Color'**
+  String get accountsEditIconColor;
+
   /// Label for category ID field
   ///
   /// In en, this message translates to:
