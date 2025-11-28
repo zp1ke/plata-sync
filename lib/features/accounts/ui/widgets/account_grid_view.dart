@@ -1,8 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:plata_sync/core/ui/resources/app_sizing.dart';
-import 'package:plata_sync/core/utils/numbers.dart';
 import 'package:plata_sync/core/ui/resources/app_spacing.dart';
 import 'package:plata_sync/core/ui/widgets/object_icon.dart';
+import 'package:plata_sync/core/ui/widgets/responsive_grid_view.dart';
+import 'package:plata_sync/core/utils/numbers.dart';
 import 'package:plata_sync/features/accounts/domain/entities/account.dart';
 
 class AccountGridView extends StatelessWidget {
@@ -19,14 +20,7 @@ class AccountGridView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return GridView.builder(
-      padding: AppSpacing.paddingSm,
-      gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-        crossAxisCount: 2,
-        childAspectRatio: 2.2,
-        crossAxisSpacing: AppSpacing.sm,
-        mainAxisSpacing: AppSpacing.sm,
-      ),
+    return ResponsiveGridView(
       itemCount: accounts.length,
       itemBuilder: (context, index) {
         final account = accounts[index];

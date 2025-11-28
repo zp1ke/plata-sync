@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:plata_sync/core/ui/resources/app_sizing.dart';
 import 'package:plata_sync/core/ui/resources/app_spacing.dart';
 import 'package:plata_sync/core/ui/widgets/object_icon.dart';
+import 'package:plata_sync/core/ui/widgets/responsive_grid_view.dart';
 import 'package:plata_sync/features/categories/domain/entities/category.dart';
 
 class CategoryGridView extends StatelessWidget {
@@ -18,14 +19,7 @@ class CategoryGridView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return GridView.builder(
-      padding: AppSpacing.paddingSm,
-      gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-        crossAxisCount: 2,
-        childAspectRatio: 2.2,
-        crossAxisSpacing: AppSpacing.sm,
-        mainAxisSpacing: AppSpacing.sm,
-      ),
+    return ResponsiveGridView(
       itemCount: categories.length,
       itemBuilder: (context, index) {
         final category = categories[index];
