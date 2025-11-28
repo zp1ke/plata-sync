@@ -1,4 +1,5 @@
 import 'package:flutter/foundation.dart';
+import 'package:plata_sync/core/model/enums/view_mode.dart';
 import 'package:plata_sync/features/transactions/data/interfaces/transaction_data_source.dart';
 import 'package:plata_sync/features/transactions/domain/entities/transaction.dart';
 
@@ -26,6 +27,7 @@ class TransactionsManager {
   final ValueNotifier<TransactionSortOrder> sortOrder = ValueNotifier(
     TransactionSortOrder.dateDesc,
   );
+  final ValueNotifier<ViewMode> viewMode = ValueNotifier(ViewMode.list);
 
   Future<void> createSampleData() async {
     isLoading.value = true;
@@ -110,6 +112,10 @@ class TransactionsManager {
     _sortTransactions();
   }
 
+  void setViewMode(ViewMode mode) {
+    viewMode.value = mode;
+  }
+
   void clearFilters() {
     currentAccountFilter.value = null;
     currentCategoryFilter.value = null;
@@ -137,5 +143,6 @@ class TransactionsManager {
     currentAccountFilter.dispose();
     currentCategoryFilter.dispose();
     sortOrder.dispose();
+    viewMode.dispose();
   }
 }

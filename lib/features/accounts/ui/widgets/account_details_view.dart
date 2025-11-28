@@ -1,10 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:plata_sync/core/ui/resources/app_icons.dart';
-import 'package:plata_sync/core/utils/numbers.dart';
 import 'package:plata_sync/core/ui/resources/app_sizing.dart';
 import 'package:plata_sync/core/ui/resources/app_spacing.dart';
+import 'package:plata_sync/core/ui/resources/app_theme.dart';
 import 'package:plata_sync/core/utils/colors.dart';
 import 'package:plata_sync/core/utils/datetime.dart';
+import 'package:plata_sync/core/utils/numbers.dart';
 import 'package:plata_sync/features/accounts/domain/entities/account.dart';
 import 'package:plata_sync/l10n/app_localizations.dart';
 
@@ -58,8 +59,8 @@ class AccountDetailsView extends StatelessWidget {
             style: Theme.of(context).textTheme.headlineSmall?.copyWith(
               fontWeight: FontWeight.bold,
               color: account.balance >= 0
-                  ? Colors.green
-                  : Theme.of(context).colorScheme.error,
+                  ? Theme.of(context).colorScheme.income
+                  : Theme.of(context).colorScheme.expense,
             ),
           ),
         ),

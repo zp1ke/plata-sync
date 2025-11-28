@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:plata_sync/core/ui/resources/app_sizing.dart';
 import 'package:plata_sync/core/ui/resources/app_spacing.dart';
 import 'package:plata_sync/core/ui/widgets/currency_input_field.dart';
 import 'package:plata_sync/features/transactions/domain/entities/transaction.dart';
@@ -19,10 +20,10 @@ class TransactionEditForm extends StatefulWidget {
   });
 
   @override
-  State<TransactionEditForm> createState() => _TransactionEditFormState();
+  State<TransactionEditForm> createState() => TransactionEditFormState();
 }
 
-class _TransactionEditFormState extends State<TransactionEditForm> {
+class TransactionEditFormState extends State<TransactionEditForm> {
   final _formKey = GlobalKey<FormState>();
   final _amountController = TextEditingController();
   final _notesController = TextEditingController();
@@ -71,7 +72,7 @@ class _TransactionEditFormState extends State<TransactionEditForm> {
     super.dispose();
   }
 
-  void _handleSave() {
+  void handleSave() {
     if (!_formKey.currentState!.validate()) return;
 
     final amountText = _amountController.text.trim();
@@ -102,148 +103,153 @@ class _TransactionEditFormState extends State<TransactionEditForm> {
   Widget build(BuildContext context) {
     final l10n = AppL10n.of(context);
 
-    return Form(
-      key: _formKey,
-      child: Column(
-        mainAxisSize: MainAxisSize.min,
-        spacing: AppSpacing.lg,
-        children: [
-          // Transaction type selector
-          SegmentedButton<TransactionType>(
-            segments: [
-              ButtonSegment(
-                value: TransactionType.expense,
-                label: Text(l10n.transactionTypeExpense),
+    return Center(
+      child: ConstrainedBox(
+        constraints: const BoxConstraints(maxWidth: AppSizing.dialogMaxWidth),
+        child: Form(
+          key: _formKey,
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            spacing: AppSpacing.lg,
+            children: [
+              // Transaction type selector
+              SegmentedButton<TransactionType>(
+                segments: [
+                  ButtonSegment(
+                    value: TransactionType.expense,
+                    label: Text(l10n.transactionTypeExpense),
+                  ),
+                  ButtonSegment(
+                    value: TransactionType.income,
+                    label: Text(l10n.transactionTypeIncome),
+                  ),
+                  ButtonSegment(
+                    value: TransactionType.transfer,
+                    label: Text(l10n.transactionTypeTransfer),
+                  ),
+                ],
+                selected: {_type},
+                onSelectionChanged: (Set<TransactionType> newSelection) {
+                  setState(() {
+                    _type = newSelection.first;
+                    if (_type == TransactionType.transfer) {
+                      _categoryId = null;
+                    } else {
+                      _targetAccountId = null;
+                    }
+                  });
+                },
               ),
-              ButtonSegment(
-                value: TransactionType.income,
-                label: Text(l10n.transactionTypeIncome),
-              ),
-              ButtonSegment(
-                value: TransactionType.transfer,
-                label: Text(l10n.transactionTypeTransfer),
-              ),
-            ],
-            selected: {_type},
-            onSelectionChanged: (Set<TransactionType> newSelection) {
-              setState(() {
-                _type = newSelection.first;
-                if (_type == TransactionType.transfer) {
-                  _categoryId = null;
-                } else {
-                  _targetAccountId = null;
-                }
-              });
-            },
-          ),
 
-          // Date picker
-          InkWell(
-            onTap: () async {
-              final date = await showDatePicker(
-                context: context,
-                initialDate: _createdAt,
-                firstDate: DateTime(2000),
-                lastDate: DateTime.now().add(const Duration(days: 365)),
-              );
-              if (date != null) {
-                setState(() {
-                  _createdAt = DateTime(
-                    date.year,
-                    date.month,
-                    date.day,
-                    _createdAt.hour,
-                    _createdAt.minute,
+              // Date picker
+              InkWell(
+                onTap: () async {
+                  final date = await showDatePicker(
+                    context: context,
+                    initialDate: _createdAt,
+                    firstDate: DateTime(2000),
+                    lastDate: DateTime.now().add(const Duration(days: 365)),
                   );
-                });
-              }
-            },
-            child: InputDecorator(
-              decoration: InputDecoration(
-                labelText: l10n.transactionDateLabel,
-                border: const OutlineInputBorder(),
+                  if (date != null) {
+                    setState(() {
+                      _createdAt = DateTime(
+                        date.year,
+                        date.month,
+                        date.day,
+                        _createdAt.hour,
+                        _createdAt.minute,
+                      );
+                    });
+                  }
+                },
+                child: InputDecorator(
+                  decoration: InputDecoration(
+                    labelText: l10n.transactionDateLabel,
+                    border: const OutlineInputBorder(),
+                  ),
+                  child: Text(l10n.transactionDateFormat(_createdAt)),
+                ),
               ),
-              child: Text(l10n.transactionDateFormat(_createdAt)),
-            ),
+
+              // Account selector
+              AccountSelector(
+                accountId: _accountId,
+                onChanged: (accountId) {
+                  setState(() {
+                    _accountId = accountId;
+                  });
+                },
+                validator: (accountId) {
+                  if (accountId == null || accountId.isEmpty) {
+                    return l10n.transactionAccountRequired;
+                  }
+                  return null;
+                },
+              ),
+
+              // Category selector (only for expense/income)
+              if (_type != TransactionType.transfer)
+                CategorySelector(
+                  categoryId: _categoryId,
+                  onChanged: (categoryId) {
+                    setState(() {
+                      _categoryId = categoryId;
+                    });
+                  },
+                ),
+
+              // Target account selector (only for transfer)
+              if (_type == TransactionType.transfer)
+                AccountSelector(
+                  accountId: _targetAccountId,
+                  onChanged: (accountId) {
+                    setState(() {
+                      _targetAccountId = accountId;
+                    });
+                  },
+                  validator: (accountId) {
+                    if (accountId == null || accountId.isEmpty) {
+                      return l10n.transactionTargetAccountRequired;
+                    }
+                    if (accountId == _accountId) {
+                      return l10n.transactionTargetAccountSameError;
+                    }
+                    return null;
+                  },
+                ),
+
+              // Amount field
+              CurrencyInputField(
+                controller: _amountController,
+                label: l10n.transactionAmountLabel,
+                validator: (value) {
+                  if (value == null || value.isEmpty) {
+                    return l10n.transactionAmountRequired;
+                  }
+                  final amountDouble = double.tryParse(value);
+                  if (amountDouble == null || amountDouble <= 0) {
+                    return l10n.transactionAmountMustBePositive;
+                  }
+                  return null;
+                },
+              ),
+
+              // Notes field
+              TextFormField(
+                controller: _notesController,
+                decoration: InputDecoration(
+                  labelText: l10n.transactionNotesLabel,
+                  hintText: l10n.transactionNotesHint,
+                  border: const OutlineInputBorder(),
+                ),
+                maxLines: 3,
+              ),
+
+              // Save button
+              FilledButton(onPressed: handleSave, child: Text(l10n.saveButton)),
+            ],
           ),
-
-          // Account selector
-          AccountSelector(
-            accountId: _accountId,
-            onChanged: (accountId) {
-              setState(() {
-                _accountId = accountId;
-              });
-            },
-            validator: (accountId) {
-              if (accountId == null || accountId.isEmpty) {
-                return l10n.transactionAccountRequired;
-              }
-              return null;
-            },
-          ),
-
-          // Category selector (only for expense/income)
-          if (_type != TransactionType.transfer)
-            CategorySelector(
-              categoryId: _categoryId,
-              onChanged: (categoryId) {
-                setState(() {
-                  _categoryId = categoryId;
-                });
-              },
-            ),
-
-          // Target account selector (only for transfer)
-          if (_type == TransactionType.transfer)
-            AccountSelector(
-              accountId: _targetAccountId,
-              onChanged: (accountId) {
-                setState(() {
-                  _targetAccountId = accountId;
-                });
-              },
-              validator: (accountId) {
-                if (accountId == null || accountId.isEmpty) {
-                  return l10n.transactionTargetAccountRequired;
-                }
-                if (accountId == _accountId) {
-                  return l10n.transactionTargetAccountSameError;
-                }
-                return null;
-              },
-            ),
-
-          // Amount field
-          CurrencyInputField(
-            controller: _amountController,
-            label: l10n.transactionAmountLabel,
-            validator: (value) {
-              if (value == null || value.isEmpty) {
-                return l10n.transactionAmountRequired;
-              }
-              final amountDouble = double.tryParse(value);
-              if (amountDouble == null || amountDouble <= 0) {
-                return l10n.transactionAmountMustBePositive;
-              }
-              return null;
-            },
-          ),
-
-          // Notes field
-          TextFormField(
-            controller: _notesController,
-            decoration: InputDecoration(
-              labelText: l10n.transactionNotesLabel,
-              hintText: l10n.transactionNotesHint,
-              border: const OutlineInputBorder(),
-            ),
-            maxLines: 3,
-          ),
-
-          // Save button
-          FilledButton(onPressed: _handleSave, child: Text(l10n.saveButton)),
-        ],
+        ),
       ),
     );
   }

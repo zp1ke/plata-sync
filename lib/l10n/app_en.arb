@@ -777,5 +777,101 @@
   "transactionIdLabel": "Transaction ID",
   "@transactionIdLabel": {
     "description": "Label for transaction ID field"
+  },
+  "transactionsEmptyState": "No transactions yet",
+  "@transactionsEmptyState": {
+    "description": "Message shown when there are no transactions"
+  },
+  "transactionsSelectPrompt": "Select a transaction to view details",
+  "@transactionsSelectPrompt": {
+    "description": "Prompt shown in detail pane when no transaction is selected"
+  },
+  "transactionsAddSampleDataPrompt": "Would you like to add some sample transactions to get started?",
+  "@transactionsAddSampleDataPrompt": {
+    "description": "Prompt to add sample transactions"
+  },
+  "transactionsSortDateAsc": "Date (Oldest First)",
+  "@transactionsSortDateAsc": {
+    "description": "Sort transactions by date ascending"
+  },
+  "transactionsSortDateDesc": "Date (Newest First)",
+  "@transactionsSortDateDesc": {
+    "description": "Sort transactions by date descending"
+  },
+  "transactionsSortAmountAsc": "Amount (Low to High)",
+  "@transactionsSortAmountAsc": {
+    "description": "Sort transactions by amount ascending"
+  },
+  "transactionsSortAmountDesc": "Amount (High to Low)",
+  "@transactionsSortAmountDesc": {
+    "description": "Sort transactions by amount descending"
+  },
+  "transactionCreated": "Transaction created",
+  "@transactionCreated": {
+    "description": "Success message when transaction is created"
+  },
+  "transactionCreateFailed": "Failed to create transaction: {error}",
+  "@transactionCreateFailed": {
+    "description": "Error message when transaction creation fails",
+    "placeholders": {
+      "error": {
+        "type": "String"
+      }
+    }
+  },
+  "transactionUpdated": "Transaction updated",
+  "@transactionUpdated": {
+    "description": "Success message when transaction is updated"
+  },
+  "transactionUpdateFailed": "Failed to update transaction: {error}",
+  "@transactionUpdateFailed": {
+    "description": "Error message when transaction update fails",
+    "placeholders": {
+      "error": {
+        "type": "String"
+      }
+    }
+  },
+  "transactionDeleted": "Transaction deleted",
+  "@transactionDeleted": {
+    "description": "Success message when transaction is deleted"
+  },
+  "transactionDeleteFailed": "Failed to delete transaction: {error}",
+  "@transactionDeleteFailed": {
+    "description": "Error message when transaction deletion fails",
+    "placeholders": {
+      "error": {
+        "type": "String"
+      }
+    }
+  },
+  "transactionsDeleteConfirmation": "Are you sure you want to delete this transaction?",
+  "@transactionsDeleteConfirmation": {
+    "description": "Confirmation message when deleting a transaction"
+  },
+  "addSampleData": "Add Sample Data",
+  "@addSampleData": {
+    "description": "Button text to add sample data"
+  },
+  "sampleDataCreated": "Sample data created successfully",
+  "@sampleDataCreated": {
+    "description": "Success message when sample data is created"
+  },
+  "sampleDataCreateFailed": "Failed to create sample data: {error}",
+  "@sampleDataCreateFailed": {
+    "description": "Error message when sample data creation fails",
+    "placeholders": {
+      "error": {
+        "type": "String"
+      }
+    }
+  },
+  "confirmDelete": "Confirm Delete",
+  "@confirmDelete": {
+    "description": "Title for delete confirmation dialog"
+  },
+  "refresh": "Refresh",
+  "@refresh": {
+    "description": "Refresh action tooltip"
   }
 }

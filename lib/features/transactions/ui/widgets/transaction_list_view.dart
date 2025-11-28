@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:plata_sync/core/di/service_locator.dart';
 import 'package:plata_sync/core/ui/resources/app_spacing.dart';
+import 'package:plata_sync/core/ui/resources/app_theme.dart';
 import 'package:plata_sync/core/utils/numbers.dart';
 import 'package:plata_sync/features/accounts/application/accounts_manager.dart';
 import 'package:plata_sync/features/accounts/domain/entities/account.dart';
@@ -79,13 +80,13 @@ class _TransactionListViewState extends State<TransactionListView> {
         Color typeColor;
         if (transaction.isTransfer) {
           typeLabel = l10n.transactionTypeTransfer;
-          typeColor = Colors.blue;
+          typeColor = Theme.of(context).colorScheme.transfer;
         } else if (transaction.isExpense) {
           typeLabel = l10n.transactionTypeExpense;
-          typeColor = Theme.of(context).colorScheme.error;
+          typeColor = Theme.of(context).colorScheme.expense;
         } else {
           typeLabel = l10n.transactionTypeIncome;
-          typeColor = Colors.green;
+          typeColor = Theme.of(context).colorScheme.income;
         }
 
         return Card(

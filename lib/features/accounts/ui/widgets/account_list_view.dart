@@ -1,8 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:plata_sync/core/ui/resources/app_sizing.dart';
-import 'package:plata_sync/core/utils/numbers.dart';
 import 'package:plata_sync/core/ui/resources/app_spacing.dart';
+import 'package:plata_sync/core/ui/resources/app_theme.dart';
 import 'package:plata_sync/core/ui/widgets/object_icon.dart';
+import 'package:plata_sync/core/utils/numbers.dart';
 import 'package:plata_sync/features/accounts/domain/entities/account.dart';
 
 class AccountListView extends StatelessWidget {
@@ -65,8 +66,8 @@ class AccountListView extends StatelessWidget {
                     style: Theme.of(context).textTheme.titleMedium?.copyWith(
                       fontWeight: FontWeight.bold,
                       color: account.balance >= 0
-                          ? Colors.green
-                          : Theme.of(context).colorScheme.error,
+                          ? Theme.of(context).colorScheme.income
+                          : Theme.of(context).colorScheme.expense,
                     ),
                   ),
                 ],

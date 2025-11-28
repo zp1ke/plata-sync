@@ -8,8 +8,8 @@ import '../resources/app_sizing.dart';
 
 class AppTopBar extends StatefulWidget {
   final String title;
-  final String searchHint;
-  final ValueChanged<String> onSearchChanged;
+  final String? searchHint;
+  final ValueChanged<String>? onSearchChanged;
   final bool isLoading;
   final VoidCallback? onRefresh;
   final Widget? bottom;
@@ -17,8 +17,8 @@ class AppTopBar extends StatefulWidget {
   const AppTopBar({
     super.key,
     required this.title,
-    required this.searchHint,
-    required this.onSearchChanged,
+    this.searchHint,
+    this.onSearchChanged,
     this.isLoading = false,
     this.onRefresh,
     this.bottom,
@@ -43,13 +43,13 @@ class _AppTopBarState extends State<AppTopBar> {
   void onSearchChanged(String query) {
     if (debounce?.isActive ?? false) debounce!.cancel();
     debounce = Timer(const Duration(milliseconds: 500), () {
-      widget.onSearchChanged(query);
+      widget.onSearchChanged?.call(query);
     });
   }
 
   void doSearch(String query) {
     debounce?.cancel();
-    widget.onSearchChanged(query);
+    widget.onSearchChanged?.call(query);
   }
 
   void toggleSearch() {
@@ -101,16 +101,17 @@ class _AppTopBarState extends State<AppTopBar> {
               child: const CircularProgressIndicator.adaptive(),
             ),
           ),
-        if (isSearching)
-          IconButton(icon: AppIcons.searchOff, onPressed: toggleSearch),
-        if (!isSearching) ...[
-          IconButton(icon: AppIcons.search, onPressed: toggleSearch),
-          if (widget.onRefresh != null)
-            IconButton(
-              onPressed: widget.isLoading ? null : widget.onRefresh,
-              icon: AppIcons.refresh,
-            ),
+        if (widget.onSearchChanged != null) ...[
+          if (isSearching)
+            IconButton(icon: AppIcons.searchOff, onPressed: toggleSearch),
+          if (!isSearching)
+            IconButton(icon: AppIcons.search, onPressed: toggleSearch),
         ],
+        if (!isSearching && widget.onRefresh != null)
+          IconButton(
+            onPressed: widget.isLoading ? null : widget.onRefresh,
+            icon: AppIcons.refresh,
+          ),
       ],
     );
   }
@@ -126,7 +127,7 @@ class _AppTopBarState extends State<AppTopBar> {
           padding: EdgeInsets.only(right: AppSpacing.xs),
           child: AppIcons.searchXs,
         ),
-        hintText: widget.searchHint,
+        hintText: widget.searchHint ?? '',
         suffixIcon: (!widget.isLoading && searchController.text.isNotEmpty)
             ? IconButton(icon: AppIcons.clear, onPressed: clearSearch)
             : null,

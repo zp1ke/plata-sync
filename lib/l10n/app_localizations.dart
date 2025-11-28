@@ -1082,6 +1082,120 @@ abstract class AppL10n {
   /// In en, this message translates to:
   /// **'Transaction ID'**
   String get transactionIdLabel;
+
+  /// Message shown when there are no transactions
+  ///
+  /// In en, this message translates to:
+  /// **'No transactions yet'**
+  String get transactionsEmptyState;
+
+  /// Prompt shown in detail pane when no transaction is selected
+  ///
+  /// In en, this message translates to:
+  /// **'Select a transaction to view details'**
+  String get transactionsSelectPrompt;
+
+  /// Prompt to add sample transactions
+  ///
+  /// In en, this message translates to:
+  /// **'Would you like to add some sample transactions to get started?'**
+  String get transactionsAddSampleDataPrompt;
+
+  /// Sort transactions by date ascending
+  ///
+  /// In en, this message translates to:
+  /// **'Date (Oldest First)'**
+  String get transactionsSortDateAsc;
+
+  /// Sort transactions by date descending
+  ///
+  /// In en, this message translates to:
+  /// **'Date (Newest First)'**
+  String get transactionsSortDateDesc;
+
+  /// Sort transactions by amount ascending
+  ///
+  /// In en, this message translates to:
+  /// **'Amount (Low to High)'**
+  String get transactionsSortAmountAsc;
+
+  /// Sort transactions by amount descending
+  ///
+  /// In en, this message translates to:
+  /// **'Amount (High to Low)'**
+  String get transactionsSortAmountDesc;
+
+  /// Success message when transaction is created
+  ///
+  /// In en, this message translates to:
+  /// **'Transaction created'**
+  String get transactionCreated;
+
+  /// Error message when transaction creation fails
+  ///
+  /// In en, this message translates to:
+  /// **'Failed to create transaction: {error}'**
+  String transactionCreateFailed(String error);
+
+  /// Success message when transaction is updated
+  ///
+  /// In en, this message translates to:
+  /// **'Transaction updated'**
+  String get transactionUpdated;
+
+  /// Error message when transaction update fails
+  ///
+  /// In en, this message translates to:
+  /// **'Failed to update transaction: {error}'**
+  String transactionUpdateFailed(String error);
+
+  /// Success message when transaction is deleted
+  ///
+  /// In en, this message translates to:
+  /// **'Transaction deleted'**
+  String get transactionDeleted;
+
+  /// Error message when transaction deletion fails
+  ///
+  /// In en, this message translates to:
+  /// **'Failed to delete transaction: {error}'**
+  String transactionDeleteFailed(String error);
+
+  /// Confirmation message when deleting a transaction
+  ///
+  /// In en, this message translates to:
+  /// **'Are you sure you want to delete this transaction?'**
+  String get transactionsDeleteConfirmation;
+
+  /// Button text to add sample data
+  ///
+  /// In en, this message translates to:
+  /// **'Add Sample Data'**
+  String get addSampleData;
+
+  /// Success message when sample data is created
+  ///
+  /// In en, this message translates to:
+  /// **'Sample data created successfully'**
+  String get sampleDataCreated;
+
+  /// Error message when sample data creation fails
+  ///
+  /// In en, this message translates to:
+  /// **'Failed to create sample data: {error}'**
+  String sampleDataCreateFailed(String error);
+
+  /// Title for delete confirmation dialog
+  ///
+  /// In en, this message translates to:
+  /// **'Confirm Delete'**
+  String get confirmDelete;
+
+  /// Refresh action tooltip
+  ///
+  /// In en, this message translates to:
+  /// **'Refresh'**
+  String get refresh;
 }
 
 class _AppL10nDelegate extends LocalizationsDelegate<AppL10n> {

@@ -558,4 +558,71 @@ class AppL10nEn extends AppL10n {
 
   @override
   String get transactionIdLabel => 'Transaction ID';
+
+  @override
+  String get transactionsEmptyState => 'No transactions yet';
+
+  @override
+  String get transactionsSelectPrompt => 'Select a transaction to view details';
+
+  @override
+  String get transactionsAddSampleDataPrompt =>
+      'Would you like to add some sample transactions to get started?';
+
+  @override
+  String get transactionsSortDateAsc => 'Date (Oldest First)';
+
+  @override
+  String get transactionsSortDateDesc => 'Date (Newest First)';
+
+  @override
+  String get transactionsSortAmountAsc => 'Amount (Low to High)';
+
+  @override
+  String get transactionsSortAmountDesc => 'Amount (High to Low)';
+
+  @override
+  String get transactionCreated => 'Transaction created';
+
+  @override
+  String transactionCreateFailed(String error) {
+    return 'Failed to create transaction: $error';
+  }
+
+  @override
+  String get transactionUpdated => 'Transaction updated';
+
+  @override
+  String transactionUpdateFailed(String error) {
+    return 'Failed to update transaction: $error';
+  }
+
+  @override
+  String get transactionDeleted => 'Transaction deleted';
+
+  @override
+  String transactionDeleteFailed(String error) {
+    return 'Failed to delete transaction: $error';
+  }
+
+  @override
+  String get transactionsDeleteConfirmation =>
+      'Are you sure you want to delete this transaction?';
+
+  @override
+  String get addSampleData => 'Add Sample Data';
+
+  @override
+  String get sampleDataCreated => 'Sample data created successfully';
+
+  @override
+  String sampleDataCreateFailed(String error) {
+    return 'Failed to create sample data: $error';
+  }
+
+  @override
+  String get confirmDelete => 'Confirm Delete';
+
+  @override
+  String get refresh => 'Refresh';
 }
