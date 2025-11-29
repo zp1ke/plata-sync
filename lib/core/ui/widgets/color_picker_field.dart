@@ -46,6 +46,7 @@ class ColorPickerField extends StatelessWidget {
     showDialog(
       context: context,
       builder: (context) => AlertDialog(
+        insetPadding: AppSpacing.paddingMd,
         title: Text(label),
         content: SizedBox(
           width: double.maxFinite,

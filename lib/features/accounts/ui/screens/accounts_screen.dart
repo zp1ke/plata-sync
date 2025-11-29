@@ -474,6 +474,7 @@ Future<void> _showSampleDataDialog(BuildContext context) async {
   final result = await showDialog<bool>(
     context: context,
     builder: (dialogContext) => AlertDialog(
+      insetPadding: AppSpacing.paddingMd,
       title: Text(l10n.accountsEmptyState),
       content: Text(l10n.accountsAddSampleDataPrompt),
       actions: [
@@ -617,6 +618,7 @@ Future<void> _handleDelete(BuildContext context, Account account) async {
   final confirmed = await showDialog<bool>(
     context: context,
     builder: (dialogContext) => AlertDialog(
+      insetPadding: AppSpacing.paddingMd,
       title: Text(l10n.delete),
       content: Text(l10n.accountsDeleteConfirmation(account.name)),
       actions: [

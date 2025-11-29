@@ -150,6 +150,7 @@ class _MobileTransactionsScreenState extends State<_MobileTransactionsScreen> {
     showDialog(
       context: context,
       builder: (context) => AlertDialog(
+        insetPadding: AppSpacing.paddingMd,
         title: Text(l10n.transactionsEmptyState),
         content: Text(l10n.transactionsAddSampleDataPrompt),
         actions: [
@@ -268,6 +269,7 @@ class _MobileTransactionsScreenState extends State<_MobileTransactionsScreen> {
     showDialog(
       context: context,
       builder: (dialogContext) => AlertDialog(
+        insetPadding: AppSpacing.paddingMd,
         title: Text(l10n.confirmDelete),
         content: Text(l10n.transactionsDeleteConfirmation),
         actions: [
@@ -685,6 +687,7 @@ class _TabletTransactionsScreenState extends State<_TabletTransactionsScreen> {
     showDialog(
       context: context,
       builder: (context) => AlertDialog(
+        insetPadding: AppSpacing.paddingMd,
         title: Text(l10n.transactionsEmptyState),
         content: Text(l10n.transactionsAddSampleDataPrompt),
         actions: [
@@ -789,6 +792,7 @@ class _TabletTransactionsScreenState extends State<_TabletTransactionsScreen> {
     showDialog(
       context: context,
       builder: (dialogContext) => AlertDialog(
+        insetPadding: AppSpacing.paddingMd,
         title: Text(l10n.confirmDelete),
         content: Text(l10n.transactionsDeleteConfirmation),
         actions: [

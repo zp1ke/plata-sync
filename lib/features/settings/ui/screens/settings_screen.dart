@@ -138,6 +138,7 @@ class _DataSourceSettingState extends State<_DataSourceSetting> {
       showDialog<void>(
         context: context,
         builder: (context) => AlertDialog(
+          insetPadding: AppSpacing.paddingMd,
           title: Text(l10n.settingsDataSourceChangedTitle),
           content: Text(l10n.settingsDataSourceChangedMessage),
           actions: [
@@ -161,6 +162,7 @@ class _DataSourceSettingState extends State<_DataSourceSetting> {
     final result = await showDialog<bool>(
       context: context,
       builder: (context) => AlertDialog(
+        insetPadding: AppSpacing.paddingMd,
         title: Text(l10n.settingsDataSourceChangeTitle),
         content: Text(l10n.settingsDataSourceChangeMessage),
         actions: [

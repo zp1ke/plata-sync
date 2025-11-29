@@ -157,6 +157,7 @@ class _SelectionDialogState<T> extends State<_SelectionDialog<T>> {
 
     return AlertDialog(
       title: Text(widget.title),
+      insetPadding: AppSpacing.paddingMd,
       contentPadding: const EdgeInsets.fromLTRB(
         AppSpacing.lg,
         AppSpacing.md,

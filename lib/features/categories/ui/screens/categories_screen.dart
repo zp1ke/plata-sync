@@ -469,6 +469,7 @@ Future<void> _showSampleDataDialog(BuildContext context) async {
   final result = await showDialog<bool>(
     context: context,
     builder: (dialogContext) => AlertDialog(
+      insetPadding: AppSpacing.paddingMd,
       title: Text(l10n.categoriesEmptyState),
       content: Text(l10n.categoriesAddSampleDataPrompt),
       actions: [
@@ -611,6 +612,7 @@ Future<void> _handleDelete(BuildContext context, Category category) async {
   final confirmed = await showDialog<bool>(
     context: context,
     builder: (dialogContext) => AlertDialog(
+      insetPadding: AppSpacing.paddingMd,
       title: Text(l10n.delete),
       content: Text(l10n.categoriesDeleteConfirmation(category.name)),
       actions: [
