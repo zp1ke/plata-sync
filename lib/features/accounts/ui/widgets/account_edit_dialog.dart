@@ -18,8 +18,8 @@ class AccountEditDialog extends StatelessWidget {
       title: Text(
         account == null ? l10n.accountsCreateTitle : l10n.accountsEditTitle,
       ),
-      content: ConstrainedBox(
-        constraints: const BoxConstraints(maxWidth: AppSizing.dialogMaxWidth),
+      content: SizedBox(
+        width: AppSizing.dialogMaxWidth,
         child: SingleChildScrollView(
           child: AccountEditForm(
             account: account,

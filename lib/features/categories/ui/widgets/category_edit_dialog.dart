@@ -20,8 +20,8 @@ class CategoryEditDialog extends StatelessWidget {
             ? l10n.categoriesCreateTitle
             : l10n.categoriesEditTitle,
       ),
-      content: ConstrainedBox(
-        constraints: const BoxConstraints(maxWidth: AppSizing.dialogMaxWidth),
+      content: SizedBox(
+        width: AppSizing.dialogMaxWidth,
         child: SingleChildScrollView(
           child: CategoryEditForm(
             category: category,

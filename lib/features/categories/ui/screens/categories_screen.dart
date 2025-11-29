@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:plata_sync/core/di/service_locator.dart';
 import 'package:plata_sync/core/model/enums/view_mode.dart';
 import 'package:plata_sync/core/ui/resources/app_icons.dart';
+import 'package:plata_sync/core/ui/resources/app_sizing.dart';
 import 'package:plata_sync/core/ui/resources/app_spacing.dart';
 import 'package:plata_sync/core/ui/widgets/app_top_bar.dart';
 import 'package:plata_sync/core/ui/widgets/responsive_layout.dart';
@@ -386,26 +387,33 @@ class _TabletCategoriesScreenState extends State<_TabletCategoriesScreen> {
         Expanded(
           child: SingleChildScrollView(
             padding: const EdgeInsets.all(AppSpacing.lg),
-            child: CategoryEditForm(
-              key: _editFormKey,
-              category: selectedCategory,
-              showActions: false,
-              onFormValidChanged: (isValid) {
-                setState(() {
-                  _canSave = isValid;
-                });
-              },
-              onSave: (updatedCategory) async {
-                if (selectedCategory == null) {
-                  await _handleSaveCreate(context, updatedCategory);
-                } else {
-                  await _handleSaveEdit(context, updatedCategory);
-                }
-                setState(() {
-                  selectedCategory = updatedCategory;
-                  isEditing = false;
-                });
-              },
+            child: Center(
+              child: ConstrainedBox(
+                constraints: const BoxConstraints(
+                  maxWidth: AppSizing.dialogMaxWidth,
+                ),
+                child: CategoryEditForm(
+                  key: _editFormKey,
+                  category: selectedCategory,
+                  showActions: false,
+                  onFormValidChanged: (isValid) {
+                    setState(() {
+                      _canSave = isValid;
+                    });
+                  },
+                  onSave: (updatedCategory) async {
+                    if (selectedCategory == null) {
+                      await _handleSaveCreate(context, updatedCategory);
+                    } else {
+                      await _handleSaveEdit(context, updatedCategory);
+                    }
+                    setState(() {
+                      selectedCategory = updatedCategory;
+                      isEditing = false;
+                    });
+                  },
+                ),
+              ),
             ),
           ),
         ),

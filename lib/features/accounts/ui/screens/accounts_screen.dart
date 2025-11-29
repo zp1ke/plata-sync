@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:plata_sync/core/di/service_locator.dart';
 import 'package:plata_sync/core/model/enums/view_mode.dart';
 import 'package:plata_sync/core/ui/resources/app_icons.dart';
+import 'package:plata_sync/core/ui/resources/app_sizing.dart';
 import 'package:plata_sync/core/ui/resources/app_spacing.dart';
 import 'package:plata_sync/core/ui/widgets/app_top_bar.dart';
 import 'package:plata_sync/core/ui/widgets/responsive_layout.dart';
@@ -393,26 +394,33 @@ class _TabletAccountsScreenState extends State<_TabletAccountsScreen> {
         Expanded(
           child: SingleChildScrollView(
             padding: const EdgeInsets.all(AppSpacing.lg),
-            child: AccountEditForm(
-              key: _editFormKey,
-              account: selectedAccount,
-              showActions: false,
-              onFormValidChanged: (isValid) {
-                setState(() {
-                  _canSave = isValid;
-                });
-              },
-              onSave: (updatedAccount) async {
-                if (selectedAccount == null) {
-                  await _handleSaveCreate(context, updatedAccount);
-                } else {
-                  await _handleSaveEdit(context, updatedAccount);
-                }
-                setState(() {
-                  selectedAccount = updatedAccount;
-                  isEditing = false;
-                });
-              },
+            child: Center(
+              child: ConstrainedBox(
+                constraints: const BoxConstraints(
+                  maxWidth: AppSizing.dialogMaxWidth,
+                ),
+                child: AccountEditForm(
+                  key: _editFormKey,
+                  account: selectedAccount,
+                  showActions: false,
+                  onFormValidChanged: (isValid) {
+                    setState(() {
+                      _canSave = isValid;
+                    });
+                  },
+                  onSave: (updatedAccount) async {
+                    if (selectedAccount == null) {
+                      await _handleSaveCreate(context, updatedAccount);
+                    } else {
+                      await _handleSaveEdit(context, updatedAccount);
+                    }
+                    setState(() {
+                      selectedAccount = updatedAccount;
+                      isEditing = false;
+                    });
+                  },
+                ),
+              ),
             ),
           ),
         ),

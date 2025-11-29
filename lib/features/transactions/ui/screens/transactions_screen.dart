@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:plata_sync/core/di/service_locator.dart';
 import 'package:plata_sync/core/model/enums/view_mode.dart';
 import 'package:plata_sync/core/ui/resources/app_icons.dart';
+import 'package:plata_sync/core/ui/resources/app_sizing.dart';
 import 'package:plata_sync/core/ui/resources/app_spacing.dart';
 import 'package:plata_sync/core/ui/widgets/app_top_bar.dart';
 import 'package:plata_sync/core/ui/widgets/responsive_layout.dart';
@@ -656,11 +657,18 @@ class _TabletTransactionsScreenState extends State<_TabletTransactionsScreen> {
         Expanded(
           child: SingleChildScrollView(
             padding: const EdgeInsets.all(AppSpacing.lg),
-            child: TransactionEditForm(
-              key: _editFormKey,
-              transaction: selectedTransaction,
-              onSave: (updatedTransaction) =>
-                  _handleSaveEdit(context, updatedTransaction),
+            child: Center(
+              child: ConstrainedBox(
+                constraints: const BoxConstraints(
+                  maxWidth: AppSizing.dialogMaxWidth,
+                ),
+                child: TransactionEditForm(
+                  key: _editFormKey,
+                  transaction: selectedTransaction,
+                  onSave: (updatedTransaction) =>
+                      _handleSaveEdit(context, updatedTransaction),
+                ),
+              ),
             ),
           ),
         ),

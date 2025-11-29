@@ -11,10 +11,12 @@ import 'package:plata_sync/l10n/app_localizations.dart';
 class TransactionEditForm extends StatefulWidget {
   final Transaction? transaction;
   final ValueChanged<Transaction> onSave;
+  final VoidCallback? onCancel;
 
   const TransactionEditForm({
     this.transaction,
     required this.onSave,
+    this.onCancel,
     super.key,
   });
 
@@ -213,8 +215,24 @@ class TransactionEditFormState extends State<TransactionEditForm> {
               maxLines: 3,
             ),
 
-            // Save button
-            FilledButton(onPressed: handleSave, child: Text(l10n.saveButton)),
+            // Actions
+            Row(
+              mainAxisAlignment: MainAxisAlignment.end,
+              spacing: AppSpacing.sm,
+              children: [
+                if (widget.onCancel != null)
+                  TextButton(
+                    onPressed: widget.onCancel,
+                    child: Text(l10n.cancel),
+                  ),
+                FilledButton(
+                  onPressed: _formKey.currentState!.validate()
+                      ? handleSave
+                      : null,
+                  child: Text(l10n.save),
+                ),
+              ],
+            ),
           ],
         ),
       ),
