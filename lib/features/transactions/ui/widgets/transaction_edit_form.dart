@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:plata_sync/core/ui/resources/app_sizing.dart';
 import 'package:plata_sync/core/ui/resources/app_spacing.dart';
 import 'package:plata_sync/core/ui/widgets/currency_input_field.dart';
 import 'package:plata_sync/core/ui/widgets/date_time_picker_field.dart';
@@ -104,122 +103,119 @@ class TransactionEditFormState extends State<TransactionEditForm> {
     final l10n = AppL10n.of(context);
 
     return Center(
-      child: ConstrainedBox(
-        constraints: const BoxConstraints(maxWidth: AppSizing.dialogMaxWidth),
-        child: Form(
-          key: _formKey,
-          child: Column(
-            mainAxisSize: MainAxisSize.min,
-            spacing: AppSpacing.lg,
-            children: [
-              // Transaction type selector
-              TransactionTypeSelector(
-                type: _type,
-                onChanged: (TransactionType newType) {
+      child: Form(
+        key: _formKey,
+        child: Column(
+          mainAxisSize: MainAxisSize.min,
+          spacing: AppSpacing.lg,
+          children: [
+            // Transaction type selector
+            TransactionTypeSelector(
+              type: _type,
+              onChanged: (TransactionType newType) {
+                setState(() {
+                  _type = newType;
+                  if (_type == TransactionType.transfer) {
+                    _categoryId = null;
+                  } else {
+                    _targetAccountId = null;
+                  }
+                });
+              },
+            ),
+
+            // Date and time picker
+            DateTimePickerField(
+              dateTime: _createdAt,
+              label: l10n.transactionDateLabel,
+              onChanged: (DateTime newDateTime) {
+                setState(() {
+                  _createdAt = newDateTime;
+                });
+              },
+            ),
+
+            // Account selector
+            AccountSelector(
+              accountId: _accountId,
+              label: _type == TransactionType.transfer
+                  ? l10n.transactionSourceAccountLabel
+                  : null,
+              onChanged: (accountId) {
+                setState(() {
+                  _accountId = accountId;
+                });
+              },
+              validator: (accountId) {
+                if (accountId == null || accountId.isEmpty) {
+                  return l10n.transactionAccountRequired;
+                }
+                return null;
+              },
+            ),
+
+            // Category selector (only for expense/income)
+            if (_type != TransactionType.transfer)
+              CategorySelector(
+                categoryId: _categoryId,
+                onChanged: (categoryId) {
                   setState(() {
-                    _type = newType;
-                    if (_type == TransactionType.transfer) {
-                      _categoryId = null;
-                    } else {
-                      _targetAccountId = null;
-                    }
+                    _categoryId = categoryId;
                   });
                 },
               ),
 
-              // Date and time picker
-              DateTimePickerField(
-                dateTime: _createdAt,
-                label: l10n.transactionDateLabel,
-                onChanged: (DateTime newDateTime) {
-                  setState(() {
-                    _createdAt = newDateTime;
-                  });
-                },
-              ),
-
-              // Account selector
+            // Target account selector (only for transfer)
+            if (_type == TransactionType.transfer)
               AccountSelector(
-                accountId: _accountId,
-                label: _type == TransactionType.transfer
-                    ? l10n.transactionSourceAccountLabel
-                    : null,
+                accountId: _targetAccountId,
+                label: l10n.transactionTargetAccountLabel,
                 onChanged: (accountId) {
                   setState(() {
-                    _accountId = accountId;
+                    _targetAccountId = accountId;
                   });
                 },
                 validator: (accountId) {
                   if (accountId == null || accountId.isEmpty) {
-                    return l10n.transactionAccountRequired;
+                    return l10n.transactionTargetAccountRequired;
+                  }
+                  if (accountId == _accountId) {
+                    return l10n.transactionTargetAccountSameError;
                   }
                   return null;
                 },
               ),
 
-              // Category selector (only for expense/income)
-              if (_type != TransactionType.transfer)
-                CategorySelector(
-                  categoryId: _categoryId,
-                  onChanged: (categoryId) {
-                    setState(() {
-                      _categoryId = categoryId;
-                    });
-                  },
-                ),
+            // Amount field
+            CurrencyInputField(
+              controller: _amountController,
+              label: l10n.transactionAmountLabel,
+              validator: (value) {
+                if (value == null || value.isEmpty) {
+                  return l10n.transactionAmountRequired;
+                }
+                final amountDouble = double.tryParse(value);
+                if (amountDouble == null || amountDouble <= 0) {
+                  return l10n.transactionAmountMustBePositive;
+                }
+                return null;
+              },
+            ),
 
-              // Target account selector (only for transfer)
-              if (_type == TransactionType.transfer)
-                AccountSelector(
-                  accountId: _targetAccountId,
-                  label: l10n.transactionTargetAccountLabel,
-                  onChanged: (accountId) {
-                    setState(() {
-                      _targetAccountId = accountId;
-                    });
-                  },
-                  validator: (accountId) {
-                    if (accountId == null || accountId.isEmpty) {
-                      return l10n.transactionTargetAccountRequired;
-                    }
-                    if (accountId == _accountId) {
-                      return l10n.transactionTargetAccountSameError;
-                    }
-                    return null;
-                  },
-                ),
-
-              // Amount field
-              CurrencyInputField(
-                controller: _amountController,
-                label: l10n.transactionAmountLabel,
-                validator: (value) {
-                  if (value == null || value.isEmpty) {
-                    return l10n.transactionAmountRequired;
-                  }
-                  final amountDouble = double.tryParse(value);
-                  if (amountDouble == null || amountDouble <= 0) {
-                    return l10n.transactionAmountMustBePositive;
-                  }
-                  return null;
-                },
+            // Notes field
+            TextFormField(
+              controller: _notesController,
+              decoration: InputDecoration(
+                labelText: l10n.transactionNotesLabel,
+                hintText: l10n.transactionNotesHint,
+                border: const OutlineInputBorder(),
               ),
+              maxLines: 3,
+            ),
 
-              // Notes field
-              TextFormField(
-                controller: _notesController,
-                decoration: InputDecoration(
-                  labelText: l10n.transactionNotesLabel,
-                  hintText: l10n.transactionNotesHint,
-                  border: const OutlineInputBorder(),
-                ),
-                maxLines: 3,
-              ),
-
-              // Save button
-              FilledButton(onPressed: handleSave, child: Text(l10n.saveButton)),
-            ],
-          ),
+            // Save button
+            FilledButton(onPressed: handleSave, child: Text(l10n.saveButton)),
+          ],
         ),
       ),
     );

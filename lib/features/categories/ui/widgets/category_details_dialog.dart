@@ -25,7 +25,6 @@ class CategoryDetailsDialog extends StatelessWidget {
   Widget build(BuildContext context) {
     final l10n = AppL10n.of(context);
     return AlertDialog(
-      insetPadding: AppSpacing.paddingMd,
       title: Row(
         children: [
           ObjectIcon(iconData: category.iconData, size: AppSizing.avatarSm),

@@ -1,6 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:plata_sync/core/ui/resources/app_sizing.dart';
-import 'package:plata_sync/core/ui/resources/app_spacing.dart';
 import 'package:plata_sync/features/transactions/domain/entities/transaction.dart';
 import 'package:plata_sync/features/transactions/ui/widgets/transaction_edit_form.dart';
 import 'package:plata_sync/l10n/app_localizations.dart';
@@ -20,22 +18,18 @@ class TransactionEditDialog extends StatelessWidget {
     final l10n = AppL10n.of(context);
 
     return AlertDialog(
-      insetPadding: AppSpacing.paddingMd,
       title: Text(
         transaction == null
             ? l10n.transactionCreateTitle
             : l10n.transactionEditTitle,
       ),
-      content: ConstrainedBox(
-        constraints: const BoxConstraints(maxWidth: AppSizing.dialogMaxWidth),
-        child: SingleChildScrollView(
-          child: TransactionEditForm(
-            transaction: transaction,
-            onSave: (updatedTransaction) {
-              Navigator.of(context).pop();
-              onSave(updatedTransaction);
-            },
-          ),
+      content: SingleChildScrollView(
+        child: TransactionEditForm(
+          transaction: transaction,
+          onSave: (updatedTransaction) {
+            Navigator.of(context).pop();
+            onSave(updatedTransaction);
+          },
         ),
       ),
     );

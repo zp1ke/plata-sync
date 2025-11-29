@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:plata_sync/core/ui/resources/app_sizing.dart';
-import 'package:plata_sync/core/ui/resources/app_spacing.dart';
 import 'package:plata_sync/features/categories/domain/entities/category.dart';
 import 'package:plata_sync/features/categories/ui/widgets/category_edit_form.dart';
 import 'package:plata_sync/l10n/app_localizations.dart';
@@ -16,7 +15,6 @@ class CategoryEditDialog extends StatelessWidget {
     final l10n = AppL10n.of(context);
 
     return AlertDialog(
-      insetPadding: AppSpacing.paddingMd,
       title: Text(
         category == null
             ? l10n.categoriesCreateTitle

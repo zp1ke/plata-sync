@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:plata_sync/core/ui/resources/app_icons.dart';
-import 'package:plata_sync/core/ui/resources/app_spacing.dart';
 import 'package:plata_sync/features/transactions/domain/entities/transaction.dart';
 import 'package:plata_sync/features/transactions/ui/widgets/transaction_details_view.dart';
 import 'package:plata_sync/l10n/app_localizations.dart';
@@ -31,7 +30,6 @@ class TransactionDetailsDialog extends StatelessWidget {
     }
 
     return AlertDialog(
-      insetPadding: AppSpacing.paddingMd,
       title: Row(
         children: [
           Expanded(

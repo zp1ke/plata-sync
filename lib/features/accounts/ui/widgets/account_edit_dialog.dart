@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:plata_sync/core/ui/resources/app_sizing.dart';
-import 'package:plata_sync/core/ui/resources/app_spacing.dart';
 import 'package:plata_sync/features/accounts/domain/entities/account.dart';
 import 'package:plata_sync/features/accounts/ui/widgets/account_edit_form.dart';
 import 'package:plata_sync/l10n/app_localizations.dart';
@@ -16,7 +15,6 @@ class AccountEditDialog extends StatelessWidget {
     final l10n = AppL10n.of(context);
 
     return AlertDialog(
-      insetPadding: AppSpacing.paddingMd,
       title: Text(
         account == null ? l10n.accountsCreateTitle : l10n.accountsEditTitle,
       ),
