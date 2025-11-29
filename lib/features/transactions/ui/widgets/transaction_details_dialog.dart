@@ -58,7 +58,6 @@ class TransactionDetailsDialog extends StatelessWidget {
             foregroundColor: Theme.of(context).colorScheme.error,
           ),
         ),
-        const Spacer(),
         FilledButton.icon(
           onPressed: () {
             Navigator.of(context).pop();

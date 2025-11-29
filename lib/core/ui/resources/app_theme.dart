@@ -39,7 +39,12 @@ class AppTheme {
           inputDecoratorPrefixIconSchemeColor: SchemeColor.primary,
         ),
       ).copyWith(
-        dialogTheme: const DialogThemeData(insetPadding: AppSpacing.paddingMd),
+        dialogTheme: const DialogThemeData(
+          insetPadding: EdgeInsets.symmetric(
+            horizontal: AppSpacing.md,
+            vertical: AppSpacing.xxl,
+          ),
+        ),
       );
 
   static final dark =
@@ -60,6 +65,11 @@ class AppTheme {
           inputDecoratorPrefixIconSchemeColor: SchemeColor.primary,
         ),
       ).copyWith(
-        dialogTheme: const DialogThemeData(insetPadding: AppSpacing.paddingMd),
+        dialogTheme: const DialogThemeData(
+          insetPadding: EdgeInsets.symmetric(
+            horizontal: AppSpacing.lg,
+            vertical: AppSpacing.xxl,
+          ),
+        ),
       );
 }
