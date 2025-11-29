@@ -123,6 +123,12 @@ abstract class AppL10n {
   /// **'Transactions Screen'**
   String get transactionsScreenBody;
 
+  /// Button label to add a new transaction
+  ///
+  /// In en, this message translates to:
+  /// **'Add Transaction'**
+  String get transactionsAddButton;
+
   /// Title of the Accounts screen
   ///
   /// In en, this message translates to:

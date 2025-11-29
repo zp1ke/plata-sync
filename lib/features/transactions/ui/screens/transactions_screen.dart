@@ -419,10 +419,20 @@ class _TabletTransactionsScreenState extends State<_TabletTransactionsScreen> {
           ],
         ),
       ),
-      floatingActionButton: FloatingActionButton(
-        onPressed: isLoading ? null : () => _handleCreate(context),
-        child: AppIcons.add,
-      ),
+      floatingActionButton: isEditing
+          ? null
+          : FloatingActionButton.extended(
+              onPressed: isLoading
+                  ? null
+                  : () {
+                      setState(() {
+                        selectedTransaction = null;
+                        isEditing = true;
+                      });
+                    },
+              icon: AppIcons.add,
+              label: Text(l10n.transactionsAddButton),
+            ),
     );
   }
 
@@ -542,6 +552,10 @@ class _TabletTransactionsScreenState extends State<_TabletTransactionsScreen> {
   }
 
   Widget _buildDetailPane(BuildContext context, bool isLoading, AppL10n l10n) {
+    if (isEditing) {
+      return _buildEditView();
+    }
+
     if (selectedTransaction == null) {
       return Center(
         child: Text(
@@ -551,10 +565,6 @@ class _TabletTransactionsScreenState extends State<_TabletTransactionsScreen> {
           ),
         ),
       );
-    }
-
-    if (isEditing) {
-      return _buildEditView();
     }
 
     return _buildDetailsView();
@@ -637,7 +647,9 @@ class _TabletTransactionsScreenState extends State<_TabletTransactionsScreen> {
             children: [
               Expanded(
                 child: Text(
-                  l10n.transactionEditTitle,
+                  selectedTransaction == null
+                      ? l10n.transactionCreateTitle
+                      : l10n.transactionEditTitle,
                   style: Theme.of(context).textTheme.titleLarge,
                 ),
               ),
@@ -675,8 +687,17 @@ class _TabletTransactionsScreenState extends State<_TabletTransactionsScreen> {
                       _canSave = isValid;
                     });
                   },
-                  onSave: (updatedTransaction) =>
-                      _handleSaveEdit(context, updatedTransaction),
+                  onSave: (updatedTransaction) async {
+                    if (selectedTransaction == null) {
+                      await _handleSaveCreate(context, updatedTransaction);
+                    } else {
+                      await _handleSaveEdit(context, updatedTransaction);
+                    }
+                    setState(() {
+                      selectedTransaction = updatedTransaction;
+                      isEditing = false;
+                    });
+                  },
                 ),
               ),
             ),
@@ -742,15 +763,6 @@ class _TabletTransactionsScreenState extends State<_TabletTransactionsScreen> {
         );
       }
     }
-  }
-
-  void _handleCreate(BuildContext context) {
-    showDialog(
-      context: context,
-      builder: (_) => TransactionEditDialog(
-        onSave: (newTransaction) => _handleSaveCreate(context, newTransaction),
-      ),
-    );
   }
 
   Future<void> _handleSaveCreate(

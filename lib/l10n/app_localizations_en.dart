@@ -24,6 +24,9 @@ class AppL10nEn extends AppL10n {
   String get transactionsScreenBody => 'Transactions Screen';
 
   @override
+  String get transactionsAddButton => 'Add Transaction';
+
+  @override
   String get accountsScreenTitle => 'Accounts';
 
   @override

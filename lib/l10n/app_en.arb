@@ -20,6 +20,10 @@
   "@transactionsScreenBody": {
     "description": "Text displayed in the body of the Transactions screen"
   },
+  "transactionsAddButton": "Add Transaction",
+  "@transactionsAddButton": {
+    "description": "Button label to add a new transaction"
+  },
   "accountsScreenTitle": "Accounts",
   "@accountsScreenTitle": {
     "description": "Title of the Accounts screen"
