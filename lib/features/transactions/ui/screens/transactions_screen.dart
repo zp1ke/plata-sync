@@ -361,6 +361,7 @@ class _TabletTransactionsScreenState extends State<_TabletTransactionsScreen> {
   Transaction? selectedTransaction;
   bool isEditing = false;
   bool _hasShownSampleDialog = false;
+  bool _canSave = false;
   final _editFormKey = GlobalKey<TransactionEditFormState>();
 
   @override
@@ -649,7 +650,10 @@ class _TabletTransactionsScreenState extends State<_TabletTransactionsScreen> {
                 child: Text(l10n.cancel),
               ),
               AppSpacing.gapHorizontalSm,
-              FilledButton(onPressed: triggerSave, child: Text(l10n.save)),
+              FilledButton(
+                onPressed: _canSave ? triggerSave : null,
+                child: Text(l10n.save),
+              ),
             ],
           ),
         ),
@@ -665,6 +669,12 @@ class _TabletTransactionsScreenState extends State<_TabletTransactionsScreen> {
                 child: TransactionEditForm(
                   key: _editFormKey,
                   transaction: selectedTransaction,
+                  showActions: false,
+                  onFormValidChanged: (isValid) {
+                    setState(() {
+                      _canSave = isValid;
+                    });
+                  },
                   onSave: (updatedTransaction) =>
                       _handleSaveEdit(context, updatedTransaction),
                 ),

@@ -29,6 +29,7 @@ class TransactionEditDialog extends StatelessWidget {
         child: SingleChildScrollView(
           child: TransactionEditForm(
             transaction: transaction,
+            showActions: true,
             onCancel: () => Navigator.of(context).pop(),
             onSave: (updatedTransaction) {
               Navigator.of(context).pop();
