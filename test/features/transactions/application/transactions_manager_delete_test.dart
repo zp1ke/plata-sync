@@ -41,7 +41,7 @@ void main() {
         createdAt: DateTime(2025, 1, 1, 10, 0),
         accountId: accountId,
         amount: 100,
-        balanceBefore: 0,
+        accountBalanceBefore: 0,
       );
 
       // Transaction 2: balance before 100, amount +50, balance after 150
@@ -50,7 +50,7 @@ void main() {
         createdAt: DateTime(2025, 1, 1, 11, 0),
         accountId: accountId,
         amount: 50,
-        balanceBefore: 100,
+        accountBalanceBefore: 100,
       );
 
       // Transaction 3: balance before 150, amount -30, balance after 120
@@ -59,7 +59,7 @@ void main() {
         createdAt: DateTime(2025, 1, 1, 12, 0),
         accountId: accountId,
         amount: -30,
-        balanceBefore: 150,
+        accountBalanceBefore: 150,
       );
 
       // Transaction 4: balance before 120, amount +20, balance after 140
@@ -68,7 +68,7 @@ void main() {
         createdAt: DateTime(2025, 1, 1, 13, 0),
         accountId: accountId,
         amount: 20,
-        balanceBefore: 120,
+        accountBalanceBefore: 120,
       );
 
       await manager.addTransaction(t1);
@@ -86,20 +86,20 @@ void main() {
 
       // Transaction 1 should remain unchanged (before the deleted one)
       final updatedT1 = await dataSource.read('tx-1');
-      expect(updatedT1!.balanceBefore, 0);
-      expect(updatedT1.balanceAfter, 100);
+      expect(updatedT1!.accountBalanceBefore, 0);
+      expect(updatedT1.accountBalanceAfter, 100);
 
-      // Transaction 3 should have recalculated balanceBefore
+      // Transaction 3 should have recalculated accountBalanceBefore
       // New: balance before 100 (from t1), amount -30, balance after 70
       final updatedT3 = await dataSource.read('tx-3');
-      expect(updatedT3!.balanceBefore, 100);
-      expect(updatedT3.balanceAfter, 70);
+      expect(updatedT3!.accountBalanceBefore, 100);
+      expect(updatedT3.accountBalanceAfter, 70);
 
-      // Transaction 4 should have recalculated balanceBefore
+      // Transaction 4 should have recalculated accountBalanceBefore
       // New: balance before 70 (from t3), amount +20, balance after 90
       final updatedT4 = await dataSource.read('tx-4');
-      expect(updatedT4!.balanceBefore, 70);
-      expect(updatedT4.balanceAfter, 90);
+      expect(updatedT4!.accountBalanceBefore, 70);
+      expect(updatedT4.accountBalanceAfter, 90);
     });
 
     test('should handle deleting the first transaction', () async {
@@ -111,7 +111,7 @@ void main() {
         createdAt: DateTime(2025, 1, 1, 10, 0),
         accountId: accountId,
         amount: 100,
-        balanceBefore: 0,
+        accountBalanceBefore: 0,
       );
 
       final t2 = Transaction.create(
@@ -119,7 +119,7 @@ void main() {
         createdAt: DateTime(2025, 1, 1, 11, 0),
         accountId: accountId,
         amount: 50,
-        balanceBefore: 100,
+        accountBalanceBefore: 100,
       );
 
       await manager.addTransaction(t1);
@@ -130,8 +130,8 @@ void main() {
 
       // Assert: Transaction 2 should recalculate to start from 0
       final updatedT2 = await dataSource.read('tx-2');
-      expect(updatedT2!.balanceBefore, 0);
-      expect(updatedT2.balanceAfter, 50);
+      expect(updatedT2!.accountBalanceBefore, 0);
+      expect(updatedT2.accountBalanceAfter, 50);
     });
 
     test('should handle deleting the last transaction', () async {
@@ -143,7 +143,7 @@ void main() {
         createdAt: DateTime(2025, 1, 1, 10, 0),
         accountId: accountId,
         amount: 100,
-        balanceBefore: 0,
+        accountBalanceBefore: 0,
       );
 
       final t2 = Transaction.create(
@@ -151,7 +151,7 @@ void main() {
         createdAt: DateTime(2025, 1, 1, 11, 0),
         accountId: accountId,
         amount: 50,
-        balanceBefore: 100,
+        accountBalanceBefore: 100,
       );
 
       await manager.addTransaction(t1);
@@ -162,8 +162,8 @@ void main() {
 
       // Assert: Transaction 1 should remain unchanged
       final updatedT1 = await dataSource.read('tx-1');
-      expect(updatedT1!.balanceBefore, 0);
-      expect(updatedT1.balanceAfter, 100);
+      expect(updatedT1!.accountBalanceBefore, 0);
+      expect(updatedT1.accountBalanceAfter, 100);
     });
 
     test('should only affect transactions on the same account', () async {
@@ -176,7 +176,7 @@ void main() {
         createdAt: DateTime(2025, 1, 1, 10, 0),
         accountId: account1,
         amount: 100,
-        balanceBefore: 0,
+        accountBalanceBefore: 0,
       );
 
       final t2 = Transaction.create(
@@ -184,7 +184,7 @@ void main() {
         createdAt: DateTime(2025, 1, 1, 11, 0),
         accountId: account1,
         amount: 50,
-        balanceBefore: 100,
+        accountBalanceBefore: 100,
       );
 
       final t3 = Transaction.create(
@@ -192,7 +192,7 @@ void main() {
         createdAt: DateTime(2025, 1, 1, 10, 30),
         accountId: account2,
         amount: 200,
-        balanceBefore: 0,
+        accountBalanceBefore: 0,
       );
 
       await manager.addTransaction(t1);
@@ -204,13 +204,13 @@ void main() {
 
       // Assert: account2 transaction should remain unchanged
       final updatedT3 = await dataSource.read('tx-3');
-      expect(updatedT3!.balanceBefore, 0);
-      expect(updatedT3.balanceAfter, 200);
+      expect(updatedT3!.accountBalanceBefore, 0);
+      expect(updatedT3.accountBalanceAfter, 200);
 
       // account1 transaction should be recalculated
       final updatedT2 = await dataSource.read('tx-2');
-      expect(updatedT2!.balanceBefore, 0);
-      expect(updatedT2.balanceAfter, 50);
+      expect(updatedT2!.accountBalanceBefore, 0);
+      expect(updatedT2.accountBalanceAfter, 50);
     });
 
     test(
@@ -224,7 +224,7 @@ void main() {
           createdAt: DateTime(2025, 1, 1, 10, 0),
           accountId: accountId,
           amount: 100,
-          balanceBefore: 0,
+          accountBalanceBefore: 0,
         );
 
         await manager.addTransaction(t1);

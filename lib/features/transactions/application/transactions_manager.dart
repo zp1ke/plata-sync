@@ -69,7 +69,7 @@ class TransactionsManager {
       accountId: expenseAccount.id,
       categoryId: expenseCategory.id,
       amount: -(random.nextInt(10000) + 1000), // -$10 to -$110
-      balanceBefore: expenseAccount.balance,
+      accountBalanceBefore: expenseAccount.balance,
       notes: 'Sample expense transaction',
       createdAt: today,
     );
@@ -81,7 +81,7 @@ class TransactionsManager {
       accountId: incomeAccount.id,
       categoryId: incomeCategory.id,
       amount: random.nextInt(50000) + 10000, // $100 to $600
-      balanceBefore: incomeAccount.balance,
+      accountBalanceBefore: incomeAccount.balance,
       notes: 'Sample income transaction',
       createdAt: today,
     );
@@ -177,7 +177,7 @@ class TransactionsManager {
     }
   }
 
-  /// Recalculates balanceBefore for all transactions after the given timestamp
+  /// Recalculates accountBalanceBefore for all transactions after the given timestamp
   /// on the specified account
   Future<void> _recalculateBalancesAfter(
     String accountId,
@@ -206,7 +206,7 @@ class TransactionsManager {
     int currentBalance;
     if (previousTransactions.isNotEmpty) {
       // Use the balance after the last transaction before our range
-      currentBalance = previousTransactions.last.balanceAfter;
+      currentBalance = previousTransactions.last.accountBalanceAfter;
     } else {
       // No previous transactions, start from 0
       currentBalance = 0;
@@ -215,10 +215,10 @@ class TransactionsManager {
     // Recalculate and update each transaction
     for (final transaction in filteredTransactions) {
       final updatedTransaction = transaction.copyWith(
-        balanceBefore: currentBalance,
+        accountBalanceBefore: currentBalance,
       );
       await _dataSource.update(updatedTransaction);
-      currentBalance = updatedTransaction.balanceAfter;
+      currentBalance = updatedTransaction.accountBalanceAfter;
     }
   }
 

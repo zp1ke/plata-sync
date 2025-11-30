@@ -104,12 +104,16 @@ class _TransactionDetailsViewState extends State<TransactionDetailsView> {
             spacing: AppSpacing.sm,
             children: [
               Text(
-                NumberFormatters.formatCurrency(transaction.balanceBefore),
+                NumberFormatters.formatCurrency(
+                  transaction.accountBalanceBefore,
+                ),
                 style: Theme.of(context).textTheme.bodyLarge,
               ),
               AppIcons.arrowRight,
               Text(
-                NumberFormatters.formatCurrency(transaction.balanceAfter),
+                NumberFormatters.formatCurrency(
+                  transaction.accountBalanceAfter,
+                ),
                 style: Theme.of(context).textTheme.bodyLarge,
               ),
             ],

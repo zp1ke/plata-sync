@@ -7,8 +7,9 @@ class Transaction extends Equatable {
   final String accountId;
   final String? categoryId;
   final int amount;
-  final int balanceBefore;
+  final int accountBalanceBefore;
   final String? targetAccountId;
+  final int? targetAccountBalanceBefore;
   final String? notes;
 
   const Transaction({
@@ -16,9 +17,10 @@ class Transaction extends Equatable {
     required this.createdAt,
     required this.accountId,
     required this.amount,
-    required this.balanceBefore,
+    required this.accountBalanceBefore,
     this.categoryId,
     this.targetAccountId,
+    this.targetAccountBalanceBefore,
     this.notes,
   });
 
@@ -27,9 +29,10 @@ class Transaction extends Equatable {
     DateTime? createdAt,
     required this.accountId,
     required this.amount,
-    required this.balanceBefore,
+    required this.accountBalanceBefore,
     this.categoryId,
     this.targetAccountId,
+    this.targetAccountBalanceBefore,
     this.notes,
   }) : id = id ?? randomId(),
        createdAt = createdAt ?? DateTime.now();
@@ -40,8 +43,9 @@ class Transaction extends Equatable {
     String? accountId,
     String? categoryId,
     int? amount,
-    int? balanceBefore,
+    int? accountBalanceBefore,
     String? targetAccountId,
+    int? targetAccountBalanceBefore,
     String? notes,
   }) {
     return Transaction(
@@ -50,8 +54,10 @@ class Transaction extends Equatable {
       accountId: accountId ?? this.accountId,
       categoryId: categoryId ?? this.categoryId,
       amount: amount ?? this.amount,
-      balanceBefore: balanceBefore ?? this.balanceBefore,
+      accountBalanceBefore: accountBalanceBefore ?? this.accountBalanceBefore,
       targetAccountId: targetAccountId ?? this.targetAccountId,
+      targetAccountBalanceBefore:
+          targetAccountBalanceBefore ?? this.targetAccountBalanceBefore,
       notes: notes ?? this.notes,
     );
   }
@@ -68,6 +74,12 @@ class Transaction extends Equatable {
   /// Returns true if this is an income (positive amount and not a transfer)
   bool get isIncome => amount > 0 && !isTransfer;
 
-  /// Calculates the balance after this transaction
-  int get balanceAfter => balanceBefore + amount;
+  /// Calculates the account balance after this transaction
+  int get accountBalanceAfter => accountBalanceBefore + amount;
+
+  /// Calculates the target account balance after this transaction (for transfers)
+  int? get targetAccountBalanceAfter {
+    if (targetAccountBalanceBefore == null) return null;
+    return targetAccountBalanceBefore! - amount;
+  }
 }
