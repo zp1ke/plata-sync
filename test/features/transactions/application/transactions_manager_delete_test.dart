@@ -1,7 +1,9 @@
 import 'package:flutter_test/flutter_test.dart';
 import 'package:get_it/get_it.dart';
+import 'package:plata_sync/core/model/object_icon_data.dart';
 import 'package:plata_sync/features/accounts/application/accounts_manager.dart';
 import 'package:plata_sync/features/accounts/data/datasources/in_memory_account_data_source.dart';
+import 'package:plata_sync/features/accounts/domain/entities/account.dart';
 import 'package:plata_sync/features/categories/application/categories_manager.dart';
 import 'package:plata_sync/features/categories/data/datasources/in_memory_category_data_source.dart';
 import 'package:plata_sync/features/transactions/application/transactions_manager.dart';
@@ -237,6 +239,77 @@ void main() {
 
         // Assert: Manager should have reloaded and the list should be empty
         expect(manager.transactions.value.isEmpty, true);
+      },
+    );
+
+    test(
+      'should update both account balances when deleting a transfer transaction',
+      () async {
+        // Arrange
+        final accountsManager = getIt.get<AccountsManager>();
+
+        // Create two accounts with initial balances
+        final sourceAccount = Account.create(
+          id: 'source-account',
+          name: 'Source Account',
+          iconData: ObjectIconData(
+            iconName: 'wallet',
+            backgroundColorHex: '#FF0000',
+            iconColorHex: '#FFFFFF',
+          ),
+          balance: 1000, // $10.00
+        );
+
+        final targetAccount = Account.create(
+          id: 'target-account',
+          name: 'Target Account',
+          iconData: ObjectIconData(
+            iconName: 'savings',
+            backgroundColorHex: '#00FF00',
+            iconColorHex: '#FFFFFF',
+          ),
+          balance: 500, // $5.00
+        );
+
+        await accountsManager.addAccount(sourceAccount);
+        await accountsManager.addAccount(targetAccount);
+
+        // Create a transfer transaction: move $3.00 from source to target
+        final transferTransaction = Transaction.create(
+          id: 'transfer-1',
+          createdAt: DateTime(2025, 1, 1, 10, 0),
+          accountId: sourceAccount.id,
+          targetAccountId: targetAccount.id,
+          amount: -300, // -$3.00 from source
+          accountBalanceBefore: 1000,
+          targetAccountBalanceBefore: 500,
+        );
+
+        await manager.addTransaction(transferTransaction);
+
+        // Verify balances after transaction
+        final sourceAfterAdd = await accountsManager.getAccountById(
+          sourceAccount.id,
+        );
+        final targetAfterAdd = await accountsManager.getAccountById(
+          targetAccount.id,
+        );
+        expect(sourceAfterAdd!.balance, 700); // 1000 - 300 = 700
+        expect(targetAfterAdd!.balance, 800); // 500 + 300 = 800
+
+        // Act: Delete the transfer transaction
+        await manager.deleteTransaction('transfer-1');
+
+        // Assert: Both accounts should return to their original balances
+        final sourceAfterDelete = await accountsManager.getAccountById(
+          sourceAccount.id,
+        );
+        final targetAfterDelete = await accountsManager.getAccountById(
+          targetAccount.id,
+        );
+
+        expect(sourceAfterDelete!.balance, 1000); // Back to original $10.00
+        expect(targetAfterDelete!.balance, 500); // Back to original $5.00
       },
     );
   });

@@ -163,11 +163,23 @@ class TransactionsManager {
       final accountId = transactionToDelete.accountId;
       final deletedAt = transactionToDelete.createdAt;
 
+      // Update account balances to reverse the transaction effect
+      await _reverseTransactionEffect(transactionToDelete);
+
       // Delete the transaction
       await _dataSource.delete(id);
 
       // Recalculate balances for all subsequent transactions on the same account
       await _recalculateBalancesAfter(accountId, deletedAt);
+
+      // If it's a transfer, also recalculate target account balances
+      if (transactionToDelete.isTransfer &&
+          transactionToDelete.targetAccountId != null) {
+        await _recalculateBalancesAfter(
+          transactionToDelete.targetAccountId!,
+          deletedAt,
+        );
+      }
 
       // Reload transactions from data source to get updated balances
       await loadTransactions();
@@ -235,6 +247,43 @@ class TransactionsManager {
     currentAccountFilter.value = null;
     currentCategoryFilter.value = null;
     loadTransactions();
+  }
+
+  /// Reverses the effect of a transaction on account balances
+  Future<void> _reverseTransactionEffect(Transaction transaction) async {
+    final accountsManager = getService<AccountsManager>();
+
+    // Reverse the effect on the source account
+    final sourceAccount = await accountsManager.getAccountById(
+      transaction.accountId,
+    );
+
+    if (sourceAccount != null) {
+      // Subtract the transaction amount to reverse its effect
+      final newBalance = sourceAccount.balance - transaction.amount;
+      await accountsManager.updateAccount(
+        sourceAccount.copyWith(balance: newBalance),
+      );
+    }
+
+    // Reverse the effect on the target account for transfers
+    if (transaction.isTransfer && transaction.targetAccountId != null) {
+      final targetAccount = await accountsManager.getAccountById(
+        transaction.targetAccountId!,
+      );
+
+      if (targetAccount != null) {
+        // For transfers, subtract the absolute amount from target account
+        final transferAmount = transaction.amount.abs();
+        final newBalance = targetAccount.balance - transferAmount;
+        await accountsManager.updateAccount(
+          targetAccount.copyWith(balance: newBalance),
+        );
+      }
+    }
+
+    // Reload accounts to reflect balance changes
+    accountsManager.loadAccounts();
   }
 
   void _sortTransactions() {
