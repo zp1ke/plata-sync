@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:plata_sync/core/di/service_locator.dart';
+import 'package:plata_sync/core/ui/resources/app_icons.dart';
 import 'package:plata_sync/core/ui/resources/app_sizing.dart';
 import 'package:plata_sync/core/ui/resources/app_spacing.dart';
 import 'package:plata_sync/core/ui/resources/app_theme.dart';
@@ -93,6 +94,25 @@ class _TransactionDetailsViewState extends State<TransactionDetailsView> {
           style: Theme.of(context).textTheme.headlineSmall?.copyWith(
             fontWeight: FontWeight.bold,
             color: typeColor,
+          ),
+        ),
+        // Balance before & after
+        _buildSection(
+          context,
+          label: l10n.transactionBalanceMovementLabel,
+          child: Row(
+            spacing: AppSpacing.sm,
+            children: [
+              Text(
+                NumberFormatters.formatCurrency(transaction.balanceBefore),
+                style: Theme.of(context).textTheme.bodyLarge,
+              ),
+              AppIcons.arrowRight,
+              Text(
+                NumberFormatters.formatCurrency(transaction.balanceAfter),
+                style: Theme.of(context).textTheme.bodyLarge,
+              ),
+            ],
           ),
         ),
         // Category (if not transfer)

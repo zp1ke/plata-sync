@@ -901,5 +901,9 @@
   "iconTransfer": "Transfer",
   "@iconTransfer": {
     "description": "Label for transfer icon"
+  },
+  "transactionBalanceMovementLabel": "Balance Movement",
+  "@transactionBalanceMovementLabel": {
+    "description": "Label for balance movement field in transaction form"
   }
 }

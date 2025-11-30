@@ -643,4 +643,7 @@ class AppL10nEn extends AppL10n {
 
   @override
   String get iconTransfer => 'Transfer';
+
+  @override
+  String get transactionBalanceMovementLabel => 'Balance Movement';
 }

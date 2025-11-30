@@ -1232,6 +1232,12 @@ abstract class AppL10n {
   /// In en, this message translates to:
   /// **'Transfer'**
   String get iconTransfer;
+
+  /// Label for balance movement field in transaction form
+  ///
+  /// In en, this message translates to:
+  /// **'Balance Movement'**
+  String get transactionBalanceMovementLabel;
 }
 
 class _AppL10nDelegate extends LocalizationsDelegate<AppL10n> {
