@@ -94,6 +94,16 @@ class LocalTransactionDataSource extends TransactionDataSource {
         args.add(filter['targetAccountId']);
       }
 
+      if (filter.containsKey('from')) {
+        conditions.add('created_at >= ?');
+        args.add((filter['from'] as DateTime).millisecondsSinceEpoch);
+      }
+
+      if (filter.containsKey('to')) {
+        conditions.add('created_at <= ?');
+        args.add((filter['to'] as DateTime).millisecondsSinceEpoch);
+      }
+
       if (conditions.isNotEmpty) {
         where = conditions.join(' AND ');
         whereArgs = args;

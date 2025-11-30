@@ -50,6 +50,14 @@ class InMemoryTransactionDataSource extends TransactionDataSource {
             return false;
           }
           if (entry.key == 'id' && item.id != entry.value) return false;
+          if (entry.key == 'from' &&
+              item.createdAt.isBefore(entry.value as DateTime)) {
+            return false;
+          }
+          if (entry.key == 'to' &&
+              item.createdAt.isAfter(entry.value as DateTime)) {
+            return false;
+          }
         }
         return true;
       }).toList();

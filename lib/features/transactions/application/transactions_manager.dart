@@ -133,38 +133,37 @@ class TransactionsManager {
     String accountId,
     DateTime afterDate,
   ) async {
-    // Get all transactions for this account from data source, sorted by date
-    // TODO: Optimize by adding a method to get transactions within a date range directly
-    final allAccountTransactions = await _dataSource.getAll(
-      filter: {'accountId': accountId},
+    // Get transactions after the deleted transaction, sorted by date
+    final transactionsToUpdate = await _dataSource.getAll(
+      filter: {'accountId': accountId, 'from': afterDate},
       sort: SortParam('createdAt', ascending: true),
     );
 
-    // Find transactions that need recalculation (after the deleted transaction)
-    final transactionsToUpdate = allAccountTransactions
+    // Filter out the exact afterDate timestamp (we only want transactions AFTER)
+    final filteredTransactions = transactionsToUpdate
         .where((t) => t.createdAt.isAfter(afterDate))
         .toList();
 
-    if (transactionsToUpdate.isEmpty) return;
+    if (filteredTransactions.isEmpty) return;
 
-    // Calculate the balance before the first transaction to update
-    // This is the balance after the last transaction before the deleted one
-    final transactionsBeforeUpdate = allAccountTransactions
-        .where(
-          (t) =>
-              t.createdAt.isBefore(afterDate) ||
-              t.createdAt.isAtSameMomentAs(afterDate),
-        )
-        .toList();
+    // Get the balance before the first transaction that needs updating
+    // We need to fetch the previous transaction to get the correct starting balance
+    final previousTransactions = await _dataSource.getAll(
+      filter: {'accountId': accountId, 'to': afterDate},
+      sort: SortParam('createdAt', ascending: true),
+    );
 
-    int currentBalance = 0;
-    if (transactionsBeforeUpdate.isNotEmpty) {
-      final lastBefore = transactionsBeforeUpdate.last;
-      currentBalance = lastBefore.balanceAfter;
+    int currentBalance;
+    if (previousTransactions.isNotEmpty) {
+      // Use the balance after the last transaction before our range
+      currentBalance = previousTransactions.last.balanceAfter;
+    } else {
+      // No previous transactions, start from 0
+      currentBalance = 0;
     }
 
-    // Update each transaction with the corrected balanceBefore
-    for (final transaction in transactionsToUpdate) {
+    // Recalculate and update each transaction
+    for (final transaction in filteredTransactions) {
       final updatedTransaction = transaction.copyWith(
         balanceBefore: currentBalance,
       );
