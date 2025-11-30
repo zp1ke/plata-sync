@@ -7,11 +7,13 @@ void main() {
     test('should parse hex color with # prefix and 6 characters', () {
       final color = ColorExtensions.fromHex('#FF5733');
       expect(color, const Color(0xFFFF5733));
+      expect(color.toHex(), '#FFFF5733');
     });
 
     test('should parse hex color without # prefix and 6 characters', () {
       final color = ColorExtensions.fromHex('FF5733');
       expect(color, const Color(0xFFFF5733));
+      expect(color.toHex(), '#FFFF5733');
     });
 
     test(
@@ -19,6 +21,7 @@ void main() {
       () {
         final color = ColorExtensions.fromHex('#80FF5733');
         expect(color, const Color(0x80FF5733));
+        expect(color.toHex(), '#80FF5733');
       },
     );
 
@@ -27,17 +30,20 @@ void main() {
       () {
         final color = ColorExtensions.fromHex('80FF5733');
         expect(color, const Color(0x80FF5733));
+        expect(color.toHex(), '#80FF5733');
       },
     );
 
     test('should handle lowercase hex values', () {
       final color = ColorExtensions.fromHex('#ff5733');
       expect(color, const Color(0xFFFF5733));
+      expect(color.toHex(), '#FFFF5733');
     });
 
     test('should handle mixed case hex values', () {
       final color = ColorExtensions.fromHex('#Ff5733');
       expect(color, const Color(0xFFFF5733));
+      expect(color.toHex(), '#FFFF5733');
     });
 
     test('should default to full opacity (FF) for 6-character hex', () {
@@ -46,6 +52,7 @@ void main() {
       expect((color.r * 255).round(), 255);
       expect((color.g * 255).round(), 87);
       expect((color.b * 255).round(), 51);
+      expect(color.toHex(), '#FFFF5733');
     });
 
     test('should preserve alpha channel for 8-character hex', () {
@@ -54,36 +61,43 @@ void main() {
       expect((color.r * 255).round(), 255);
       expect((color.g * 255).round(), 87);
       expect((color.b * 255).round(), 51);
+      expect(color.toHex(), '#80FF5733');
     });
 
     test('should return Colors.grey for invalid hex string', () {
       final color = ColorExtensions.fromHex('invalid');
       expect(color, Colors.grey);
+      expect(color.toHex(), Colors.grey.toHex());
     });
 
     test('should return Colors.grey for empty string', () {
       final color = ColorExtensions.fromHex('');
       expect(color, Colors.grey);
+      expect(color.toHex(), Colors.grey.toHex());
     });
 
     test('should return Colors.grey for hex with invalid length', () {
       final color = ColorExtensions.fromHex('#FFF');
       expect(color, Colors.grey);
+      expect(color.toHex(), Colors.grey.toHex());
     });
 
     test('should return Colors.grey for hex with non-hex characters', () {
       final color = ColorExtensions.fromHex('#GGHHII');
       expect(color, Colors.grey);
+      expect(color.toHex(), Colors.grey.toHex());
     });
 
     test('should parse black color', () {
       final color = ColorExtensions.fromHex('#000000');
       expect(color, const Color(0xFF000000));
+      expect(color.toHex(), '#FF000000');
     });
 
     test('should parse white color', () {
       final color = ColorExtensions.fromHex('#FFFFFF');
       expect(color, const Color(0xFFFFFFFF));
+      expect(color.toHex(), '#FFFFFFFF');
     });
   });
 }

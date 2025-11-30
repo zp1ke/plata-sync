@@ -1226,6 +1226,12 @@ abstract class AppL10n {
   /// In en, this message translates to:
   /// **'Refresh'**
   String get refresh;
+
+  /// Label for transfer icon
+  ///
+  /// In en, this message translates to:
+  /// **'Transfer'**
+  String get iconTransfer;
 }
 
 class _AppL10nDelegate extends LocalizationsDelegate<AppL10n> {

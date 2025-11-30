@@ -24,6 +24,17 @@ extension ColorExtensions on Color {
     }
   }
 
+  /// Converts a Color to a hex color string.
+  ///
+  /// Returns a string in the format `#AARRGGBB`.
+  String toHex() {
+    final a = (this.a * 255).round().toRadixString(16).padLeft(2, '0');
+    final r = (this.r * 255).round().toRadixString(16).padLeft(2, '0');
+    final g = (this.g * 255).round().toRadixString(16).padLeft(2, '0');
+    final b = (this.b * 255).round().toRadixString(16).padLeft(2, '0');
+    return '#$a$r$g$b'.toUpperCase();
+  }
+
   /// Validates if a string is a valid hex color.
   ///
   /// Supports formats:

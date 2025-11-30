@@ -37,6 +37,9 @@ class AppIcons {
   static final transactionsOutlined = HugeIcon(
     icon: HugeIcons.strokeRoundedInvoice,
   );
+  static final transfer = HugeIcon(
+    icon: HugeIcons.strokeRoundedSquareArrowDataTransferHorizontal,
+  );
 
   // Accounts
   static final accounts = HugeIcon(icon: HugeIcons.strokeRoundedWallet02);
@@ -129,6 +132,8 @@ class AppIcons {
         return l10n.iconSalary;
       case 'flash_on':
         return l10n.iconFlashOn;
+      case 'transfer':
+        return l10n.iconTransfer;
       default:
         return l10n.iconUnknown;
     }
@@ -163,5 +168,6 @@ class AppIcons {
     'health': HugeIcons.strokeRoundedHospital01,
     'salary': HugeIcons.strokeRoundedMoney02,
     'flash_on': HugeIcons.strokeRoundedFlash,
+    'transfer': HugeIcons.strokeRoundedSquareArrowDataTransferHorizontal,
   };
 }

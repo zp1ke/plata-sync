@@ -640,4 +640,7 @@ class AppL10nEn extends AppL10n {
 
   @override
   String get refresh => 'Refresh';
+
+  @override
+  String get iconTransfer => 'Transfer';
 }

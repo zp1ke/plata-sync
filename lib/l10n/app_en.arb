@@ -897,5 +897,9 @@
   "refresh": "Refresh",
   "@refresh": {
     "description": "Refresh action tooltip"
+  },
+  "iconTransfer": "Transfer",
+  "@iconTransfer": {
+    "description": "Label for transfer icon"
   }
 }

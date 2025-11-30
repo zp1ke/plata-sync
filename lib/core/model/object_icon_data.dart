@@ -1,4 +1,6 @@
 import 'package:equatable/equatable.dart';
+import 'package:flutter/widgets.dart';
+import 'package:plata_sync/core/utils/colors.dart';
 
 /// Holds the properties needed to display an ObjectIcon
 class ObjectIconData extends Equatable {
@@ -11,6 +13,13 @@ class ObjectIconData extends Equatable {
     required this.backgroundColorHex,
     required this.iconColorHex,
   });
+
+  ObjectIconData.fromColors({
+    required this.iconName,
+    required Color backgroundColorHex,
+    required Color iconColorHex,
+  }) : backgroundColorHex = backgroundColorHex.toHex(),
+       iconColorHex = iconColorHex.toHex();
 
   ObjectIconData copyWith({
     String? iconName,

@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:plata_sync/core/di/service_locator.dart';
+import 'package:plata_sync/core/model/object_icon_data.dart';
 import 'package:plata_sync/core/ui/resources/app_sizing.dart';
 import 'package:plata_sync/core/ui/resources/app_spacing.dart';
 import 'package:plata_sync/core/ui/resources/app_theme.dart';
@@ -99,17 +100,18 @@ class _TransactionListViewState extends State<TransactionListView> {
             child: Padding(
               padding: AppSpacing.paddingMd,
               child: Row(
-                spacing: AppSpacing.md,
+                spacing: AppSpacing.sm,
+                crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   // Type indicator for transfers
                   if (transaction.isTransfer)
-                    Container(
-                      width: 4,
-                      height: 48,
-                      decoration: BoxDecoration(
-                        color: typeColor,
-                        borderRadius: BorderRadius.circular(2),
+                    ObjectIcon(
+                      iconData: ObjectIconData.fromColors(
+                        iconName: 'transfer',
+                        iconColorHex: typeColor,
+                        backgroundColorHex: typeColor.withValues(alpha: 0.3),
                       ),
+                      size: AppSizing.iconSm,
                     ),
                   // Content
                   Expanded(
@@ -118,16 +120,15 @@ class _TransactionListViewState extends State<TransactionListView> {
                       mainAxisSize: MainAxisSize.min,
                       spacing: AppSpacing.xs,
                       children: [
-                        Row(
-                          children: [
-                            if (category != null) ...[
+                        // Category
+                        if (category != null)
+                          Row(
+                            spacing: AppSpacing.xs,
+                            children: [
                               ObjectIcon(
                                 iconData: category.iconData,
-                                size: AppSizing.iconSm,
+                                size: AppSizing.iconMd,
                               ),
-                              AppSpacing.gapHorizontalXs,
-                            ],
-                            if (category != null)
                               Expanded(
                                 child: Text(
                                   category.name,
@@ -138,18 +139,15 @@ class _TransactionListViewState extends State<TransactionListView> {
                                       ),
                                 ),
                               ),
-                            Text(
-                              '${DateFormat.MMMd().format(transaction.createdAt)} ${DateFormat.Hm().format(transaction.createdAt)}',
-                              style: Theme.of(context).textTheme.bodySmall,
-                            ),
-                          ],
-                        ),
+                            ],
+                          ),
+                        // Account and target account
                         Row(
                           children: [
                             if (account != null) ...[
                               ObjectIcon(
                                 iconData: account.iconData,
-                                size: AppSizing.iconXs,
+                                size: AppSizing.iconSm,
                               ),
                               AppSpacing.gapHorizontalXs,
                             ],
@@ -164,7 +162,7 @@ class _TransactionListViewState extends State<TransactionListView> {
                               ),
                               ObjectIcon(
                                 iconData: targetAccount.iconData,
-                                size: AppSizing.iconXs,
+                                size: AppSizing.iconSm,
                               ),
                               AppSpacing.gapHorizontalXs,
                               Text(
@@ -186,13 +184,25 @@ class _TransactionListViewState extends State<TransactionListView> {
                       ],
                     ),
                   ),
-                  // Amount
-                  Text(
-                    NumberFormatters.formatCurrency(transaction.amount),
-                    style: Theme.of(context).textTheme.titleMedium?.copyWith(
-                      fontWeight: FontWeight.bold,
-                      color: typeColor,
-                    ),
+                  // Datetime and Amount
+                  Column(
+                    mainAxisAlignment: MainAxisAlignment.start,
+                    crossAxisAlignment: CrossAxisAlignment.end,
+                    spacing: AppSpacing.xs,
+                    children: [
+                      Text(
+                        '${DateFormat.MMMd().format(transaction.createdAt)} ${DateFormat.Hm().format(transaction.createdAt)}',
+                        style: Theme.of(context).textTheme.bodySmall,
+                      ),
+                      Text(
+                        NumberFormatters.formatCurrency(transaction.amount),
+                        style: Theme.of(context).textTheme.titleMedium
+                            ?.copyWith(
+                              fontWeight: FontWeight.bold,
+                              color: typeColor,
+                            ),
+                      ),
+                    ],
                   ),
                 ],
               ),
