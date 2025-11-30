@@ -32,6 +32,8 @@ class InMemoryTransactionDataSource extends TransactionDataSource {
   Future<List<Transaction>> getAll({
     Map<String, dynamic>? filter,
     SortParam? sort,
+    int? limit,
+    int? offset,
   }) async {
     await Future.delayed(_delay);
     var items = _items.values.toList();
@@ -73,6 +75,14 @@ class InMemoryTransactionDataSource extends TransactionDataSource {
         }
         return sort.ascending ? comparison : -comparison;
       });
+    }
+
+    if (offset != null) {
+      items = items.skip(offset).toList();
+    }
+
+    if (limit != null) {
+      items = items.take(limit).toList();
     }
 
     return items;

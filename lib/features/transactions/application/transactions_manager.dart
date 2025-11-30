@@ -4,8 +4,10 @@ import 'package:flutter/foundation.dart' hide Category;
 import 'package:plata_sync/core/data/models/sort_param.dart';
 import 'package:plata_sync/core/di/service_locator.dart';
 import 'package:plata_sync/core/model/enums/view_mode.dart';
+import 'package:plata_sync/core/utils/numbers.dart';
 import 'package:plata_sync/features/accounts/application/accounts_manager.dart';
 import 'package:plata_sync/features/accounts/data/interfaces/account_data_source.dart';
+import 'package:plata_sync/features/accounts/domain/entities/account.dart';
 import 'package:plata_sync/features/categories/application/categories_manager.dart';
 import 'package:plata_sync/features/categories/data/interfaces/category_data_source.dart';
 import 'package:plata_sync/features/transactions/data/interfaces/transaction_data_source.dart';
@@ -92,6 +94,8 @@ class TransactionsManager {
     } catch (e) {
       // Ignore duplicate entries if createSampleData is called multiple times
     }
+
+    await loadTransactions();
   }
 
   Future<void> loadTransactions({String? accountId, String? categoryId}) async {
@@ -114,7 +118,6 @@ class TransactionsManager {
       transactions.value = await _dataSource.getAll(
         filter: filter.isNotEmpty ? filter : null,
       );
-      _sortTransactions();
     } catch (e) {
       debugPrint('Error loading transactions: $e');
     } finally {
@@ -125,8 +128,6 @@ class TransactionsManager {
   Future<void> addTransaction(Transaction transaction) async {
     try {
       final newTransaction = await _dataSource.create(transaction);
-      transactions.value = [...transactions.value, newTransaction];
-      _sortTransactions();
       await _updateAssociatedEntities(newTransaction);
     } catch (e) {
       debugPrint('Error adding transaction: $e');
@@ -134,18 +135,18 @@ class TransactionsManager {
     }
   }
 
-  Future<void> updateTransaction(Transaction transaction) async {
+  Future<void> updateTransaction(Transaction transaction) =>
+      _updateTransaction(transaction);
+
+  Future<void> _updateTransaction(
+    Transaction transaction, {
+    bool updateAssociated = true,
+  }) async {
     try {
       final updatedTransaction = await _dataSource.update(transaction);
-      final currentList = [...transactions.value];
-      final index = currentList.indexWhere(
-        (t) => t.id == updatedTransaction.id,
-      );
-      if (index != -1) {
-        currentList[index] = updatedTransaction;
-        transactions.value = currentList;
+      if (updateAssociated) {
+        await _updateAssociatedEntities(updatedTransaction);
       }
-      await _updateAssociatedEntities(updatedTransaction);
     } catch (e) {
       debugPrint('Error updating transaction: $e');
       rethrow;
@@ -159,78 +160,11 @@ class TransactionsManager {
       if (transactionToDelete == null) {
         throw Exception('Transaction with id $id not found');
       }
-
-      final accountId = transactionToDelete.accountId;
-      final deletedAt = transactionToDelete.createdAt;
-
-      // Update account balances to reverse the transaction effect
-      await _reverseTransactionEffect(transactionToDelete);
-
-      // Delete the transaction
       await _dataSource.delete(id);
-
-      // Recalculate balances for all subsequent transactions on the same account
-      await _recalculateBalancesAfter(accountId, deletedAt);
-
-      // If it's a transfer, also recalculate target account balances
-      if (transactionToDelete.isTransfer &&
-          transactionToDelete.targetAccountId != null) {
-        await _recalculateBalancesAfter(
-          transactionToDelete.targetAccountId!,
-          deletedAt,
-        );
-      }
-
-      // Reload transactions from data source to get updated balances
-      await loadTransactions();
+      await _updateAssociatedEntities(transactionToDelete, deleted: true);
     } catch (e) {
       debugPrint('Error deleting transaction: $e');
       rethrow;
-    }
-  }
-
-  /// Recalculates accountBalanceBefore for all transactions after the given timestamp
-  /// on the specified account
-  Future<void> _recalculateBalancesAfter(
-    String accountId,
-    DateTime afterDate,
-  ) async {
-    // Get transactions after the deleted transaction, sorted by date
-    final transactionsToUpdate = await _dataSource.getAll(
-      filter: {'accountId': accountId, 'from': afterDate},
-      sort: SortParam('createdAt', ascending: true),
-    );
-
-    // Filter out the exact afterDate timestamp (we only want transactions AFTER)
-    final filteredTransactions = transactionsToUpdate
-        .where((t) => t.createdAt.isAfter(afterDate))
-        .toList();
-
-    if (filteredTransactions.isEmpty) return;
-
-    // Get the balance before the first transaction that needs updating
-    // We need to fetch the previous transaction to get the correct starting balance
-    final previousTransactions = await _dataSource.getAll(
-      filter: {'accountId': accountId, 'to': afterDate},
-      sort: SortParam('createdAt', ascending: true),
-    );
-
-    int currentBalance;
-    if (previousTransactions.isNotEmpty) {
-      // Use the balance after the last transaction before our range
-      currentBalance = previousTransactions.last.accountBalanceAfter;
-    } else {
-      // No previous transactions, start from 0
-      currentBalance = 0;
-    }
-
-    // Recalculate and update each transaction
-    for (final transaction in filteredTransactions) {
-      final updatedTransaction = transaction.copyWith(
-        accountBalanceBefore: currentBalance,
-      );
-      await _dataSource.update(updatedTransaction);
-      currentBalance = updatedTransaction.accountBalanceAfter;
     }
   }
 
@@ -249,43 +183,7 @@ class TransactionsManager {
     loadTransactions();
   }
 
-  /// Reverses the effect of a transaction on account balances
-  Future<void> _reverseTransactionEffect(Transaction transaction) async {
-    final accountsManager = getService<AccountsManager>();
-
-    // Reverse the effect on the source account
-    final sourceAccount = await accountsManager.getAccountById(
-      transaction.accountId,
-    );
-
-    if (sourceAccount != null) {
-      // Subtract the transaction amount to reverse its effect
-      final newBalance = sourceAccount.balance - transaction.amount;
-      await accountsManager.updateAccount(
-        sourceAccount.copyWith(balance: newBalance),
-      );
-    }
-
-    // Reverse the effect on the target account for transfers
-    if (transaction.isTransfer && transaction.targetAccountId != null) {
-      final targetAccount = await accountsManager.getAccountById(
-        transaction.targetAccountId!,
-      );
-
-      if (targetAccount != null) {
-        // For transfers, subtract the absolute amount from target account
-        final transferAmount = transaction.amount.abs();
-        final newBalance = targetAccount.balance - transferAmount;
-        await accountsManager.updateAccount(
-          targetAccount.copyWith(balance: newBalance),
-        );
-      }
-    }
-
-    // Reload accounts to reflect balance changes
-    accountsManager.loadAccounts();
-  }
-
+  // TODO: remove, should be done in data_source
   void _sortTransactions() {
     final sorted = [...transactions.value];
     switch (sortOrder.value) {
@@ -302,20 +200,31 @@ class TransactionsManager {
   }
 
   /// Updates associated account(s) balance and lastUsed, and category lastUsed
-  Future<void> _updateAssociatedEntities(Transaction transaction) async {
-    final now = DateTime.now();
+  Future<void> _updateAssociatedEntities(
+    Transaction transaction, {
+    bool deleted = false,
+  }) async {
+    final lastUsed = deleted ? null : DateTime.now();
     final accountsManager = getService<AccountsManager>();
 
     // Update source account
     final sourceAccount = await accountsManager.getAccountById(
       transaction.accountId,
     );
-
     if (sourceAccount != null) {
-      // Calculate new balance
-      final newBalance = sourceAccount.balance + transaction.amount;
-      await accountsManager.updateAccount(
-        sourceAccount.copyWith(balance: newBalance, lastUsed: now),
+      final transactions = await _dataSource.getAll(
+        filter: {
+          'accountId': sourceAccount.id,
+          'targetAccountId': sourceAccount.id,
+          'from': transaction.createdAt.add(Duration(milliseconds: 1)),
+        },
+        sort: SortParam('createdAt', ascending: true),
+      );
+      await _updateAccountBalanceAndLastUsed(
+        accountsManager,
+        sourceAccount,
+        transactions,
+        lastUsed,
       );
     }
 
@@ -324,13 +233,20 @@ class TransactionsManager {
       final targetAccount = await accountsManager.getAccountById(
         transaction.targetAccountId!,
       );
-
       if (targetAccount != null) {
-        // For transfers, add the absolute amount to target account
-        final transferAmount = transaction.amount.abs();
-        final newBalance = targetAccount.balance + transferAmount;
-        await accountsManager.updateAccount(
-          targetAccount.copyWith(balance: newBalance, lastUsed: now),
+        final transactions = await _dataSource.getAll(
+          filter: {
+            'accountId': targetAccount.id,
+            'targetAccountId': targetAccount.id,
+            'from': transaction.createdAt.add(Duration(milliseconds: 1)),
+          },
+          sort: SortParam('createdAt', ascending: true),
+        );
+        await _updateAccountBalanceAndLastUsed(
+          accountsManager,
+          targetAccount,
+          transactions,
+          lastUsed,
         );
       }
     }
@@ -344,15 +260,27 @@ class TransactionsManager {
       final category = await categoriesManager.getCategoryById(
         transaction.categoryId!,
       );
-
       if (category != null) {
+        final transactions = await _dataSource.getAll(
+          filter: {
+            'categoryId': category.id,
+            'from': transaction.createdAt.add(Duration(milliseconds: 1)),
+          },
+          limit: 1,
+          sort: SortParam('createdAt', ascending: false),
+        );
+        final categoryLastUsed = transactions.isNotEmpty
+            ? transactions.first.createdAt
+            : lastUsed;
         await categoriesManager.updateCategory(
-          category.copyWith(lastUsed: now),
+          category.copyWith(lastUsed: categoryLastUsed),
         );
         // Reload categories to reflect lastUsed changes
         categoriesManager.loadCategories();
       }
     }
+
+    await loadTransactions();
   }
 
   void dispose() {
@@ -362,5 +290,68 @@ class TransactionsManager {
     currentCategoryFilter.dispose();
     sortOrder.dispose();
     viewMode.dispose();
+  }
+
+  Future<void> _updateAccountBalanceAndLastUsed(
+    AccountsManager accountsManager,
+    Account account,
+    List<Transaction> transactions,
+    DateTime? lastUsed,
+  ) async {
+    var balance = IntExtensions.minSafeValue;
+    DateTime? lastUsedValue;
+    for (final transaction in transactions) {
+      // Update lastUsed
+      if (lastUsedValue == null) {
+        // First assignment
+        lastUsedValue = transaction.createdAt;
+      } else if (transaction.createdAt.isAfter(lastUsedValue)) {
+        // Update to most recent
+        lastUsedValue = transaction.createdAt;
+      }
+      if (transaction.accountId == account.id) {
+        // Get balance as source account
+        if (balance == IntExtensions.minSafeValue) {
+          // First transaction, set initial balance
+          balance = transaction.accountBalanceBefore + transaction.amount;
+        } else {
+          if (transaction.accountBalanceBefore != balance) {
+            // Update accountBalanceBefore on transaction
+            _updateTransaction(
+              transaction.copyWith(accountBalanceBefore: balance),
+              updateAssociated: false,
+            );
+          }
+          // Update balance
+          balance += transaction.amount;
+        }
+      } else if (transaction.targetAccountId == account.id) {
+        // Get balance as target account in transfer
+        if (balance == IntExtensions.minSafeValue) {
+          // First transaction, set initial balance
+          balance =
+              (transaction.targetAccountBalanceBefore ?? 0) +
+              transaction.amount.abs();
+        } else {
+          if (transaction.targetAccountBalanceBefore != balance) {
+            // Update targetAccountBalanceBefore on transfer transaction
+            _updateTransaction(
+              transaction.copyWith(targetAccountBalanceBefore: balance),
+              updateAssociated: false,
+            );
+          }
+          // Update balance
+          balance += transaction.amount.abs();
+        }
+      }
+    }
+
+    if (balance == IntExtensions.minSafeValue) {
+      // No transactions, set balance to 0
+      balance = 0;
+    }
+    accountsManager.updateAccount(
+      account.copyWith(balance: balance, lastUsed: lastUsedValue),
+    );
   }
 }

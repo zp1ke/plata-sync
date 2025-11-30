@@ -68,6 +68,8 @@ class LocalCategoryDataSource extends CategoryDataSource {
   Future<List<Category>> getAll({
     Map<String, dynamic>? filter,
     SortParam? sort,
+    int? limit,
+    int? offset,
   }) async {
     final db = await _databaseService.database;
 
@@ -117,6 +119,8 @@ class LocalCategoryDataSource extends CategoryDataSource {
       where: where,
       whereArgs: whereArgs,
       orderBy: orderBy,
+      limit: limit,
+      offset: offset,
     );
 
     return maps.map((map) => _fromMap(map)).toList();

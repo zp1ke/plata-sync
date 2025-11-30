@@ -70,6 +70,8 @@ class LocalAccountDataSource extends AccountDataSource {
   Future<List<Account>> getAll({
     Map<String, dynamic>? filter,
     SortParam? sort,
+    int? limit,
+    int? offset,
   }) async {
     final db = await _databaseService.database;
 
@@ -121,6 +123,8 @@ class LocalAccountDataSource extends AccountDataSource {
       where: where,
       whereArgs: whereArgs,
       orderBy: orderBy,
+      limit: limit,
+      offset: offset,
     );
 
     return maps.map((map) => _fromMap(map)).toList();

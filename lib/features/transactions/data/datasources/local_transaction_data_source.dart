@@ -66,6 +66,8 @@ class LocalTransactionDataSource extends TransactionDataSource {
   Future<List<model.Transaction>> getAll({
     Map<String, dynamic>? filter,
     SortParam? sort,
+    int? limit,
+    int? offset,
   }) async {
     final db = await _databaseService.database;
 
@@ -127,6 +129,8 @@ class LocalTransactionDataSource extends TransactionDataSource {
       where: where,
       whereArgs: whereArgs,
       orderBy: orderBy,
+      limit: limit,
+      offset: offset,
     );
 
     return maps.map((map) => _fromMap(map)).toList();

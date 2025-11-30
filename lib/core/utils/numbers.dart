@@ -25,3 +25,9 @@ class NumberFormatters {
     return format.format(cents / 100);
   }
 }
+
+/// Extension methods for int type.
+extension IntExtensions on int {
+  /// Minimum safe integer value.
+  static int get minSafeValue => -9007199254740991;
+}
