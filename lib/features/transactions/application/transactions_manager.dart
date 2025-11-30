@@ -20,6 +20,7 @@ enum TransactionSortOrder {
   amountDesc(isDescending: true);
 
   final bool isDescending;
+
   const TransactionSortOrder({required this.isDescending});
 }
 
@@ -70,7 +71,8 @@ class TransactionsManager {
     final expense = Transaction.create(
       accountId: expenseAccount.id,
       categoryId: expenseCategory.id,
-      amount: -(random.nextInt(10000) + 1000), // -$10 to -$110
+      amount: -(random.nextInt(10000) + 1000),
+      // -$10 to -$110
       accountBalanceBefore: expenseAccount.balance,
       notes: 'Sample expense transaction',
       createdAt: today,
@@ -82,7 +84,8 @@ class TransactionsManager {
     final income = Transaction.create(
       accountId: incomeAccount.id,
       categoryId: incomeCategory.id,
-      amount: random.nextInt(50000) + 10000, // $100 to $600
+      amount: random.nextInt(50000) + 10000,
+      // $100 to $600
       accountBalanceBefore: incomeAccount.balance,
       notes: 'Sample income transaction',
       createdAt: today,
@@ -128,7 +131,7 @@ class TransactionsManager {
   Future<void> addTransaction(Transaction transaction) async {
     try {
       final newTransaction = await _dataSource.create(transaction);
-      await _updateAssociatedEntities(newTransaction);
+      await _updateAssociated(newTransaction);
     } catch (e) {
       debugPrint('Error adding transaction: $e');
       rethrow;
@@ -145,7 +148,7 @@ class TransactionsManager {
     try {
       final updatedTransaction = await _dataSource.update(transaction);
       if (updateAssociated) {
-        await _updateAssociatedEntities(updatedTransaction);
+        await _updateAssociated(updatedTransaction);
       }
     } catch (e) {
       debugPrint('Error updating transaction: $e');
@@ -161,7 +164,7 @@ class TransactionsManager {
         throw Exception('Transaction with id $id not found');
       }
       await _dataSource.delete(id);
-      await _updateAssociatedEntities(transactionToDelete, deleted: true);
+      await _updateAssociated(transactionToDelete, deleted: true);
     } catch (e) {
       debugPrint('Error deleting transaction: $e');
       rethrow;
@@ -200,7 +203,7 @@ class TransactionsManager {
   }
 
   /// Updates associated account(s) balance and lastUsed, and category lastUsed
-  Future<void> _updateAssociatedEntities(
+  Future<void> _updateAssociated(
     Transaction transaction, {
     bool deleted = false,
   }) async {
@@ -212,19 +215,14 @@ class TransactionsManager {
       transaction.accountId,
     );
     if (sourceAccount != null) {
-      final transactions = await _dataSource.getAll(
-        filter: {
-          'accountId': sourceAccount.id,
-          'targetAccountId': sourceAccount.id,
-          'from': transaction.createdAt.add(Duration(milliseconds: 1)),
-        },
-        sort: SortParam('createdAt', ascending: true),
-      );
       await _updateAccountBalanceAndLastUsed(
         accountsManager,
         sourceAccount,
-        transactions,
+        transaction.createdAt.add(Duration(milliseconds: 1)),
         lastUsed,
+        deleted
+            ? transaction.accountBalanceBefore
+            : transaction.accountBalanceAfter,
       );
     }
 
@@ -234,19 +232,14 @@ class TransactionsManager {
         transaction.targetAccountId!,
       );
       if (targetAccount != null) {
-        final transactions = await _dataSource.getAll(
-          filter: {
-            'accountId': targetAccount.id,
-            'targetAccountId': targetAccount.id,
-            'from': transaction.createdAt.add(Duration(milliseconds: 1)),
-          },
-          sort: SortParam('createdAt', ascending: true),
-        );
         await _updateAccountBalanceAndLastUsed(
           accountsManager,
           targetAccount,
-          transactions,
+          transaction.createdAt.add(Duration(milliseconds: 1)),
           lastUsed,
+          deleted
+              ? transaction.targetAccountBalanceBefore
+              : transaction.targetAccountBalanceAfter,
         );
       }
     }
@@ -295,10 +288,21 @@ class TransactionsManager {
   Future<void> _updateAccountBalanceAndLastUsed(
     AccountsManager accountsManager,
     Account account,
-    List<Transaction> transactions,
+    DateTime from,
     DateTime? lastUsed,
+    int? initialBalance,
   ) async {
-    var balance = IntExtensions.minSafeValue;
+    final transactions = await _dataSource.getAll(
+      filter: {'accountId': account.id, 'from': from},
+      sort: SortParam('createdAt', ascending: true),
+    );
+    final transferTransactions = await _dataSource.getAll(
+      filter: {'targetAccountId': account.id, 'from': from},
+      sort: SortParam('createdAt', ascending: true),
+    );
+    transactions.addAll(transferTransactions);
+
+    var balance = initialBalance ?? IntExtensions.minSafeValue;
     DateTime? lastUsedValue;
     for (final transaction in transactions) {
       // Update lastUsed

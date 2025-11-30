@@ -51,11 +51,7 @@ class _TransactionGridItemState extends State<TransactionGridItem> {
       orElse: () => Account.create(
         name: 'Unknown',
         description: null,
-        iconData: const ObjectIconData(
-          iconName: 'help_outline',
-          backgroundColorHex: '9E9E9E',
-          iconColorHex: 'FFFFFF',
-        ),
+        iconData: ObjectIconData.empty(),
       ),
     );
 
@@ -67,11 +63,7 @@ class _TransactionGridItemState extends State<TransactionGridItem> {
         orElse: () => Category.create(
           name: 'Unknown',
           description: null,
-          iconData: const ObjectIconData(
-            iconName: 'help_outline',
-            backgroundColorHex: '9E9E9E',
-            iconColorHex: 'FFFFFF',
-          ),
+          iconData: ObjectIconData.empty(),
         ),
       );
     }
@@ -83,11 +75,7 @@ class _TransactionGridItemState extends State<TransactionGridItem> {
         orElse: () => Account.create(
           name: 'Unknown',
           description: null,
-          iconData: const ObjectIconData(
-            iconName: 'help_outline',
-            backgroundColorHex: '9E9E9E',
-            iconColorHex: 'FFFFFF',
-          ),
+          iconData: ObjectIconData.empty(),
         ),
       );
     }

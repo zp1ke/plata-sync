@@ -13,20 +13,22 @@ import 'package:plata_sync/features/transactions/domain/entities/transaction.dar
 void main() {
   group('TransactionsManager.deleteTransaction', () {
     late InMemoryTransactionDataSource dataSource;
+    late AccountsManager accountManager;
     late TransactionsManager manager;
     final getIt = GetIt.instance;
 
     setUp(() {
-      // Register required dependencies
-      getIt.registerSingleton<AccountsManager>(
-        AccountsManager(InMemoryAccountDataSource(delayMilliseconds: 0)),
+      accountManager = AccountsManager(
+        InMemoryAccountDataSource(delayMilliseconds: 0),
       );
+      dataSource = InMemoryTransactionDataSource(delayMilliseconds: 0);
+      manager = TransactionsManager(dataSource);
+
+      // Register required dependencies
+      getIt.registerSingleton<AccountsManager>(accountManager);
       getIt.registerSingleton<CategoriesManager>(
         CategoriesManager(InMemoryCategoryDataSource(delayMilliseconds: 0)),
       );
-
-      dataSource = InMemoryTransactionDataSource(delayMilliseconds: 0);
-      manager = TransactionsManager(dataSource);
     });
 
     tearDown(() {
@@ -35,13 +37,19 @@ void main() {
 
     test('should recalculate balances after deleting a transaction', () async {
       // Arrange: Create a sequence of transactions with balances
-      final accountId = 'account-1';
+      var account = Account.create(
+        id: 'account-1',
+        name: 'Test Account',
+        iconData: ObjectIconData.empty(),
+        balance: 0,
+      );
+      await accountManager.addAccount(account);
 
       // Transaction 1: balance before 0, amount +100, balance after 100
       final t1 = Transaction.create(
         id: 'tx-1',
         createdAt: DateTime(2025, 1, 1, 10, 0),
-        accountId: accountId,
+        accountId: account.id,
         amount: 100,
         accountBalanceBefore: 0,
       );
@@ -50,7 +58,7 @@ void main() {
       final t2 = Transaction.create(
         id: 'tx-2',
         createdAt: DateTime(2025, 1, 1, 11, 0),
-        accountId: accountId,
+        accountId: account.id,
         amount: 50,
         accountBalanceBefore: 100,
       );
@@ -59,7 +67,7 @@ void main() {
       final t3 = Transaction.create(
         id: 'tx-3',
         createdAt: DateTime(2025, 1, 1, 12, 0),
-        accountId: accountId,
+        accountId: account.id,
         amount: -30,
         accountBalanceBefore: 150,
       );
@@ -68,7 +76,7 @@ void main() {
       final t4 = Transaction.create(
         id: 'tx-4',
         createdAt: DateTime(2025, 1, 1, 13, 0),
-        accountId: accountId,
+        accountId: account.id,
         amount: 20,
         accountBalanceBefore: 120,
       );
@@ -77,6 +85,11 @@ void main() {
       await manager.addTransaction(t2);
       await manager.addTransaction(t3);
       await manager.addTransaction(t4);
+
+      // Assert: Initial balances are correct
+      var updatedAccount = await accountManager.getAccountById(account.id);
+      expect(updatedAccount, isNotNull);
+      expect(updatedAccount!.balance, t4.accountBalanceAfter);
 
       // Act: Delete transaction 2 (the middle one)
       await manager.deleteTransaction('tx-2');
@@ -280,7 +293,8 @@ void main() {
           createdAt: DateTime(2025, 1, 1, 10, 0),
           accountId: sourceAccount.id,
           targetAccountId: targetAccount.id,
-          amount: -300, // -$3.00 from source
+          amount: -300,
+          // -$3.00 from source
           accountBalanceBefore: 1000,
           targetAccountBalanceBefore: 500,
         );

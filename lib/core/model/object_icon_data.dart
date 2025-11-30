@@ -14,6 +14,11 @@ class ObjectIconData extends Equatable {
     required this.iconColorHex,
   });
 
+  const ObjectIconData.empty()
+    : iconName = 'help_outline',
+      backgroundColorHex = '#E0E0E0',
+      iconColorHex = '#9E9E9E';
+
   ObjectIconData.fromColors({
     required this.iconName,
     required Color backgroundColorHex,
