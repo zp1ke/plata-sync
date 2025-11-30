@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:plata_sync/core/di/service_locator.dart';
+import 'package:plata_sync/core/ui/resources/app_sizing.dart';
 import 'package:plata_sync/core/ui/resources/app_spacing.dart';
 import 'package:plata_sync/core/ui/resources/app_theme.dart';
+import 'package:plata_sync/core/ui/widgets/object_icon.dart';
 import 'package:plata_sync/core/utils/datetime.dart';
 import 'package:plata_sync/core/utils/numbers.dart';
 import 'package:plata_sync/features/accounts/application/accounts_manager.dart';
@@ -75,67 +77,66 @@ class _TransactionDetailsViewState extends State<TransactionDetailsView> {
     final l10n = AppL10n.of(context);
     final transaction = widget.transaction;
 
-    String typeLabel;
-    Color typeColor;
-    if (transaction.isTransfer) {
-      typeLabel = l10n.transactionTypeTransfer;
-      typeColor = Theme.of(context).colorScheme.transfer;
-    } else if (transaction.isExpense) {
-      typeLabel = l10n.transactionTypeExpense;
-      typeColor = Theme.of(context).colorScheme.expense;
-    } else {
-      typeLabel = l10n.transactionTypeIncome;
-      typeColor = Theme.of(context).colorScheme.income;
-    }
+    final typeColor = switch (transaction) {
+      _ when transaction.isTransfer => Theme.of(context).colorScheme.transfer,
+      _ when transaction.isExpense => Theme.of(context).colorScheme.expense,
+      _ => Theme.of(context).colorScheme.income,
+    };
 
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       spacing: AppSpacing.lg,
       children: [
         // Amount and type
-        _buildSection(
-          context,
-          label: l10n.transactionAmountLabel,
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            spacing: AppSpacing.xs,
-            children: [
-              Text(
-                NumberFormatters.formatCurrency(transaction.amount),
-                style: Theme.of(context).textTheme.headlineSmall?.copyWith(
-                  fontWeight: FontWeight.bold,
-                  color: typeColor,
-                ),
-              ),
-              Text(
-                typeLabel,
-                style: Theme.of(context).textTheme.bodyMedium?.copyWith(
-                  color: typeColor,
-                  fontWeight: FontWeight.w600,
-                ),
-              ),
-            ],
-          ),
-        ),
-        // Account
-        _buildSection(
-          context,
-          label: l10n.accountsScreenTitle,
-          child: Text(
-            _account?.name ?? l10n.accountsEmptyState,
-            style: Theme.of(context).textTheme.bodyLarge,
+        Text(
+          NumberFormatters.formatCurrency(transaction.amount),
+          style: Theme.of(context).textTheme.headlineSmall?.copyWith(
+            fontWeight: FontWeight.bold,
+            color: typeColor,
           ),
         ),
         // Category (if not transfer)
         if (_category != null)
           _buildSection(
             context,
-            label: l10n.categoriesScreenTitle,
-            child: Text(
-              _category!.name,
-              style: Theme.of(context).textTheme.bodyLarge,
+            label: l10n.transactionCategoryLabel,
+            child: Row(
+              spacing: AppSpacing.sm,
+              children: [
+                ObjectIcon(
+                  iconData: _category!.iconData,
+                  size: widget.showLargeIcon
+                      ? AppSizing.iconLg
+                      : AppSizing.iconMd,
+                ),
+                Text(
+                  _category!.name,
+                  style: Theme.of(context).textTheme.bodyLarge,
+                ),
+              ],
             ),
           ),
+        // Account
+        _buildSection(
+          context,
+          label: l10n.transactionAccountLabel,
+          child: Row(
+            spacing: AppSpacing.sm,
+            children: [
+              if (_account != null)
+                ObjectIcon(
+                  iconData: _account!.iconData,
+                  size: widget.showLargeIcon
+                      ? AppSizing.iconLg
+                      : AppSizing.iconMd,
+                ),
+              Text(
+                _account?.name ?? l10n.accountsEmptyState,
+                style: Theme.of(context).textTheme.bodyLarge,
+              ),
+            ],
+          ),
+        ),
         // Target account (if transfer)
         if (_targetAccount != null)
           _buildSection(
