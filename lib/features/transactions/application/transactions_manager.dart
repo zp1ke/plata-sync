@@ -1,4 +1,5 @@
 import 'package:flutter/foundation.dart' hide Category;
+import 'package:plata_sync/core/data/models/sort_param.dart';
 import 'package:plata_sync/core/di/service_locator.dart';
 import 'package:plata_sync/core/model/enums/view_mode.dart';
 import 'package:plata_sync/features/accounts/application/accounts_manager.dart';
@@ -103,12 +104,72 @@ class TransactionsManager {
 
   Future<void> deleteTransaction(String id) async {
     try {
+      // Get the transaction before deleting to know its account and timestamp
+      final transactionToDelete = await _dataSource.read(id);
+      if (transactionToDelete == null) {
+        throw Exception('Transaction with id $id not found');
+      }
+
+      final accountId = transactionToDelete.accountId;
+      final deletedAt = transactionToDelete.createdAt;
+
+      // Delete the transaction
       await _dataSource.delete(id);
-      transactions.value = transactions.value.where((t) => t.id != id).toList();
-      _sortTransactions();
+
+      // Recalculate balances for all subsequent transactions on the same account
+      await _recalculateBalancesAfter(accountId, deletedAt);
+
+      // Reload transactions from data source to get updated balances
+      await loadTransactions();
     } catch (e) {
       debugPrint('Error deleting transaction: $e');
       rethrow;
+    }
+  }
+
+  /// Recalculates balanceBefore for all transactions after the given timestamp
+  /// on the specified account
+  Future<void> _recalculateBalancesAfter(
+    String accountId,
+    DateTime afterDate,
+  ) async {
+    // Get all transactions for this account from data source, sorted by date
+    // TODO: Optimize by adding a method to get transactions within a date range directly
+    final allAccountTransactions = await _dataSource.getAll(
+      filter: {'accountId': accountId},
+      sort: SortParam('createdAt', ascending: true),
+    );
+
+    // Find transactions that need recalculation (after the deleted transaction)
+    final transactionsToUpdate = allAccountTransactions
+        .where((t) => t.createdAt.isAfter(afterDate))
+        .toList();
+
+    if (transactionsToUpdate.isEmpty) return;
+
+    // Calculate the balance before the first transaction to update
+    // This is the balance after the last transaction before the deleted one
+    final transactionsBeforeUpdate = allAccountTransactions
+        .where(
+          (t) =>
+              t.createdAt.isBefore(afterDate) ||
+              t.createdAt.isAtSameMomentAs(afterDate),
+        )
+        .toList();
+
+    int currentBalance = 0;
+    if (transactionsBeforeUpdate.isNotEmpty) {
+      final lastBefore = transactionsBeforeUpdate.last;
+      currentBalance = lastBefore.balanceAfter;
+    }
+
+    // Update each transaction with the corrected balanceBefore
+    for (final transaction in transactionsToUpdate) {
+      final updatedTransaction = transaction.copyWith(
+        balanceBefore: currentBalance,
+      );
+      await _dataSource.update(updatedTransaction);
+      currentBalance = updatedTransaction.balanceAfter;
     }
   }
 

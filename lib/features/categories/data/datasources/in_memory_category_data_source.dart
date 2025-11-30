@@ -3,8 +3,10 @@ import 'package:plata_sync/features/categories/data/interfaces/category_data_sou
 import 'package:plata_sync/features/categories/domain/entities/category.dart';
 
 class InMemoryCategoryDataSource extends CategoryDataSource {
-  static const _delay = Duration(milliseconds: 500);
+  InMemoryCategoryDataSource({int delayMilliseconds = 300})
+    : _delay = Duration(milliseconds: delayMilliseconds);
 
+  final Duration _delay;
   final Map<String, Category> _items = {};
 
   @override

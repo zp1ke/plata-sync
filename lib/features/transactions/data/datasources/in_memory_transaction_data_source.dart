@@ -3,8 +3,10 @@ import 'package:plata_sync/features/transactions/data/interfaces/transaction_dat
 import 'package:plata_sync/features/transactions/domain/entities/transaction.dart';
 
 class InMemoryTransactionDataSource extends TransactionDataSource {
-  static const _delay = Duration(milliseconds: 500);
+  InMemoryTransactionDataSource({int delayMilliseconds = 300})
+    : _delay = Duration(milliseconds: delayMilliseconds);
 
+  final Duration _delay;
   final Map<String, Transaction> _items = {};
 
   @override

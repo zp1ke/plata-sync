@@ -45,6 +45,7 @@ abstract class TransactionDataSource extends DataSource<Transaction> {
       accountId: expenseAccount.id,
       categoryId: expenseCategory.id,
       amount: -(random.nextInt(10000) + 1000), // -$10 to -$110
+      balanceBefore: expenseAccount.balance,
       notes: 'Sample expense transaction',
       createdAt: today,
     );
@@ -56,6 +57,7 @@ abstract class TransactionDataSource extends DataSource<Transaction> {
       accountId: incomeAccount.id,
       categoryId: incomeCategory.id,
       amount: random.nextInt(50000) + 10000, // $100 to $600
+      balanceBefore: incomeAccount.balance,
       notes: 'Sample income transaction',
       createdAt: today,
     );

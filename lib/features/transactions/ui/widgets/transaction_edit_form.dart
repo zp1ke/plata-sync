@@ -102,6 +102,7 @@ class TransactionEditFormState extends State<TransactionEditForm> {
       accountId: _accountId!,
       categoryId: _type == TransactionType.transfer ? null : _categoryId,
       amount: amount,
+      balanceBefore: widget.transaction?.balanceBefore ?? 0,
       targetAccountId: _type == TransactionType.transfer
           ? _targetAccountId
           : null,

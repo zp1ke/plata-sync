@@ -3,8 +3,10 @@ import 'package:plata_sync/features/accounts/data/interfaces/account_data_source
 import 'package:plata_sync/features/accounts/domain/entities/account.dart';
 
 class InMemoryAccountDataSource extends AccountDataSource {
-  static const _delay = Duration(milliseconds: 500);
+  InMemoryAccountDataSource({int delayMilliseconds = 300})
+    : _delay = Duration(milliseconds: delayMilliseconds);
 
+  final Duration _delay;
   final Map<String, Account> _items = {};
 
   @override

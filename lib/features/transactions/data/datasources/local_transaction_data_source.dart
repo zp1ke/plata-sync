@@ -20,6 +20,7 @@ class LocalTransactionDataSource extends TransactionDataSource {
       'account_id': transaction.accountId,
       'category_id': transaction.categoryId,
       'amount': transaction.amount,
+      'balance_before': transaction.balanceBefore,
       'target_account_id': transaction.targetAccountId,
       'notes': transaction.notes,
     };
@@ -33,6 +34,7 @@ class LocalTransactionDataSource extends TransactionDataSource {
       accountId: map['account_id'] as String,
       categoryId: map['category_id'] as String?,
       amount: map['amount'] as int,
+      balanceBefore: map['balance_before'] as int,
       targetAccountId: map['target_account_id'] as String?,
       notes: map['notes'] as String?,
     );

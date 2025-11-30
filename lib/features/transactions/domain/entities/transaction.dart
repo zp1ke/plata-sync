@@ -7,6 +7,7 @@ class Transaction extends Equatable {
   final String accountId;
   final String? categoryId;
   final int amount;
+  final int balanceBefore;
   final String? targetAccountId;
   final String? notes;
 
@@ -15,6 +16,7 @@ class Transaction extends Equatable {
     required this.createdAt,
     required this.accountId,
     required this.amount,
+    required this.balanceBefore,
     this.categoryId,
     this.targetAccountId,
     this.notes,
@@ -25,6 +27,7 @@ class Transaction extends Equatable {
     DateTime? createdAt,
     required this.accountId,
     required this.amount,
+    required this.balanceBefore,
     this.categoryId,
     this.targetAccountId,
     this.notes,
@@ -37,6 +40,7 @@ class Transaction extends Equatable {
     String? accountId,
     String? categoryId,
     int? amount,
+    int? balanceBefore,
     String? targetAccountId,
     String? notes,
   }) {
@@ -46,6 +50,7 @@ class Transaction extends Equatable {
       accountId: accountId ?? this.accountId,
       categoryId: categoryId ?? this.categoryId,
       amount: amount ?? this.amount,
+      balanceBefore: balanceBefore ?? this.balanceBefore,
       targetAccountId: targetAccountId ?? this.targetAccountId,
       notes: notes ?? this.notes,
     );
@@ -62,4 +67,7 @@ class Transaction extends Equatable {
 
   /// Returns true if this is an income (positive amount and not a transfer)
   bool get isIncome => amount > 0 && !isTransfer;
+
+  /// Calculates the balance after this transaction
+  int get balanceAfter => balanceBefore + amount;
 }
