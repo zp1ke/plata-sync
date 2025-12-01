@@ -99,7 +99,7 @@ class MasterDetailLayout extends StatelessWidget {
         // Master pane
         Expanded(flex: (masterWidthRatio * 10).round(), child: master),
         // Divider
-        const VerticalDivider(width: 1),
+        const VerticalDivider(),
         // Detail pane
         Expanded(
           flex: ((1 - masterWidthRatio) * 10).round(),

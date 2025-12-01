@@ -166,7 +166,7 @@ class _SelectionDialogState<T> extends State<_SelectionDialog<T>> {
       ),
       content: SizedBox(
         width: AppSizing.dialogMaxWidth,
-        height: 500, // TODO: Make dynamic based on content
+        height: 500,
         child: Column(
           mainAxisSize: MainAxisSize.min,
           children: [

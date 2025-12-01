@@ -104,7 +104,7 @@ class _MobileTransactionsScreenState extends State<_MobileTransactionsScreen> {
       preferredSize: const Size.fromHeight(kToolbarHeight),
       child: Column(
         children: [
-          const Divider(height: 1),
+          const Divider(),
           Padding(
             padding: AppSpacing.paddingMd,
             child: Row(
@@ -398,7 +398,7 @@ class _TabletTransactionsScreenState extends State<_TabletTransactionsScreen> {
                     isLoading,
                     l10n,
                   ),
-                  const Divider(height: 1),
+                  const Divider(),
                   Expanded(
                     child: _buildMasterContent(
                       context,
@@ -410,7 +410,7 @@ class _TabletTransactionsScreenState extends State<_TabletTransactionsScreen> {
                 ],
               ),
             ),
-            const VerticalDivider(width: 1),
+            const VerticalDivider(),
             // Detail pane
             Expanded(
               flex: 3,

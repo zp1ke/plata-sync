@@ -45,6 +45,7 @@ class AppTheme {
             vertical: AppSpacing.xxl,
           ),
         ),
+        dividerTheme: const DividerThemeData(thickness: 1, space: 1),
       );
 
   static final dark =
@@ -71,5 +72,6 @@ class AppTheme {
             vertical: AppSpacing.xxl,
           ),
         ),
+        dividerTheme: const DividerThemeData(thickness: 1, space: 1),
       );
 }
