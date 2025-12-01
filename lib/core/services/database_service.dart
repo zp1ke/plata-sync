@@ -17,8 +17,9 @@ class DatabaseService {
     }
   }
 
-  /// Get the database instance
+  /// Get the database instance (singleton pattern)
   Future<Database> get database async {
+    // Return cached instance if available
     if (_database != null) return _database!;
     _database = await _initDatabase();
     return _database!;

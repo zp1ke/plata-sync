@@ -9,7 +9,7 @@ import 'package:plata_sync/features/categories/domain/entities/category.dart';
 import 'package:plata_sync/l10n/app_localizations.dart';
 
 /// A widget that allows selecting a category from available categories
-class CategorySelector extends StatefulWidget {
+class CategorySelector extends StatelessWidget {
   final String? categoryId;
   final ValueChanged<String?> onChanged;
   final String? Function(String?)? validator;
@@ -26,74 +26,55 @@ class CategorySelector extends StatefulWidget {
   });
 
   @override
-  State<CategorySelector> createState() => _CategorySelectorState();
-}
-
-class _CategorySelectorState extends State<CategorySelector> {
-  late final CategoriesManager _manager;
-  List<Category> _categories = [];
-
-  @override
-  void initState() {
-    super.initState();
-    _manager = getService<CategoriesManager>();
-    _loadCategories();
-  }
-
-  Future<void> _loadCategories() async {
-    await _manager.loadCategories();
-    if (mounted) {
-      setState(() {
-        _categories = _manager.categories.value;
-      });
-    }
-  }
-
-  @override
   Widget build(BuildContext context) {
     final l10n = AppL10n.of(context);
+    final manager = getService<CategoriesManager>();
 
-    if (_categories.isEmpty) {
-      return TextFormField(
-        enabled: false,
-        decoration: InputDecoration(
-          labelText: l10n.transactionCategoryLabel,
-          hintText: l10n.categoriesAddSampleDataPrompt,
-          border: const OutlineInputBorder(),
-        ),
-      );
-    }
-
-    final selectedCategory = _categories.cast<Category?>().firstWhere(
-      (category) => category?.id == widget.categoryId,
-      orElse: () => null,
-    );
-
-    return SelectField<Category?>(
-      value: selectedCategory,
-      options: widget.required ? _categories : [null, ..._categories],
-      label: l10n.transactionCategoryLabel,
-      itemLabelBuilder: (category) => category?.name ?? l10n.none,
-      itemBuilder: (category) {
-        if (category == null) {
-          return Text(
-            '(${l10n.none})',
-            style: const TextStyle(fontStyle: FontStyle.italic),
+    return ValueListenableBuilder<List<Category>>(
+      valueListenable: manager.categories,
+      builder: (context, categories, _) {
+        if (categories.isEmpty) {
+          return TextFormField(
+            enabled: false,
+            decoration: InputDecoration(
+              labelText: l10n.transactionCategoryLabel,
+              hintText: l10n.categoriesAddSampleDataPrompt,
+              border: const OutlineInputBorder(),
+            ),
           );
         }
-        return Row(
-          children: [
-            ObjectIcon(iconData: category.iconData, size: AppSizing.iconMd),
-            AppSpacing.gapHorizontalMd,
-            Expanded(
-              child: Text(category.name, overflow: TextOverflow.ellipsis),
-            ),
-          ],
+
+        final selectedCategory = categories
+            .where((category) => category.id == categoryId)
+            .firstOrNull;
+
+        return SelectField<Category?>(
+          value: selectedCategory,
+          options: required ? categories : [null, ...categories],
+          label: l10n.transactionCategoryLabel,
+          itemLabelBuilder: (category) => category?.name ?? l10n.none,
+          itemBuilder: (category) {
+            if (category == null) {
+              return Text(
+                '(${l10n.none})',
+                style: const TextStyle(fontStyle: FontStyle.italic),
+              );
+            }
+            return Row(
+              children: [
+                ObjectIcon(iconData: category.iconData, size: AppSizing.iconMd),
+                AppSpacing.gapHorizontalMd,
+                Expanded(
+                  child: Text(category.name, overflow: TextOverflow.ellipsis),
+                ),
+              ],
+            );
+          },
+          onChanged: (category) => onChanged(category?.id),
+          validator: (category) => validator?.call(category?.id),
+          enabled: enabled,
         );
       },
-      onChanged: (category) => widget.onChanged(category?.id),
-      validator: (category) => widget.validator?.call(category?.id),
-      enabled: widget.enabled,
     );
   }
 }

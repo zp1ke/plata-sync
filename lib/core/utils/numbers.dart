@@ -2,27 +2,35 @@ import 'package:intl/intl.dart';
 
 /// Utility class for number formatting, particularly for currency.
 class NumberFormatters {
+  // Private constructor to prevent instantiation
   NumberFormatters._();
+
+  // Cache formatters for better performance
+  static final _currencyFormatter = NumberFormat.currency(symbol: '\$');
+  static final _compactCurrencyFormatter = NumberFormat.compactCurrency(
+    symbol: '\$',
+  );
+  static final _wholeCurrencyFormatter = NumberFormat.currency(
+    symbol: '\$',
+    decimalDigits: 0,
+  );
 
   /// Formats a value in cents as currency with dollar sign.
   /// Example: 150000 cents -> "$1,500.00"
   static String formatCurrency(int cents) {
-    final format = NumberFormat.currency(symbol: '\$');
-    return format.format(cents / 100);
+    return _currencyFormatter.format(cents / 100);
   }
 
   /// Formats a value in cents as compact currency with dollar sign.
   /// Example: 150000 cents -> "$1.5K"
   static String formatCompactCurrency(int cents) {
-    final format = NumberFormat.compactCurrency(symbol: '\$');
-    return format.format(cents / 100);
+    return _compactCurrencyFormatter.format(cents / 100);
   }
 
   /// Formats a value in cents as currency without decimal places.
   /// Example: 150000 cents -> "$1,500"
   static String formatCurrencyWhole(int cents) {
-    final format = NumberFormat.currency(symbol: '\$', decimalDigits: 0);
-    return format.format(cents / 100);
+    return _wholeCurrencyFormatter.format(cents / 100);
   }
 }
 

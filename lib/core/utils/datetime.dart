@@ -10,7 +10,7 @@ extension DateExtensions on DateTime {
   /// Formats DateTime with time (hours and minutes).
   String formatWithTime() {
     final dateFormat = DateFormat.yMMMd();
-    final timeFormat = DateFormat.Hm();
+    final timeFormat = DateFormat.jm();
     return '${dateFormat.format(this)} ${timeFormat.format(this)}';
   }
 }

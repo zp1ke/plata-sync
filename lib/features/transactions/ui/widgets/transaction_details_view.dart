@@ -49,25 +49,18 @@ class _TransactionDetailsViewState extends State<TransactionDetailsView> {
     await _categoriesManager.loadCategories();
     if (mounted) {
       setState(() {
-        _account = _accountsManager.accounts.value.cast<Account?>().firstWhere(
-          (a) => a?.id == widget.transaction.accountId,
-          orElse: () => null,
-        );
+        _account = _accountsManager.accounts.value
+            .where((a) => a.id == widget.transaction.accountId)
+            .firstOrNull;
         if (widget.transaction.categoryId != null) {
           _category = _categoriesManager.categories.value
-              .cast<Category?>()
-              .firstWhere(
-                (c) => c?.id == widget.transaction.categoryId,
-                orElse: () => null,
-              );
+              .where((c) => c.id == widget.transaction.categoryId)
+              .firstOrNull;
         }
         if (widget.transaction.targetAccountId != null) {
           _targetAccount = _accountsManager.accounts.value
-              .cast<Account?>()
-              .firstWhere(
-                (a) => a?.id == widget.transaction.targetAccountId,
-                orElse: () => null,
-              );
+              .where((a) => a.id == widget.transaction.targetAccountId)
+              .firstOrNull;
         }
       });
     }

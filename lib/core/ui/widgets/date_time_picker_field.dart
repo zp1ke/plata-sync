@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:plata_sync/core/utils/datetime.dart';
 
 /// A widget that allows selecting both date and time through separate pickers
 class DateTimePickerField extends StatelessWidget {
@@ -49,32 +50,8 @@ class DateTimePickerField extends StatelessWidget {
           labelText: label,
           border: const OutlineInputBorder(),
         ),
-        child: Text(_formatDateTime(context, dateTime)),
+        child: Text(dateTime.formatWithTime()),
       ),
     );
-  }
-
-  String _formatDateTime(BuildContext context, DateTime dateTime) {
-    final monthNames = {
-      1: 'Jan',
-      2: 'Feb',
-      3: 'Mar',
-      4: 'Apr',
-      5: 'May',
-      6: 'Jun',
-      7: 'Jul',
-      8: 'Aug',
-      9: 'Sep',
-      10: 'Oct',
-      11: 'Nov',
-      12: 'Dec',
-    };
-
-    final month = monthNames[dateTime.month] ?? dateTime.month.toString();
-    final day = dateTime.day;
-    final year = dateTime.year;
-    final time = TimeOfDay.fromDateTime(dateTime).format(context);
-
-    return '$month $day, $year $time';
   }
 }
