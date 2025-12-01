@@ -369,8 +369,12 @@ class _TabletCategoriesScreenState extends State<_TabletCategoriesScreen> {
               ),
               TextButton(
                 onPressed: () {
-                  setState(() {
-                    isEditing = false;
+                  WidgetsBinding.instance.addPostFrameCallback((_) {
+                    if (mounted) {
+                      setState(() {
+                        isEditing = false;
+                      });
+                    }
                   });
                 },
                 child: Text(l10n.cancel),
