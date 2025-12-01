@@ -119,12 +119,18 @@ void main() {
 
     test('should handle deleting the first transaction', () async {
       // Arrange
-      final accountId = 'account-1';
+      var account = Account.create(
+        id: 'account-1',
+        name: 'Test Account',
+        iconData: ObjectIconData.empty(),
+        balance: 0,
+      );
+      await accountManager.addAccount(account);
 
       final t1 = Transaction.create(
         id: 'tx-1',
         createdAt: DateTime(2025, 1, 1, 10, 0),
-        accountId: accountId,
+        accountId: account.id,
         amount: 100,
         accountBalanceBefore: 0,
       );
@@ -132,7 +138,7 @@ void main() {
       final t2 = Transaction.create(
         id: 'tx-2',
         createdAt: DateTime(2025, 1, 1, 11, 0),
-        accountId: accountId,
+        accountId: account.id,
         amount: 50,
         accountBalanceBefore: 100,
       );
@@ -151,12 +157,18 @@ void main() {
 
     test('should handle deleting the last transaction', () async {
       // Arrange
-      final accountId = 'account-1';
+      var account = Account.create(
+        id: 'account-1',
+        name: 'Test Account',
+        iconData: ObjectIconData.empty(),
+        balance: 0,
+      );
+      await accountManager.addAccount(account);
 
       final t1 = Transaction.create(
         id: 'tx-1',
         createdAt: DateTime(2025, 1, 1, 10, 0),
-        accountId: accountId,
+        accountId: account.id,
         amount: 100,
         accountBalanceBefore: 0,
       );
@@ -164,7 +176,7 @@ void main() {
       final t2 = Transaction.create(
         id: 'tx-2',
         createdAt: DateTime(2025, 1, 1, 11, 0),
-        accountId: accountId,
+        accountId: account.id,
         amount: 50,
         accountBalanceBefore: 100,
       );
@@ -183,13 +195,26 @@ void main() {
 
     test('should only affect transactions on the same account', () async {
       // Arrange: Create transactions on two different accounts
-      final account1 = 'account-1';
-      final account2 = 'account-2';
+      var account1 = Account.create(
+        id: 'account-1',
+        name: 'Test Account 1',
+        iconData: ObjectIconData.empty(),
+        balance: 0,
+      );
+      await accountManager.addAccount(account1);
+
+      var account2 = Account.create(
+        id: 'account-2',
+        name: 'Test Account 2',
+        iconData: ObjectIconData.empty(),
+        balance: 0,
+      );
+      await accountManager.addAccount(account2);
 
       final t1 = Transaction.create(
         id: 'tx-1',
         createdAt: DateTime(2025, 1, 1, 10, 0),
-        accountId: account1,
+        accountId: account1.id,
         amount: 100,
         accountBalanceBefore: 0,
       );
@@ -197,7 +222,7 @@ void main() {
       final t2 = Transaction.create(
         id: 'tx-2',
         createdAt: DateTime(2025, 1, 1, 11, 0),
-        accountId: account1,
+        accountId: account1.id,
         amount: 50,
         accountBalanceBefore: 100,
       );
@@ -205,7 +230,7 @@ void main() {
       final t3 = Transaction.create(
         id: 'tx-3',
         createdAt: DateTime(2025, 1, 1, 10, 30),
-        accountId: account2,
+        accountId: account2.id,
         amount: 200,
         accountBalanceBefore: 0,
       );
@@ -232,12 +257,18 @@ void main() {
       'should reload transactions from data source after deletion',
       () async {
         // Arrange
-        final accountId = 'account-1';
+        var account = Account.create(
+          id: 'account-1',
+          name: 'Test Account',
+          iconData: ObjectIconData.empty(),
+          balance: 0,
+        );
+        await accountManager.addAccount(account);
 
         final t1 = Transaction.create(
           id: 'tx-1',
           createdAt: DateTime(2025, 1, 1, 10, 0),
-          accountId: accountId,
+          accountId: account.id,
           amount: 100,
           accountBalanceBefore: 0,
         );
