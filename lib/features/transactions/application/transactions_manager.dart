@@ -120,6 +120,7 @@ class TransactionsManager {
 
       transactions.value = await _dataSource.getAll(
         filter: filter.isNotEmpty ? filter : null,
+        sort: _getSortParam(),
       );
     } catch (e) {
       debugPrint('Error loading transactions: $e');
@@ -173,7 +174,16 @@ class TransactionsManager {
 
   void setSortOrder(TransactionSortOrder order) {
     sortOrder.value = order;
-    _sortTransactions();
+    loadTransactions();
+  }
+
+  SortParam _getSortParam() {
+    return switch (sortOrder.value) {
+      TransactionSortOrder.dateAsc => SortParam('createdAt', ascending: true),
+      TransactionSortOrder.dateDesc => SortParam('createdAt', ascending: false),
+      TransactionSortOrder.amountAsc => SortParam('amount', ascending: true),
+      TransactionSortOrder.amountDesc => SortParam('amount', ascending: false),
+    };
   }
 
   void setViewMode(ViewMode mode) {
@@ -184,22 +194,6 @@ class TransactionsManager {
     currentAccountFilter.value = null;
     currentCategoryFilter.value = null;
     loadTransactions();
-  }
-
-  // TODO: remove, should be done in data_source
-  void _sortTransactions() {
-    final sorted = [...transactions.value];
-    switch (sortOrder.value) {
-      case TransactionSortOrder.dateAsc:
-        sorted.sort((a, b) => a.createdAt.compareTo(b.createdAt));
-      case TransactionSortOrder.dateDesc:
-        sorted.sort((a, b) => b.createdAt.compareTo(a.createdAt));
-      case TransactionSortOrder.amountAsc:
-        sorted.sort((a, b) => a.amount.compareTo(b.amount));
-      case TransactionSortOrder.amountDesc:
-        sorted.sort((a, b) => b.amount.compareTo(a.amount));
-    }
-    transactions.value = sorted;
   }
 
   /// Updates associated account(s) balance and lastUsed, and category lastUsed
@@ -301,6 +295,8 @@ class TransactionsManager {
       sort: SortParam('createdAt', ascending: true),
     );
     transactions.addAll(transferTransactions);
+    // Sort all transactions by date to ensure proper balance calculation
+    transactions.sort((a, b) => a.createdAt.compareTo(b.createdAt));
 
     var balance = initialBalance ?? IntExtensions.minSafeValue;
     DateTime? lastUsedValue;
@@ -321,7 +317,7 @@ class TransactionsManager {
         } else {
           if (transaction.accountBalanceBefore != balance) {
             // Update accountBalanceBefore on transaction
-            _updateTransaction(
+            await _updateTransaction(
               transaction.copyWith(accountBalanceBefore: balance),
               updateAssociated: false,
             );
@@ -339,7 +335,7 @@ class TransactionsManager {
         } else {
           if (transaction.targetAccountBalanceBefore != balance) {
             // Update targetAccountBalanceBefore on transfer transaction
-            _updateTransaction(
+            await _updateTransaction(
               transaction.copyWith(targetAccountBalanceBefore: balance),
               updateAssociated: false,
             );
