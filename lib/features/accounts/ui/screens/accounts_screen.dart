@@ -242,6 +242,7 @@ class _TabletAccountsScreenState extends State<_TabletAccountsScreen> {
                     manager,
                     l10n,
                     isLoading,
+                    showViewToggle: true,
                   ),
                 ),
               ];
@@ -524,8 +525,9 @@ Widget _buildBottomBar(
   ViewMode viewMode,
   AccountsManager manager,
   AppL10n l10n,
-  bool isLoading,
-) {
+  bool isLoading, {
+  bool showViewToggle = false,
+}) {
   return Row(
     children: [
       Expanded(
@@ -539,11 +541,13 @@ Widget _buildBottomBar(
           options: AccountSortOrder.values,
         ),
       ),
-      AppSpacing.gapHorizontalSm,
-      ViewToggle(
-        value: viewMode,
-        onChanged: isLoading ? null : manager.setViewMode,
-      ),
+      if (showViewToggle) ...[
+        AppSpacing.gapHorizontalSm,
+        ViewToggle(
+          value: viewMode,
+          onChanged: isLoading ? null : manager.setViewMode,
+        ),
+      ],
     ],
   );
 }

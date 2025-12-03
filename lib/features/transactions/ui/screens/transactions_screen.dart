@@ -120,11 +120,6 @@ class _MobileTransactionsScreenState extends State<_MobileTransactionsScreen> {
                     options: TransactionSortOrder.values,
                   ),
                 ),
-                AppSpacing.gapHorizontalSm,
-                ViewToggle(
-                  value: viewMode,
-                  onChanged: isLoading ? null : manager.setViewMode,
-                ),
               ],
             ),
           ),
