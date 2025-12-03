@@ -58,9 +58,11 @@ class _MobileCategoriesScreenState extends State<_MobileCategoriesScreen> {
         !isLoading &&
         categories.isEmpty &&
         currentQuery.isEmpty) {
-      _hasShownSampleDialog = true;
       WidgetsBinding.instance.addPostFrameCallback((_) {
-        if (mounted) {
+        if (mounted && !_hasShownSampleDialog) {
+          setState(() {
+            _hasShownSampleDialog = true;
+          });
           _showSampleDataDialog(context);
         }
       });
@@ -204,9 +206,11 @@ class _TabletCategoriesScreenState extends State<_TabletCategoriesScreen> {
         !isLoading &&
         categories.isEmpty &&
         currentQuery.isEmpty) {
-      _hasShownSampleDialog = true;
       WidgetsBinding.instance.addPostFrameCallback((_) {
-        if (mounted) {
+        if (mounted && !_hasShownSampleDialog) {
+          setState(() {
+            _hasShownSampleDialog = true;
+          });
           _showSampleDataDialog(context);
         }
       });

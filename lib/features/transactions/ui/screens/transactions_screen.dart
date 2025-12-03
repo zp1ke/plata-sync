@@ -374,9 +374,11 @@ class _TabletTransactionsScreenState extends State<_TabletTransactionsScreen> {
 
     // Show sample data dialog once after initial load completes with no data
     if (!_hasShownSampleDialog && !isLoading && transactions.isEmpty) {
-      _hasShownSampleDialog = true;
       WidgetsBinding.instance.addPostFrameCallback((_) {
-        if (mounted) {
+        if (mounted && !_hasShownSampleDialog) {
+          setState(() {
+            _hasShownSampleDialog = true;
+          });
           _showSampleDataDialog(context);
         }
       });

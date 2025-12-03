@@ -211,9 +211,11 @@ class _TabletAccountsScreenState extends State<_TabletAccountsScreen> {
         !isLoading &&
         accounts.isEmpty &&
         currentQuery.isEmpty) {
-      _hasShownSampleDialog = true;
       WidgetsBinding.instance.addPostFrameCallback((_) {
-        if (mounted) {
+        if (mounted && !_hasShownSampleDialog) {
+          setState(() {
+            _hasShownSampleDialog = true;
+          });
           _showSampleDataDialog(context);
         }
       });
