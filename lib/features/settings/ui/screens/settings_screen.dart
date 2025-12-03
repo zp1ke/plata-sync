@@ -9,6 +9,7 @@ import 'package:plata_sync/core/services/settings_service.dart';
 import 'package:plata_sync/core/ui/resources/app_icons.dart';
 import 'package:plata_sync/core/ui/resources/app_sizing.dart';
 import 'package:plata_sync/core/ui/resources/app_spacing.dart';
+import 'package:plata_sync/core/ui/widgets/constrained_list_view.dart';
 import 'package:plata_sync/l10n/app_localizations.dart';
 import 'package:restart_app/restart_app.dart';
 import 'package:watch_it/watch_it.dart';
@@ -23,38 +24,27 @@ class SettingsScreen extends StatelessWidget {
 
     return Scaffold(
       appBar: AppBar(title: Text(l10n.settingsScreenTitle)),
-      body: ListView(
-        padding: EdgeInsets.zero,
+      body: ConstrainedListView(
+        maxWidth: AppSizing.dialogMaxWidth,
         children: [
-          Center(
-            child: ConstrainedBox(
-              constraints: const BoxConstraints(
-                maxWidth: AppSizing.dialogMaxWidth,
-              ),
-              child: Column(
-                children: [
-                  // App Section
-                  _SectionHeader(title: l10n.settingsSectionApp),
-                  ListTile(
-                    leading: AppIcons.info,
-                    title: Text(l10n.settingsAppVersion),
-                    subtitle: Text(settingsService.getAppVersion()),
-                  ),
-                  const Divider(),
-
-                  // Data Section
-                  _SectionHeader(title: l10n.settingsSectionData),
-                  const _DataSourceSetting(),
-                  const Divider(),
-
-                  // Display Section
-                  _SectionHeader(title: l10n.settingsSectionDisplay),
-                  const _DateFormatSetting(),
-                  const _TimeFormatSetting(),
-                ],
-              ),
-            ),
+          // App Section
+          _SectionHeader(title: l10n.settingsSectionApp),
+          ListTile(
+            leading: AppIcons.info,
+            title: Text(l10n.settingsAppVersion),
+            subtitle: Text(settingsService.getAppVersion()),
           ),
+          const Divider(),
+
+          // Data Section
+          _SectionHeader(title: l10n.settingsSectionData),
+          const _DataSourceSetting(),
+          const Divider(),
+
+          // Display Section
+          _SectionHeader(title: l10n.settingsSectionDisplay),
+          const _DateFormatSetting(),
+          const _TimeFormatSetting(),
         ],
       ),
     );
