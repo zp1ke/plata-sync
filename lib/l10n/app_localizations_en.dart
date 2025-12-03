@@ -145,6 +145,9 @@ class AppL10nEn extends AppL10n {
   String get settingsSectionData => 'Data';
 
   @override
+  String get settingsSectionDisplay => 'Display';
+
+  @override
   String get settingsAppVersion => 'Version';
 
   @override
@@ -184,6 +187,30 @@ class AppL10nEn extends AppL10n {
   @override
   String get settingsDataSourceChangedMessage =>
       'The data source has been changed. Please restart the app to apply changes.';
+
+  @override
+  String get settingsDateFormatLong => 'Long Date Format';
+
+  @override
+  String get settingsDateFormatLongExample => 'e.g., December 2, 2025';
+
+  @override
+  String get settingsDateFormatShort => 'Short Date Format';
+
+  @override
+  String get settingsDateFormatShortExample => 'e.g., 12/2/2025';
+
+  @override
+  String get settingsTimeFormat12h => '12-Hour Time';
+
+  @override
+  String get settingsTimeFormat12hExample => 'e.g., 2:30 PM';
+
+  @override
+  String get settingsTimeFormat24h => '24-Hour Time';
+
+  @override
+  String get settingsTimeFormat24hExample => 'e.g., 14:30';
 
   @override
   String get categoriesEmptyState => 'No categories yet';

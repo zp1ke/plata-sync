@@ -3,6 +3,8 @@ import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:plata_sync/core/di/service_locator.dart';
 import 'package:plata_sync/core/model/enums/data_source_type.dart';
+import 'package:plata_sync/core/model/enums/date_format_type.dart';
+import 'package:plata_sync/core/model/enums/time_format_type.dart';
 import 'package:plata_sync/core/services/settings_service.dart';
 import 'package:plata_sync/core/ui/resources/app_icons.dart';
 import 'package:plata_sync/core/ui/resources/app_sizing.dart';
@@ -38,6 +40,12 @@ class SettingsScreen extends StatelessWidget {
               // Data Section
               _SectionHeader(title: l10n.settingsSectionData),
               const _DataSourceSetting(),
+              const Divider(),
+
+              // Display Section
+              _SectionHeader(title: l10n.settingsSectionDisplay),
+              const _DateFormatSetting(),
+              const _TimeFormatSetting(),
             ],
           ),
         ),
@@ -215,6 +223,152 @@ class _DataSourceSettingState extends State<_DataSourceSetting> {
             title: Text(l10n.settingsDataSourceInMemory),
             subtitle: Text(
               l10n.settingsDataSourceInMemoryDesc,
+              style: theme.textTheme.bodySmall?.copyWith(
+                color: theme.colorScheme.onSurfaceVariant,
+              ),
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+}
+
+class _DateFormatSetting extends StatefulWidget {
+  const _DateFormatSetting();
+
+  @override
+  State<_DateFormatSetting> createState() => _DateFormatSettingState();
+}
+
+class _DateFormatSettingState extends State<_DateFormatSetting> {
+  late DateFormatType _selectedFormat;
+
+  @override
+  void initState() {
+    super.initState();
+    _selectedFormat = getService<SettingsService>().getDateFormat();
+  }
+
+  Future<void> _onFormatChanged(DateFormatType? newValue) async {
+    if (newValue == null || newValue == _selectedFormat) return;
+
+    setState(() {
+      _selectedFormat = newValue;
+    });
+
+    try {
+      final settingsService = getService<SettingsService>();
+      await settingsService.setDateFormat(newValue);
+    } catch (e) {
+      if (mounted) {
+        ScaffoldMessenger.of(
+          context,
+        ).showSnackBar(SnackBar(content: Text(e.toString())));
+      }
+    }
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    final l10n = AppL10n.of(context);
+    final theme = Theme.of(context);
+
+    return RadioGroup<DateFormatType>(
+      groupValue: _selectedFormat,
+      onChanged: _onFormatChanged,
+      child: Column(
+        children: [
+          RadioListTile<DateFormatType>(
+            value: DateFormatType.long,
+            secondary: AppIcons.calendar,
+            title: Text(l10n.settingsDateFormatLong),
+            subtitle: Text(
+              l10n.settingsDateFormatLongExample,
+              style: theme.textTheme.bodySmall?.copyWith(
+                color: theme.colorScheme.onSurfaceVariant,
+              ),
+            ),
+          ),
+          RadioListTile<DateFormatType>(
+            value: DateFormatType.short,
+            secondary: AppIcons.calendar,
+            title: Text(l10n.settingsDateFormatShort),
+            subtitle: Text(
+              l10n.settingsDateFormatShortExample,
+              style: theme.textTheme.bodySmall?.copyWith(
+                color: theme.colorScheme.onSurfaceVariant,
+              ),
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+}
+
+class _TimeFormatSetting extends StatefulWidget {
+  const _TimeFormatSetting();
+
+  @override
+  State<_TimeFormatSetting> createState() => _TimeFormatSettingState();
+}
+
+class _TimeFormatSettingState extends State<_TimeFormatSetting> {
+  late TimeFormatType _selectedFormat;
+
+  @override
+  void initState() {
+    super.initState();
+    _selectedFormat = getService<SettingsService>().getTimeFormat();
+  }
+
+  Future<void> _onFormatChanged(TimeFormatType? newValue) async {
+    if (newValue == null || newValue == _selectedFormat) return;
+
+    setState(() {
+      _selectedFormat = newValue;
+    });
+
+    try {
+      final settingsService = getService<SettingsService>();
+      await settingsService.setTimeFormat(newValue);
+    } catch (e) {
+      if (mounted) {
+        ScaffoldMessenger.of(
+          context,
+        ).showSnackBar(SnackBar(content: Text(e.toString())));
+      }
+    }
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    final l10n = AppL10n.of(context);
+    final theme = Theme.of(context);
+
+    return RadioGroup<TimeFormatType>(
+      groupValue: _selectedFormat,
+      onChanged: _onFormatChanged,
+      child: Column(
+        children: [
+          RadioListTile<TimeFormatType>(
+            value: TimeFormatType.hour12,
+            secondary: AppIcons.schedule,
+            title: Text(l10n.settingsTimeFormat12h),
+            subtitle: Text(
+              l10n.settingsTimeFormat12hExample,
+              style: theme.textTheme.bodySmall?.copyWith(
+                color: theme.colorScheme.onSurfaceVariant,
+              ),
+            ),
+          ),
+          RadioListTile<TimeFormatType>(
+            value: TimeFormatType.hour24,
+            secondary: AppIcons.schedule,
+            title: Text(l10n.settingsTimeFormat24h),
+            subtitle: Text(
+              l10n.settingsTimeFormat24hExample,
               style: theme.textTheme.bodySmall?.copyWith(
                 color: theme.colorScheme.onSurfaceVariant,
               ),

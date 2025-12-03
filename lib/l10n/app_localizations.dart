@@ -321,6 +321,12 @@ abstract class AppL10n {
   /// **'Data'**
   String get settingsSectionData;
 
+  /// Section header for display settings
+  ///
+  /// In en, this message translates to:
+  /// **'Display'**
+  String get settingsSectionDisplay;
+
   /// Label for app version setting
   ///
   /// In en, this message translates to:
@@ -392,6 +398,54 @@ abstract class AppL10n {
   /// In en, this message translates to:
   /// **'The data source has been changed. Please restart the app to apply changes.'**
   String get settingsDataSourceChangedMessage;
+
+  /// Label for long date format option
+  ///
+  /// In en, this message translates to:
+  /// **'Long Date Format'**
+  String get settingsDateFormatLong;
+
+  /// Example for long date format
+  ///
+  /// In en, this message translates to:
+  /// **'e.g., December 2, 2025'**
+  String get settingsDateFormatLongExample;
+
+  /// Label for short date format option
+  ///
+  /// In en, this message translates to:
+  /// **'Short Date Format'**
+  String get settingsDateFormatShort;
+
+  /// Example for short date format
+  ///
+  /// In en, this message translates to:
+  /// **'e.g., 12/2/2025'**
+  String get settingsDateFormatShortExample;
+
+  /// Label for 12-hour time format option
+  ///
+  /// In en, this message translates to:
+  /// **'12-Hour Time'**
+  String get settingsTimeFormat12h;
+
+  /// Example for 12-hour time format
+  ///
+  /// In en, this message translates to:
+  /// **'e.g., 2:30 PM'**
+  String get settingsTimeFormat12hExample;
+
+  /// Label for 24-hour time format option
+  ///
+  /// In en, this message translates to:
+  /// **'24-Hour Time'**
+  String get settingsTimeFormat24h;
+
+  /// Example for 24-hour time format
+  ///
+  /// In en, this message translates to:
+  /// **'e.g., 14:30'**
+  String get settingsTimeFormat24hExample;
 
   /// Message shown when there are no categories
   ///

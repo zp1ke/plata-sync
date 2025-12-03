@@ -208,6 +208,10 @@
   "@settingsSectionData": {
     "description": "Section header for data settings"
   },
+  "settingsSectionDisplay": "Display",
+  "@settingsSectionDisplay": {
+    "description": "Section header for display settings"
+  },
   "settingsAppVersion": "Version",
   "@settingsAppVersion": {
     "description": "Label for app version setting"
@@ -255,6 +259,38 @@
   "settingsDataSourceChangedMessage": "The data source has been changed. Please restart the app to apply changes.",
   "@settingsDataSourceChangedMessage": {
     "description": "Message for restart notification after data source change"
+  },
+  "settingsDateFormatLong": "Long Date Format",
+  "@settingsDateFormatLong": {
+    "description": "Label for long date format option"
+  },
+  "settingsDateFormatLongExample": "e.g., December 2, 2025",
+  "@settingsDateFormatLongExample": {
+    "description": "Example for long date format"
+  },
+  "settingsDateFormatShort": "Short Date Format",
+  "@settingsDateFormatShort": {
+    "description": "Label for short date format option"
+  },
+  "settingsDateFormatShortExample": "e.g., 12/2/2025",
+  "@settingsDateFormatShortExample": {
+    "description": "Example for short date format"
+  },
+  "settingsTimeFormat12h": "12-Hour Time",
+  "@settingsTimeFormat12h": {
+    "description": "Label for 12-hour time format option"
+  },
+  "settingsTimeFormat12hExample": "e.g., 2:30 PM",
+  "@settingsTimeFormat12hExample": {
+    "description": "Example for 12-hour time format"
+  },
+  "settingsTimeFormat24h": "24-Hour Time",
+  "@settingsTimeFormat24h": {
+    "description": "Label for 24-hour time format option"
+  },
+  "settingsTimeFormat24hExample": "e.g., 14:30",
+  "@settingsTimeFormat24hExample": {
+    "description": "Example for 24-hour time format"
   },
   "categoriesEmptyState": "No categories yet",
   "@categoriesEmptyState": {

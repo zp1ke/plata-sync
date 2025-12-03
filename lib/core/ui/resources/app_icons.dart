@@ -63,6 +63,8 @@ class AppIcons {
   static final info = HugeIcon(icon: HugeIcons.strokeRoundedInformationCircle);
   static final database = HugeIcon(icon: HugeIcons.strokeRoundedDatabase01);
   static final memory = HugeIcon(icon: HugeIcons.strokeRoundedCpuCharge);
+  static final calendar = HugeIcon(icon: HugeIcons.strokeRoundedCalendar03);
+  static final schedule = HugeIcon(icon: HugeIcons.strokeRoundedClock01);
 
   // Others
   static final arrowDropDown = HugeIcon(

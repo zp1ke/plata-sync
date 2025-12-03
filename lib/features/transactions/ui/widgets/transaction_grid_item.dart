@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
-import 'package:intl/intl.dart';
 import 'package:plata_sync/core/di/service_locator.dart';
 import 'package:plata_sync/core/model/object_icon_data.dart';
 import 'package:plata_sync/core/ui/resources/app_sizing.dart';
 import 'package:plata_sync/core/ui/resources/app_spacing.dart';
 import 'package:plata_sync/core/ui/resources/app_theme.dart';
 import 'package:plata_sync/core/ui/widgets/object_icon.dart';
+import 'package:plata_sync/core/utils/datetime.dart';
 import 'package:plata_sync/core/utils/numbers.dart';
 import 'package:plata_sync/features/accounts/application/accounts_manager.dart';
 import 'package:plata_sync/features/accounts/domain/entities/account.dart';
@@ -142,7 +142,7 @@ class _TransactionGridItemState extends State<TransactionGridItem> {
                           ),
                         ),
                         Text(
-                          '${DateFormat.MMMd().format(widget.transaction.createdAt)} ${DateFormat.Hm().format(widget.transaction.createdAt)}',
+                          widget.transaction.createdAt.formatWithTime(),
                           style: Theme.of(context).textTheme.bodySmall,
                         ),
                       ],
