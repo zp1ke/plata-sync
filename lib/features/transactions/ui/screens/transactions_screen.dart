@@ -10,6 +10,7 @@ import 'package:plata_sync/core/ui/widgets/sort_selector.dart';
 import 'package:plata_sync/core/ui/widgets/view_toggle.dart';
 import 'package:plata_sync/features/transactions/application/transactions_manager.dart';
 import 'package:plata_sync/features/transactions/domain/entities/transaction.dart';
+import 'package:plata_sync/features/transactions/ui/model/enums/sort_order.dart';
 import 'package:plata_sync/features/transactions/ui/widgets/transaction_details_dialog.dart';
 import 'package:plata_sync/features/transactions/ui/widgets/transaction_details_view.dart';
 import 'package:plata_sync/features/transactions/ui/widgets/transaction_edit_dialog.dart';

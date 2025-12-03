@@ -12,6 +12,7 @@ import 'package:plata_sync/core/utils/numbers.dart';
 import 'package:plata_sync/core/utils/random.dart';
 import 'package:plata_sync/features/accounts/application/accounts_manager.dart';
 import 'package:plata_sync/features/accounts/domain/entities/account.dart';
+import 'package:plata_sync/features/accounts/model/enums/sort_order.dart';
 import 'package:plata_sync/features/accounts/ui/widgets/account_details_dialog.dart';
 import 'package:plata_sync/features/accounts/ui/widgets/account_details_view.dart';
 import 'package:plata_sync/features/accounts/ui/widgets/account_edit_dialog.dart';

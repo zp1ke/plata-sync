@@ -1,14 +1,46 @@
 import 'package:flutter_test/flutter_test.dart';
 import 'package:get_it/get_it.dart';
 import 'package:plata_sync/core/model/object_icon_data.dart';
+import 'package:plata_sync/core/services/settings_service.dart';
 import 'package:plata_sync/features/accounts/application/accounts_manager.dart';
 import 'package:plata_sync/features/accounts/data/datasources/in_memory_account_data_source.dart';
 import 'package:plata_sync/features/accounts/domain/entities/account.dart';
+import 'package:plata_sync/features/accounts/model/enums/sort_order.dart';
 import 'package:plata_sync/features/categories/application/categories_manager.dart';
 import 'package:plata_sync/features/categories/data/datasources/in_memory_category_data_source.dart';
+import 'package:plata_sync/features/categories/model/enums/sort_order.dart';
 import 'package:plata_sync/features/transactions/application/transactions_manager.dart';
 import 'package:plata_sync/features/transactions/data/datasources/in_memory_transaction_data_source.dart';
 import 'package:plata_sync/features/transactions/domain/entities/transaction.dart';
+import 'package:plata_sync/features/transactions/ui/model/enums/sort_order.dart';
+
+class _MockSettingsService implements SettingsService {
+  @override
+  String getAppVersion() => '0.0.1+1';
+
+  @override
+  AccountSortOrder? getAccountsSortOrder() => null;
+
+  @override
+  CategorySortOrder? getCategoriesSortOrder() => null;
+
+  @override
+  TransactionSortOrder? getTransactionsSortOrder() => null;
+
+  @override
+  Future<bool> setAccountsSortOrder(AccountSortOrder sortOrder) async => true;
+
+  @override
+  Future<bool> setCategoriesSortOrder(CategorySortOrder sortOrder) async =>
+      true;
+
+  @override
+  Future<bool> setTransactionsSortOrder(TransactionSortOrder sortOrder) async =>
+      true;
+
+  @override
+  dynamic noSuchMethod(Invocation invocation) => super.noSuchMethod(invocation);
+}
 
 void main() {
   group('TransactionsManager.deleteTransaction', () {
@@ -18,13 +50,16 @@ void main() {
     final getIt = GetIt.instance;
 
     setUp(() {
+      // Register SettingsService first, before creating managers
+      getIt.registerSingleton<SettingsService>(_MockSettingsService());
+
       accountManager = AccountsManager(
         InMemoryAccountDataSource(delayMilliseconds: 0),
       );
       dataSource = InMemoryTransactionDataSource(delayMilliseconds: 0);
       manager = TransactionsManager(dataSource);
 
-      // Register required dependencies
+      // Register remaining dependencies
       getIt.registerSingleton<AccountsManager>(accountManager);
       getIt.registerSingleton<CategoriesManager>(
         CategoriesManager(InMemoryCategoryDataSource(delayMilliseconds: 0)),

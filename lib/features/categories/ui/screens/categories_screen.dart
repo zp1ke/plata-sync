@@ -11,6 +11,7 @@ import 'package:plata_sync/core/ui/widgets/view_toggle.dart';
 import 'package:plata_sync/core/utils/random.dart';
 import 'package:plata_sync/features/categories/application/categories_manager.dart';
 import 'package:plata_sync/features/categories/domain/entities/category.dart';
+import 'package:plata_sync/features/categories/model/enums/sort_order.dart';
 import 'package:plata_sync/features/categories/ui/widgets/category_details_dialog.dart';
 import 'package:plata_sync/features/categories/ui/widgets/category_details_view.dart';
 import 'package:plata_sync/features/categories/ui/widgets/category_edit_dialog.dart';

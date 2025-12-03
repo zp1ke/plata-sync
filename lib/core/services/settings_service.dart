@@ -2,6 +2,9 @@ import 'package:package_info_plus/package_info_plus.dart';
 import 'package:plata_sync/core/model/enums/data_source_type.dart';
 import 'package:plata_sync/core/model/enums/date_format_type.dart';
 import 'package:plata_sync/core/model/enums/time_format_type.dart';
+import 'package:plata_sync/features/accounts/model/enums/sort_order.dart';
+import 'package:plata_sync/features/categories/model/enums/sort_order.dart';
+import 'package:plata_sync/features/transactions/ui/model/enums/sort_order.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 /// Service for managing application settings using SharedPreferences
@@ -9,6 +12,9 @@ class SettingsService {
   static const String _keyDataSource = 'data_source';
   static const String _keyDateFormat = 'date_format';
   static const String _keyTimeFormat = 'time_format';
+  static const String _keyAccountsSortOrder = 'accounts_sort_order';
+  static const String _keyCategoriesSortOrder = 'categories_sort_order';
+  static const String _keyTransactionsSortOrder = 'transactions_sort_order';
 
   final SharedPreferences _prefs;
   final PackageInfo _packageInfo;
@@ -49,6 +55,54 @@ class SettingsService {
   /// Set the time format setting
   Future<bool> setTimeFormat(TimeFormatType format) async {
     return await _prefs.setString(_keyTimeFormat, format.name);
+  }
+
+  /// Get the accounts sort order setting
+  AccountSortOrder? getAccountsSortOrder() {
+    final value = _prefs.getString(_keyAccountsSortOrder);
+    if (value != null) {
+      try {
+        return AccountSortOrder.values.byName(value);
+      } catch (_) {}
+    }
+    return null;
+  }
+
+  /// Set the accounts sort order setting
+  Future<bool> setAccountsSortOrder(AccountSortOrder sortOrder) async {
+    return await _prefs.setString(_keyAccountsSortOrder, sortOrder.name);
+  }
+
+  /// Get the categories sort order setting
+  CategorySortOrder? getCategoriesSortOrder() {
+    final value = _prefs.getString(_keyCategoriesSortOrder);
+    if (value != null) {
+      try {
+        return CategorySortOrder.values.byName(value);
+      } catch (_) {}
+    }
+    return null;
+  }
+
+  /// Set the categories sort order setting
+  Future<bool> setCategoriesSortOrder(CategorySortOrder sortOrder) async {
+    return await _prefs.setString(_keyCategoriesSortOrder, sortOrder.name);
+  }
+
+  /// Get the transactions sort order setting
+  TransactionSortOrder? getTransactionsSortOrder() {
+    final value = _prefs.getString(_keyTransactionsSortOrder);
+    if (value != null) {
+      try {
+        return TransactionSortOrder.values.byName(value);
+      } catch (_) {}
+    }
+    return null;
+  }
+
+  /// Set the transactions sort order setting
+  Future<bool> setTransactionsSortOrder(TransactionSortOrder sortOrder) async {
+    return await _prefs.setString(_keyTransactionsSortOrder, sortOrder.name);
   }
 
   /// Get the app version string

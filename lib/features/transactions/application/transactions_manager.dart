@@ -4,6 +4,7 @@ import 'package:flutter/foundation.dart' hide Category;
 import 'package:plata_sync/core/data/models/sort_param.dart';
 import 'package:plata_sync/core/di/service_locator.dart';
 import 'package:plata_sync/core/model/enums/view_mode.dart';
+import 'package:plata_sync/core/services/settings_service.dart';
 import 'package:plata_sync/core/utils/numbers.dart';
 import 'package:plata_sync/features/accounts/application/accounts_manager.dart';
 import 'package:plata_sync/features/accounts/data/interfaces/account_data_source.dart';
@@ -12,22 +13,13 @@ import 'package:plata_sync/features/categories/application/categories_manager.da
 import 'package:plata_sync/features/categories/data/interfaces/category_data_source.dart';
 import 'package:plata_sync/features/transactions/data/interfaces/transaction_data_source.dart';
 import 'package:plata_sync/features/transactions/domain/entities/transaction.dart';
-
-enum TransactionSortOrder {
-  dateAsc(isDescending: false),
-  dateDesc(isDescending: true),
-  amountAsc(isDescending: false),
-  amountDesc(isDescending: true);
-
-  final bool isDescending;
-
-  const TransactionSortOrder({required this.isDescending});
-}
+import 'package:plata_sync/features/transactions/ui/model/enums/sort_order.dart';
 
 class TransactionsManager {
   final TransactionDataSource _dataSource;
 
   TransactionsManager(this._dataSource) {
+    _loadSortOrderFromSettings();
     loadTransactions();
   }
 
@@ -39,6 +31,14 @@ class TransactionsManager {
     TransactionSortOrder.dateDesc,
   );
   final ValueNotifier<ViewMode> viewMode = ValueNotifier(ViewMode.list);
+
+  void _loadSortOrderFromSettings() {
+    final settings = getService<SettingsService>();
+    final saved = settings.getTransactionsSortOrder();
+    if (saved != null) {
+      sortOrder.value = saved;
+    }
+  }
 
   Future<void> createSampleData() async {
     isLoading.value = true;
@@ -120,7 +120,7 @@ class TransactionsManager {
 
       transactions.value = await _dataSource.getAll(
         filter: filter.isNotEmpty ? filter : null,
-        sort: _getSortParam(),
+        sort: sortOrder.value.sortParam(),
       );
     } catch (e) {
       debugPrint('Error loading transactions: $e');
@@ -174,16 +174,10 @@ class TransactionsManager {
 
   void setSortOrder(TransactionSortOrder order) {
     sortOrder.value = order;
+    // Save to settings
+    final settings = getService<SettingsService>();
+    settings.setTransactionsSortOrder(order);
     loadTransactions();
-  }
-
-  SortParam _getSortParam() {
-    return switch (sortOrder.value) {
-      TransactionSortOrder.dateAsc => SortParam('createdAt', ascending: true),
-      TransactionSortOrder.dateDesc => SortParam('createdAt', ascending: false),
-      TransactionSortOrder.amountAsc => SortParam('amount', ascending: true),
-      TransactionSortOrder.amountDesc => SortParam('amount', ascending: false),
-    };
   }
 
   void setViewMode(ViewMode mode) {

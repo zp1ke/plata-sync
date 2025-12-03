@@ -1,26 +1,17 @@
 import 'package:flutter/foundation.dart';
-import 'package:plata_sync/core/data/models/sort_param.dart';
+import 'package:plata_sync/core/di/service_locator.dart';
 import 'package:plata_sync/core/model/enums/view_mode.dart';
 import 'package:plata_sync/core/model/object_icon_data.dart';
+import 'package:plata_sync/core/services/settings_service.dart';
 import 'package:plata_sync/features/accounts/data/interfaces/account_data_source.dart';
 import 'package:plata_sync/features/accounts/domain/entities/account.dart';
-
-enum AccountSortOrder {
-  nameAsc(isDescending: false),
-  nameDesc(isDescending: true),
-  lastUsedAsc(isDescending: false),
-  lastUsedDesc(isDescending: true),
-  balanceAsc(isDescending: false),
-  balanceDesc(isDescending: true);
-
-  final bool isDescending;
-  const AccountSortOrder({required this.isDescending});
-}
+import 'package:plata_sync/features/accounts/model/enums/sort_order.dart';
 
 class AccountsManager {
   final AccountDataSource _dataSource;
 
   AccountsManager(this._dataSource) {
+    _loadSortOrderFromSettings();
     loadAccounts();
   }
 
@@ -31,6 +22,14 @@ class AccountsManager {
     AccountSortOrder.lastUsedDesc,
   );
   final ValueNotifier<ViewMode> viewMode = ValueNotifier(ViewMode.list);
+
+  void _loadSortOrderFromSettings() {
+    final settings = getService<SettingsService>();
+    final saved = settings.getAccountsSortOrder();
+    if (saved != null) {
+      sortOrder.value = saved;
+    }
+  }
 
   Future<void> createSampleData() async {
     isLoading.value = true;
@@ -105,7 +104,7 @@ class AccountsManager {
       final filterQuery = query ?? currentQuery.value;
       accounts.value = await _dataSource.getAll(
         filter: filterQuery.isNotEmpty ? {'name': filterQuery} : null,
-        sort: _getSortParam(),
+        sort: sortOrder.value.sortParam(),
       );
     } catch (e) {
       debugPrint('Error loading accounts: $e');
@@ -155,18 +154,10 @@ class AccountsManager {
 
   void setSortOrder(AccountSortOrder order) {
     sortOrder.value = order;
+    // Save to settings
+    final settings = getService<SettingsService>();
+    settings.setAccountsSortOrder(order);
     loadAccounts();
-  }
-
-  SortParam _getSortParam() {
-    return switch (sortOrder.value) {
-      AccountSortOrder.nameAsc => SortParam('name', ascending: true),
-      AccountSortOrder.nameDesc => SortParam('name', ascending: false),
-      AccountSortOrder.lastUsedAsc => SortParam('lastUsed', ascending: true),
-      AccountSortOrder.lastUsedDesc => SortParam('lastUsed', ascending: false),
-      AccountSortOrder.balanceAsc => SortParam('balance', ascending: true),
-      AccountSortOrder.balanceDesc => SortParam('balance', ascending: false),
-    };
   }
 
   void setViewMode(ViewMode mode) {

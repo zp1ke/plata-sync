@@ -1,24 +1,17 @@
 import 'package:flutter/foundation.dart' hide Category;
-import 'package:plata_sync/core/data/models/sort_param.dart';
+import 'package:plata_sync/core/di/service_locator.dart';
 import 'package:plata_sync/core/model/enums/view_mode.dart';
 import 'package:plata_sync/core/model/object_icon_data.dart';
+import 'package:plata_sync/core/services/settings_service.dart';
 import 'package:plata_sync/features/categories/data/interfaces/category_data_source.dart';
 import 'package:plata_sync/features/categories/domain/entities/category.dart';
-
-enum CategorySortOrder {
-  nameAsc(isDescending: false),
-  nameDesc(isDescending: true),
-  lastUsedAsc(isDescending: false),
-  lastUsedDesc(isDescending: true);
-
-  final bool isDescending;
-  const CategorySortOrder({required this.isDescending});
-}
+import 'package:plata_sync/features/categories/model/enums/sort_order.dart';
 
 class CategoriesManager {
   final CategoryDataSource _dataSource;
 
   CategoriesManager(this._dataSource) {
+    _loadSortOrderFromSettings();
     loadCategories();
   }
 
@@ -29,6 +22,14 @@ class CategoriesManager {
     CategorySortOrder.lastUsedDesc,
   );
   final ValueNotifier<ViewMode> viewMode = ValueNotifier(ViewMode.list);
+
+  void _loadSortOrderFromSettings() {
+    final settings = getService<SettingsService>();
+    final saved = settings.getCategoriesSortOrder();
+    if (saved != null) {
+      sortOrder.value = saved;
+    }
+  }
 
   Future<void> createSampleData() async {
     isLoading.value = true;
@@ -90,7 +91,7 @@ class CategoriesManager {
       final filterQuery = query ?? currentQuery.value;
       categories.value = await _dataSource.getAll(
         filter: filterQuery.isNotEmpty ? {'name': filterQuery} : null,
-        sort: _getSortParam(),
+        sort: sortOrder.value.sortParam(),
       );
     } catch (e) {
       debugPrint('Error loading categories: $e');
@@ -140,16 +141,10 @@ class CategoriesManager {
 
   void setSortOrder(CategorySortOrder order) {
     sortOrder.value = order;
+    // Save to settings
+    final settings = getService<SettingsService>();
+    settings.setCategoriesSortOrder(order);
     loadCategories();
-  }
-
-  SortParam _getSortParam() {
-    return switch (sortOrder.value) {
-      CategorySortOrder.nameAsc => SortParam('name', ascending: true),
-      CategorySortOrder.nameDesc => SortParam('name', ascending: false),
-      CategorySortOrder.lastUsedAsc => SortParam('lastUsed', ascending: true),
-      CategorySortOrder.lastUsedDesc => SortParam('lastUsed', ascending: false),
-    };
   }
 
   void setViewMode(ViewMode mode) {
