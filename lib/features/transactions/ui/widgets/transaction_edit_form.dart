@@ -1,8 +1,11 @@
 import 'package:flutter/material.dart';
+import 'package:plata_sync/core/di/service_locator.dart';
 import 'package:plata_sync/core/ui/resources/app_sizing.dart';
 import 'package:plata_sync/core/ui/resources/app_spacing.dart';
 import 'package:plata_sync/core/ui/widgets/currency_input_field.dart';
 import 'package:plata_sync/core/ui/widgets/date_time_picker_field.dart';
+import 'package:plata_sync/features/tags/application/tags_manager.dart';
+import 'package:plata_sync/features/tags/domain/entities/tag.dart';
 import 'package:plata_sync/features/transactions/domain/entities/transaction.dart';
 import 'package:plata_sync/features/transactions/ui/widgets/account_selector.dart';
 import 'package:plata_sync/features/transactions/ui/widgets/category_selector.dart';
@@ -35,12 +38,14 @@ class TransactionEditFormState extends State<TransactionEditForm> {
   final _formKey = GlobalKey<FormState>();
   final _amountController = TextEditingController();
   final _notesController = TextEditingController();
+  final _tagInputController = TextEditingController();
 
   late TransactionType _type;
   late String? _accountId;
   late String? _categoryId;
   late String? _targetAccountId;
   late DateTime _createdAt;
+  List<Tag> _selectedTags = [];
   bool isFormValid = false;
 
   @override
@@ -57,6 +62,7 @@ class TransactionEditFormState extends State<TransactionEditForm> {
         2,
       );
       _notesController.text = transaction.notes ?? '';
+      _loadExistingTags(transaction.tagIds);
 
       if (transaction.isTransfer) {
         _type = TransactionType.transfer;
@@ -71,6 +77,7 @@ class TransactionEditFormState extends State<TransactionEditForm> {
       _categoryId = null;
       _targetAccountId = null;
       _createdAt = DateTime.now();
+      _selectedTags = [];
     }
 
     _amountController.addListener(_validateForm);
@@ -78,11 +85,20 @@ class TransactionEditFormState extends State<TransactionEditForm> {
     WidgetsBinding.instance.addPostFrameCallback((_) => _validateForm());
   }
 
+  Future<void> _loadExistingTags(List<String> tagIds) async {
+    final tagsManager = getService<TagsManager>();
+    final tags = await tagsManager.getTagsByIds(tagIds);
+    setState(() {
+      _selectedTags = tags;
+    });
+  }
+
   @override
   void dispose() {
     _amountController.removeListener(_validateForm);
     _amountController.dispose();
     _notesController.dispose();
+    _tagInputController.dispose();
     super.dispose();
   }
 
@@ -109,6 +125,7 @@ class TransactionEditFormState extends State<TransactionEditForm> {
       notes: _notesController.text.trim().isEmpty
           ? null
           : _notesController.text.trim(),
+      tagIds: _selectedTags.map((tag) => tag.id).toList(),
     );
 
     widget.onSave(transaction);
@@ -234,6 +251,52 @@ class TransactionEditFormState extends State<TransactionEditForm> {
                 maxLines: 3,
               ),
 
+              // Tags field
+              Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                spacing: AppSpacing.xs,
+                children: [
+                  if (_selectedTags.isNotEmpty)
+                    Wrap(
+                      spacing: AppSpacing.xs,
+                      runSpacing: AppSpacing.xs,
+                      children: _selectedTags.map((tag) {
+                        return Chip(
+                          label: Text(tag.name),
+                          labelStyle: Theme.of(context).textTheme.bodySmall,
+                          deleteIcon: const Icon(Icons.close, size: 18),
+                          onDeleted: () => _removeTag(tag),
+                          visualDensity: VisualDensity.compact,
+                          padding: EdgeInsets.symmetric(
+                            horizontal: AppSpacing.xs,
+                          ),
+                        );
+                      }).toList(),
+                    ),
+                  Row(
+                    children: [
+                      Expanded(
+                        child: TextFormField(
+                          controller: _tagInputController,
+                          decoration: InputDecoration(
+                            labelText: l10n.transactionTagsLabel,
+                            hintText: l10n.transactionTagsHint,
+                            border: const OutlineInputBorder(),
+                          ),
+                          onFieldSubmitted: _addTag,
+                        ),
+                      ),
+                      AppSpacing.gapHorizontalSm,
+                      FilledButton.icon(
+                        onPressed: () => _addTag(_tagInputController.text),
+                        icon: const Icon(Icons.add),
+                        label: Text(l10n.add),
+                      ),
+                    ],
+                  ),
+                ],
+              ),
+
               // Actions
               if (widget.showActions)
                 Row(
@@ -277,5 +340,34 @@ class TransactionEditFormState extends State<TransactionEditForm> {
       });
       widget.onFormValidChanged?.call(isValid);
     }
+  }
+
+  Future<void> _addTag(String tagName) async {
+    final trimmedName = tagName.trim();
+    if (trimmedName.isEmpty) return;
+
+    final tagsManager = getService<TagsManager>();
+    try {
+      final tag = await tagsManager.getOrCreateTag(trimmedName);
+      if (!_selectedTags.any((t) => t.id == tag.id)) {
+        setState(() {
+          _selectedTags.add(tag);
+        });
+      }
+      _tagInputController.clear();
+    } catch (e) {
+      if (mounted) {
+        final l10n = AppL10n.of(context);
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(content: Text(l10n.errorCreatingTagMessage(e.toString()))),
+        );
+      }
+    }
+  }
+
+  void _removeTag(Tag tag) {
+    setState(() {
+      _selectedTags.removeWhere((t) => t.id == tag.id);
+    });
   }
 }

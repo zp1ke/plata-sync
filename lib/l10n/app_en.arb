@@ -830,10 +830,6 @@
   "@transactionEditTitle": {
     "description": "Title for edit transaction dialog"
   },
-  "transactionTargetAccountLabel": "To Account",
-  "@transactionTargetAccountLabel": {
-    "description": "Label for target account in transfer"
-  },
   "transactionIdLabel": "Transaction ID",
   "@transactionIdLabel": {
     "description": "Label for transaction ID field"
@@ -941,5 +937,26 @@
   "transactionBalanceMovementLabel": "Balance Movement",
   "@transactionBalanceMovementLabel": {
     "description": "Label for balance movement field in transaction form"
+  },
+  "transactionTagsLabel": "Tags",
+  "@transactionTagsLabel": {
+    "description": "Label for tags field in transaction form"
+  },
+  "transactionTagsHint": "Add tags...",
+  "@transactionTagsHint": {
+    "description": "Hint text for transaction tags field"
+  },
+  "add": "Add",
+  "@add": {
+    "description": "Label for add button in transaction tags field"
+  },
+  "errorCreatingTagMessage": "Failed to create tag: {error}",
+  "@errorCreatingTagMessage": {
+    "description": "Error message when creating a tag fails",
+    "placeholders": {
+      "error": {
+        "type": "String"
+      }
+    }
   }
 }

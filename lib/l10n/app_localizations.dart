@@ -1083,10 +1083,10 @@ abstract class AppL10n {
   /// **'Source Account'**
   String get transactionSourceAccountLabel;
 
-  /// Label for target account in transfer
+  /// Label for target account field in transfer transaction
   ///
   /// In en, this message translates to:
-  /// **'To Account'**
+  /// **'Target Account'**
   String get transactionTargetAccountLabel;
 
   /// Label for category field in transaction form
@@ -1292,6 +1292,30 @@ abstract class AppL10n {
   /// In en, this message translates to:
   /// **'Balance Movement'**
   String get transactionBalanceMovementLabel;
+
+  /// Label for tags field in transaction form
+  ///
+  /// In en, this message translates to:
+  /// **'Tags'**
+  String get transactionTagsLabel;
+
+  /// Hint text for transaction tags field
+  ///
+  /// In en, this message translates to:
+  /// **'Add tags...'**
+  String get transactionTagsHint;
+
+  /// Label for add button in transaction tags field
+  ///
+  /// In en, this message translates to:
+  /// **'Add'**
+  String get add;
+
+  /// Error message when creating a tag fails
+  ///
+  /// In en, this message translates to:
+  /// **'Failed to create tag: {error}'**
+  String errorCreatingTagMessage(String error);
 }
 
 class _AppL10nDelegate extends LocalizationsDelegate<AppL10n> {

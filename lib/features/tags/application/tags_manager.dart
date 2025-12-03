@@ -1,0 +1,72 @@
+import 'package:flutter/foundation.dart';
+import 'package:plata_sync/core/utils/random.dart';
+import 'package:plata_sync/features/tags/data/interfaces/tag_data_source.dart';
+import 'package:plata_sync/features/tags/domain/entities/tag.dart';
+
+class TagsManager {
+  final TagDataSource _dataSource;
+
+  TagsManager(this._dataSource);
+
+  final ValueNotifier<List<Tag>> tags = ValueNotifier([]);
+  final ValueNotifier<bool> isLoading = ValueNotifier(false);
+
+  /// Get or create a tag by name
+  /// If a tag with the same name exists (case-insensitive), return it
+  /// Otherwise, create a new tag
+  Future<Tag> getOrCreateTag(String name) async {
+    final trimmedName = name.trim();
+    if (trimmedName.isEmpty) {
+      throw Exception('Tag name cannot be empty');
+    }
+
+    // Check if tag already exists
+    final existing = await _dataSource.findByName(trimmedName);
+    if (existing != null) {
+      // Update last used timestamp
+      await _dataSource.updateLastUsed(existing.id);
+      return existing.copyWith(lastUsedAt: DateTime.now());
+    }
+
+    // Create new tag
+    final newTag = Tag.create(id: randomId(), name: trimmedName);
+
+    return await _dataSource.create(newTag);
+  }
+
+  /// Get multiple tags by their IDs
+  Future<List<Tag>> getTagsByIds(List<String> tagIds) async {
+    final tagsList = <Tag>[];
+    for (final id in tagIds) {
+      final tag = await _dataSource.read(id);
+      if (tag != null) {
+        tagsList.add(tag);
+      }
+    }
+    return tagsList;
+  }
+
+  /// Search for tags by query
+  Future<List<Tag>> searchTags(String query) async {
+    return await _dataSource.search(query);
+  }
+
+  /// Load all tags
+  Future<void> loadTags() async {
+    isLoading.value = true;
+    try {
+      tags.value = await _dataSource.getAll();
+    } catch (e) {
+      debugPrint('Error loading tags: $e');
+      rethrow;
+    } finally {
+      isLoading.value = false;
+    }
+  }
+
+  /// Delete a tag by ID
+  Future<void> deleteTag(String id) async {
+    await _dataSource.delete(id);
+    await loadTags();
+  }
+}

@@ -1,0 +1,47 @@
+import 'package:equatable/equatable.dart';
+
+/// Tag entity for categorizing transactions
+class Tag extends Equatable {
+  final String id;
+  final String name;
+  final DateTime createdAt;
+  final DateTime lastUsedAt;
+
+  const Tag({
+    required this.id,
+    required this.name,
+    required this.createdAt,
+    required this.lastUsedAt,
+  });
+
+  factory Tag.create({
+    required String id,
+    required String name,
+    DateTime? createdAt,
+  }) {
+    final now = DateTime.now();
+    return Tag(
+      id: id,
+      name: name,
+      createdAt: createdAt ?? now,
+      lastUsedAt: now,
+    );
+  }
+
+  Tag copyWith({
+    String? id,
+    String? name,
+    DateTime? createdAt,
+    DateTime? lastUsedAt,
+  }) {
+    return Tag(
+      id: id ?? this.id,
+      name: name ?? this.name,
+      createdAt: createdAt ?? this.createdAt,
+      lastUsedAt: lastUsedAt ?? this.lastUsedAt,
+    );
+  }
+
+  @override
+  List<Object?> get props => [id, name, createdAt, lastUsedAt];
+}

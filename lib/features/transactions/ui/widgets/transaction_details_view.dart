@@ -11,6 +11,8 @@ import 'package:plata_sync/features/accounts/application/accounts_manager.dart';
 import 'package:plata_sync/features/accounts/domain/entities/account.dart';
 import 'package:plata_sync/features/categories/application/categories_manager.dart';
 import 'package:plata_sync/features/categories/domain/entities/category.dart';
+import 'package:plata_sync/features/tags/application/tags_manager.dart';
+import 'package:plata_sync/features/tags/domain/entities/tag.dart';
 import 'package:plata_sync/features/transactions/domain/entities/transaction.dart';
 import 'package:plata_sync/l10n/app_localizations.dart';
 
@@ -32,37 +34,38 @@ class TransactionDetailsView extends StatefulWidget {
 class _TransactionDetailsViewState extends State<TransactionDetailsView> {
   late final AccountsManager _accountsManager;
   late final CategoriesManager _categoriesManager;
+  late final TagsManager _tagsManager;
   Account? _account;
   Category? _category;
   Account? _targetAccount;
+  List<Tag> _tags = [];
 
   @override
   void initState() {
     super.initState();
     _accountsManager = getService<AccountsManager>();
     _categoriesManager = getService<CategoriesManager>();
+    _tagsManager = getService<TagsManager>();
     _loadData();
   }
 
   Future<void> _loadData() async {
-    await _accountsManager.loadAccounts();
-    await _categoriesManager.loadCategories();
+    _account = await _accountsManager.getAccountById(
+      widget.transaction.accountId,
+    );
+    if (widget.transaction.categoryId != null) {
+      _category = await _categoriesManager.getCategoryById(
+        widget.transaction.categoryId!,
+      );
+    }
+    if (widget.transaction.targetAccountId != null) {
+      _targetAccount = await _accountsManager.getAccountById(
+        widget.transaction.targetAccountId!,
+      );
+    }
+    _tags = await _tagsManager.getTagsByIds(widget.transaction.tagIds);
     if (mounted) {
-      setState(() {
-        _account = _accountsManager.accounts.value
-            .where((a) => a.id == widget.transaction.accountId)
-            .firstOrNull;
-        if (widget.transaction.categoryId != null) {
-          _category = _categoriesManager.categories.value
-              .where((c) => c.id == widget.transaction.categoryId)
-              .firstOrNull;
-        }
-        if (widget.transaction.targetAccountId != null) {
-          _targetAccount = _accountsManager.accounts.value
-              .where((a) => a.id == widget.transaction.targetAccountId)
-              .firstOrNull;
-        }
-      });
+      setState(() {});
     }
   }
 
@@ -172,6 +175,24 @@ class _TransactionDetailsViewState extends State<TransactionDetailsView> {
             child: Text(
               transaction.notes!,
               style: Theme.of(context).textTheme.bodyMedium,
+            ),
+          ),
+        // Tags
+        if (_tags.isNotEmpty)
+          _buildSection(
+            context,
+            label: l10n.transactionTagsLabel,
+            child: Wrap(
+              spacing: AppSpacing.xs,
+              runSpacing: AppSpacing.xs,
+              children: _tags.map((tag) {
+                return Chip(
+                  label: Text(tag.name),
+                  labelStyle: Theme.of(context).textTheme.bodySmall,
+                  visualDensity: VisualDensity.compact,
+                  padding: EdgeInsets.symmetric(horizontal: AppSpacing.xs),
+                );
+              }).toList(),
             ),
           ),
         // Metadata section

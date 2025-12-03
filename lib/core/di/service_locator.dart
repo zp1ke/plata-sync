@@ -6,6 +6,8 @@ import 'package:plata_sync/features/accounts/application/accounts_manager.dart';
 import 'package:plata_sync/features/accounts/data/interfaces/account_data_source.dart';
 import 'package:plata_sync/features/categories/application/categories_manager.dart';
 import 'package:plata_sync/features/categories/data/interfaces/category_data_source.dart';
+import 'package:plata_sync/features/tags/application/tags_manager.dart';
+import 'package:plata_sync/features/tags/data/interfaces/tag_data_source.dart';
 import 'package:plata_sync/features/transactions/application/transactions_manager.dart';
 import 'package:plata_sync/features/transactions/data/interfaces/transaction_data_source.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -44,6 +46,11 @@ Future<void> setupServiceLocator() async {
     databaseService,
   );
   getIt.registerSingleton<TransactionDataSource>(transactionDataSource);
+  final tagDataSource = TagDataSource.createDataSource(
+    dataSourceType,
+    databaseService,
+  );
+  getIt.registerSingleton<TagDataSource>(tagDataSource);
 
   // Managers
   getIt.registerLazySingleton<CategoriesManager>(
@@ -55,6 +62,7 @@ Future<void> setupServiceLocator() async {
   getIt.registerLazySingleton<TransactionsManager>(
     () => TransactionsManager(transactionDataSource),
   );
+  getIt.registerLazySingleton<TagsManager>(() => TagsManager(tagDataSource));
 }
 
 T getService<T extends Object>() => getIt<T>();

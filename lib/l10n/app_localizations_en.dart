@@ -558,7 +558,7 @@ class AppL10nEn extends AppL10n {
   String get transactionSourceAccountLabel => 'Source Account';
 
   @override
-  String get transactionTargetAccountLabel => 'To Account';
+  String get transactionTargetAccountLabel => 'Target Account';
 
   @override
   String get transactionCategoryLabel => 'Category';
@@ -673,4 +673,18 @@ class AppL10nEn extends AppL10n {
 
   @override
   String get transactionBalanceMovementLabel => 'Balance Movement';
+
+  @override
+  String get transactionTagsLabel => 'Tags';
+
+  @override
+  String get transactionTagsHint => 'Add tags...';
+
+  @override
+  String get add => 'Add';
+
+  @override
+  String errorCreatingTagMessage(String error) {
+    return 'Failed to create tag: $error';
+  }
 }

@@ -11,6 +11,7 @@ class Transaction extends Equatable {
   final String? targetAccountId;
   final int? targetAccountBalanceBefore;
   final String? notes;
+  final List<String> tagIds;
 
   const Transaction({
     required this.id,
@@ -22,6 +23,7 @@ class Transaction extends Equatable {
     this.targetAccountId,
     this.targetAccountBalanceBefore,
     this.notes,
+    this.tagIds = const [],
   });
 
   Transaction.create({
@@ -34,6 +36,7 @@ class Transaction extends Equatable {
     this.targetAccountId,
     this.targetAccountBalanceBefore,
     this.notes,
+    this.tagIds = const [],
   }) : id = id ?? randomId(),
        createdAt = createdAt ?? DateTime.now();
 
@@ -47,6 +50,7 @@ class Transaction extends Equatable {
     String? targetAccountId,
     int? targetAccountBalanceBefore,
     String? notes,
+    List<String>? tagIds,
   }) {
     return Transaction(
       id: id ?? this.id,
@@ -59,6 +63,7 @@ class Transaction extends Equatable {
       targetAccountBalanceBefore:
           targetAccountBalanceBefore ?? this.targetAccountBalanceBefore,
       notes: notes ?? this.notes,
+      tagIds: tagIds ?? this.tagIds,
     );
   }
 
