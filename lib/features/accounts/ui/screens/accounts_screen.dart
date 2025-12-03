@@ -268,9 +268,13 @@ class _TabletAccountsScreenState extends State<_TabletAccountsScreen> {
               onPressed: isLoading
                   ? null
                   : () {
-                      setState(() {
-                        selectedAccount = null;
-                        isEditing = true;
+                      WidgetsBinding.instance.addPostFrameCallback((_) {
+                        if (mounted) {
+                          setState(() {
+                            selectedAccount = null;
+                            isEditing = true;
+                          });
+                        }
                       });
                     },
               icon: AppIcons.add,
@@ -326,8 +330,12 @@ class _TabletAccountsScreenState extends State<_TabletAccountsScreen> {
               ),
               IconButton(
                 onPressed: () {
-                  setState(() {
-                    isEditing = true;
+                  WidgetsBinding.instance.addPostFrameCallback((_) {
+                    if (mounted) {
+                      setState(() {
+                        isEditing = true;
+                      });
+                    }
                   });
                 },
                 icon: AppIcons.edit,

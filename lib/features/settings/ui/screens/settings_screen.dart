@@ -23,32 +23,39 @@ class SettingsScreen extends StatelessWidget {
 
     return Scaffold(
       appBar: AppBar(title: Text(l10n.settingsScreenTitle)),
-      body: Center(
-        child: ConstrainedBox(
-          constraints: const BoxConstraints(maxWidth: AppSizing.dialogMaxWidth),
-          child: ListView(
-            children: [
-              // App Section
-              _SectionHeader(title: l10n.settingsSectionApp),
-              ListTile(
-                leading: AppIcons.info,
-                title: Text(l10n.settingsAppVersion),
-                subtitle: Text(settingsService.getAppVersion()),
+      body: ListView(
+        padding: EdgeInsets.zero,
+        children: [
+          Center(
+            child: ConstrainedBox(
+              constraints: const BoxConstraints(
+                maxWidth: AppSizing.dialogMaxWidth,
               ),
-              const Divider(),
+              child: Column(
+                children: [
+                  // App Section
+                  _SectionHeader(title: l10n.settingsSectionApp),
+                  ListTile(
+                    leading: AppIcons.info,
+                    title: Text(l10n.settingsAppVersion),
+                    subtitle: Text(settingsService.getAppVersion()),
+                  ),
+                  const Divider(),
 
-              // Data Section
-              _SectionHeader(title: l10n.settingsSectionData),
-              const _DataSourceSetting(),
-              const Divider(),
+                  // Data Section
+                  _SectionHeader(title: l10n.settingsSectionData),
+                  const _DataSourceSetting(),
+                  const Divider(),
 
-              // Display Section
-              _SectionHeader(title: l10n.settingsSectionDisplay),
-              const _DateFormatSetting(),
-              const _TimeFormatSetting(),
-            ],
+                  // Display Section
+                  _SectionHeader(title: l10n.settingsSectionDisplay),
+                  const _DateFormatSetting(),
+                  const _TimeFormatSetting(),
+                ],
+              ),
+            ),
           ),
-        ),
+        ],
       ),
     );
   }
@@ -71,7 +78,7 @@ class _SectionHeader extends StatelessWidget {
       ),
       child: Text(
         title,
-        style: theme.textTheme.titleSmall?.copyWith(
+        style: theme.textTheme.titleMedium?.copyWith(
           color: theme.colorScheme.primary,
           fontWeight: FontWeight.bold,
         ),

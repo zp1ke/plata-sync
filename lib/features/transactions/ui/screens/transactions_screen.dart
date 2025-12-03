@@ -425,9 +425,13 @@ class _TabletTransactionsScreenState extends State<_TabletTransactionsScreen> {
               onPressed: isLoading
                   ? null
                   : () {
-                      setState(() {
-                        selectedTransaction = null;
-                        isEditing = true;
+                      WidgetsBinding.instance.addPostFrameCallback((_) {
+                        if (mounted) {
+                          setState(() {
+                            selectedTransaction = null;
+                            isEditing = true;
+                          });
+                        }
                       });
                     },
               icon: AppIcons.add,
@@ -602,8 +606,12 @@ class _TabletTransactionsScreenState extends State<_TabletTransactionsScreen> {
               ),
               IconButton(
                 onPressed: () {
-                  setState(() {
-                    isEditing = true;
+                  WidgetsBinding.instance.addPostFrameCallback((_) {
+                    if (mounted) {
+                      setState(() {
+                        isEditing = true;
+                      });
+                    }
                   });
                 },
                 icon: AppIcons.edit,

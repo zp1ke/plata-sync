@@ -261,9 +261,13 @@ class _TabletCategoriesScreenState extends State<_TabletCategoriesScreen> {
               onPressed: isLoading
                   ? null
                   : () {
-                      setState(() {
-                        selectedCategory = null;
-                        isEditing = true;
+                      WidgetsBinding.instance.addPostFrameCallback((_) {
+                        if (mounted) {
+                          setState(() {
+                            selectedCategory = null;
+                            isEditing = true;
+                          });
+                        }
                       });
                     },
               icon: AppIcons.add,
@@ -319,8 +323,12 @@ class _TabletCategoriesScreenState extends State<_TabletCategoriesScreen> {
               ),
               IconButton(
                 onPressed: () {
-                  setState(() {
-                    isEditing = true;
+                  WidgetsBinding.instance.addPostFrameCallback((_) {
+                    if (mounted) {
+                      setState(() {
+                        isEditing = true;
+                      });
+                    }
                   });
                 },
                 icon: AppIcons.edit,
