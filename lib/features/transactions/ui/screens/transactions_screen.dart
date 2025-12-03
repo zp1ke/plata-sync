@@ -92,55 +92,6 @@ class _MobileTransactionsScreenState extends State<_MobileTransactionsScreen> {
     );
   }
 
-  PreferredSizeWidget _buildBottomBar(
-    BuildContext context,
-    TransactionSortOrder sortOrder,
-    ViewMode viewMode,
-    TransactionsManager manager,
-    AppL10n l10n,
-    bool isLoading,
-  ) {
-    return PreferredSize(
-      preferredSize: const Size.fromHeight(kToolbarHeight),
-      child: Column(
-        children: [
-          const Divider(),
-          Padding(
-            padding: AppSpacing.paddingMd,
-            child: Row(
-              children: [
-                Expanded(
-                  child: SortSelector<TransactionSortOrder>(
-                    value: sortOrder,
-                    onChanged: isLoading ? null : manager.setSortOrder,
-                    labelBuilder: (order) => _getSortLabel(l10n, order),
-                    sortIconBuilder: (order) => order.name.contains('Desc')
-                        ? AppIcons.sortDescending
-                        : AppIcons.sortAscending,
-                    options: TransactionSortOrder.values,
-                  ),
-                ),
-              ],
-            ),
-          ),
-        ],
-      ),
-    );
-  }
-
-  String _getSortLabel(AppL10n l10n, TransactionSortOrder order) {
-    switch (order) {
-      case TransactionSortOrder.dateAsc:
-        return l10n.transactionsSortDateAsc;
-      case TransactionSortOrder.dateDesc:
-        return l10n.transactionsSortDateDesc;
-      case TransactionSortOrder.amountAsc:
-        return l10n.transactionsSortAmountAsc;
-      case TransactionSortOrder.amountDesc:
-        return l10n.transactionsSortAmountDesc;
-    }
-  }
-
   void _showSampleDataDialog(BuildContext context) {
     final l10n = AppL10n.of(context);
     showDialog(
@@ -343,6 +294,52 @@ class _MobileTransactionsScreenState extends State<_MobileTransactionsScreen> {
   }
 }
 
+Widget _buildBottomBar(
+  BuildContext context,
+  TransactionSortOrder sortOrder,
+  ViewMode viewMode,
+  TransactionsManager manager,
+  AppL10n l10n,
+  bool isLoading, {
+  bool showViewToggle = false,
+}) {
+  return Row(
+    children: [
+      Expanded(
+        child: SortSelector<TransactionSortOrder>(
+          value: sortOrder,
+          onChanged: isLoading ? null : manager.setSortOrder,
+          labelBuilder: (order) => _getSortLabel(l10n, order),
+          sortIconBuilder: (order) => order.isDescending
+              ? AppIcons.sortDescending
+              : AppIcons.sortAscending,
+          options: TransactionSortOrder.values,
+        ),
+      ),
+      if (showViewToggle) ...[
+        AppSpacing.gapHorizontalSm,
+        ViewToggle(
+          value: viewMode,
+          onChanged: isLoading ? null : manager.setViewMode,
+        ),
+      ],
+    ],
+  );
+}
+
+String _getSortLabel(AppL10n l10n, TransactionSortOrder order) {
+  switch (order) {
+    case TransactionSortOrder.dateAsc:
+      return l10n.transactionsSortDateAsc;
+    case TransactionSortOrder.dateDesc:
+      return l10n.transactionsSortDateDesc;
+    case TransactionSortOrder.amountAsc:
+      return l10n.transactionsSortAmountAsc;
+    case TransactionSortOrder.amountDesc:
+      return l10n.transactionsSortAmountDesc;
+  }
+}
+
 // Tablet implementation - uses master-detail layout
 class _TabletTransactionsScreen extends WatchingStatefulWidget {
   const _TabletTransactionsScreen();
@@ -379,6 +376,8 @@ class _TabletTransactionsScreenState extends State<_TabletTransactionsScreen> {
       });
     }
 
+    final manager = getService<TransactionsManager>();
+
     return Scaffold(
       body: SafeArea(
         child: Row(
@@ -386,25 +385,31 @@ class _TabletTransactionsScreenState extends State<_TabletTransactionsScreen> {
             // Master pane (list)
             Expanded(
               flex: 2,
-              child: Column(
-                children: [
-                  _buildMasterHeader(
-                    context,
-                    sortOrder,
-                    viewMode,
-                    isLoading,
-                    l10n,
-                  ),
-                  const Divider(),
-                  Expanded(
-                    child: _buildMasterContent(
-                      context,
-                      isLoading,
-                      transactions,
-                      viewMode,
+              child: NestedScrollView(
+                headerSliverBuilder: (_, _) {
+                  return [
+                    AppTopBar(
+                      title: l10n.transactionsScreenTitle,
+                      isLoading: isLoading,
+                      onRefresh: () => manager.loadTransactions(),
+                      bottom: _buildBottomBar(
+                        context,
+                        sortOrder,
+                        viewMode,
+                        manager,
+                        l10n,
+                        isLoading,
+                        showViewToggle: true,
+                      ),
                     ),
-                  ),
-                ],
+                  ];
+                },
+                body: _buildMasterContent(
+                  context,
+                  isLoading,
+                  transactions,
+                  viewMode,
+                ),
               ),
             ),
             const VerticalDivider(),
@@ -435,79 +440,6 @@ class _TabletTransactionsScreenState extends State<_TabletTransactionsScreen> {
               label: Text(l10n.transactionsAddButton),
             ),
     );
-  }
-
-  Widget _buildMasterHeader(
-    BuildContext context,
-    TransactionSortOrder sortOrder,
-    ViewMode viewMode,
-    bool isLoading,
-    AppL10n l10n,
-  ) {
-    final manager = getService<TransactionsManager>();
-    return Padding(
-      padding: AppSpacing.paddingMd,
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Row(
-            children: [
-              Text(
-                l10n.transactionsScreenTitle,
-                style: Theme.of(context).textTheme.headlineSmall,
-              ),
-              const Spacer(),
-              IconButton(
-                icon: isLoading
-                    ? const SizedBox.square(
-                        dimension: 20,
-                        child: CircularProgressIndicator.adaptive(
-                          strokeWidth: 2,
-                        ),
-                      )
-                    : AppIcons.refresh,
-                onPressed: isLoading ? null : () => manager.loadTransactions(),
-                tooltip: l10n.refresh,
-              ),
-            ],
-          ),
-          AppSpacing.gapVerticalSm,
-          Row(
-            children: [
-              Expanded(
-                child: SortSelector<TransactionSortOrder>(
-                  value: sortOrder,
-                  onChanged: isLoading ? null : manager.setSortOrder,
-                  labelBuilder: (order) => _getSortLabel(l10n, order),
-                  sortIconBuilder: (order) => order.name.contains('Desc')
-                      ? AppIcons.sortDescending
-                      : AppIcons.sortAscending,
-                  options: TransactionSortOrder.values,
-                ),
-              ),
-              AppSpacing.gapHorizontalSm,
-              ViewToggle(
-                value: viewMode,
-                onChanged: isLoading ? null : manager.setViewMode,
-              ),
-            ],
-          ),
-        ],
-      ),
-    );
-  }
-
-  String _getSortLabel(AppL10n l10n, TransactionSortOrder order) {
-    switch (order) {
-      case TransactionSortOrder.dateAsc:
-        return l10n.transactionsSortDateAsc;
-      case TransactionSortOrder.dateDesc:
-        return l10n.transactionsSortDateDesc;
-      case TransactionSortOrder.amountAsc:
-        return l10n.transactionsSortAmountAsc;
-      case TransactionSortOrder.amountDesc:
-        return l10n.transactionsSortAmountDesc;
-    }
   }
 
   Widget _buildMasterContent(
