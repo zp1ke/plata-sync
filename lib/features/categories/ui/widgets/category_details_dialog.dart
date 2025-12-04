@@ -1,8 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:plata_sync/core/ui/resources/app_icons.dart';
-import 'package:plata_sync/core/ui/resources/app_sizing.dart';
-import 'package:plata_sync/core/ui/resources/app_spacing.dart';
-import 'package:plata_sync/core/ui/widgets/object_icon.dart';
+import 'package:plata_sync/core/ui/widgets/dialog.dart';
 import 'package:plata_sync/features/categories/domain/entities/category.dart';
 import 'package:plata_sync/features/categories/ui/widgets/category_details_view.dart';
 import 'package:plata_sync/l10n/app_localizations.dart';
@@ -24,22 +22,10 @@ class CategoryDetailsDialog extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final l10n = AppL10n.of(context);
-    return AlertDialog(
-      title: Row(
-        children: [
-          ObjectIcon(iconData: category.iconData, size: AppSizing.avatarSm),
-          AppSpacing.gapHorizontalMd,
-          Expanded(
-            child: Text(
-              category.name,
-              style: Theme.of(context).textTheme.titleLarge,
-            ),
-          ),
-        ],
-      ),
-      content: SingleChildScrollView(
-        child: CategoryDetailsView(category: category),
-      ),
+    return AppDialog(
+      iconData: category.iconData,
+      title: category.name,
+      content: CategoryDetailsView(category: category),
       actions: [
         TextButton.icon(
           onPressed: () {

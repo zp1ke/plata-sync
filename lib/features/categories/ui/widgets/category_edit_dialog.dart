@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:plata_sync/core/ui/resources/app_sizing.dart';
+import 'package:plata_sync/core/ui/widgets/dialog.dart';
 import 'package:plata_sync/features/categories/domain/entities/category.dart';
 import 'package:plata_sync/features/categories/ui/widgets/category_edit_form.dart';
 import 'package:plata_sync/l10n/app_localizations.dart';
@@ -14,24 +14,17 @@ class CategoryEditDialog extends StatelessWidget {
   Widget build(BuildContext context) {
     final l10n = AppL10n.of(context);
 
-    return AlertDialog(
-      title: Text(
-        category == null
-            ? l10n.categoriesCreateTitle
-            : l10n.categoriesEditTitle,
-      ),
-      content: SizedBox(
-        width: AppSizing.dialogMaxWidth,
-        child: SingleChildScrollView(
-          child: CategoryEditForm(
-            category: category,
-            onSave: (updatedCategory) {
-              Navigator.of(context).pop();
-              onSave(updatedCategory);
-            },
-            onCancel: () => Navigator.of(context).pop(),
-          ),
-        ),
+    return AppDialog(
+      title: category == null
+          ? l10n.categoriesCreateTitle
+          : l10n.categoriesEditTitle,
+      content: CategoryEditForm(
+        category: category,
+        onSave: (updatedCategory) {
+          Navigator.of(context).pop();
+          onSave(updatedCategory);
+        },
+        onCancel: () => Navigator.of(context).pop(),
       ),
     );
   }

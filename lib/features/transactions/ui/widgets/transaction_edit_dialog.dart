@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:plata_sync/core/ui/resources/app_sizing.dart';
+import 'package:plata_sync/core/ui/widgets/dialog.dart';
 import 'package:plata_sync/features/transactions/domain/entities/transaction.dart';
 import 'package:plata_sync/features/transactions/ui/widgets/transaction_edit_form.dart';
 import 'package:plata_sync/l10n/app_localizations.dart';
@@ -18,25 +18,18 @@ class TransactionEditDialog extends StatelessWidget {
   Widget build(BuildContext context) {
     final l10n = AppL10n.of(context);
 
-    return AlertDialog(
-      title: Text(
-        transaction == null
-            ? l10n.transactionCreateTitle
-            : l10n.transactionEditTitle,
-      ),
-      content: SizedBox(
-        width: AppSizing.dialogMaxWidth,
-        child: SingleChildScrollView(
-          child: TransactionEditForm(
-            transaction: transaction,
-            showActions: true,
-            onCancel: () => Navigator.of(context).pop(),
-            onSave: (updatedTransaction) {
-              Navigator.of(context).pop();
-              onSave(updatedTransaction);
-            },
-          ),
-        ),
+    return AppDialog(
+      title: transaction == null
+          ? l10n.transactionCreateTitle
+          : l10n.transactionEditTitle,
+      content: TransactionEditForm(
+        transaction: transaction,
+        showActions: true,
+        onCancel: () => Navigator.of(context).pop(),
+        onSave: (updatedTransaction) {
+          Navigator.of(context).pop();
+          onSave(updatedTransaction);
+        },
       ),
     );
   }

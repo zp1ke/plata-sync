@@ -1,8 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:plata_sync/core/ui/resources/app_icons.dart';
-import 'package:plata_sync/core/ui/resources/app_sizing.dart';
-import 'package:plata_sync/core/ui/resources/app_spacing.dart';
-import 'package:plata_sync/core/ui/widgets/object_icon.dart';
+import 'package:plata_sync/core/ui/widgets/dialog.dart';
 import 'package:plata_sync/features/accounts/domain/entities/account.dart';
 import 'package:plata_sync/features/accounts/ui/widgets/account_details_view.dart';
 import 'package:plata_sync/l10n/app_localizations.dart';
@@ -24,22 +22,10 @@ class AccountDetailsDialog extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final l10n = AppL10n.of(context);
-    return AlertDialog(
-      title: Row(
-        children: [
-          ObjectIcon(iconData: account.iconData, size: AppSizing.avatarSm),
-          AppSpacing.gapHorizontalMd,
-          Expanded(
-            child: Text(
-              account.name,
-              style: Theme.of(context).textTheme.titleLarge,
-            ),
-          ),
-        ],
-      ),
-      content: SingleChildScrollView(
-        child: AccountDetailsView(account: account),
-      ),
+    return AppDialog(
+      iconData: account.iconData,
+      title: account.name,
+      content: AccountDetailsView(account: account),
       actions: [
         TextButton.icon(
           onPressed: () {

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:plata_sync/core/ui/resources/app_icons.dart';
+import 'package:plata_sync/core/ui/widgets/dialog.dart';
 import 'package:plata_sync/features/transactions/domain/entities/transaction.dart';
 import 'package:plata_sync/features/transactions/ui/widgets/transaction_details_view.dart';
 import 'package:plata_sync/l10n/app_localizations.dart';
@@ -29,23 +30,9 @@ class TransactionDetailsDialog extends StatelessWidget {
       typeLabel = l10n.transactionTypeIncome;
     }
 
-    return AlertDialog(
-      title: Row(
-        children: [
-          Expanded(
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              mainAxisSize: MainAxisSize.min,
-              children: [
-                Text(typeLabel, style: Theme.of(context).textTheme.titleLarge),
-              ],
-            ),
-          ),
-        ],
-      ),
-      content: SingleChildScrollView(
-        child: TransactionDetailsView(transaction: transaction),
-      ),
+    return AppDialog(
+      title: typeLabel,
+      content: TransactionDetailsView(transaction: transaction),
       actions: [
         TextButton.icon(
           onPressed: () {
