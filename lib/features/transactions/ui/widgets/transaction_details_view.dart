@@ -49,6 +49,15 @@ class _TransactionDetailsViewState extends State<TransactionDetailsView> {
     _loadData();
   }
 
+  @override
+  void didUpdateWidget(TransactionDetailsView oldWidget) {
+    super.didUpdateWidget(oldWidget);
+    // Reload data if the transaction changed
+    if (oldWidget.transaction.id != widget.transaction.id) {
+      _loadData();
+    }
+  }
+
   Future<void> _loadData() async {
     _account = await _accountsManager.getAccountById(
       widget.transaction.accountId,

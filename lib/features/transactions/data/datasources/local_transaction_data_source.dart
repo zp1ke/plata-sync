@@ -24,11 +24,19 @@ class LocalTransactionDataSource extends TransactionDataSource {
       'target_account_id': transaction.targetAccountId,
       'target_account_balance_before': transaction.targetAccountBalanceBefore,
       'notes': transaction.notes,
+      'tag_ids': transaction.tagIds.isEmpty
+          ? null
+          : transaction.tagIds.join(','),
     };
   }
 
   /// Convert a database map to a Transaction
   model.Transaction _fromMap(Map<String, dynamic> map) {
+    final tagIdsString = map['tag_ids'] as String?;
+    final tagIds = tagIdsString == null || tagIdsString.isEmpty
+        ? <String>[]
+        : tagIdsString.split(',');
+
     return model.Transaction(
       id: map['id'] as String,
       createdAt: DateTime.fromMillisecondsSinceEpoch(map['created_at'] as int),
@@ -39,6 +47,7 @@ class LocalTransactionDataSource extends TransactionDataSource {
       targetAccountId: map['target_account_id'] as String?,
       targetAccountBalanceBefore: map['target_account_balance_before'] as int?,
       notes: map['notes'] as String?,
+      tagIds: tagIds,
     );
   }
 

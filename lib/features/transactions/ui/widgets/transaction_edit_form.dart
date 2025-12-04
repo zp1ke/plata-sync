@@ -112,6 +112,8 @@ class TransactionEditFormState extends State<TransactionEditForm> {
       amount = -amount;
     }
 
+    final tagIds = _selectedTags.map((tag) => tag.id).toList();
+
     final transaction = Transaction.create(
       id: widget.transaction?.id,
       createdAt: _createdAt,
@@ -125,7 +127,7 @@ class TransactionEditFormState extends State<TransactionEditForm> {
       notes: _notesController.text.trim().isEmpty
           ? null
           : _notesController.text.trim(),
-      tagIds: _selectedTags.map((tag) => tag.id).toList(),
+      tagIds: tagIds,
     );
 
     widget.onSave(transaction);
