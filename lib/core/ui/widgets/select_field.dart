@@ -48,12 +48,10 @@ class SelectField<T> extends StatelessWidget {
               onTap: enabled
                   ? () => _showSelectionDialog(context, field)
                   : null,
-              borderRadius: AppSizing.borderRadiusMd,
               child: InputDecorator(
                 decoration: InputDecoration(
                   labelText: label,
                   hintText: hint,
-                  border: const OutlineInputBorder(),
                   suffixIcon: AppIcons.arrowDropDownXs,
                   errorText: field.errorText,
                   enabled: enabled,

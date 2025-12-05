@@ -70,42 +70,52 @@ class _ObjectIconEditorState extends State<ObjectIconEditor> {
             size: AppSizing.avatarXl,
           ),
         ),
-        // Icon selector
-        SelectField<String>(
-          value: _selectedIconName,
-          options: AppIcons.iconDataMap.keys.toList(),
-          label: widget.iconLabel,
-          itemLabelBuilder: (iconName) => AppIcons.getIconLabel(iconName, l10n),
-          itemBuilder: (iconName) => Row(
-            children: [
-              AppIcons.getIcon(iconName, size: AppSizing.iconMd),
-              AppSpacing.gapHorizontalMd,
-              Expanded(
-                child: Text(
-                  AppIcons.getIconLabel(iconName, l10n),
-                  overflow: TextOverflow.ellipsis,
-                ),
-              ),
-            ],
-          ),
-          onChanged: (String newValue) {
-            setState(() {
-              _selectedIconName = newValue;
-            });
-            _notifyChange();
-          },
-          validator: (value) {
-            if (value == null || value.isEmpty) {
-              return widget.iconRequiredMessage;
-            }
-            return null;
-          },
-        ),
-        // Color fields in a row
-        Row(
+        Wrap(
+          alignment: WrapAlignment.center,
           spacing: AppSpacing.md,
+          runSpacing: AppSpacing.md,
+          runAlignment: WrapAlignment.center,
           children: [
-            Expanded(
+            // Icon selector
+            ConstrainedBox(
+              constraints: BoxConstraints(maxWidth: AppSizing.avatarLg * 6),
+              child: SelectField<String>(
+                value: _selectedIconName,
+                options: AppIcons.iconDataMap.keys.toList(),
+                label: widget.iconLabel,
+                itemLabelBuilder: (iconName) =>
+                    AppIcons.getIconLabel(iconName, l10n),
+                itemBuilder: (iconName) => Row(
+                  children: [
+                    AppIcons.getIcon(iconName, size: AppSizing.iconMd),
+                    AppSpacing.gapHorizontalMd,
+                    Expanded(
+                      child: Text(
+                        AppIcons.getIconLabel(iconName, l10n),
+                        overflow: TextOverflow.ellipsis,
+                      ),
+                    ),
+                  ],
+                ),
+                onChanged: (String newValue) {
+                  setState(() {
+                    _selectedIconName = newValue;
+                  });
+                  _notifyChange();
+                },
+                validator: (value) {
+                  if (value == null || value.isEmpty) {
+                    return widget.iconRequiredMessage;
+                  }
+                  return null;
+                },
+              ),
+            ),
+            // Colors picker
+            ConstrainedBox(
+              constraints: const BoxConstraints(
+                maxWidth: AppSizing.avatarLg * 3,
+              ),
               child: ColorPickerField(
                 label: widget.backgroundColorLabel,
                 value: _backgroundColor,
@@ -117,7 +127,10 @@ class _ObjectIconEditorState extends State<ObjectIconEditor> {
                 },
               ),
             ),
-            Expanded(
+            ConstrainedBox(
+              constraints: const BoxConstraints(
+                maxWidth: AppSizing.avatarLg * 3,
+              ),
               child: ColorPickerField(
                 label: widget.iconColorLabel,
                 value: _iconColor,

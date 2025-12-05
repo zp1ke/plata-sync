@@ -3,6 +3,8 @@ import 'package:flutter/material.dart';
 import 'package:plata_sync/core/ui/resources/app_sizing.dart';
 import 'package:plata_sync/core/ui/resources/app_spacing.dart';
 
+final _flexScheme = FlexScheme.blueM3;
+
 /// Extension to add custom colors to ColorScheme
 extension TransactionColors on ColorScheme {
   /// Color for expense transactions (negative amounts)
@@ -25,7 +27,7 @@ class AppTheme {
   static final light =
       FlexThemeData.light(
         useMaterial3: true,
-        scheme: FlexScheme.tealM3,
+        scheme: _flexScheme,
         useMaterial3ErrorColors: true,
         visualDensity: VisualDensity.compact,
         surfaceMode: FlexSurfaceMode.highBackgroundLowScaffold,
@@ -59,7 +61,7 @@ class AppTheme {
   static final dark =
       FlexThemeData.dark(
         useMaterial3: true,
-        scheme: FlexScheme.tealM3,
+        scheme: _flexScheme,
         useMaterial3ErrorColors: true,
         visualDensity: VisualDensity.compact,
         surfaceMode: FlexSurfaceMode.highBackgroundLowScaffold,

@@ -111,16 +111,16 @@ class ColorPickerField extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return InputDecorator(
-      decoration: InputDecoration(
-        labelText: label,
-        helperText: helperText,
-        border: const OutlineInputBorder(),
-        prefixIcon: Padding(
-          padding: const EdgeInsets.all(AppSpacing.md),
-          child: Container(
-            width: AppSizing.iconMd,
-            height: AppSizing.iconMd,
+    return InkWell(
+      onTap: () => _showColorPicker(context),
+      child: InputDecorator(
+        decoration: InputDecoration(
+          labelText: label,
+          helperText: helperText,
+          prefixIcon: Container(
+            margin: const EdgeInsets.symmetric(horizontal: AppSpacing.sm),
+            width: AppSizing.iconSm,
+            height: AppSizing.iconSm,
             decoration: BoxDecoration(
               color: ColorExtensions.fromHex(value),
               shape: BoxShape.circle,
@@ -131,16 +131,14 @@ class ColorPickerField extends StatelessWidget {
               ),
             ),
           ),
-        ),
-      ),
-      child: InkWell(
-        onTap: () => _showColorPicker(context),
-        child: Padding(
-          padding: const EdgeInsets.symmetric(vertical: AppSpacing.sm),
-          child: Text(
-            '#${value.replaceAll('#', '').toUpperCase()}',
-            style: Theme.of(context).textTheme.bodyLarge,
+          contentPadding: const EdgeInsets.symmetric(
+            horizontal: AppSpacing.sm,
+            vertical: AppSpacing.sm,
           ),
+        ),
+        child: Text(
+          '#${value.replaceAll('#', '').toUpperCase()}',
+          style: Theme.of(context).textTheme.bodyMedium,
         ),
       ),
     );
