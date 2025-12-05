@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:plata_sync/core/ui/resources/app_icons.dart';
 
 /// A text form field specifically designed for currency input.
 /// Accepts decimal numbers with up to 2 decimal places and optional negative sign.
@@ -10,7 +11,7 @@ class CurrencyInputField extends StatelessWidget {
   final bool required;
   final String? Function(String?)? validator;
   final bool allowNegative;
-  final String currencySymbol;
+  final Widget? currencyWidget;
   final TextInputAction? textInputAction;
 
   const CurrencyInputField({
@@ -20,7 +21,7 @@ class CurrencyInputField extends StatelessWidget {
     this.required = false,
     this.validator,
     this.allowNegative = true,
-    this.currencySymbol = '\$',
+    this.currencyWidget,
     this.textInputAction,
     super.key,
   });
@@ -45,7 +46,7 @@ class CurrencyInputField extends StatelessWidget {
       decoration: InputDecoration(
         labelText: required ? '$label *' : label,
         border: const OutlineInputBorder(),
-        prefixText: '$currencySymbol ',
+        prefixIcon: currencyWidget ?? AppIcons.currency,
         helperText: helperText,
       ),
       validator: validator ?? (value) => _defaultValidator(value),

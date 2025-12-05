@@ -10,70 +10,92 @@ class AppIcons {
   const AppIcons._();
 
   // Actions
-  static final add = HugeIcon(icon: HugeIcons.strokeRoundedAdd01);
-  static final clear = HugeIcon(icon: HugeIcons.strokeRoundedCancel01);
-  static final close = HugeIcon(icon: HugeIcons.strokeRoundedCancelSquare);
-  static final copy = HugeIcon(icon: HugeIcons.strokeRoundedCopy01);
-  static final edit = HugeIcon(icon: HugeIcons.strokeRoundedPencilEdit02);
-  static final delete = HugeIcon(icon: HugeIcons.strokeRoundedDelete04);
-  static final refresh = HugeIcon(icon: HugeIcons.strokeRoundedRefresh);
-  static final search = HugeIcon(icon: HugeIcons.strokeRoundedSearch01);
-  static final searchXs = HugeIcon(
+  static final add = const HugeIcon(icon: HugeIcons.strokeRoundedAdd01);
+  static final clear = const HugeIcon(icon: HugeIcons.strokeRoundedCancel01);
+  static final close = const HugeIcon(
+    icon: HugeIcons.strokeRoundedCancelSquare,
+  );
+  static final copy = const HugeIcon(icon: HugeIcons.strokeRoundedCopy01);
+  static final edit = const HugeIcon(icon: HugeIcons.strokeRoundedPencilEdit02);
+  static final delete = const HugeIcon(icon: HugeIcons.strokeRoundedDelete04);
+  static final refresh = const HugeIcon(icon: HugeIcons.strokeRoundedRefresh);
+  static final search = const HugeIcon(icon: HugeIcons.strokeRoundedSearch01);
+  static final searchXs = const HugeIcon(
     icon: HugeIcons.strokeRoundedSearch01,
     size: AppSizing.iconXs,
   );
-  static final searchOff = HugeIcon(icon: HugeIcons.strokeRoundedSearchRemove);
-  static final sort = HugeIcon(icon: HugeIcons.strokeRoundedSorting01);
-  static final sortAscending = HugeIcon(
+  static final searchOff = const HugeIcon(
+    icon: HugeIcons.strokeRoundedSearchRemove,
+  );
+  static final sort = const HugeIcon(icon: HugeIcons.strokeRoundedSorting01);
+  static final sortAscending = const HugeIcon(
     icon: HugeIcons.strokeRoundedSortByUp02,
   );
-  static final sortDescending = HugeIcon(
+  static final sortDescending = const HugeIcon(
     icon: HugeIcons.strokeRoundedSortByDown02,
   );
-  static final viewList = HugeIcon(icon: HugeIcons.strokeRoundedMenu01);
-  static final viewGrid = HugeIcon(icon: HugeIcons.strokeRoundedGridView);
+  static final viewList = const HugeIcon(icon: HugeIcons.strokeRoundedMenu01);
+  static final viewGrid = const HugeIcon(icon: HugeIcons.strokeRoundedGridView);
 
   // Transactions
-  static final transactions = HugeIcon(icon: HugeIcons.strokeRoundedInvoice);
-  static final transactionsOutlined = HugeIcon(
+  static final transactions = const HugeIcon(
     icon: HugeIcons.strokeRoundedInvoice,
   );
-  static final transfer = HugeIcon(
+  static final transactionsOutlined = const HugeIcon(
+    icon: HugeIcons.strokeRoundedInvoice,
+  );
+  static final transfer = const HugeIcon(
     icon: HugeIcons.strokeRoundedSquareArrowDataTransferHorizontal,
   );
 
   // Accounts
-  static final accounts = HugeIcon(icon: HugeIcons.strokeRoundedWallet02);
-  static final accountsOutlined = HugeIcon(
+  static final accounts = const HugeIcon(icon: HugeIcons.strokeRoundedWallet02);
+  static final accountsOutlined = const HugeIcon(
     icon: HugeIcons.strokeRoundedWallet02,
   );
 
   // Categories
-  static final categories = HugeIcon(
+  static final categories = const HugeIcon(
     icon: HugeIcons.strokeRoundedFolderLibrary,
   );
-  static final categoriesOutlined = HugeIcon(
+  static final categoriesOutlined = const HugeIcon(
     icon: HugeIcons.strokeRoundedFolderLibrary,
   );
 
   // Settings
-  static final settings = HugeIcon(icon: HugeIcons.strokeRoundedSettings01);
-  static final settingsOutlined = HugeIcon(
+  static final settings = const HugeIcon(
     icon: HugeIcons.strokeRoundedSettings01,
   );
-  static final info = HugeIcon(icon: HugeIcons.strokeRoundedInformationCircle);
-  static final database = HugeIcon(icon: HugeIcons.strokeRoundedDatabase01);
-  static final memory = HugeIcon(icon: HugeIcons.strokeRoundedCpuCharge);
-  static final calendar = HugeIcon(icon: HugeIcons.strokeRoundedCalendar03);
-  static final schedule = HugeIcon(icon: HugeIcons.strokeRoundedClock01);
+  static final settingsOutlined = const HugeIcon(
+    icon: HugeIcons.strokeRoundedSettings01,
+  );
+  static final info = const HugeIcon(
+    icon: HugeIcons.strokeRoundedInformationCircle,
+  );
+  static final database = const HugeIcon(
+    icon: HugeIcons.strokeRoundedDatabase01,
+  );
+  static final memory = const HugeIcon(icon: HugeIcons.strokeRoundedCpuCharge);
+  static final calendar = const HugeIcon(
+    icon: HugeIcons.strokeRoundedCalendar03,
+  );
+  static final schedule = const HugeIcon(icon: HugeIcons.strokeRoundedClock01);
+
+  // Forms
+  static final description = const HugeIcon(icon: HugeIcons.strokeRoundedText);
 
   // Others
-  static final arrowDropDown = HugeIcon(
+  static final arrowDropDown = const HugeIcon(
     icon: HugeIcons.strokeRoundedArrowDown01,
   );
   static final arrowDropDownXs = Icon(Icons.arrow_drop_down);
-  static final arrowDropUp = HugeIcon(icon: HugeIcons.strokeRoundedArrowUp01);
-  static final arrowRight = HugeIcon(icon: HugeIcons.strokeRoundedArrowRight01);
+  static final arrowDropUp = const HugeIcon(
+    icon: HugeIcons.strokeRoundedArrowUp01,
+  );
+  static final arrowRight = const HugeIcon(
+    icon: HugeIcons.strokeRoundedArrowRight01,
+  );
+  static final currency = const HugeIcon(icon: HugeIcons.strokeRoundedDollar01);
 
   static Widget getIcon(String name, {Color? color, double? size}) {
     final iconData = iconDataMap[name] ?? HugeIcons.strokeRoundedHelpCircle;

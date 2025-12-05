@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:plata_sync/core/model/object_icon_data.dart';
-import 'package:plata_sync/core/ui/resources/app_sizing.dart';
+import 'package:plata_sync/core/ui/resources/app_icons.dart';
 import 'package:plata_sync/core/ui/resources/app_spacing.dart';
 import 'package:plata_sync/core/ui/widgets/currency_input_field.dart';
 import 'package:plata_sync/core/ui/widgets/object_icon_editor.dart';
@@ -77,95 +77,91 @@ class AccountEditFormState extends State<AccountEditForm> {
     final l10n = AppL10n.of(context);
     final isCreating = widget.account == null;
 
-    return Center(
-      child: ConstrainedBox(
-        constraints: const BoxConstraints(maxWidth: AppSizing.dialogMaxWidth),
-        child: FocusTraversalGroup(
-          policy: OrderedTraversalPolicy(),
-          child: Form(
-            key: formKey,
-            child: Column(
-              mainAxisSize: MainAxisSize.min,
-              spacing: AppSpacing.md,
-              children: [
-                // Name field
-                TextFormField(
-                  controller: nameController,
-                  textInputAction: TextInputAction.next,
-                  decoration: InputDecoration(
-                    labelText: '${l10n.accountsEditName} *',
-                    border: const OutlineInputBorder(),
-                  ),
-                  maxLength: 100,
-                  validator: (value) {
-                    if (value == null || value.trim().isEmpty) {
-                      return l10n.accountsEditNameRequired;
-                    }
-                    return null;
-                  },
-                ),
-                // Description field
-                TextFormField(
-                  controller: descriptionController,
-                  decoration: InputDecoration(
-                    labelText:
-                        '${l10n.accountsEditDescription} (${l10n.optional})',
-                    border: const OutlineInputBorder(),
-                  ),
-                  maxLength: 300,
-                  maxLines: 3,
-                ),
-                // Initial Balance field (only for creation)
-                if (isCreating)
-                  CurrencyInputField(
-                    controller: balanceController,
-                    label: l10n.accountsEditInitialBalance,
-                    helperText: l10n.accountsEditInitialBalanceHelper,
-                    required: true,
-                    validator: (value) {
-                      if (value == null || value.trim().isEmpty) {
-                        return l10n.accountsEditInitialBalanceRequired;
-                      }
-                      final amount = double.tryParse(value.trim());
-                      if (amount == null) {
-                        return l10n.accountsEditInitialBalanceInvalid;
-                      }
-                      return null;
-                    },
-                  ),
-                // Icon editor
-                ObjectIconEditor(
-                  initialData: iconData,
-                  iconLabel: l10n.accountsEditIcon,
-                  iconRequiredMessage: l10n.accountsEditIconRequired,
-                  backgroundColorLabel: l10n.accountsEditBackgroundColor,
-                  iconColorLabel: l10n.accountsEditIconColor,
-                  onChanged: (data) {
-                    setState(() {
-                      iconData = data;
-                    });
-                  },
-                ),
-                // Actions (optional - for inline use)
-                if (widget.showActions)
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.end,
-                    spacing: AppSpacing.sm,
-                    children: [
-                      if (widget.onCancel != null)
-                        TextButton(
-                          onPressed: widget.onCancel,
-                          child: Text(l10n.cancel),
-                        ),
-                      FilledButton(
-                        onPressed: isFormValid ? handleSave : null,
-                        child: Text(l10n.save),
-                      ),
-                    ],
-                  ),
-              ],
+    return FocusTraversalGroup(
+      policy: OrderedTraversalPolicy(),
+      child: Form(
+        key: formKey,
+        child: Column(
+          mainAxisSize: MainAxisSize.min,
+          spacing: AppSpacing.md,
+          children: [
+            // Name field
+            TextFormField(
+              controller: nameController,
+              textInputAction: TextInputAction.next,
+              decoration: InputDecoration(
+                prefixIcon: AppIcons.accountsOutlined,
+                labelText: '${l10n.accountsEditName} *',
+                border: const OutlineInputBorder(),
+              ),
+              maxLength: 100,
+              validator: (value) {
+                if (value == null || value.trim().isEmpty) {
+                  return l10n.accountsEditNameRequired;
+                }
+                return null;
+              },
             ),
-          ),
+            // Description field
+            TextFormField(
+              controller: descriptionController,
+              decoration: InputDecoration(
+                prefixIcon: AppIcons.description,
+                labelText: '${l10n.accountsEditDescription} (${l10n.optional})',
+                border: const OutlineInputBorder(),
+              ),
+              maxLength: 300,
+              maxLines: 3,
+            ),
+            // Initial Balance field (only for creation)
+            if (isCreating)
+              CurrencyInputField(
+                controller: balanceController,
+                label: l10n.accountsEditInitialBalance,
+                helperText: l10n.accountsEditInitialBalanceHelper,
+                required: true,
+                validator: (value) {
+                  if (value == null || value.trim().isEmpty) {
+                    return l10n.accountsEditInitialBalanceRequired;
+                  }
+                  final amount = double.tryParse(value.trim());
+                  if (amount == null) {
+                    return l10n.accountsEditInitialBalanceInvalid;
+                  }
+                  return null;
+                },
+              ),
+            // Icon editor
+            ObjectIconEditor(
+              initialData: iconData,
+              iconLabel: l10n.accountsEditIcon,
+              iconRequiredMessage: l10n.accountsEditIconRequired,
+              backgroundColorLabel: l10n.accountsEditBackgroundColor,
+              iconColorLabel: l10n.accountsEditIconColor,
+              onChanged: (data) {
+                setState(() {
+                  iconData = data;
+                });
+              },
+            ),
+            // Actions (optional - for inline use)
+            if (widget.showActions)
+              Row(
+                mainAxisAlignment: MainAxisAlignment.end,
+                spacing: AppSpacing.sm,
+                children: [
+                  if (widget.onCancel != null)
+                    TextButton(
+                      onPressed: widget.onCancel,
+                      child: Text(l10n.cancel),
+                    ),
+                  FilledButton(
+                    onPressed: isFormValid ? handleSave : null,
+                    child: Text(l10n.save),
+                  ),
+                ],
+              ),
+          ],
         ),
       ),
     );
