@@ -1,5 +1,6 @@
 import 'package:flex_color_scheme/flex_color_scheme.dart';
 import 'package:flutter/material.dart';
+import 'package:plata_sync/core/ui/resources/app_sizing.dart';
 import 'package:plata_sync/core/ui/resources/app_spacing.dart';
 
 /// Extension to add custom colors to ColorScheme
@@ -26,7 +27,7 @@ class AppTheme {
         useMaterial3: true,
         scheme: FlexScheme.tealM3,
         useMaterial3ErrorColors: true,
-        visualDensity: FlexColorScheme.comfortablePlatformDensity,
+        visualDensity: VisualDensity.compact,
         surfaceMode: FlexSurfaceMode.highBackgroundLowScaffold,
         blendLevel: 1,
         subThemesData: const FlexSubThemesData(
@@ -34,9 +35,16 @@ class AppTheme {
           inputDecoratorIsFilled: true,
           inputDecoratorBackgroundAlpha: 19,
           inputDecoratorBorderType: FlexInputBorderType.outline,
-          inputDecoratorUnfocusedHasBorder: false,
-          inputDecoratorFocusedBorderWidth: 1.0,
+          inputDecoratorUnfocusedHasBorder: true,
+          inputDecoratorUnfocusedBorderIsColored: false,
+          inputDecoratorFocusedBorderWidth: 2.0,
+          inputDecoratorBorderWidth: 1.0,
           inputDecoratorPrefixIconSchemeColor: SchemeColor.primary,
+          inputDecoratorRadius: AppSizing.radiusSm,
+          inputDecoratorContentPadding: EdgeInsets.symmetric(
+            horizontal: AppSpacing.md,
+            vertical: AppSpacing.md,
+          ),
         ),
       ).copyWith(
         dialogTheme: const DialogThemeData(
@@ -53,7 +61,7 @@ class AppTheme {
         useMaterial3: true,
         scheme: FlexScheme.tealM3,
         useMaterial3ErrorColors: true,
-        visualDensity: FlexColorScheme.comfortablePlatformDensity,
+        visualDensity: VisualDensity.compact,
         surfaceMode: FlexSurfaceMode.highBackgroundLowScaffold,
         blendLevel: 2,
         subThemesData: const FlexSubThemesData(
@@ -61,9 +69,16 @@ class AppTheme {
           inputDecoratorIsFilled: true,
           inputDecoratorBackgroundAlpha: 22,
           inputDecoratorBorderType: FlexInputBorderType.outline,
-          inputDecoratorUnfocusedHasBorder: false,
-          inputDecoratorFocusedBorderWidth: 1.0,
+          inputDecoratorUnfocusedHasBorder: true,
+          inputDecoratorUnfocusedBorderIsColored: false,
+          inputDecoratorFocusedBorderWidth: 2.0,
+          inputDecoratorBorderWidth: 1.0,
           inputDecoratorPrefixIconSchemeColor: SchemeColor.primary,
+          inputDecoratorRadius: AppSizing.radiusSm,
+          inputDecoratorContentPadding: EdgeInsets.symmetric(
+            horizontal: AppSpacing.md,
+            vertical: AppSpacing.md,
+          ),
         ),
       ).copyWith(
         dialogTheme: const DialogThemeData(
