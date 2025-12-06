@@ -53,6 +53,10 @@ class AppIcons {
   static final accountsOutlined = const HugeIcon(
     icon: HugeIcons.strokeRoundedWallet02,
   );
+  static final accountsOutlinedXs = const HugeIcon(
+    icon: HugeIcons.strokeRoundedWallet02,
+    size: AppSizing.iconXs,
+  );
 
   // Categories
   static final categories = const HugeIcon(
@@ -60,6 +64,10 @@ class AppIcons {
   );
   static final categoriesOutlined = const HugeIcon(
     icon: HugeIcons.strokeRoundedFolderLibrary,
+  );
+  static final categoriesOutlinedXs = const HugeIcon(
+    icon: HugeIcons.strokeRoundedFolderLibrary,
+    size: AppSizing.iconXs,
   );
 
   // Settings
@@ -83,6 +91,10 @@ class AppIcons {
 
   // Forms
   static final description = const HugeIcon(icon: HugeIcons.strokeRoundedText);
+  static final descriptionXs = const HugeIcon(
+    icon: HugeIcons.strokeRoundedText,
+    size: AppSizing.iconXs,
+  );
 
   // Others
   static final arrowDropDown = const HugeIcon(
@@ -96,6 +108,10 @@ class AppIcons {
     icon: HugeIcons.strokeRoundedArrowRight01,
   );
   static final currency = const HugeIcon(icon: HugeIcons.strokeRoundedDollar01);
+  static final currencyXs = const HugeIcon(
+    icon: HugeIcons.strokeRoundedDollar01,
+    size: AppSizing.iconXs,
+  );
 
   static Widget getIcon(String name, {Color? color, double? size}) {
     final iconData = iconDataMap[name] ?? HugeIcons.strokeRoundedHelpCircle;

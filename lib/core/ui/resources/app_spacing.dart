@@ -81,4 +81,9 @@ class AppSpacing {
   static const SizedBox gapVerticalMd = SizedBox(height: md);
   static const SizedBox gapVerticalLg = SizedBox(height: lg);
   static const SizedBox gapVerticalXl = SizedBox(height: xl);
+
+  // Grid/List spacing
+  static const double gridSpacingSm = 8.0;
+  static const double gridSpacingMd = 12.0;
+  static const double gridSpacingLg = 16.0;
 }

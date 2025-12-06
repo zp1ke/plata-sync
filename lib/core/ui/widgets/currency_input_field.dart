@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:plata_sync/core/ui/resources/app_icons.dart';
+import 'package:plata_sync/core/ui/widgets/input_decoration.dart';
 
 /// A text form field specifically designed for currency input.
 /// Accepts decimal numbers with up to 2 decimal places and optional negative sign.
@@ -43,10 +44,9 @@ class CurrencyInputField extends StatelessWidget {
               : RegExp(r'^\d*\.?\d{0,2}'),
         ),
       ],
-      decoration: InputDecoration(
+      decoration: inputDecorationWithPrefixIcon(
         labelText: required ? '$label *' : label,
-        border: const OutlineInputBorder(),
-        prefixIcon: currencyWidget ?? AppIcons.currency,
+        prefixIcon: currencyWidget ?? AppIcons.currencyXs,
         helperText: helperText,
       ),
       validator: validator ?? (value) => _defaultValidator(value),

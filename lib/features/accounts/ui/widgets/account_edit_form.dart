@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:plata_sync/core/model/object_icon_data.dart';
 import 'package:plata_sync/core/ui/resources/app_icons.dart';
+import 'package:plata_sync/core/ui/resources/app_sizing.dart';
 import 'package:plata_sync/core/ui/resources/app_spacing.dart';
 import 'package:plata_sync/core/ui/widgets/currency_input_field.dart';
+import 'package:plata_sync/core/ui/widgets/input_decoration.dart';
 import 'package:plata_sync/core/ui/widgets/object_icon_editor.dart';
 import 'package:plata_sync/features/accounts/domain/entities/account.dart';
 import 'package:plata_sync/l10n/app_localizations.dart';
@@ -83,16 +85,16 @@ class AccountEditFormState extends State<AccountEditForm> {
         key: formKey,
         child: Column(
           mainAxisSize: MainAxisSize.min,
+          crossAxisAlignment: CrossAxisAlignment.end,
           spacing: AppSpacing.md,
           children: [
             // Name field
             TextFormField(
               controller: nameController,
               textInputAction: TextInputAction.next,
-              decoration: InputDecoration(
-                prefixIcon: AppIcons.accountsOutlined,
+              decoration: inputDecorationWithPrefixIcon(
                 labelText: '${l10n.accountsEditName} *',
-                border: const OutlineInputBorder(),
+                prefixIcon: AppIcons.accountsOutlinedXs,
               ),
               maxLength: 100,
               validator: (value) {
@@ -105,31 +107,33 @@ class AccountEditFormState extends State<AccountEditForm> {
             // Description field
             TextFormField(
               controller: descriptionController,
-              decoration: InputDecoration(
-                prefixIcon: AppIcons.description,
+              decoration: inputDecorationWithPrefixIcon(
+                prefixIcon: AppIcons.descriptionXs,
                 labelText: '${l10n.accountsEditDescription} (${l10n.optional})',
-                border: const OutlineInputBorder(),
               ),
               maxLength: 300,
               maxLines: 3,
             ),
             // Initial Balance field (only for creation)
             if (isCreating)
-              CurrencyInputField(
-                controller: balanceController,
-                label: l10n.accountsEditInitialBalance,
-                helperText: l10n.accountsEditInitialBalanceHelper,
-                required: true,
-                validator: (value) {
-                  if (value == null || value.trim().isEmpty) {
-                    return l10n.accountsEditInitialBalanceRequired;
-                  }
-                  final amount = double.tryParse(value.trim());
-                  if (amount == null) {
-                    return l10n.accountsEditInitialBalanceInvalid;
-                  }
-                  return null;
-                },
+              ConstrainedBox(
+                constraints: BoxConstraints(maxWidth: AppSizing.inputWidthMd),
+                child: CurrencyInputField(
+                  controller: balanceController,
+                  label: l10n.accountsEditInitialBalance,
+                  helperText: l10n.accountsEditInitialBalanceHelper,
+                  required: true,
+                  validator: (value) {
+                    if (value == null || value.trim().isEmpty) {
+                      return l10n.accountsEditInitialBalanceRequired;
+                    }
+                    final amount = double.tryParse(value.trim());
+                    if (amount == null) {
+                      return l10n.accountsEditInitialBalanceInvalid;
+                    }
+                    return null;
+                  },
+                ),
               ),
             // Icon editor
             ObjectIconEditor(

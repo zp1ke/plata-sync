@@ -1,0 +1,26 @@
+import 'package:flutter/material.dart';
+import 'package:plata_sync/core/ui/resources/app_sizing.dart';
+import 'package:plata_sync/core/ui/resources/app_spacing.dart';
+
+InputDecoration inputDecorationWithPrefixIcon({
+  String? labelText,
+  String? helperText,
+  Widget? prefixIcon,
+  double? iconSize,
+}) {
+  return InputDecoration(
+    prefixIcon: prefixIcon != null
+        ? Container(margin: AppSpacing.paddingHorizontalSm, child: prefixIcon)
+        : null,
+    prefixIconConstraints: prefixIcon != null
+        ? BoxConstraints.tight(
+            Size(
+              iconSize ?? AppSizing.avatarMd,
+              iconSize ?? AppSizing.avatarMd,
+            ),
+          )
+        : null,
+    labelText: labelText,
+    helperText: helperText,
+  );
+}

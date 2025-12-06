@@ -51,14 +51,12 @@ class AppSizing {
   // Minimum touch target size (accessibility)
   static const double minTouchTarget = 48.0;
 
-  // Grid/List spacing
-  static const double gridSpacingSm = 8.0;
-  static const double gridSpacingMd = 12.0;
-  static const double gridSpacingLg = 16.0;
-
   // Standard box widths
   static const double boxWidthSm = 100.0;
 
   // Dialog constraints
   static const double dialogMaxWidth = 800.0;
+
+  // Input widths
+  static const double inputWidthMd = 250.0;
 }

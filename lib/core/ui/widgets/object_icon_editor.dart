@@ -57,94 +57,82 @@ class _ObjectIconEditorState extends State<ObjectIconEditor> {
   Widget build(BuildContext context) {
     final l10n = AppL10n.of(context);
 
-    return Column(
-      mainAxisSize: MainAxisSize.min,
-      spacing: AppSpacing.lg,
-      crossAxisAlignment: CrossAxisAlignment.start,
+    return Wrap(
+      alignment: WrapAlignment.end,
+      spacing: AppSpacing.md,
+      runSpacing: AppSpacing.md,
+      runAlignment: WrapAlignment.start,
+      crossAxisAlignment: WrapCrossAlignment.center,
       children: [
         // Preview
-        Center(
-          child: ObjectIcon.raw(
-            iconName: _selectedIconName,
-            backgroundColorHex: _backgroundColor,
-            iconColorHex: _iconColor,
-            size: AppSizing.avatarXl,
+        ObjectIcon.raw(
+          iconName: _selectedIconName,
+          backgroundColorHex: _backgroundColor,
+          iconColorHex: _iconColor,
+          size: AppSizing.avatarXl,
+        ),
+        // Icon selector
+        ConstrainedBox(
+          constraints: BoxConstraints(maxWidth: AppSizing.inputWidthMd),
+          child: SelectField<String>(
+            value: _selectedIconName,
+            options: AppIcons.iconDataMap.keys.toList(),
+            label: widget.iconLabel,
+            itemLabelBuilder: (iconName) =>
+                AppIcons.getIconLabel(iconName, l10n),
+            itemBuilder: (iconName) => Row(
+              spacing: AppSpacing.md,
+              children: [
+                AppIcons.getIcon(iconName, size: AppSizing.iconMd),
+                Expanded(
+                  child: Text(
+                    AppIcons.getIconLabel(iconName, l10n),
+                    overflow: TextOverflow.ellipsis,
+                  ),
+                ),
+              ],
+            ),
+            onChanged: (String newValue) {
+              setState(() {
+                _selectedIconName = newValue;
+              });
+              _notifyChange();
+            },
+            validator: (value) {
+              if (value == null || value.isEmpty) {
+                return widget.iconRequiredMessage;
+              }
+              return null;
+            },
           ),
         ),
-        Wrap(
-          alignment: WrapAlignment.start,
-          spacing: AppSpacing.md,
-          runSpacing: AppSpacing.md,
-          runAlignment: WrapAlignment.start,
-          children: [
-            // Icon selector
-            ConstrainedBox(
-              constraints: BoxConstraints(maxWidth: AppSizing.avatarLg * 6),
-              child: SelectField<String>(
-                value: _selectedIconName,
-                options: AppIcons.iconDataMap.keys.toList(),
-                label: widget.iconLabel,
-                itemLabelBuilder: (iconName) =>
-                    AppIcons.getIconLabel(iconName, l10n),
-                itemBuilder: (iconName) => Row(
-                  spacing: AppSpacing.md,
-                  children: [
-                    AppIcons.getIcon(iconName, size: AppSizing.iconMd),
-                    Expanded(
-                      child: Text(
-                        AppIcons.getIconLabel(iconName, l10n),
-                        overflow: TextOverflow.ellipsis,
-                      ),
-                    ),
-                  ],
-                ),
-                onChanged: (String newValue) {
-                  setState(() {
-                    _selectedIconName = newValue;
-                  });
-                  _notifyChange();
-                },
-                validator: (value) {
-                  if (value == null || value.isEmpty) {
-                    return widget.iconRequiredMessage;
-                  }
-                  return null;
-                },
-              ),
-            ),
-            // Background color picker
-            ConstrainedBox(
-              constraints: const BoxConstraints(
-                maxWidth: AppSizing.avatarLg * 3,
-              ),
-              child: ColorPickerField(
-                label: widget.backgroundColorLabel,
-                value: _backgroundColor,
-                onChanged: (color) {
-                  setState(() {
-                    _backgroundColor = color;
-                  });
-                  _notifyChange();
-                },
-              ),
-            ),
-            // Icon color picker
-            ConstrainedBox(
-              constraints: const BoxConstraints(
-                maxWidth: AppSizing.avatarLg * 3,
-              ),
-              child: ColorPickerField(
-                label: widget.iconColorLabel,
-                value: _iconColor,
-                onChanged: (color) {
-                  setState(() {
-                    _iconColor = color;
-                  });
-                  _notifyChange();
-                },
-              ),
-            ),
-          ],
+        // Background color picker
+        ConstrainedBox(
+          constraints: const BoxConstraints(maxWidth: AppSizing.avatarLg * 3),
+          child: ColorPickerField(
+            label: widget.backgroundColorLabel,
+            value: _backgroundColor,
+            onChanged: (color) {
+              setState(() {
+                _backgroundColor = color;
+              });
+              _notifyChange();
+            },
+          ),
+        ),
+        // Icon color picker
+        ConstrainedBox(
+          constraints: const BoxConstraints(maxWidth: AppSizing.avatarLg * 3),
+          child: ColorPickerField(
+            label: widget.iconColorLabel,
+            value: _iconColor,
+            onChanged: (color) {
+              setState(() {
+                _iconColor = color;
+              });
+              _notifyChange();
+            },
+          ),
         ),
       ],
     );
