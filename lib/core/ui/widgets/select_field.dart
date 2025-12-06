@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:plata_sync/core/ui/resources/app_icons.dart';
-import 'package:plata_sync/core/ui/resources/app_sizing.dart';
 import 'package:plata_sync/core/ui/resources/app_spacing.dart';
+import 'package:plata_sync/core/ui/widgets/dialog.dart';
 import 'package:plata_sync/l10n/app_localizations.dart';
 
 /// A customizable select widget that displays a button and opens a searchable dialog.
@@ -153,84 +153,75 @@ class _SelectionDialogState<T> extends State<_SelectionDialog<T>> {
   Widget build(BuildContext context) {
     final filteredOptions = _filteredOptions;
 
-    return AlertDialog(
-      title: Text(widget.title),
-      insetPadding: AppSpacing.paddingMd,
-      contentPadding: const EdgeInsets.fromLTRB(
-        AppSpacing.lg,
-        AppSpacing.md,
-        AppSpacing.lg,
-        AppSpacing.md,
-      ),
-      content: SizedBox(
-        width: AppSizing.dialogMaxWidth,
-        height: 500,
-        child: Column(
-          mainAxisSize: MainAxisSize.min,
-          children: [
-            // Search field
-            TextField(
-              controller: _searchController,
-              autofocus: true,
-              decoration: InputDecoration(
-                labelText: widget.searchHint,
-                border: const OutlineInputBorder(),
-                prefix: Padding(
-                  padding: EdgeInsets.only(right: AppSpacing.xs),
-                  child: AppIcons.searchXs,
-                ),
-                suffixIcon: _searchQuery.isNotEmpty
-                    ? IconButton(
-                        icon: AppIcons.clear,
-                        onPressed: () {
-                          _searchController.clear();
-                        },
-                      )
-                    : null,
+    return AppDialog(
+      title: widget.title,
+      scrollable: false,
+      contentHeight: 500,
+      content: Column(
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          // Search field
+          TextField(
+            controller: _searchController,
+            autofocus: true,
+            decoration: InputDecoration(
+              labelText: widget.searchHint,
+              border: const OutlineInputBorder(),
+              prefix: Padding(
+                padding: EdgeInsets.only(right: AppSpacing.xs),
+                child: AppIcons.searchXs,
               ),
-            ),
-            AppSpacing.gapVerticalMd,
-            // Options list
-            Expanded(
-              child: filteredOptions.isEmpty
-                  ? Center(
-                      child: Text(
-                        AppL10n.of(context).selectFieldNoResults,
-                        style: Theme.of(context).textTheme.bodyMedium?.copyWith(
-                          color: Theme.of(context).colorScheme.onSurfaceVariant,
-                        ),
-                      ),
-                    )
-                  : ListView.builder(
-                      shrinkWrap: true,
-                      itemCount: filteredOptions.length,
-                      itemBuilder: (context, index) {
-                        final option = filteredOptions[index];
-                        final isSelected = option == widget.currentValue;
-
-                        return ListTile(
-                          selected: isSelected,
-                          selectedTileColor: Theme.of(
-                            context,
-                          ).colorScheme.primaryContainer.withValues(alpha: 0.5),
-                          title: widget.itemBuilder != null
-                              ? widget.itemBuilder!(option)
-                              : Text(widget.itemLabelBuilder(option)),
-                          trailing: isSelected
-                              ? Icon(
-                                  Icons.check,
-                                  color: Theme.of(context).colorScheme.primary,
-                                )
-                              : null,
-                          onTap: () {
-                            Navigator.of(context).pop(option);
-                          },
-                        );
+              suffixIcon: _searchQuery.isNotEmpty
+                  ? IconButton(
+                      icon: AppIcons.clear,
+                      onPressed: () {
+                        _searchController.clear();
                       },
-                    ),
+                    )
+                  : null,
             ),
-          ],
-        ),
+          ),
+          AppSpacing.gapVerticalMd,
+          // Options list
+          Expanded(
+            child: filteredOptions.isEmpty
+                ? Center(
+                    child: Text(
+                      AppL10n.of(context).selectFieldNoResults,
+                      style: Theme.of(context).textTheme.bodyMedium?.copyWith(
+                        color: Theme.of(context).colorScheme.onSurfaceVariant,
+                      ),
+                    ),
+                  )
+                : ListView.builder(
+                    shrinkWrap: true,
+                    itemCount: filteredOptions.length,
+                    itemBuilder: (context, index) {
+                      final option = filteredOptions[index];
+                      final isSelected = option == widget.currentValue;
+
+                      return ListTile(
+                        selected: isSelected,
+                        selectedTileColor: Theme.of(
+                          context,
+                        ).colorScheme.primaryContainer.withValues(alpha: 0.5),
+                        title: widget.itemBuilder != null
+                            ? widget.itemBuilder!(option)
+                            : Text(widget.itemLabelBuilder(option)),
+                        trailing: isSelected
+                            ? Icon(
+                                Icons.check,
+                                color: Theme.of(context).colorScheme.primary,
+                              )
+                            : null,
+                        onTap: () {
+                          Navigator.of(context).pop(option);
+                        },
+                      );
+                    },
+                  ),
+          ),
+        ],
       ),
       actions: [
         TextButton(

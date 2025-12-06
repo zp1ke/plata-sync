@@ -12,12 +12,16 @@ class AppDialog extends StatelessWidget {
     this.iconData,
     required this.content,
     this.actions,
+    this.scrollable = true,
+    this.contentHeight,
   });
 
   final ObjectIconData? iconData;
   final String title;
   final Widget content;
   final List<Widget>? actions;
+  final bool scrollable;
+  final double? contentHeight;
 
   @override
   Widget build(BuildContext context) {
@@ -39,7 +43,8 @@ class AppDialog extends StatelessWidget {
       ),
       content: SizedBox(
         width: AppSizing.dialogMaxWidth,
-        child: SingleChildScrollView(child: content),
+        height: contentHeight ?? MediaQuery.of(context).size.height * 0.8,
+        child: scrollable ? SingleChildScrollView(child: content) : content,
       ),
       actions: actions,
     );

@@ -21,74 +21,59 @@ extension TransactionColors on ColorScheme {
       : const Color(0xFF64B5F6); // Light blue for dark theme
 }
 
+const _dialogTheme = DialogThemeData(
+  insetPadding: EdgeInsets.symmetric(
+    horizontal: AppSpacing.lg,
+    vertical: AppSpacing.xxl,
+  ),
+);
+
+const _dividerTheme = DividerThemeData(thickness: 1, space: 1);
+
 /// AppTheme provides light and dark theme data using FlexColorScheme.
 /// https://rydmike.com/flexcolorscheme/themesplayground-latest/
 class AppTheme {
-  static final light =
-      FlexThemeData.light(
-        useMaterial3: true,
-        scheme: _flexScheme,
-        useMaterial3ErrorColors: true,
-        visualDensity: VisualDensity.compact,
-        surfaceMode: FlexSurfaceMode.highBackgroundLowScaffold,
-        blendLevel: 1,
-        subThemesData: const FlexSubThemesData(
-          inputDecoratorSchemeColor: SchemeColor.primary,
-          inputDecoratorIsFilled: true,
-          inputDecoratorBackgroundAlpha: 19,
-          inputDecoratorBorderType: FlexInputBorderType.outline,
-          inputDecoratorUnfocusedHasBorder: true,
-          inputDecoratorUnfocusedBorderIsColored: false,
-          inputDecoratorFocusedBorderWidth: 2.0,
-          inputDecoratorBorderWidth: 1.0,
-          inputDecoratorPrefixIconSchemeColor: SchemeColor.primary,
-          inputDecoratorRadius: AppSizing.radiusSm,
-          inputDecoratorContentPadding: EdgeInsets.symmetric(
-            horizontal: AppSpacing.md,
-            vertical: AppSpacing.md,
-          ),
-        ),
-      ).copyWith(
-        dialogTheme: const DialogThemeData(
-          insetPadding: EdgeInsets.symmetric(
-            horizontal: AppSpacing.md,
-            vertical: AppSpacing.xxl,
-          ),
-        ),
-        dividerTheme: const DividerThemeData(thickness: 1, space: 1),
-      );
+  static final light = FlexThemeData.light(
+    useMaterial3: true,
+    scheme: _flexScheme,
+    useMaterial3ErrorColors: true,
+    visualDensity: VisualDensity.compact,
+    surfaceMode: FlexSurfaceMode.highBackgroundLowScaffold,
+    blendLevel: 1,
+    subThemesData: const FlexSubThemesData(
+      inputDecoratorSchemeColor: SchemeColor.primary,
+      inputDecoratorIsFilled: true,
+      inputDecoratorBackgroundAlpha: 19,
+      inputDecoratorBorderType: FlexInputBorderType.outline,
+      inputDecoratorUnfocusedHasBorder: true,
+      inputDecoratorUnfocusedBorderIsColored: false,
+      inputDecoratorFocusedBorderWidth: 2.0,
+      inputDecoratorBorderWidth: 1.0,
+      inputDecoratorPrefixIconSchemeColor: SchemeColor.primary,
+      inputDecoratorRadius: AppSizing.radiusSm,
+      inputDecoratorContentPadding: AppSpacing.paddingMd,
+    ),
+  ).copyWith(dialogTheme: _dialogTheme, dividerTheme: _dividerTheme);
 
-  static final dark =
-      FlexThemeData.dark(
-        useMaterial3: true,
-        scheme: _flexScheme,
-        useMaterial3ErrorColors: true,
-        visualDensity: VisualDensity.compact,
-        surfaceMode: FlexSurfaceMode.highBackgroundLowScaffold,
-        blendLevel: 2,
-        subThemesData: const FlexSubThemesData(
-          inputDecoratorSchemeColor: SchemeColor.primary,
-          inputDecoratorIsFilled: true,
-          inputDecoratorBackgroundAlpha: 22,
-          inputDecoratorBorderType: FlexInputBorderType.outline,
-          inputDecoratorUnfocusedHasBorder: true,
-          inputDecoratorUnfocusedBorderIsColored: false,
-          inputDecoratorFocusedBorderWidth: 2.0,
-          inputDecoratorBorderWidth: 1.0,
-          inputDecoratorPrefixIconSchemeColor: SchemeColor.primary,
-          inputDecoratorRadius: AppSizing.radiusSm,
-          inputDecoratorContentPadding: EdgeInsets.symmetric(
-            horizontal: AppSpacing.md,
-            vertical: AppSpacing.md,
-          ),
-        ),
-      ).copyWith(
-        dialogTheme: const DialogThemeData(
-          insetPadding: EdgeInsets.symmetric(
-            horizontal: AppSpacing.lg,
-            vertical: AppSpacing.xxl,
-          ),
-        ),
-        dividerTheme: const DividerThemeData(thickness: 1, space: 1),
-      );
+  static final dark = FlexThemeData.dark(
+    useMaterial3: true,
+    scheme: _flexScheme,
+    useMaterial3ErrorColors: true,
+    visualDensity: VisualDensity.compact,
+    surfaceMode: FlexSurfaceMode.highBackgroundLowScaffold,
+    blendLevel: 2,
+    subThemesData: const FlexSubThemesData(
+      inputDecoratorSchemeColor: SchemeColor.primary,
+      inputDecoratorIsFilled: true,
+      inputDecoratorBackgroundAlpha: 22,
+      inputDecoratorBorderType: FlexInputBorderType.outline,
+      inputDecoratorUnfocusedHasBorder: true,
+      inputDecoratorUnfocusedBorderIsColored: false,
+      inputDecoratorFocusedBorderWidth: 2.0,
+      inputDecoratorBorderWidth: 1.0,
+      inputDecoratorPrefixIconSchemeColor: SchemeColor.primary,
+      inputDecoratorRadius: AppSizing.radiusSm,
+      inputDecoratorContentPadding: AppSpacing.paddingMd,
+    ),
+  ).copyWith(dialogTheme: _dialogTheme, dividerTheme: _dividerTheme);
 }

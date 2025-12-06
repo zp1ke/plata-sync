@@ -60,6 +60,7 @@ class _ObjectIconEditorState extends State<ObjectIconEditor> {
     return Column(
       mainAxisSize: MainAxisSize.min,
       spacing: AppSpacing.lg,
+      crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         // Preview
         Center(
@@ -71,10 +72,10 @@ class _ObjectIconEditorState extends State<ObjectIconEditor> {
           ),
         ),
         Wrap(
-          alignment: WrapAlignment.center,
+          alignment: WrapAlignment.start,
           spacing: AppSpacing.md,
           runSpacing: AppSpacing.md,
-          runAlignment: WrapAlignment.center,
+          runAlignment: WrapAlignment.start,
           children: [
             // Icon selector
             ConstrainedBox(
@@ -86,9 +87,9 @@ class _ObjectIconEditorState extends State<ObjectIconEditor> {
                 itemLabelBuilder: (iconName) =>
                     AppIcons.getIconLabel(iconName, l10n),
                 itemBuilder: (iconName) => Row(
+                  spacing: AppSpacing.md,
                   children: [
                     AppIcons.getIcon(iconName, size: AppSizing.iconMd),
-                    AppSpacing.gapHorizontalMd,
                     Expanded(
                       child: Text(
                         AppIcons.getIconLabel(iconName, l10n),
@@ -111,7 +112,7 @@ class _ObjectIconEditorState extends State<ObjectIconEditor> {
                 },
               ),
             ),
-            // Colors picker
+            // Background color picker
             ConstrainedBox(
               constraints: const BoxConstraints(
                 maxWidth: AppSizing.avatarLg * 3,
@@ -127,6 +128,7 @@ class _ObjectIconEditorState extends State<ObjectIconEditor> {
                 },
               ),
             ),
+            // Icon color picker
             ConstrainedBox(
               constraints: const BoxConstraints(
                 maxWidth: AppSizing.avatarLg * 3,

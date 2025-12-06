@@ -54,7 +54,7 @@ class SortSelector<T extends Enum> extends StatelessWidget {
             Expanded(
               child: Text(labelBuilder(value), overflow: TextOverflow.ellipsis),
             ),
-            AppIcons.arrowDropDown,
+            AppIcons.arrowDropDownXs,
           ],
         ),
       ),
