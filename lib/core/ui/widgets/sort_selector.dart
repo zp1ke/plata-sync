@@ -43,7 +43,7 @@ class SortSelector<T extends Enum> extends StatelessWidget {
           vertical: AppSpacing.sm,
         ),
         decoration: BoxDecoration(
-          border: Border.all(color: Colors.grey.shade300),
+          border: Border.all(color: Theme.of(context).dividerColor),
           borderRadius: AppSizing.borderRadiusSm,
         ),
         child: Row(
@@ -60,8 +60,11 @@ class SortSelector<T extends Enum> extends StatelessWidget {
       ),
       itemBuilder: (context) => options
           .map(
-            (option) =>
-                PopupMenuItem(value: option, child: Text(labelBuilder(option))),
+            (option) => CheckedPopupMenuItem<T>(
+              value: option,
+              checked: option == value,
+              child: Text(labelBuilder(option)),
+            ),
           )
           .toList(),
     );
