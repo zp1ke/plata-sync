@@ -156,7 +156,6 @@ class _SelectionDialogState<T> extends State<_SelectionDialog<T>> {
     return AppDialog(
       title: widget.title,
       scrollable: false,
-      contentHeight: 500,
       content: Column(
         mainAxisSize: MainAxisSize.min,
         children: [

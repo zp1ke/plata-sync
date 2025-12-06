@@ -1,3 +1,5 @@
+import 'dart:math';
+
 import 'package:flutter/material.dart';
 import 'package:plata_sync/core/model/object_icon_data.dart';
 import 'package:plata_sync/core/ui/resources/app_icons.dart';
@@ -25,6 +27,8 @@ class AppDialog extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final screenHeight = MediaQuery.of(context).size.height;
+
     return AlertDialog(
       insetPadding: AppSpacing.paddingMd,
       title: Row(
@@ -43,7 +47,8 @@ class AppDialog extends StatelessWidget {
       ),
       content: SizedBox(
         width: AppSizing.dialogMaxWidth,
-        height: contentHeight ?? MediaQuery.of(context).size.height * 0.8,
+        height:
+            contentHeight ?? min(AppSizing.dialogMaxHeight, screenHeight * 0.7),
         child: scrollable ? SingleChildScrollView(child: content) : content,
       ),
       actions: actions,

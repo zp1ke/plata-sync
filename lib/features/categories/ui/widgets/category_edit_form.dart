@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:plata_sync/core/model/object_icon_data.dart';
+import 'package:plata_sync/core/ui/resources/app_icons.dart';
 import 'package:plata_sync/core/ui/resources/app_sizing.dart';
 import 'package:plata_sync/core/ui/resources/app_spacing.dart';
+import 'package:plata_sync/core/ui/widgets/input_decoration.dart';
 import 'package:plata_sync/core/ui/widgets/object_icon_editor.dart';
 import 'package:plata_sync/features/categories/domain/entities/category.dart';
 import 'package:plata_sync/l10n/app_localizations.dart';
@@ -77,14 +79,15 @@ class CategoryEditFormState extends State<CategoryEditForm> {
             child: Column(
               mainAxisSize: MainAxisSize.min,
               spacing: AppSpacing.md,
+              crossAxisAlignment: CrossAxisAlignment.end,
               children: [
                 // Name field
                 TextFormField(
                   controller: nameController,
                   textInputAction: TextInputAction.next,
-                  decoration: InputDecoration(
+                  decoration: inputDecorationWithPrefixIcon(
                     labelText: '${l10n.categoriesEditName} *',
-                    border: const OutlineInputBorder(),
+                    prefixIcon: AppIcons.categoriesOutlinedXs,
                   ),
                   maxLength: 100,
                   validator: (value) {
@@ -97,10 +100,10 @@ class CategoryEditFormState extends State<CategoryEditForm> {
                 // Description field
                 TextFormField(
                   controller: descriptionController,
-                  decoration: InputDecoration(
+                  decoration: inputDecorationWithPrefixIcon(
                     labelText:
                         '${l10n.categoriesEditDescription} (${l10n.optional})',
-                    border: const OutlineInputBorder(),
+                    prefixIcon: AppIcons.descriptionXs,
                   ),
                   maxLength: 300,
                   maxLines: 3,

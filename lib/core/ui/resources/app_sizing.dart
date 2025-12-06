@@ -56,6 +56,7 @@ class AppSizing {
 
   // Dialog constraints
   static const double dialogMaxWidth = 800.0;
+  static const double dialogMaxHeight = 450.0;
 
   // Input widths
   static const double inputWidthMd = 250.0;
