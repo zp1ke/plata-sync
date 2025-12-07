@@ -18,6 +18,7 @@ class AppIcons {
   static final copy = const HugeIcon(icon: HugeIcons.strokeRoundedCopy01);
   static final edit = const HugeIcon(icon: HugeIcons.strokeRoundedPencilEdit02);
   static final delete = const HugeIcon(icon: HugeIcons.strokeRoundedDelete04);
+  static final backDelete = const Icon(Icons.backspace);
   static final refresh = const HugeIcon(icon: HugeIcons.strokeRoundedRefresh);
   static final search = const HugeIcon(icon: HugeIcons.strokeRoundedSearch01);
   static final searchXs = const HugeIcon(

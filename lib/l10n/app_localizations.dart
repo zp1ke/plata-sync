@@ -1316,6 +1316,24 @@ abstract class AppL10n {
   /// In en, this message translates to:
   /// **'Failed to create tag: {error}'**
   String errorCreatingTagMessage(String error);
+
+  /// Label for done button
+  ///
+  /// In en, this message translates to:
+  /// **'Done'**
+  String get done;
+
+  /// Generic validation message when a required field is empty
+  ///
+  /// In en, this message translates to:
+  /// **'This field is required'**
+  String get fieldRequiredError;
+
+  /// Generic validation message when amount format is invalid
+  ///
+  /// In en, this message translates to:
+  /// **'Invalid amount format'**
+  String get invalidAmountError;
 }
 
 class _AppL10nDelegate extends LocalizationsDelegate<AppL10n> {

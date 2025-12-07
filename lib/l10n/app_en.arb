@@ -958,5 +958,17 @@
         "type": "String"
       }
     }
+  },
+  "done": "Done",
+  "@done": {
+    "description": "Label for done button"
+  },
+  "fieldRequiredError": "This field is required",
+  "@fieldRequiredError": {
+    "description": "Generic validation message when a required field is empty"
+  },
+  "invalidAmountError": "Invalid amount format",
+  "@invalidAmountError": {
+    "description": "Generic validation message when amount format is invalid"
   }
 }

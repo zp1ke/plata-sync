@@ -687,4 +687,13 @@ class AppL10nEn extends AppL10n {
   String errorCreatingTagMessage(String error) {
     return 'Failed to create tag: $error';
   }
+
+  @override
+  String get done => 'Done';
+
+  @override
+  String get fieldRequiredError => 'This field is required';
+
+  @override
+  String get invalidAmountError => 'Invalid amount format';
 }

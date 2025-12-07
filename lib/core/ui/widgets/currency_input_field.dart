@@ -4,9 +4,9 @@ import 'package:plata_sync/core/ui/resources/app_icons.dart';
 import 'package:plata_sync/core/ui/widgets/calculator_keyboard.dart';
 import 'package:plata_sync/core/ui/widgets/input_decoration.dart';
 import 'package:plata_sync/core/utils/numbers.dart';
+import 'package:plata_sync/l10n/app_localizations.dart';
 
 /// A text form field specifically designed for currency input.
-/// Accepts decimal numbers with up to 2 decimal places and optional negative sign.
 class CurrencyInputField extends StatelessWidget {
   final TextEditingController controller;
   final String label;
@@ -69,20 +69,20 @@ class CurrencyInputField extends StatelessWidget {
         prefixIcon: currencyWidget ?? AppIcons.currencyXs,
         helperText: helperText,
       ),
-      validator: validator ?? (value) => _defaultValidator(value),
+      validator: validator ?? (value) => _defaultValidator(value, context),
     );
   }
 
-  String? _defaultValidator(String? value) {
+  String? _defaultValidator(String? value, BuildContext context) {
     if (required && (value == null || value.trim().isEmpty)) {
-      return 'This field is required'; // TODO: Localization
+      return AppL10n.of(context).fieldRequiredError;
     }
     if (value != null && value.trim().isNotEmpty) {
       // Try to calculate first in case there's a pending expression
       try {
         evaluateExpression(value);
       } catch (e) {
-        return 'Invalid amount format'; // TODO: Localization
+        return AppL10n.of(context).invalidAmountError;
       }
     }
     return null;

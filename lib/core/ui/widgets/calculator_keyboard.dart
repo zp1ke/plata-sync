@@ -3,6 +3,7 @@ import 'package:plata_sync/core/ui/resources/app_icons.dart';
 import 'package:plata_sync/core/ui/resources/app_sizing.dart';
 import 'package:plata_sync/core/ui/resources/app_spacing.dart';
 import 'package:plata_sync/core/utils/numbers.dart';
+import 'package:plata_sync/l10n/app_localizations.dart';
 
 class CalculatorKeyboard extends StatelessWidget {
   final TextEditingController controller;
@@ -87,6 +88,7 @@ class CalculatorKeyboard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final colorScheme = Theme.of(context).colorScheme;
+    final l10n = AppL10n.of(context);
 
     return Container(
       color: colorScheme.surface,
@@ -100,7 +102,12 @@ class CalculatorKeyboard extends StatelessWidget {
               _buildKey(context, 'C', color: colorScheme.error, onTap: _clear),
               _buildKey(context, '/', onTap: () => _insertText('/')),
               _buildKey(context, '*', onTap: () => _insertText('*')),
-              _buildKey(context, '⌫', icon: AppIcons.delete, onTap: _backspace),
+              _buildKey(
+                context,
+                '⌫',
+                icon: AppIcons.backDelete,
+                onTap: _backspace,
+              ),
             ],
           ),
           const SizedBox(height: AppSpacing.xs),
@@ -147,7 +154,7 @@ class CalculatorKeyboard extends StatelessWidget {
               _buildKey(context, '.', onTap: () => _insertText('.')),
               _buildKey(
                 context,
-                'Done', // TODO: Localization
+                l10n.done,
                 icon: AppIcons.check,
                 color: colorScheme.primary,
                 textColor: colorScheme.onPrimary,
@@ -172,24 +179,25 @@ class CalculatorKeyboard extends StatelessWidget {
     Color? textColor,
     int flex = 1,
   }) {
+    final theme = Theme.of(context);
     return Expanded(
       flex: flex,
       child: Padding(
         padding: const EdgeInsets.symmetric(horizontal: AppSpacing.xs),
         child: Material(
-          color: color ?? Theme.of(context).colorScheme.surfaceContainerHighest,
+          color: color ?? theme.colorScheme.surfaceContainerHighest,
           borderRadius: AppSizing.borderRadiusSm,
           child: InkWell(
             onTap: onTap,
             borderRadius: AppSizing.borderRadiusSm,
             child: Container(
-              height: 48,
+              height: AppSizing.avatarLg,
               alignment: Alignment.center,
               child:
                   icon ??
                   Text(
                     label,
-                    style: Theme.of(context).textTheme.titleLarge?.copyWith(
+                    style: theme.textTheme.titleLarge?.copyWith(
                       color: textColor,
                       fontWeight: FontWeight.bold,
                     ),
