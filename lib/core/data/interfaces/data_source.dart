@@ -1,6 +1,7 @@
 import 'package:plata_sync/core/data/models/sort_param.dart';
 
 abstract class DataSource<T> {
+  Future<bool> hasData();
   Future<T> create(T item);
   Future<T?> read(String id);
   Future<List<T>> getAll({

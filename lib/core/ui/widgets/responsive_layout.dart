@@ -31,7 +31,7 @@ enum DeviceType {
 extension ResponsiveContext on BuildContext {
   /// Get the current device type based on screen width
   DeviceType get deviceType {
-    final width = MediaQuery.of(this).size.width;
+    final width = MediaQuery.sizeOf(this).width;
     if (width >= Breakpoints.desktop) {
       return DeviceType.desktop;
     } else if (width >= Breakpoints.mobile) {

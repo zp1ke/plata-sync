@@ -173,4 +173,9 @@ class LocalTransactionDataSource extends TransactionDataSource {
     }
     return item;
   }
+
+  @override
+  Future<bool> hasData() {
+    return getAll(limit: 1).then((list) => list.isNotEmpty);
+  }
 }

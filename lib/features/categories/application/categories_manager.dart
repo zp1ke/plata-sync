@@ -34,11 +34,16 @@ class CategoriesManager {
   Future<void> createSampleData() async {
     isLoading.value = true;
     try {
-      await _createSampleData();
-      await loadCategories();
+      final hasData = await _dataSource.hasData();
+      if (!hasData) {
+        await _createSampleData();
+        await loadCategories();
+      }
     } catch (e) {
       debugPrint('Error creating sample data: $e');
       rethrow;
+    } finally {
+      isLoading.value = false;
     }
   }
 

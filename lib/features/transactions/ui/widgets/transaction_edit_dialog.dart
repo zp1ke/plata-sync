@@ -22,6 +22,7 @@ class TransactionEditDialog extends StatelessWidget {
       title: transaction == null
           ? l10n.transactionCreateTitle
           : l10n.transactionEditTitle,
+      contentHeight: MediaQuery.sizeOf(context).height * 0.7,
       content: TransactionEditForm(
         transaction: transaction,
         showActions: true,

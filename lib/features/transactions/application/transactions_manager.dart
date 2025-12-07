@@ -7,10 +7,8 @@ import 'package:plata_sync/core/model/enums/view_mode.dart';
 import 'package:plata_sync/core/services/settings_service.dart';
 import 'package:plata_sync/core/utils/numbers.dart';
 import 'package:plata_sync/features/accounts/application/accounts_manager.dart';
-import 'package:plata_sync/features/accounts/data/interfaces/account_data_source.dart';
 import 'package:plata_sync/features/accounts/domain/entities/account.dart';
 import 'package:plata_sync/features/categories/application/categories_manager.dart';
-import 'package:plata_sync/features/categories/data/interfaces/category_data_source.dart';
 import 'package:plata_sync/features/transactions/data/interfaces/transaction_data_source.dart';
 import 'package:plata_sync/features/transactions/domain/entities/transaction.dart';
 import 'package:plata_sync/features/transactions/model/enums/sort_order.dart';
@@ -43,20 +41,28 @@ class TransactionsManager {
   Future<void> createSampleData() async {
     isLoading.value = true;
     try {
-      await _createSampleData();
-      await loadTransactions();
+      final hasData = await _dataSource.hasData();
+      if (!hasData) {
+        await _createSampleData();
+        await loadTransactions();
+      }
     } catch (e) {
       debugPrint('Error creating sample data: $e');
       rethrow;
+    } finally {
+      isLoading.value = false;
     }
   }
 
   Future<void> _createSampleData() async {
-    final accountDataSource = getService<AccountDataSource>();
-    final categoryDataSource = getService<CategoryDataSource>();
+    final accountManager = getService<AccountsManager>();
+    final categoryManager = getService<CategoriesManager>();
 
-    final accounts = await accountDataSource.getAll();
-    final categories = await categoryDataSource.getAll();
+    await accountManager.createSampleData();
+    await categoryManager.createSampleData();
+
+    final accounts = accountManager.accounts.value;
+    final categories = categoryManager.categories.value;
 
     if (accounts.isEmpty || categories.isEmpty) {
       return;

@@ -103,4 +103,9 @@ class InMemoryTransactionDataSource extends TransactionDataSource {
     _items[item.id] = item;
     return item;
   }
+
+  @override
+  Future<bool> hasData() {
+    return Future.value(_items.isNotEmpty);
+  }
 }

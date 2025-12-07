@@ -154,4 +154,9 @@ class LocalCategoryDataSource extends CategoryDataSource {
     }
     return item;
   }
+
+  @override
+  Future<bool> hasData() {
+    return getAll(limit: 1).then((list) => list.isNotEmpty);
+  }
 }
