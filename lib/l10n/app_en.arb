@@ -970,5 +970,21 @@
   "invalidAmountError": "Invalid amount format",
   "@invalidAmountError": {
     "description": "Generic validation message when amount format is invalid"
+  },
+  "go": "Go",
+  "@go": {
+    "description": "Label for go action"
+  },
+  "search": "Search",
+  "@search": {
+    "description": "Label for search action"
+  },
+  "send": "Send",
+  "@send": {
+    "description": "Label for send action"
+  },
+  "next": "Next",
+  "@next": {
+    "description": "Label for next action"
   }
 }

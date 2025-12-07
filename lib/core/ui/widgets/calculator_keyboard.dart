@@ -10,6 +10,7 @@ class CalculatorKeyboard extends StatelessWidget {
   final TextEditingController controller;
   final String? label;
   final Widget? icon;
+  final TextInputAction? textInputAction;
   final void Function(double) onDone;
 
   const CalculatorKeyboard({
@@ -17,6 +18,7 @@ class CalculatorKeyboard extends StatelessWidget {
     required this.controller,
     this.label,
     this.icon,
+    this.textInputAction,
     required this.onDone,
   });
 
@@ -114,9 +116,9 @@ class CalculatorKeyboard extends StatelessWidget {
             Expanded(
               child: TextFormField(
                 controller: controller,
+                autofocus: true,
                 readOnly: true,
-                showCursor: false,
-                canRequestFocus: false,
+                showCursor: true,
                 textAlign: TextAlign.end,
                 decoration: inputDecorationWithPrefixIcon(
                   prefixIcon: icon,
@@ -181,8 +183,8 @@ class CalculatorKeyboard extends StatelessWidget {
             _buildKey(context, '.', onTap: () => _insertText('.')),
             _buildKey(
               context,
-              l10n.done,
-              icon: AppIcons.check,
+              _doneLabel(l10n),
+              icon: _doneIcon,
               color: colorScheme.primary,
               textColor: colorScheme.onPrimary,
               onTap: () {
@@ -194,6 +196,34 @@ class CalculatorKeyboard extends StatelessWidget {
         ),
       ],
     );
+  }
+
+  String _doneLabel(AppL10n l10n) {
+    if (textInputAction != null) {
+      return switch (textInputAction!) {
+        TextInputAction.go => l10n.go,
+        TextInputAction.search => l10n.search,
+        TextInputAction.send => l10n.send,
+        TextInputAction.next => l10n.next,
+        TextInputAction.done => l10n.done,
+        _ => l10n.done,
+      };
+    }
+    return l10n.done;
+  }
+
+  Widget get _doneIcon {
+    if (textInputAction != null) {
+      return switch (textInputAction!) {
+        TextInputAction.go => AppIcons.go,
+        TextInputAction.search => AppIcons.search,
+        TextInputAction.send => AppIcons.send,
+        TextInputAction.next => AppIcons.arrowRight,
+        TextInputAction.done => AppIcons.check,
+        _ => AppIcons.check,
+      };
+    }
+    return AppIcons.check;
   }
 
   Widget _buildKey(

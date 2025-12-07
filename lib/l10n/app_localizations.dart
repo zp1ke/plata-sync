@@ -1334,6 +1334,30 @@ abstract class AppL10n {
   /// In en, this message translates to:
   /// **'Invalid amount format'**
   String get invalidAmountError;
+
+  /// Label for go action
+  ///
+  /// In en, this message translates to:
+  /// **'Go'**
+  String get go;
+
+  /// Label for search action
+  ///
+  /// In en, this message translates to:
+  /// **'Search'**
+  String get search;
+
+  /// Label for send action
+  ///
+  /// In en, this message translates to:
+  /// **'Send'**
+  String get send;
+
+  /// Label for next action
+  ///
+  /// In en, this message translates to:
+  /// **'Next'**
+  String get next;
 }
 
 class _AppL10nDelegate extends LocalizationsDelegate<AppL10n> {

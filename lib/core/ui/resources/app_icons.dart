@@ -20,6 +20,8 @@ class AppIcons {
   static final delete = const HugeIcon(icon: HugeIcons.strokeRoundedDelete04);
   static final backDelete = const Icon(Icons.backspace);
   static final refresh = const HugeIcon(icon: HugeIcons.strokeRoundedRefresh);
+  static final go = const HugeIcon(icon: HugeIcons.strokeRoundedThumbsUp);
+  static final send = const HugeIcon(icon: HugeIcons.strokeRoundedSent);
   static final search = const HugeIcon(icon: HugeIcons.strokeRoundedSearch01);
   static final searchXs = const HugeIcon(
     icon: HugeIcons.strokeRoundedSearch01,
@@ -106,7 +108,7 @@ class AppIcons {
     icon: HugeIcons.strokeRoundedArrowUp01,
   );
   static final arrowRight = const HugeIcon(
-    icon: HugeIcons.strokeRoundedArrowRight01,
+    icon: HugeIcons.strokeRoundedArrowRight02,
   );
   static final currency = const HugeIcon(icon: HugeIcons.strokeRoundedDollar01);
   static final currencyXs = const HugeIcon(

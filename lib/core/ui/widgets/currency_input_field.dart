@@ -18,6 +18,7 @@ class CurrencyInputField extends StatelessWidget {
   final bool allowNegative;
   final Widget? currencyWidget;
   final TextInputAction? textInputAction;
+  final VoidCallback? onSubmit;
 
   const CurrencyInputField({
     required this.controller,
@@ -28,6 +29,7 @@ class CurrencyInputField extends StatelessWidget {
     this.allowNegative = true,
     this.currencyWidget,
     this.textInputAction,
+    this.onSubmit,
     super.key,
   });
 
@@ -45,7 +47,7 @@ class CurrencyInputField extends StatelessWidget {
         padding: EdgeInsets.only(
           left: AppSpacing.xs,
           right: AppSpacing.xs,
-          bottom: MediaQuery.of(context).viewInsets.bottom,
+          bottom: MediaQuery.of(context).viewInsets.bottom + AppSpacing.sm,
         ),
         decoration: BoxDecoration(
           color: Theme.of(context).canvasColor,
@@ -58,9 +60,13 @@ class CurrencyInputField extends StatelessWidget {
           controller: controller,
           label: label,
           icon: currencyWidget ?? AppIcons.currencyXs,
+          textInputAction: textInputAction,
           onDone: (value) {
             controller.text = value.toStringAsFixed(2);
             Navigator.pop(context);
+            if (onSubmit != null) {
+              onSubmit!();
+            }
           },
         ),
       ),

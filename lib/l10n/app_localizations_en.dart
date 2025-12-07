@@ -696,4 +696,16 @@ class AppL10nEn extends AppL10n {
 
   @override
   String get invalidAmountError => 'Invalid amount format';
+
+  @override
+  String get go => 'Go';
+
+  @override
+  String get search => 'Search';
+
+  @override
+  String get send => 'Send';
+
+  @override
+  String get next => 'Next';
 }
