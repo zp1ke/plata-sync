@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:plata_sync/core/ui/resources/app_sizing.dart';
 import 'package:plata_sync/core/ui/resources/app_spacing.dart';
+import 'package:plata_sync/core/ui/widgets/dialog.dart';
 import 'package:plata_sync/core/utils/colors.dart';
 
 /// A form field that allows users to pick a color from a predefined palette.
@@ -45,9 +46,9 @@ class ColorPickerField extends StatelessWidget {
   void _showColorPicker(BuildContext context) {
     showDialog(
       context: context,
-      builder: (context) => AlertDialog(
-        insetPadding: AppSpacing.paddingMd,
-        title: Text(label),
+      builder: (context) => AppDialog(
+        // insetPadding: AppSpacing.paddingMd,
+        title: label,
         content: SizedBox(
           width: double.maxFinite,
           child: GridView.builder(

@@ -5,6 +5,7 @@ import 'package:plata_sync/core/ui/resources/app_spacing.dart';
 InputDecoration inputDecorationWithPrefixIcon({
   String? labelText,
   String? helperText,
+  String? hintText,
   Widget? prefixIcon,
   double? iconSize,
 }) {
@@ -22,5 +23,6 @@ InputDecoration inputDecorationWithPrefixIcon({
         : null,
     labelText: labelText,
     helperText: helperText,
+    hintText: hintText,
   );
 }

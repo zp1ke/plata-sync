@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:plata_sync/core/di/service_locator.dart';
+import 'package:plata_sync/core/ui/resources/app_icons.dart';
 import 'package:plata_sync/core/ui/resources/app_sizing.dart';
 import 'package:plata_sync/core/ui/resources/app_spacing.dart';
+import 'package:plata_sync/core/ui/widgets/input_decoration.dart';
 import 'package:plata_sync/core/ui/widgets/object_icon.dart';
 import 'package:plata_sync/core/ui/widgets/select_field.dart';
 import 'package:plata_sync/features/categories/application/categories_manager.dart';
@@ -36,10 +38,10 @@ class CategorySelector extends StatelessWidget {
         if (categories.isEmpty) {
           return TextFormField(
             enabled: false,
-            decoration: InputDecoration(
+            decoration: inputDecorationWithPrefixIcon(
               labelText: l10n.transactionCategoryLabel,
               hintText: l10n.categoriesAddSampleDataPrompt,
-              border: const OutlineInputBorder(),
+              prefixIcon: AppIcons.categoriesOutlinedXs,
             ),
           );
         }
@@ -52,7 +54,6 @@ class CategorySelector extends StatelessWidget {
           value: selectedCategory,
           options: required ? categories : [null, ...categories],
           label: l10n.transactionCategoryLabel,
-          itemLabelBuilder: (category) => category?.name ?? l10n.none,
           itemBuilder: (category) {
             if (category == null) {
               return Text(
@@ -70,6 +71,9 @@ class CategorySelector extends StatelessWidget {
               ],
             );
           },
+          searchFilter: (category, query) =>
+              category == null ||
+              category.name.toLowerCase().contains(query.toLowerCase()),
           onChanged: (category) => onChanged(category?.id),
           validator: (category) => validator?.call(category?.id),
           enabled: enabled,

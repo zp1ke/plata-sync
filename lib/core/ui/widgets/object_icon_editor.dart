@@ -78,8 +78,6 @@ class _ObjectIconEditorState extends State<ObjectIconEditor> {
             value: _selectedIconName,
             options: AppIcons.iconDataMap.keys.toList(),
             label: widget.iconLabel,
-            itemLabelBuilder: (iconName) =>
-                AppIcons.getIconLabel(iconName, l10n),
             itemBuilder: (iconName) => Row(
               spacing: AppSpacing.md,
               children: [
@@ -104,6 +102,10 @@ class _ObjectIconEditorState extends State<ObjectIconEditor> {
               }
               return null;
             },
+            searchFilter: (iconName, query) => AppIcons.getIconLabel(
+              iconName,
+              l10n,
+            ).toLowerCase().contains(query.toLowerCase()),
           ),
         ),
         // Background color picker

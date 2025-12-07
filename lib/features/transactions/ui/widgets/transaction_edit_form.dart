@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:plata_sync/core/di/service_locator.dart';
+import 'package:plata_sync/core/ui/resources/app_icons.dart';
 import 'package:plata_sync/core/ui/resources/app_sizing.dart';
 import 'package:plata_sync/core/ui/resources/app_spacing.dart';
 import 'package:plata_sync/core/ui/widgets/currency_input_field.dart';
@@ -145,101 +146,137 @@ class TransactionEditFormState extends State<TransactionEditForm> {
           child: Column(
             mainAxisSize: MainAxisSize.min,
             spacing: AppSpacing.lg,
+            crossAxisAlignment: CrossAxisAlignment.end,
             children: [
               // Transaction type selector
-              TransactionTypeSelector(
-                type: _type,
-                onChanged: (TransactionType newType) {
-                  setState(() {
-                    _type = newType;
-                    if (_type == TransactionType.transfer) {
-                      _categoryId = null;
-                    } else {
-                      _targetAccountId = null;
-                    }
-                    _validateForm();
-                  });
-                },
-              ),
-
-              // Date and time picker
-              DateTimePickerField(
-                dateTime: _createdAt,
-                label: l10n.transactionDateLabel,
-                onChanged: (DateTime newDateTime) {
-                  setState(() {
-                    _createdAt = newDateTime;
-                  });
-                },
-              ),
-
-              // Account selector
-              AccountSelector(
-                accountId: _accountId,
-                label: _type == TransactionType.transfer
-                    ? l10n.transactionSourceAccountLabel
-                    : null,
-                onChanged: (accountId) {
-                  setState(() {
-                    _accountId = accountId;
-                    _validateForm();
-                  });
-                },
-                validator: (accountId) {
-                  if (accountId == null || accountId.isEmpty) {
-                    return l10n.transactionAccountRequired;
-                  }
-                  return null;
-                },
-              ),
-
-              // Category selector (only for expense/income)
-              if (_type != TransactionType.transfer)
-                CategorySelector(
-                  categoryId: _categoryId,
-                  onChanged: (categoryId) {
+              Align(
+                alignment: Alignment.center,
+                child: TransactionTypeSelector(
+                  type: _type,
+                  onChanged: (TransactionType newType) {
                     setState(() {
-                      _categoryId = categoryId;
-                    });
-                  },
-                ),
-
-              // Target account selector (only for transfer)
-              if (_type == TransactionType.transfer)
-                AccountSelector(
-                  accountId: _targetAccountId,
-                  label: l10n.transactionTargetAccountLabel,
-                  onChanged: (accountId) {
-                    setState(() {
-                      _targetAccountId = accountId;
+                      _type = newType;
+                      if (_type == TransactionType.transfer) {
+                        _categoryId = null;
+                      } else {
+                        _targetAccountId = null;
+                      }
                       _validateForm();
                     });
                   },
-                  validator: (accountId) {
-                    if (accountId == null || accountId.isEmpty) {
-                      return l10n.transactionTargetAccountRequired;
-                    }
-                    if (accountId == _accountId) {
-                      return l10n.transactionTargetAccountSameError;
-                    }
-                    return null;
+                ),
+              ),
+
+              // Date and time picker
+              ConstrainedBox(
+                constraints: BoxConstraints(maxWidth: AppSizing.inputWidthMd),
+                child: DateTimePickerField(
+                  dateTime: _createdAt,
+                  label: l10n.transactionDateLabel,
+                  onChanged: (DateTime newDateTime) {
+                    setState(() {
+                      _createdAt = newDateTime;
+                    });
                   },
                 ),
+              ),
 
-              // Amount field
-              CurrencyInputField(
-                controller: _amountController,
-                label: l10n.transactionAmountLabel,
-                validator: (value) {
-                  if (value == null || value.isEmpty) {
-                    return l10n.transactionAmountRequired;
-                  }
-                  final amountDouble = double.tryParse(value);
-                  if (amountDouble == null || amountDouble <= 0) {
-                    return l10n.transactionAmountMustBePositive;
-                  }
-                  return null;
-                },
+              Wrap(
+                alignment: WrapAlignment.end,
+                spacing: AppSpacing.md,
+                runSpacing: AppSpacing.md,
+                runAlignment: WrapAlignment.start,
+                crossAxisAlignment: WrapCrossAlignment.center,
+                children: [
+                  // Account selector
+                  ConstrainedBox(
+                    constraints: BoxConstraints(
+                      maxWidth: AppSizing.inputWidthMd,
+                    ),
+                    child: AccountSelector(
+                      accountId: _accountId,
+                      label: _type == TransactionType.transfer
+                          ? l10n.transactionSourceAccountLabel
+                          : null,
+                      onChanged: (accountId) {
+                        setState(() {
+                          _accountId = accountId;
+                          _validateForm();
+                        });
+                      },
+                      validator: (accountId) {
+                        if (accountId == null || accountId.isEmpty) {
+                          return l10n.transactionAccountRequired;
+                        }
+                        return null;
+                      },
+                    ),
+                  ),
+
+                  // Category selector (only for expense/income)
+                  if (_type != TransactionType.transfer)
+                    ConstrainedBox(
+                      constraints: BoxConstraints(
+                        maxWidth: AppSizing.inputWidthMd,
+                      ),
+                      child: CategorySelector(
+                        categoryId: _categoryId,
+                        onChanged: (categoryId) {
+                          setState(() {
+                            _categoryId = categoryId;
+                          });
+                        },
+                      ),
+                    ),
+
+                  // Target account selector (only for transfer)
+                  if (_type == TransactionType.transfer)
+                    ConstrainedBox(
+                      constraints: BoxConstraints(
+                        maxWidth: AppSizing.inputWidthMd,
+                      ),
+                      child: AccountSelector(
+                        accountId: _targetAccountId,
+                        label: l10n.transactionTargetAccountLabel,
+                        onChanged: (accountId) {
+                          setState(() {
+                            _targetAccountId = accountId;
+                            _validateForm();
+                          });
+                        },
+                        validator: (accountId) {
+                          if (accountId == null || accountId.isEmpty) {
+                            return l10n.transactionTargetAccountRequired;
+                          }
+                          if (accountId == _accountId) {
+                            return l10n.transactionTargetAccountSameError;
+                          }
+                          return null;
+                        },
+                      ),
+                    ),
+
+                  // Amount field
+                  ConstrainedBox(
+                    constraints: BoxConstraints(
+                      maxWidth: AppSizing.inputWidthMd,
+                    ),
+                    child: CurrencyInputField(
+                      controller: _amountController,
+                      label: l10n.transactionAmountLabel,
+                      validator: (value) {
+                        if (value == null || value.isEmpty) {
+                          return l10n.transactionAmountRequired;
+                        }
+                        final amountDouble = double.tryParse(value);
+                        if (amountDouble == null || amountDouble <= 0) {
+                          return l10n.transactionAmountMustBePositive;
+                        }
+                        return null;
+                      },
+                    ),
+                  ),
+                ],
               ),
 
               // Notes field
@@ -248,7 +285,6 @@ class TransactionEditFormState extends State<TransactionEditForm> {
                 decoration: InputDecoration(
                   labelText: l10n.transactionNotesLabel,
                   hintText: l10n.transactionNotesHint,
-                  border: const OutlineInputBorder(),
                 ),
                 maxLines: 3,
               ),
@@ -266,9 +302,8 @@ class TransactionEditFormState extends State<TransactionEditForm> {
                         return Chip(
                           label: Text(tag.name),
                           labelStyle: Theme.of(context).textTheme.bodySmall,
-                          deleteIcon: const Icon(Icons.close, size: 18),
+                          deleteIcon: AppIcons.close,
                           onDeleted: () => _removeTag(tag),
-                          visualDensity: VisualDensity.compact,
                           padding: EdgeInsets.symmetric(
                             horizontal: AppSpacing.xs,
                           ),
@@ -283,7 +318,6 @@ class TransactionEditFormState extends State<TransactionEditForm> {
                           decoration: InputDecoration(
                             labelText: l10n.transactionTagsLabel,
                             hintText: l10n.transactionTagsHint,
-                            border: const OutlineInputBorder(),
                           ),
                           onFieldSubmitted: _addTag,
                         ),
@@ -291,7 +325,7 @@ class TransactionEditFormState extends State<TransactionEditForm> {
                       AppSpacing.gapHorizontalSm,
                       FilledButton.icon(
                         onPressed: () => _addTag(_tagInputController.text),
-                        icon: const Icon(Icons.add),
+                        icon: AppIcons.add,
                         label: Text(l10n.add),
                       ),
                     ],

@@ -4,7 +4,7 @@ import 'package:plata_sync/core/model/enums/date_format_type.dart';
 import 'package:plata_sync/core/model/enums/time_format_type.dart';
 import 'package:plata_sync/features/accounts/model/enums/sort_order.dart';
 import 'package:plata_sync/features/categories/model/enums/sort_order.dart';
-import 'package:plata_sync/features/transactions/ui/model/enums/sort_order.dart';
+import 'package:plata_sync/features/transactions/model/enums/sort_order.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 /// Service for managing application settings using SharedPreferences

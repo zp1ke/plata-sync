@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:plata_sync/core/di/service_locator.dart';
+import 'package:plata_sync/core/ui/resources/app_icons.dart';
 import 'package:plata_sync/core/ui/resources/app_sizing.dart';
 import 'package:plata_sync/core/ui/resources/app_spacing.dart';
+import 'package:plata_sync/core/ui/widgets/input_decoration.dart';
 import 'package:plata_sync/core/ui/widgets/object_icon.dart';
 import 'package:plata_sync/core/ui/widgets/select_field.dart';
 import 'package:plata_sync/features/accounts/application/accounts_manager.dart';
@@ -37,10 +39,10 @@ class AccountSelector extends StatelessWidget {
         if (accounts.isEmpty) {
           return TextFormField(
             enabled: false,
-            decoration: InputDecoration(
+            decoration: inputDecorationWithPrefixIcon(
               labelText: labelText,
               hintText: l10n.accountsEmptyState,
-              border: const OutlineInputBorder(),
+              prefixIcon: AppIcons.accountsOutlinedXs,
             ),
           );
         }
@@ -53,19 +55,18 @@ class AccountSelector extends StatelessWidget {
           value: selectedAccount,
           options: accounts,
           label: labelText,
-          itemLabelBuilder: (account) => account.name,
           itemBuilder: (account) => Row(
             children: [
               ObjectIcon(iconData: account.iconData, size: AppSizing.iconMd),
               AppSpacing.gapHorizontalMd,
-              Expanded(
-                child: Text(account.name, overflow: TextOverflow.ellipsis),
-              ),
+              Text(account.name, overflow: TextOverflow.ellipsis),
             ],
           ),
           onChanged: (account) => onChanged(account.id),
           validator: (account) => validator?.call(account?.id),
           enabled: enabled,
+          searchFilter: (account, query) =>
+              account.name.toLowerCase().contains(query.toLowerCase()),
         );
       },
     );

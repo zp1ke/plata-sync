@@ -46,11 +46,8 @@ class DateTimePickerField extends StatelessWidget {
         }
       },
       child: InputDecorator(
-        decoration: InputDecoration(
-          labelText: label,
-          border: const OutlineInputBorder(),
-        ),
-        child: Text(dateTime.formatWithTime()),
+        decoration: InputDecoration(labelText: label),
+        child: Text(dateTime.formatWithTime(), textAlign: TextAlign.center),
       ),
     );
   }

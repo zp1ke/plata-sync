@@ -12,9 +12,8 @@ class SelectField<T> extends StatelessWidget {
   final String label;
   final String? hint;
   final String? searchHint;
-  final String Function(T) itemLabelBuilder;
-  final Widget Function(T)? itemBuilder;
-  final bool Function(T, String)? searchFilter;
+  final Widget Function(T) itemBuilder;
+  final bool Function(T, String) searchFilter;
   final ValueChanged<T> onChanged;
   final String? Function(T?)? validator;
   final bool enabled;
@@ -23,12 +22,11 @@ class SelectField<T> extends StatelessWidget {
     required this.value,
     required this.options,
     required this.label,
-    required this.itemLabelBuilder,
     required this.onChanged,
     this.hint,
     this.searchHint,
-    this.itemBuilder,
-    this.searchFilter,
+    required this.itemBuilder,
+    required this.searchFilter,
     this.validator,
     this.enabled = true,
     super.key,
@@ -56,12 +54,7 @@ class SelectField<T> extends StatelessWidget {
                   errorText: field.errorText,
                   enabled: enabled,
                 ),
-                child: value != null
-                    ? Text(
-                        itemLabelBuilder(value as T),
-                        style: Theme.of(context).textTheme.bodyLarge,
-                      )
-                    : null,
+                child: value != null ? itemBuilder(value as T) : null,
               ),
             ),
           ],
@@ -79,7 +72,6 @@ class SelectField<T> extends StatelessWidget {
         options: options,
         currentValue: value,
         searchHint: searchHint ?? l10n.selectFieldSearchHint,
-        itemLabelBuilder: itemLabelBuilder,
         itemBuilder: itemBuilder,
         searchFilter: searchFilter,
       ),
@@ -97,18 +89,16 @@ class _SelectionDialog<T> extends StatefulWidget {
   final List<T> options;
   final T? currentValue;
   final String searchHint;
-  final String Function(T) itemLabelBuilder;
-  final Widget Function(T)? itemBuilder;
-  final bool Function(T, String)? searchFilter;
+  final Widget Function(T) itemBuilder;
+  final bool Function(T, String) searchFilter;
 
   const _SelectionDialog({
     required this.title,
     required this.options,
     required this.currentValue,
     required this.searchHint,
-    required this.itemLabelBuilder,
-    this.itemBuilder,
-    this.searchFilter,
+    required this.itemBuilder,
+    required this.searchFilter,
   });
 
   @override
@@ -139,14 +129,9 @@ class _SelectionDialogState<T> extends State<_SelectionDialog<T>> {
   List<T> get _filteredOptions {
     if (_searchQuery.isEmpty) return widget.options;
 
-    return widget.options.where((option) {
-      if (widget.searchFilter != null) {
-        return widget.searchFilter!(option, _searchQuery);
-      }
-      // Default search: case-insensitive label match
-      final label = widget.itemLabelBuilder(option);
-      return label.toLowerCase().contains(_searchQuery.toLowerCase());
-    }).toList();
+    return widget.options
+        .where((option) => widget.searchFilter(option, _searchQuery))
+        .toList();
   }
 
   @override
@@ -204,9 +189,7 @@ class _SelectionDialogState<T> extends State<_SelectionDialog<T>> {
                         selectedTileColor: Theme.of(
                           context,
                         ).colorScheme.primaryContainer.withValues(alpha: 0.5),
-                        title: widget.itemBuilder != null
-                            ? widget.itemBuilder!(option)
-                            : Text(widget.itemLabelBuilder(option)),
+                        title: widget.itemBuilder(option),
                         trailing: isSelected
                             ? Icon(
                                 Icons.check,

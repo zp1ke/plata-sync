@@ -12,7 +12,7 @@ import 'package:plata_sync/features/categories/model/enums/sort_order.dart';
 import 'package:plata_sync/features/transactions/application/transactions_manager.dart';
 import 'package:plata_sync/features/transactions/data/datasources/in_memory_transaction_data_source.dart';
 import 'package:plata_sync/features/transactions/domain/entities/transaction.dart';
-import 'package:plata_sync/features/transactions/ui/model/enums/sort_order.dart';
+import 'package:plata_sync/features/transactions/model/enums/sort_order.dart';
 
 class _MockSettingsService implements SettingsService {
   @override

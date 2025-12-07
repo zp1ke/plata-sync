@@ -13,7 +13,7 @@ import 'package:plata_sync/features/categories/application/categories_manager.da
 import 'package:plata_sync/features/categories/data/interfaces/category_data_source.dart';
 import 'package:plata_sync/features/transactions/data/interfaces/transaction_data_source.dart';
 import 'package:plata_sync/features/transactions/domain/entities/transaction.dart';
-import 'package:plata_sync/features/transactions/ui/model/enums/sort_order.dart';
+import 'package:plata_sync/features/transactions/model/enums/sort_order.dart';
 
 class TransactionsManager {
   final TransactionDataSource _dataSource;
