@@ -26,6 +26,7 @@ class AccountDetailsDialog extends StatelessWidget {
       iconData: account.iconData,
       title: account.name,
       content: AccountDetailsView(account: account),
+      contentHeight: 200,
       actions: [
         TextButton.icon(
           onPressed: () {

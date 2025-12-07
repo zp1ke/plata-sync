@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:plata_sync/core/ui/resources/app_icons.dart';
+import 'package:plata_sync/core/ui/widgets/input_decoration.dart';
 import 'package:plata_sync/core/utils/datetime.dart';
 
 /// A widget that allows selecting both date and time through separate pickers
@@ -46,7 +48,10 @@ class DateTimePickerField extends StatelessWidget {
         }
       },
       child: InputDecorator(
-        decoration: InputDecoration(labelText: label),
+        decoration: inputDecorationWithPrefixIcon(
+          labelText: label,
+          prefixIcon: AppIcons.calendar,
+        ),
         child: Text(dateTime.formatWithTime(), textAlign: TextAlign.center),
       ),
     );

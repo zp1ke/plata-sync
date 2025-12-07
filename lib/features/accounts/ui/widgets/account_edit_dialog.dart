@@ -18,6 +18,7 @@ class AccountEditDialog extends StatelessWidget {
       title: account == null
           ? l10n.accountsCreateTitle
           : l10n.accountsEditTitle,
+      contentHeight: 400,
       content: AccountEditForm(
         account: account,
         onSave: (updatedAccount) {
