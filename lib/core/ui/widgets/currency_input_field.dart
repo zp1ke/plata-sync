@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:plata_sync/core/ui/resources/app_icons.dart';
+import 'package:plata_sync/core/ui/widgets/calculator_keyboard.dart';
 import 'package:plata_sync/core/ui/widgets/input_decoration.dart';
+import 'package:plata_sync/core/utils/numbers.dart';
 
 /// A text form field specifically designed for currency input.
 /// Accepts decimal numbers with up to 2 decimal places and optional negative sign.
@@ -27,22 +29,40 @@ class CurrencyInputField extends StatelessWidget {
     super.key,
   });
 
+  void _showCalculator(BuildContext context) {
+    showModalBottomSheet(
+      context: context,
+      isScrollControlled: true,
+      backgroundColor: Colors.transparent,
+      builder: (context) => Padding(
+        padding: EdgeInsets.only(
+          bottom: MediaQuery.of(context).viewInsets.bottom,
+        ),
+        child: CalculatorKeyboard(
+          controller: controller,
+          onDone: (value) {
+            controller.text = value.toStringAsFixed(2);
+            Navigator.pop(context);
+          },
+        ),
+      ),
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     return TextFormField(
       controller: controller,
-      keyboardType: TextInputType.numberWithOptions(
-        decimal: true,
-        signed: allowNegative,
-      ),
+      // Hide system keyboard but show cursor
+      readOnly: true,
+      showCursor: true,
+      onTap: () => _showCalculator(context),
+      keyboardType: TextInputType.none,
       textInputAction: textInputAction,
       textAlign: TextAlign.end,
+      // Allow operators in case of paste, but mainly controlled by custom keyboard
       inputFormatters: [
-        FilteringTextInputFormatter.allow(
-          allowNegative
-              ? RegExp(r'^-?\d*\.?\d{0,2}')
-              : RegExp(r'^\d*\.?\d{0,2}'),
-        ),
+        FilteringTextInputFormatter.allow(RegExp(r'^[0-9+\-*/.\s]*$')),
       ],
       decoration: inputDecorationWithPrefixIcon(
         labelText: required ? '$label *' : label,
@@ -55,12 +75,14 @@ class CurrencyInputField extends StatelessWidget {
 
   String? _defaultValidator(String? value) {
     if (required && (value == null || value.trim().isEmpty)) {
-      return 'This field is required';
+      return 'This field is required'; // TODO: Localization
     }
     if (value != null && value.trim().isNotEmpty) {
-      final amount = double.tryParse(value.trim());
-      if (amount == null) {
-        return 'Invalid amount format';
+      // Try to calculate first in case there's a pending expression
+      try {
+        evaluateExpression(value);
+      } catch (e) {
+        return 'Invalid amount format'; // TODO: Localization
       }
     }
     return null;
@@ -70,9 +92,13 @@ class CurrencyInputField extends StatelessWidget {
   int? getValueInCents() {
     final text = controller.text.trim();
     if (text.isEmpty) return null;
-    final amount = double.tryParse(text);
-    if (amount == null) return null;
-    return (amount * 100).round();
+
+    try {
+      final eval = evaluateExpression(text);
+      return (eval * 100).round();
+    } catch (e) {
+      return null;
+    }
   }
 
   /// Helper method to set the value from cents

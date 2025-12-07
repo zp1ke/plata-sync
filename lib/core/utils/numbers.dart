@@ -1,4 +1,5 @@
 import 'package:intl/intl.dart';
+import 'package:math_expressions/math_expressions.dart';
 
 /// Utility class for number formatting, particularly for currency.
 class NumberFormatters {
@@ -38,4 +39,20 @@ class NumberFormatters {
 extension IntExtensions on int {
   /// Minimum safe integer value.
   static int get minSafeValue => -9007199254740991;
+}
+
+/// Utility method for evaluating simple mathematical expressions.
+double evaluateExpression(String expression) {
+  final input = expression.replaceAll('x', '*');
+  if (input.isEmpty) return 0.0;
+
+  // Check if it's just a number, if so, format it
+  if (double.tryParse(expression) != null) {
+    return double.parse(expression);
+  }
+
+  final p = GrammarParser();
+  final exp = p.parse(input);
+  final eval = RealEvaluator(ContextModel()).evaluate(exp);
+  return eval.toDouble();
 }
