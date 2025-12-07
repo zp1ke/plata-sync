@@ -8,6 +8,8 @@ InputDecoration inputDecorationWithPrefixIcon({
   String? hintText,
   Widget? prefixIcon,
   double? iconSize,
+  InputBorder? border,
+  bool? filled,
 }) {
   return InputDecoration(
     prefixIcon: prefixIcon != null
@@ -24,5 +26,7 @@ InputDecoration inputDecorationWithPrefixIcon({
     labelText: labelText,
     helperText: helperText,
     hintText: hintText,
+    border: border,
+    filled: filled,
   );
 }

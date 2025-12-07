@@ -2,16 +2,21 @@ import 'package:flutter/material.dart';
 import 'package:plata_sync/core/ui/resources/app_icons.dart';
 import 'package:plata_sync/core/ui/resources/app_sizing.dart';
 import 'package:plata_sync/core/ui/resources/app_spacing.dart';
+import 'package:plata_sync/core/ui/widgets/input_decoration.dart';
 import 'package:plata_sync/core/utils/numbers.dart';
 import 'package:plata_sync/l10n/app_localizations.dart';
 
 class CalculatorKeyboard extends StatelessWidget {
   final TextEditingController controller;
+  final String? label;
+  final Widget? icon;
   final void Function(double) onDone;
 
   const CalculatorKeyboard({
     super.key,
     required this.controller,
+    this.label,
+    this.icon,
     required this.onDone,
   });
 
@@ -90,83 +95,104 @@ class CalculatorKeyboard extends StatelessWidget {
     final colorScheme = Theme.of(context).colorScheme;
     final l10n = AppL10n.of(context);
 
-    return Container(
-      color: colorScheme.surface,
-      padding: const EdgeInsets.all(AppSpacing.sm),
-      child: Column(
-        mainAxisSize: MainAxisSize.min,
-        children: [
-          // Row 1
-          Row(
-            children: [
-              _buildKey(context, 'C', color: colorScheme.error, onTap: _clear),
-              _buildKey(context, '/', onTap: () => _insertText('/')),
-              _buildKey(context, '*', onTap: () => _insertText('*')),
-              _buildKey(
-                context,
-                '⌫',
-                icon: AppIcons.backDelete,
-                onTap: _backspace,
+    return Column(
+      mainAxisSize: MainAxisSize.min,
+      spacing: AppSpacing.xs,
+      children: [
+        // Preview Row
+        Row(
+          spacing: AppSpacing.xs,
+          children: [
+            if (label != null)
+              Padding(
+                padding: EdgeInsets.only(left: AppSpacing.sm),
+                child: Text(
+                  label!,
+                  style: Theme.of(context).textTheme.bodyLarge,
+                ),
               ),
-            ],
-          ),
-          const SizedBox(height: AppSpacing.xs),
-          // Row 2
-          Row(
-            children: [
-              _buildKey(context, '7', onTap: () => _insertText('7')),
-              _buildKey(context, '8', onTap: () => _insertText('8')),
-              _buildKey(context, '9', onTap: () => _insertText('9')),
-              _buildKey(context, '-', onTap: () => _insertText('-')),
-            ],
-          ),
-          const SizedBox(height: AppSpacing.xs),
-          // Row 3
-          Row(
-            children: [
-              _buildKey(context, '4', onTap: () => _insertText('4')),
-              _buildKey(context, '5', onTap: () => _insertText('5')),
-              _buildKey(context, '6', onTap: () => _insertText('6')),
-              _buildKey(context, '+', onTap: () => _insertText('+')),
-            ],
-          ),
-          const SizedBox(height: AppSpacing.xs),
-          // Row 4
-          Row(
-            children: [
-              _buildKey(context, '1', onTap: () => _insertText('1')),
-              _buildKey(context, '2', onTap: () => _insertText('2')),
-              _buildKey(context, '3', onTap: () => _insertText('3')),
-              _buildKey(
-                context,
-                '=',
-                color: colorScheme.primaryContainer,
-                textColor: colorScheme.onPrimaryContainer,
-                onTap: _calculate,
+            Expanded(
+              child: TextFormField(
+                controller: controller,
+                readOnly: true,
+                showCursor: false,
+                canRequestFocus: false,
+                textAlign: TextAlign.end,
+                decoration: inputDecorationWithPrefixIcon(
+                  prefixIcon: icon,
+                  border: InputBorder.none,
+                  filled: false,
+                ),
               ),
-            ],
-          ),
-          const SizedBox(height: AppSpacing.xs),
-          // Row 5
-          Row(
-            children: [
-              _buildKey(context, '0', flex: 2, onTap: () => _insertText('0')),
-              _buildKey(context, '.', onTap: () => _insertText('.')),
-              _buildKey(
-                context,
-                l10n.done,
-                icon: AppIcons.check,
-                color: colorScheme.primary,
-                textColor: colorScheme.onPrimary,
-                onTap: () {
-                  final value = _calculate(); // Calculate before closing
-                  onDone(value);
-                },
-              ),
-            ],
-          ),
-        ],
-      ),
+            ),
+          ],
+        ),
+        // Row 1
+        Row(
+          children: [
+            _buildKey(context, 'C', color: colorScheme.error, onTap: _clear),
+            _buildKey(context, '/', onTap: () => _insertText('/')),
+            _buildKey(context, '*', onTap: () => _insertText('*')),
+            _buildKey(
+              context,
+              '⌫',
+              icon: AppIcons.backDelete,
+              onTap: _backspace,
+            ),
+          ],
+        ),
+        // Row 2
+        Row(
+          children: [
+            _buildKey(context, '7', onTap: () => _insertText('7')),
+            _buildKey(context, '8', onTap: () => _insertText('8')),
+            _buildKey(context, '9', onTap: () => _insertText('9')),
+            _buildKey(context, '-', onTap: () => _insertText('-')),
+          ],
+        ),
+        // Row 3
+        Row(
+          children: [
+            _buildKey(context, '4', onTap: () => _insertText('4')),
+            _buildKey(context, '5', onTap: () => _insertText('5')),
+            _buildKey(context, '6', onTap: () => _insertText('6')),
+            _buildKey(context, '+', onTap: () => _insertText('+')),
+          ],
+        ),
+        // Row 4
+        Row(
+          children: [
+            _buildKey(context, '1', onTap: () => _insertText('1')),
+            _buildKey(context, '2', onTap: () => _insertText('2')),
+            _buildKey(context, '3', onTap: () => _insertText('3')),
+            _buildKey(
+              context,
+              '=',
+              color: colorScheme.primaryContainer,
+              textColor: colorScheme.onPrimaryContainer,
+              onTap: _calculate,
+            ),
+          ],
+        ),
+        // Row 5
+        Row(
+          children: [
+            _buildKey(context, '0', flex: 2, onTap: () => _insertText('0')),
+            _buildKey(context, '.', onTap: () => _insertText('.')),
+            _buildKey(
+              context,
+              l10n.done,
+              icon: AppIcons.check,
+              color: colorScheme.primary,
+              textColor: colorScheme.onPrimary,
+              onTap: () {
+                final value = _calculate(); // Calculate before closing
+                onDone(value);
+              },
+            ),
+          ],
+        ),
+      ],
     );
   }
 
@@ -183,7 +209,7 @@ class CalculatorKeyboard extends StatelessWidget {
     return Expanded(
       flex: flex,
       child: Padding(
-        padding: const EdgeInsets.symmetric(horizontal: AppSpacing.xs),
+        padding: AppSpacing.paddingHorizontalXs,
         child: Material(
           color: color ?? theme.colorScheme.surfaceContainerHighest,
           borderRadius: AppSizing.borderRadiusSm,

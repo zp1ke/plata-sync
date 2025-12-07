@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:plata_sync/core/ui/resources/app_icons.dart';
+import 'package:plata_sync/core/ui/resources/app_sizing.dart';
+import 'package:plata_sync/core/ui/resources/app_spacing.dart';
 import 'package:plata_sync/core/ui/widgets/calculator_keyboard.dart';
 import 'package:plata_sync/core/ui/widgets/input_decoration.dart';
 import 'package:plata_sync/core/utils/numbers.dart';
@@ -30,16 +32,32 @@ class CurrencyInputField extends StatelessWidget {
   });
 
   void _showCalculator(BuildContext context) {
+    // Move controller selection to the end
+    controller.selection = TextSelection.collapsed(
+      offset: controller.text.length,
+    );
+    // Show the calculator keyboard as a bottom sheet
     showModalBottomSheet(
       context: context,
       isScrollControlled: true,
       backgroundColor: Colors.transparent,
-      builder: (context) => Padding(
+      builder: (context) => Container(
         padding: EdgeInsets.only(
+          left: AppSpacing.xs,
+          right: AppSpacing.xs,
           bottom: MediaQuery.of(context).viewInsets.bottom,
+        ),
+        decoration: BoxDecoration(
+          color: Theme.of(context).canvasColor,
+          borderRadius: const BorderRadius.only(
+            topLeft: Radius.circular(AppSizing.radiusSm),
+            topRight: Radius.circular(AppSizing.radiusSm),
+          ),
         ),
         child: CalculatorKeyboard(
           controller: controller,
+          label: label,
+          icon: currencyWidget ?? AppIcons.currencyXs,
           onDone: (value) {
             controller.text = value.toStringAsFixed(2);
             Navigator.pop(context);
