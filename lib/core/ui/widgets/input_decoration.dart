@@ -9,6 +9,8 @@ InputDecoration inputDecorationWithPrefixIcon({
   Widget? prefixIcon,
   double? iconSize,
   InputBorder? border,
+  InputBorder? enabledBorder,
+  InputBorder? focusedBorder,
   bool? filled,
 }) {
   return InputDecoration(
@@ -27,6 +29,8 @@ InputDecoration inputDecorationWithPrefixIcon({
     helperText: helperText,
     hintText: hintText,
     border: border,
+    enabledBorder: enabledBorder,
+    focusedBorder: focusedBorder,
     filled: filled,
   );
 }

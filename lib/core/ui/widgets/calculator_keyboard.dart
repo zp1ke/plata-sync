@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:plata_sync/core/ui/resources/app_colors.dart';
 import 'package:plata_sync/core/ui/resources/app_icons.dart';
 import 'package:plata_sync/core/ui/resources/app_sizing.dart';
 import 'package:plata_sync/core/ui/resources/app_spacing.dart';
@@ -123,6 +124,8 @@ class CalculatorKeyboard extends StatelessWidget {
                 decoration: inputDecorationWithPrefixIcon(
                   prefixIcon: icon,
                   border: InputBorder.none,
+                  enabledBorder: InputBorder.none,
+                  focusedBorder: InputBorder.none,
                   filled: false,
                 ),
               ),
@@ -132,7 +135,7 @@ class CalculatorKeyboard extends StatelessWidget {
         // Row 1
         Row(
           children: [
-            _buildKey(context, 'C', color: colorScheme.error, onTap: _clear),
+            _buildKey(context, 'C', color: colorScheme.warning, onTap: _clear),
             _buildKey(context, '/', onTap: () => _insertText('/')),
             _buildKey(context, '*', onTap: () => _insertText('*')),
             _buildKey(
@@ -170,8 +173,8 @@ class CalculatorKeyboard extends StatelessWidget {
             _buildKey(
               context,
               '=',
-              color: colorScheme.primaryContainer,
-              textColor: colorScheme.onPrimaryContainer,
+              color: colorScheme.secondaryContainer,
+              textColor: colorScheme.onSecondaryContainer,
               onTap: _calculate,
             ),
           ],
@@ -185,8 +188,8 @@ class CalculatorKeyboard extends StatelessWidget {
               context,
               _doneLabel(l10n),
               icon: _doneIcon,
-              color: colorScheme.primary,
-              textColor: colorScheme.onPrimary,
+              color: colorScheme.primaryContainer,
+              textColor: colorScheme.onPrimaryContainer,
               onTap: () {
                 final value = _calculate(); // Calculate before closing
                 onDone(value);

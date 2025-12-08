@@ -88,18 +88,14 @@ class _TransactionGridItemState extends State<TransactionGridItem> {
   @override
   Widget build(BuildContext context) {
     final colorScheme = Theme.of(context).colorScheme;
-
-    Color getTypeColor() {
-      if (widget.transaction.isExpense) {
-        return colorScheme.expense;
-      } else if (widget.transaction.isIncome) {
-        return colorScheme.income;
-      } else {
-        return colorScheme.transfer;
-      }
-    }
+    final typeColor = switch (widget.transaction) {
+      _ when widget.transaction.isTransfer => colorScheme.transfer,
+      _ when widget.transaction.isExpense => colorScheme.expense,
+      _ => colorScheme.income,
+    };
 
     return Card(
+      clipBehavior: Clip.hardEdge,
       color: widget.isSelected
           ? Theme.of(context).colorScheme.primaryContainer
           : null,
@@ -107,7 +103,6 @@ class _TransactionGridItemState extends State<TransactionGridItem> {
         onTap: widget.onTap != null
             ? () => widget.onTap!(widget.transaction)
             : null,
-        borderRadius: AppSizing.borderRadiusMd,
         child: Padding(
           padding: AppSpacing.paddingMd,
           child: Row(
@@ -137,7 +132,7 @@ class _TransactionGridItemState extends State<TransactionGridItem> {
                             style: Theme.of(context).textTheme.bodySmall
                                 ?.copyWith(
                                   fontWeight: FontWeight.w500,
-                                  color: getTypeColor(),
+                                  color: typeColor,
                                 ),
                           ),
                         ),
@@ -153,7 +148,7 @@ class _TransactionGridItemState extends State<TransactionGridItem> {
                       ),
                       style: Theme.of(context).textTheme.titleMedium?.copyWith(
                         fontWeight: FontWeight.bold,
-                        color: getTypeColor(),
+                        color: typeColor,
                       ),
                     ),
                     if (account != null)

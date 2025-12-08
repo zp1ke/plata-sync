@@ -79,16 +79,15 @@ class _TransactionListViewState extends State<TransactionListView> {
             ? _accountsMap[transaction.targetAccountId]
             : null;
 
-        Color typeColor;
-        if (transaction.isTransfer) {
-          typeColor = Theme.of(context).colorScheme.transfer;
-        } else if (transaction.isExpense) {
-          typeColor = Theme.of(context).colorScheme.expense;
-        } else {
-          typeColor = Theme.of(context).colorScheme.income;
-        }
+        final colorScheme = Theme.of(context).colorScheme;
+        final typeColor = switch (transaction) {
+          _ when transaction.isTransfer => colorScheme.transfer,
+          _ when transaction.isExpense => colorScheme.expense,
+          _ => colorScheme.income,
+        };
 
         return Card(
+          clipBehavior: Clip.hardEdge,
           margin: const EdgeInsets.only(bottom: AppSpacing.sm),
           color: isSelected
               ? Theme.of(context).colorScheme.primaryContainer

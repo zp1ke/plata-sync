@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:plata_sync/core/ui/resources/app_sizing.dart';
 import 'package:plata_sync/core/ui/resources/app_spacing.dart';
 import 'package:plata_sync/core/ui/widgets/object_icon.dart';
 import 'package:plata_sync/core/ui/widgets/responsive_grid_view.dart';
@@ -26,12 +25,12 @@ class AccountGridView extends StatelessWidget {
         final account = accounts[index];
         final isSelected = selectedAccountId == account.id;
         return Card(
+          clipBehavior: Clip.hardEdge,
           color: isSelected
               ? Theme.of(context).colorScheme.primaryContainer
               : null,
           child: InkWell(
             onTap: onTap != null ? () => onTap!(account) : null,
-            borderRadius: AppSizing.borderRadiusMd,
             child: Padding(
               padding: AppSpacing.paddingMd,
               child: Row(

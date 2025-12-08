@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:plata_sync/core/ui/resources/app_sizing.dart';
 import 'package:plata_sync/core/ui/resources/app_spacing.dart';
 import 'package:plata_sync/core/ui/widgets/object_icon.dart';
 import 'package:plata_sync/features/categories/domain/entities/category.dart';
@@ -25,13 +24,13 @@ class CategoryListView extends StatelessWidget {
         final category = categories[index];
         final isSelected = selectedCategoryId == category.id;
         return Card(
+          clipBehavior: Clip.hardEdge,
           margin: const EdgeInsets.only(bottom: AppSpacing.sm),
           color: isSelected
               ? Theme.of(context).colorScheme.primaryContainer
               : null,
           child: InkWell(
             onTap: onTap != null ? () => onTap!(category) : null,
-            borderRadius: AppSizing.borderRadiusMd,
             child: Padding(
               padding: AppSpacing.paddingMd,
               child: Row(
