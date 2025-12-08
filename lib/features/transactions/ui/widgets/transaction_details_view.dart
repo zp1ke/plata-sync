@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:plata_sync/core/di/service_locator.dart';
+import 'package:plata_sync/core/model/object_icon_data.dart';
 import 'package:plata_sync/core/ui/resources/app_colors.dart';
 import 'package:plata_sync/core/ui/resources/app_icons.dart';
 import 'package:plata_sync/core/ui/resources/app_sizing.dart';
@@ -124,58 +125,35 @@ class _TransactionDetailsViewState extends State<TransactionDetailsView> {
             ],
           ),
         ),
-        // Category (if not transfer)
-        if (_category != null)
-          _buildSection(
-            context,
-            label: l10n.transactionCategoryLabel,
-            child: Row(
-              spacing: AppSpacing.sm,
-              children: [
-                ObjectIcon(
-                  iconData: _category!.iconData,
-                  size: widget.showLargeIcon
-                      ? AppSizing.iconLg
-                      : AppSizing.iconMd,
-                ),
-                Text(
-                  _category!.name,
-                  style: Theme.of(context).textTheme.bodyLarge,
-                ),
-              ],
-            ),
-          ),
-        // Account
-        _buildSection(
-          context,
-          label: l10n.transactionAccountLabel,
-          child: Row(
-            spacing: AppSpacing.sm,
-            children: [
-              if (_account != null)
-                ObjectIcon(
-                  iconData: _account!.iconData,
-                  size: widget.showLargeIcon
-                      ? AppSizing.iconLg
-                      : AppSizing.iconMd,
-                ),
-              Text(
-                _account?.name ?? l10n.accountsEmptyState,
-                style: Theme.of(context).textTheme.bodyLarge,
+        Wrap(
+          spacing: AppSpacing.md,
+          runSpacing: AppSpacing.md,
+          children: [
+            // Category (if not transfer)
+            if (_category != null)
+              _buildIconSection(
+                context,
+                label: l10n.transactionCategoryLabel,
+                iconData: _category!.iconData,
+                name: _category!.name,
               ),
-            ],
-          ),
-        ),
-        // Target account (if transfer)
-        if (_targetAccount != null)
-          _buildSection(
-            context,
-            label: l10n.transactionTargetAccountLabel,
-            child: Text(
-              _targetAccount!.name,
-              style: Theme.of(context).textTheme.bodyLarge,
+            // Account
+            _buildIconSection(
+              context,
+              label: l10n.transactionAccountLabel,
+              iconData: _account?.iconData,
+              name: _account?.name ?? l10n.accountsEmptyState,
             ),
-          ),
+            // Target account (if transfer)
+            if (_targetAccount != null)
+              _buildIconSection(
+                context,
+                label: l10n.transactionTargetAccountLabel,
+                iconData: _targetAccount!.iconData,
+                name: _targetAccount!.name,
+              ),
+          ],
+        ),
         // Notes
         if (transaction.notes != null && transaction.notes!.isNotEmpty)
           _buildSection(
@@ -230,19 +208,45 @@ class _TransactionDetailsViewState extends State<TransactionDetailsView> {
     String? label,
     required Widget child,
   }) {
+    if (label == null) return child;
+
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
+      mainAxisSize: MainAxisSize.min,
       spacing: AppSpacing.xs,
       children: [
-        if (label != null)
-          Text(
-            label,
-            style: Theme.of(context).textTheme.labelMedium?.copyWith(
-              color: Theme.of(context).colorScheme.onSurfaceVariant,
-            ),
+        Text(
+          label,
+          style: Theme.of(context).textTheme.labelMedium?.copyWith(
+            color: Theme.of(context).colorScheme.onSurfaceVariant,
           ),
+        ),
         child,
       ],
+    );
+  }
+
+  Widget _buildIconSection(
+    BuildContext context, {
+    required String label,
+    ObjectIconData? iconData,
+    required String name,
+  }) {
+    return _buildSection(
+      context,
+      label: label,
+      child: Row(
+        mainAxisSize: MainAxisSize.min,
+        spacing: AppSpacing.sm,
+        children: [
+          if (iconData != null)
+            ObjectIcon(
+              iconData: iconData,
+              size: widget.showLargeIcon ? AppSizing.iconLg : AppSizing.iconMd,
+            ),
+          Text(name, style: Theme.of(context).textTheme.bodyLarge),
+        ],
+      ),
     );
   }
 
