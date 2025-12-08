@@ -111,13 +111,13 @@ class AccountEditFormState extends State<AccountEditForm> {
                 prefixIcon: AppIcons.descriptionXs,
                 labelText: '${l10n.accountsEditDescription} (${l10n.optional})',
               ),
-              maxLength: 300,
-              maxLines: 3,
+              maxLength: 200,
+              maxLines: 2,
             ),
             // Initial Balance field (only for creation)
             if (isCreating)
               ConstrainedBox(
-                constraints: BoxConstraints(maxWidth: AppSizing.inputWidthMd),
+                constraints: BoxConstraints(maxWidth: AppSizing.inputWidthSm),
                 child: CurrencyInputField(
                   controller: balanceController,
                   label: l10n.accountsEditInitialBalance,

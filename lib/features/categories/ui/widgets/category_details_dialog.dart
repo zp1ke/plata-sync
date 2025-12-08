@@ -26,7 +26,7 @@ class CategoryDetailsDialog extends StatelessWidget {
       iconData: category.iconData,
       title: category.name,
       content: CategoryDetailsView(category: category),
-      contentHeight: 150,
+      contentHeight: 200,
       actions: [
         TextButton.icon(
           onPressed: () {

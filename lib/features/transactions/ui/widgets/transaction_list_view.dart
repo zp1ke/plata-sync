@@ -177,7 +177,7 @@ class _TransactionListViewState extends State<TransactionListView> {
                             transaction.notes!,
                             style: Theme.of(context).textTheme.bodySmall
                                 ?.copyWith(fontStyle: FontStyle.italic),
-                            maxLines: 1,
+                            maxLines: 2,
                             overflow: TextOverflow.ellipsis,
                           ),
                       ],

@@ -105,8 +105,8 @@ class CategoryEditFormState extends State<CategoryEditForm> {
                         '${l10n.categoriesEditDescription} (${l10n.optional})',
                     prefixIcon: AppIcons.descriptionXs,
                   ),
-                  maxLength: 300,
-                  maxLines: 3,
+                  maxLength: 200,
+                  maxLines: 2,
                 ),
                 // Icon editor
                 ObjectIconEditor(

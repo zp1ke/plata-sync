@@ -18,7 +18,7 @@ class CategoryEditDialog extends StatelessWidget {
       title: category == null
           ? l10n.categoriesCreateTitle
           : l10n.categoriesEditTitle,
-      contentHeight: 400,
+      contentHeight: 500,
       content: CategoryEditForm(
         category: category,
         onSave: (updatedCategory) {

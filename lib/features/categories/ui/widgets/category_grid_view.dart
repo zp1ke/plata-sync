@@ -53,7 +53,7 @@ class CategoryGridView extends StatelessWidget {
                           Text(
                             category.description!,
                             style: Theme.of(context).textTheme.bodySmall,
-                            maxLines: 1,
+                            maxLines: 2,
                             overflow: TextOverflow.ellipsis,
                           ),
                       ],

@@ -145,7 +145,7 @@ class TransactionEditFormState extends State<TransactionEditForm> {
           key: _formKey,
           child: Column(
             mainAxisSize: MainAxisSize.min,
-            spacing: AppSpacing.lg,
+            spacing: AppSpacing.md,
             crossAxisAlignment: CrossAxisAlignment.end,
             children: [
               // Transaction type selector
@@ -169,7 +169,7 @@ class TransactionEditFormState extends State<TransactionEditForm> {
 
               // Date and time picker
               ConstrainedBox(
-                constraints: BoxConstraints(maxWidth: AppSizing.inputWidthMd),
+                constraints: BoxConstraints(maxWidth: AppSizing.inputWidthSm),
                 child: DateTimePickerField(
                   dateTime: _createdAt,
                   label: l10n.transactionDateLabel,
@@ -177,6 +177,25 @@ class TransactionEditFormState extends State<TransactionEditForm> {
                     setState(() {
                       _createdAt = newDateTime;
                     });
+                  },
+                ),
+              ),
+
+              // Amount field
+              ConstrainedBox(
+                constraints: BoxConstraints(maxWidth: AppSizing.inputWidthSm),
+                child: CurrencyInputField(
+                  controller: _amountController,
+                  label: l10n.transactionAmountLabel,
+                  validator: (value) {
+                    if (value == null || value.isEmpty) {
+                      return l10n.transactionAmountRequired;
+                    }
+                    final amountDouble = double.tryParse(value);
+                    if (amountDouble == null || amountDouble <= 0) {
+                      return l10n.transactionAmountMustBePositive;
+                    }
+                    return null;
                   },
                 ),
               ),
@@ -255,27 +274,6 @@ class TransactionEditFormState extends State<TransactionEditForm> {
                         },
                       ),
                     ),
-
-                  // Amount field
-                  ConstrainedBox(
-                    constraints: BoxConstraints(
-                      maxWidth: AppSizing.inputWidthMd,
-                    ),
-                    child: CurrencyInputField(
-                      controller: _amountController,
-                      label: l10n.transactionAmountLabel,
-                      validator: (value) {
-                        if (value == null || value.isEmpty) {
-                          return l10n.transactionAmountRequired;
-                        }
-                        final amountDouble = double.tryParse(value);
-                        if (amountDouble == null || amountDouble <= 0) {
-                          return l10n.transactionAmountMustBePositive;
-                        }
-                        return null;
-                      },
-                    ),
-                  ),
                 ],
               ),
 
@@ -286,7 +284,8 @@ class TransactionEditFormState extends State<TransactionEditForm> {
                   labelText: l10n.transactionNotesLabel,
                   hintText: l10n.transactionNotesHint,
                 ),
-                maxLines: 3,
+                maxLength: 200,
+                maxLines: 2,
               ),
 
               // Tags field

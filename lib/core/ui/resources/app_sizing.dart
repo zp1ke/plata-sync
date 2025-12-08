@@ -59,6 +59,7 @@ class AppSizing {
   static const double dialogMaxHeight = 450.0;
 
   // Input widths
+  static const double inputWidthSm = 200.0;
   static const double inputWidthMd = 250.0;
 
   // Font sizes following Material Design 3 type scale
