@@ -299,7 +299,7 @@ class TransactionsManager {
     transactions.sort((a, b) => a.createdAt.compareTo(b.createdAt));
 
     var balance = initialBalance ?? IntExtensions.minSafeValue;
-    DateTime? lastUsedValue;
+    var lastUsedValue = lastUsed;
     for (final transaction in transactions) {
       // Update lastUsed
       if (lastUsedValue == null) {
