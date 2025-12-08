@@ -48,7 +48,8 @@ class AppDialog extends StatelessWidget {
       content: SizedBox(
         width: AppSizing.dialogMaxWidth,
         height:
-            contentHeight ?? min(AppSizing.dialogMaxHeight, screenHeight * 0.7),
+            contentHeight ??
+            min(AppSizing.dialogMaxHeight, screenHeight * 0.75),
         child: scrollable ? SingleChildScrollView(child: content) : content,
       ),
       actions: actions,

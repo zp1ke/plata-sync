@@ -13,11 +13,10 @@ class AppSpacing {
   static const double none = 0;
   static const double xs = _unit; // 4
   static const double sm = _unit * 2; // 8
-  static const double md = _unit * 3; // 12
-  static const double lg = _unit * 4; // 16
-  static const double xl = _unit * 5; // 20
-  static const double xxl = _unit * 6; // 24
-  static const double xxxl = _unit * 8; // 32
+  static const double md = _unit * 4; // 16
+  static const double lg = _unit * 6; // 24
+  static const double xl = _unit * 8; // 32
+  static const double xxl = _unit * 12; // 48
 
   // Common EdgeInsets presets
   static const EdgeInsets paddingXs = EdgeInsets.all(xs);

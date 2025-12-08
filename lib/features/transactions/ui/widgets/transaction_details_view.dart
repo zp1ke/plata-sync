@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:plata_sync/core/di/service_locator.dart';
+import 'package:plata_sync/core/ui/resources/app_colors.dart';
 import 'package:plata_sync/core/ui/resources/app_icons.dart';
 import 'package:plata_sync/core/ui/resources/app_sizing.dart';
 import 'package:plata_sync/core/ui/resources/app_spacing.dart';
-import 'package:plata_sync/core/ui/resources/app_theme.dart';
 import 'package:plata_sync/core/ui/widgets/object_icon.dart';
 import 'package:plata_sync/core/utils/datetime.dart';
 import 'package:plata_sync/core/utils/numbers.dart';

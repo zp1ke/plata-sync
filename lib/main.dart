@@ -20,8 +20,9 @@ class MainApp extends StatelessWidget {
       onGenerateTitle: (context) => AppL10n.of(context).appTitle,
       localizationsDelegates: AppL10n.localizationsDelegates,
       supportedLocales: AppL10n.supportedLocales,
-      theme: AppTheme.light,
-      darkTheme: AppTheme.dark,
+      themeMode: ThemeMode.system,
+      theme: lightTheme,
+      darkTheme: darkTheme,
       routerConfig: AppRouter.router,
     );
   }

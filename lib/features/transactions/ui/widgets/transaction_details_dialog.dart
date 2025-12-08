@@ -33,7 +33,6 @@ class TransactionDetailsDialog extends StatelessWidget {
     return AppDialog(
       title: typeLabel,
       content: TransactionDetailsView(transaction: transaction),
-      contentHeight: 350,
       actions: [
         TextButton.icon(
           onPressed: () {
