@@ -133,10 +133,7 @@ const TextTheme _textTheme = TextTheme(
 final ElevatedButtonThemeData _elevatedButtonTheme = ElevatedButtonThemeData(
   style: ElevatedButton.styleFrom(
     elevation: AppSizing.elevationLevel2,
-    padding: EdgeInsets.symmetric(
-      horizontal: AppSpacing.lg,
-      vertical: AppSpacing.md,
-    ),
+    padding: AppSpacing.paddingLg,
     shape: RoundedRectangleBorder(
       borderRadius: BorderRadius.circular(AppSizing.radiusMd),
     ),
@@ -146,10 +143,7 @@ final ElevatedButtonThemeData _elevatedButtonTheme = ElevatedButtonThemeData(
 /// Text button theme
 final TextButtonThemeData _textButtonTheme = TextButtonThemeData(
   style: TextButton.styleFrom(
-    padding: EdgeInsets.symmetric(
-      horizontal: AppSpacing.lg,
-      vertical: AppSpacing.md,
-    ),
+    padding: AppSpacing.paddingLg,
     shape: RoundedRectangleBorder(
       borderRadius: BorderRadius.circular(AppSizing.radiusMd),
     ),
@@ -159,10 +153,7 @@ final TextButtonThemeData _textButtonTheme = TextButtonThemeData(
 /// Outlined button theme
 final OutlinedButtonThemeData _outlinedButtonTheme = OutlinedButtonThemeData(
   style: OutlinedButton.styleFrom(
-    padding: EdgeInsets.symmetric(
-      horizontal: AppSpacing.lg,
-      vertical: AppSpacing.md,
-    ),
+    padding: AppSpacing.paddingLg,
     shape: RoundedRectangleBorder(
       borderRadius: BorderRadius.circular(AppSizing.radiusMd),
     ),
