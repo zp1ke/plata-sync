@@ -306,7 +306,8 @@ Widget _buildBottomBar(
 }) {
   return Row(
     children: [
-      Expanded(
+      ConstrainedBox(
+        constraints: BoxConstraints(maxWidth: AppSizing.inputWidthMd),
         child: SortSelector<TransactionSortOrder>(
           value: sortOrder,
           onChanged: isLoading ? null : manager.setSortOrder,
@@ -317,6 +318,7 @@ Widget _buildBottomBar(
           options: TransactionSortOrder.values,
         ),
       ),
+      Spacer(),
       if (showViewToggle) ...[
         AppSpacing.gapHorizontalSm,
         ViewToggle(
