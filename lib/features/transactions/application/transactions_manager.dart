@@ -43,6 +43,8 @@ class TransactionsManager {
     }
   }
 
+  Future<bool> hasAnyData() => _dataSource.hasData();
+
   Future<void> createSampleData() async {
     isLoading.value = true;
     try {

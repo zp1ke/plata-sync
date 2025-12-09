@@ -59,9 +59,19 @@ class _MobileTransactionsScreenState extends State<_MobileTransactionsScreen> {
 
     // Show sample data dialog once after initial load completes with no data
     if (!_hasShownSampleDialog && !isLoading && transactions.isEmpty) {
-      _hasShownSampleDialog = true;
-      WidgetsBinding.instance.addPostFrameCallback((_) {
-        if (mounted) {
+      WidgetsBinding.instance.addPostFrameCallback((_) async {
+        if (!mounted || _hasShownSampleDialog) return;
+
+        final manager = getService<TransactionsManager>();
+        final hasData = await manager.hasAnyData();
+
+        if (!mounted || _hasShownSampleDialog) return;
+
+        setState(() {
+          _hasShownSampleDialog = true;
+        });
+
+        if (context.mounted && !hasData) {
           _showSampleDataDialog(context);
         }
       });
@@ -403,11 +413,19 @@ class _TabletTransactionsScreenState extends State<_TabletTransactionsScreen> {
 
     // Show sample data dialog once after initial load completes with no data
     if (!_hasShownSampleDialog && !isLoading && transactions.isEmpty) {
-      WidgetsBinding.instance.addPostFrameCallback((_) {
-        if (mounted && !_hasShownSampleDialog) {
-          setState(() {
-            _hasShownSampleDialog = true;
-          });
+      WidgetsBinding.instance.addPostFrameCallback((_) async {
+        if (!mounted || _hasShownSampleDialog) return;
+
+        final manager = getService<TransactionsManager>();
+        final hasData = await manager.hasAnyData();
+
+        if (!mounted || _hasShownSampleDialog) return;
+
+        setState(() {
+          _hasShownSampleDialog = true;
+        });
+
+        if (context.mounted && !hasData) {
           _showSampleDataDialog(context);
         }
       });
