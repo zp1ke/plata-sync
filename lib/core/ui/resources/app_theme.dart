@@ -14,9 +14,7 @@ ThemeData _theme(ColorScheme colorScheme) => ThemeData(
   brightness: colorScheme.brightness,
   colorScheme: colorScheme,
   textTheme: _textTheme,
-  appBarTheme: colorScheme.brightness == Brightness.light
-      ? _lightAppBarTheme
-      : _darkAppBarTheme,
+  appBarTheme: _appBarTheme(colorScheme),
   elevatedButtonTheme: _elevatedButtonTheme,
   textButtonTheme: _textButtonTheme,
   outlinedButtonTheme: _outlinedButtonTheme,
@@ -188,17 +186,10 @@ InputDecorationTheme _inputDecorationTheme(ColorScheme colorScheme) =>
       ),
     );
 
-/// App bar theme for light mode
-const AppBarTheme _lightAppBarTheme = AppBarTheme(
-  elevation: AppSizing.elevationLevel1,
-  centerTitle: false,
-  titleSpacing: AppSpacing.md,
-  scrolledUnderElevation: AppSizing.elevationLevel1,
-);
-
-/// App bar theme for dark mode
-const AppBarTheme _darkAppBarTheme = AppBarTheme(
-  elevation: AppSizing.elevationLevel1,
+/// App bar theme
+AppBarTheme _appBarTheme(ColorScheme colorScheme) => AppBarTheme(
+  backgroundColor: colorScheme.surface,
+  elevation: 0,
   centerTitle: false,
   titleSpacing: AppSpacing.md,
   scrolledUnderElevation: AppSizing.elevationLevel1,
