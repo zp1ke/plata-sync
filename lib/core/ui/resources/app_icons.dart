@@ -37,6 +37,8 @@ class AppIcons {
   static final sortDescending = const HugeIcon(
     icon: HugeIcons.strokeRoundedSortByDown02,
   );
+  static final filter = HugeIcon(icon: HugeIcons.strokeRoundedFilter);
+  static final filterEdit = HugeIcon(icon: HugeIcons.strokeRoundedFilterEdit);
   static final viewList = const HugeIcon(icon: HugeIcons.strokeRoundedMenu01);
   static final viewGrid = const HugeIcon(icon: HugeIcons.strokeRoundedGridView);
 

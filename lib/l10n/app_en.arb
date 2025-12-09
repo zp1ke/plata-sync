@@ -786,6 +786,34 @@
   "@transactionCategoryLabel": {
     "description": "Label for category field in transaction form"
   },
+  "filterTransactions": "Filter Transactions",
+  "@filterTransactions": {
+    "description": "Title for transaction filter dialog"
+  },
+  "selectAccount": "Select Account",
+  "@selectAccount": {
+    "description": "Hint for account selection"
+  },
+  "searchAccounts": "Search accounts...",
+  "@searchAccounts": {
+    "description": "Hint for account search"
+  },
+  "selectCategory": "Select Category",
+  "@selectCategory": {
+    "description": "Hint for category selection"
+  },
+  "searchCategories": "Search categories...",
+  "@searchCategories": {
+    "description": "Hint for category search"
+  },
+  "clear": "Clear",
+  "@clear": {
+    "description": "Label for clear button"
+  },
+  "apply": "Apply",
+  "@apply": {
+    "description": "Label for apply button"
+  },
   "transactionAccountRequired": "Account is required",
   "@transactionAccountRequired": {
     "description": "Validation message when account is not selected"

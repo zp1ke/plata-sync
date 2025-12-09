@@ -114,12 +114,22 @@ class TransactionsManager {
     await loadTransactions();
   }
 
-  Future<void> loadTransactions({String? accountId, String? categoryId}) async {
+  Future<void> loadTransactions({
+    String? accountId,
+    String? categoryId,
+    bool clearAccount = false,
+    bool clearCategory = false,
+  }) async {
     isLoading.value = true;
-    if (accountId != null) {
+    if (clearAccount) {
+      currentAccountFilter.value = null;
+    } else if (accountId != null) {
       currentAccountFilter.value = accountId;
     }
-    if (categoryId != null) {
+
+    if (clearCategory) {
+      currentCategoryFilter.value = null;
+    } else if (categoryId != null) {
       currentCategoryFilter.value = categoryId;
     }
     try {
@@ -166,6 +176,14 @@ class TransactionsManager {
     } finally {
       isLoading.value = false;
     }
+  }
+
+  void setAccountFilter(String? accountId) {
+    loadTransactions(accountId: accountId, clearAccount: accountId == null);
+  }
+
+  void setCategoryFilter(String? categoryId) {
+    loadTransactions(categoryId: categoryId, clearCategory: categoryId == null);
   }
 
   Future<void> addTransaction(Transaction transaction) async {

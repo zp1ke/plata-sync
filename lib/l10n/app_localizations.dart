@@ -1095,6 +1095,48 @@ abstract class AppL10n {
   /// **'Category'**
   String get transactionCategoryLabel;
 
+  /// Title for transaction filter dialog
+  ///
+  /// In en, this message translates to:
+  /// **'Filter Transactions'**
+  String get filterTransactions;
+
+  /// Hint for account selection
+  ///
+  /// In en, this message translates to:
+  /// **'Select Account'**
+  String get selectAccount;
+
+  /// Hint for account search
+  ///
+  /// In en, this message translates to:
+  /// **'Search accounts...'**
+  String get searchAccounts;
+
+  /// Hint for category selection
+  ///
+  /// In en, this message translates to:
+  /// **'Select Category'**
+  String get selectCategory;
+
+  /// Hint for category search
+  ///
+  /// In en, this message translates to:
+  /// **'Search categories...'**
+  String get searchCategories;
+
+  /// Label for clear button
+  ///
+  /// In en, this message translates to:
+  /// **'Clear'**
+  String get clear;
+
+  /// Label for apply button
+  ///
+  /// In en, this message translates to:
+  /// **'Apply'**
+  String get apply;
+
   /// Validation message when account is not selected
   ///
   /// In en, this message translates to:

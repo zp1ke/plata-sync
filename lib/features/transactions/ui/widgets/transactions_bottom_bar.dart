@@ -8,9 +8,11 @@ import 'package:plata_sync/core/ui/widgets/view_toggle.dart';
 import 'package:plata_sync/features/transactions/application/transactions_manager.dart';
 import 'package:plata_sync/features/transactions/model/enums/sort_order.dart';
 import 'package:plata_sync/features/transactions/ui/utils/transaction_ui_utils.dart';
+import 'package:plata_sync/features/transactions/ui/widgets/transaction_filter_dialog.dart';
 import 'package:plata_sync/l10n/app_localizations.dart';
+import 'package:watch_it/watch_it.dart';
 
-class TransactionsBottomBar extends StatelessWidget
+class TransactionsBottomBar extends WatchingWidget
     implements PreferredSizeWidget {
   final TransactionSortOrder sortOrder;
   final ViewMode viewMode;
@@ -30,6 +32,15 @@ class TransactionsBottomBar extends StatelessWidget
   @override
   Widget build(BuildContext context) {
     final l10n = AppL10n.of(context);
+    final currentAccountFilter = watchValue(
+      (TransactionsManager x) => x.currentAccountFilter,
+    );
+    final currentCategoryFilter = watchValue(
+      (TransactionsManager x) => x.currentCategoryFilter,
+    );
+    final hasActiveFilters =
+        currentAccountFilter != null || currentCategoryFilter != null;
+
     return Row(
       children: [
         ConstrainedBox(
@@ -45,6 +56,25 @@ class TransactionsBottomBar extends StatelessWidget
           ),
         ),
         const Spacer(),
+        IconButton(
+          onPressed: isLoading
+              ? null
+              : () {
+                  showDialog(
+                    context: context,
+                    builder: (context) => TransactionFilterDialog(
+                      initialAccountId: currentAccountFilter,
+                      initialCategoryId: currentCategoryFilter,
+                      onApply: (accountId, categoryId) {
+                        manager.setAccountFilter(accountId);
+                        manager.setCategoryFilter(categoryId);
+                      },
+                    ),
+                  );
+                },
+          icon: hasActiveFilters ? AppIcons.filterEdit : AppIcons.filter,
+          tooltip: l10n.filterTransactions,
+        ),
         if (showViewToggle) ...[
           AppSpacing.gapHorizontalSm,
           ViewToggle(

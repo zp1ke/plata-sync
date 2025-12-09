@@ -564,6 +564,27 @@ class AppL10nEn extends AppL10n {
   String get transactionCategoryLabel => 'Category';
 
   @override
+  String get filterTransactions => 'Filter Transactions';
+
+  @override
+  String get selectAccount => 'Select Account';
+
+  @override
+  String get searchAccounts => 'Search accounts...';
+
+  @override
+  String get selectCategory => 'Select Category';
+
+  @override
+  String get searchCategories => 'Search categories...';
+
+  @override
+  String get clear => 'Clear';
+
+  @override
+  String get apply => 'Apply';
+
+  @override
   String get transactionAccountRequired => 'Account is required';
 
   @override
