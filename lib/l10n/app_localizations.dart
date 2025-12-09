@@ -1017,6 +1017,12 @@ abstract class AppL10n {
   /// **'Unknown'**
   String get iconUnknown;
 
+  /// Generic label for unknown entity
+  ///
+  /// In en, this message translates to:
+  /// **'Unknown'**
+  String get unknown;
+
   /// Default search hint for select field widget
   ///
   /// In en, this message translates to:
@@ -1094,6 +1100,30 @@ abstract class AppL10n {
   /// In en, this message translates to:
   /// **'Category'**
   String get transactionCategoryLabel;
+
+  /// Date filter option for today
+  ///
+  /// In en, this message translates to:
+  /// **'Today'**
+  String get dateFilterToday;
+
+  /// Date filter option for this week
+  ///
+  /// In en, this message translates to:
+  /// **'This Week'**
+  String get dateFilterWeek;
+
+  /// Date filter option for this month
+  ///
+  /// In en, this message translates to:
+  /// **'This Month'**
+  String get dateFilterMonth;
+
+  /// Date filter option for all time
+  ///
+  /// In en, this message translates to:
+  /// **'All Time'**
+  String get dateFilterAll;
 
   /// Title for transaction filter dialog
   ///

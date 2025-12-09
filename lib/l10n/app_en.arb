@@ -728,6 +728,10 @@
   "@iconUnknown": {
     "description": "Label for unknown icon"
   },
+  "unknown": "Unknown",
+  "@unknown": {
+    "description": "Generic label for unknown entity"
+  },
   "selectFieldSearchHint": "Search...",
   "@selectFieldSearchHint": {
     "description": "Default search hint for select field widget"
@@ -785,6 +789,22 @@
   "transactionCategoryLabel": "Category",
   "@transactionCategoryLabel": {
     "description": "Label for category field in transaction form"
+  },
+  "dateFilterToday": "Today",
+  "@dateFilterToday": {
+    "description": "Date filter option for today"
+  },
+  "dateFilterWeek": "This Week",
+  "@dateFilterWeek": {
+    "description": "Date filter option for this week"
+  },
+  "dateFilterMonth": "This Month",
+  "@dateFilterMonth": {
+    "description": "Date filter option for this month"
+  },
+  "dateFilterAll": "All Time",
+  "@dateFilterAll": {
+    "description": "Date filter option for all time"
   },
   "filterTransactions": "Filter Transactions",
   "@filterTransactions": {

@@ -12,6 +12,7 @@ import 'package:plata_sync/features/accounts/domain/entities/account.dart';
 import 'package:plata_sync/features/categories/application/categories_manager.dart';
 import 'package:plata_sync/features/categories/domain/entities/category.dart';
 import 'package:plata_sync/features/transactions/domain/entities/transaction.dart';
+import 'package:plata_sync/l10n/app_localizations.dart';
 
 class TransactionGridItem extends StatefulWidget {
   final Transaction transaction;
@@ -46,38 +47,23 @@ class _TransactionGridItemState extends State<TransactionGridItem> {
 
     // Load account
     final allAccounts = accountsManager.accounts.value;
-    account = allAccounts.firstWhere(
-      (a) => a.id == widget.transaction.accountId,
-      orElse: () => Account.create(
-        name: 'Unknown',
-        description: null,
-        iconData: ObjectIconData.empty(),
-      ),
-    );
+    account = allAccounts
+        .where((a) => a.id == widget.transaction.accountId)
+        .firstOrNull;
 
     // Load category if present
     if (widget.transaction.categoryId != null) {
       final allCategories = categoriesManager.categories.value;
-      category = allCategories.firstWhere(
-        (c) => c.id == widget.transaction.categoryId,
-        orElse: () => Category.create(
-          name: 'Unknown',
-          description: null,
-          iconData: ObjectIconData.empty(),
-        ),
-      );
+      category = allCategories
+          .where((c) => c.id == widget.transaction.categoryId)
+          .firstOrNull;
     }
 
     // Load target account for transfers
     if (widget.transaction.targetAccountId != null) {
-      targetAccount = allAccounts.firstWhere(
-        (a) => a.id == widget.transaction.targetAccountId,
-        orElse: () => Account.create(
-          name: 'Unknown',
-          description: null,
-          iconData: ObjectIconData.empty(),
-        ),
-      );
+      targetAccount = allAccounts
+          .where((a) => a.id == widget.transaction.targetAccountId)
+          .firstOrNull;
     }
 
     if (mounted) {
@@ -87,7 +73,37 @@ class _TransactionGridItemState extends State<TransactionGridItem> {
 
   @override
   Widget build(BuildContext context) {
+    final l10n = AppL10n.of(context);
     final colorScheme = Theme.of(context).colorScheme;
+
+    final effectiveAccount =
+        account ??
+        Account.create(
+          name: l10n.unknown,
+          description: null,
+          iconData: ObjectIconData.empty(),
+        );
+
+    final effectiveCategory =
+        category ??
+        (widget.transaction.categoryId != null
+            ? Category.create(
+                name: l10n.unknown,
+                description: null,
+                iconData: ObjectIconData.empty(),
+              )
+            : null);
+
+    final effectiveTargetAccount =
+        targetAccount ??
+        (widget.transaction.targetAccountId != null
+            ? Account.create(
+                name: l10n.unknown,
+                description: null,
+                iconData: ObjectIconData.empty(),
+              )
+            : null);
+
     final typeColor = switch (widget.transaction) {
       _ when widget.transaction.isTransfer => colorScheme.transfer,
       _ when widget.transaction.isExpense => colorScheme.expense,
@@ -118,16 +134,16 @@ class _TransactionGridItemState extends State<TransactionGridItem> {
                   children: [
                     Row(
                       children: [
-                        if (category != null) ...[
+                        if (effectiveCategory != null) ...[
                           ObjectIcon(
-                            iconData: category!.iconData,
+                            iconData: effectiveCategory.iconData,
                             size: AppSizing.iconXs,
                           ),
                           AppSpacing.gapHorizontalXs,
                         ],
                         Expanded(
                           child: Text(
-                            category?.name ?? '',
+                            effectiveCategory?.name ?? '',
                             overflow: TextOverflow.ellipsis,
                             style: Theme.of(context).textTheme.bodySmall
                                 ?.copyWith(
@@ -151,26 +167,25 @@ class _TransactionGridItemState extends State<TransactionGridItem> {
                         color: typeColor,
                       ),
                     ),
-                    if (account != null)
-                      Row(
-                        children: [
-                          ObjectIcon(
-                            iconData: account!.iconData,
-                            size: AppSizing.iconXs,
+                    Row(
+                      children: [
+                        ObjectIcon(
+                          iconData: effectiveAccount.iconData,
+                          size: AppSizing.iconXs,
+                        ),
+                        AppSpacing.gapHorizontalXs,
+                        Expanded(
+                          child: Text(
+                            widget.transaction.isTransfer &&
+                                    effectiveTargetAccount != null
+                                ? '${effectiveAccount.name} → ${effectiveTargetAccount.name}'
+                                : effectiveAccount.name,
+                            overflow: TextOverflow.ellipsis,
+                            style: Theme.of(context).textTheme.bodySmall,
                           ),
-                          AppSpacing.gapHorizontalXs,
-                          Expanded(
-                            child: Text(
-                              widget.transaction.isTransfer &&
-                                      targetAccount != null
-                                  ? '${account!.name} → ${targetAccount!.name}'
-                                  : account!.name,
-                              overflow: TextOverflow.ellipsis,
-                              style: Theme.of(context).textTheme.bodySmall,
-                            ),
-                          ),
-                        ],
-                      ),
+                        ),
+                      ],
+                    ),
                   ],
                 ),
               ),

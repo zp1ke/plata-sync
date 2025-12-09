@@ -3,6 +3,7 @@ import 'package:plata_sync/core/ui/resources/app_sizing.dart';
 import 'package:plata_sync/core/ui/resources/app_spacing.dart';
 import 'package:plata_sync/core/ui/widgets/dialog.dart';
 import 'package:plata_sync/core/utils/colors.dart';
+import 'package:plata_sync/l10n/app_localizations.dart';
 
 /// A form field that allows users to pick a color from a predefined palette.
 class ColorPickerField extends StatelessWidget {
@@ -44,10 +45,10 @@ class ColorPickerField extends StatelessWidget {
   ];
 
   void _showColorPicker(BuildContext context) {
+    final l10n = AppL10n.of(context);
     showDialog(
       context: context,
       builder: (context) => AppDialog(
-        // insetPadding: AppSpacing.paddingMd,
         title: label,
         content: SizedBox(
           width: double.maxFinite,
@@ -97,7 +98,7 @@ class ColorPickerField extends StatelessWidget {
         actions: [
           TextButton(
             onPressed: () => Navigator.of(context).pop(),
-            child: const Text('Cancel'),
+            child: Text(l10n.cancel),
           ),
         ],
       ),

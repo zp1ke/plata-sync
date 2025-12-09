@@ -5,13 +5,13 @@ import 'package:plata_sync/l10n/app_localizations.dart';
 String getDateFilterLabel(AppL10n l10n, DateFilter filter) {
   switch (filter) {
     case DateFilter.today:
-      return 'Today';
+      return l10n.dateFilterToday;
     case DateFilter.week:
-      return 'This Week';
+      return l10n.dateFilterWeek;
     case DateFilter.month:
-      return 'This Month';
+      return l10n.dateFilterMonth;
     case DateFilter.all:
-      return 'All Time';
+      return l10n.dateFilterAll;
   }
 }
 

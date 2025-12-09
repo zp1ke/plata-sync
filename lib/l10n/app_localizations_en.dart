@@ -520,6 +520,9 @@ class AppL10nEn extends AppL10n {
   String get iconUnknown => 'Unknown';
 
   @override
+  String get unknown => 'Unknown';
+
+  @override
   String get selectFieldSearchHint => 'Search...';
 
   @override
@@ -562,6 +565,18 @@ class AppL10nEn extends AppL10n {
 
   @override
   String get transactionCategoryLabel => 'Category';
+
+  @override
+  String get dateFilterToday => 'Today';
+
+  @override
+  String get dateFilterWeek => 'This Week';
+
+  @override
+  String get dateFilterMonth => 'This Month';
+
+  @override
+  String get dateFilterAll => 'All Time';
 
   @override
   String get filterTransactions => 'Filter Transactions';
