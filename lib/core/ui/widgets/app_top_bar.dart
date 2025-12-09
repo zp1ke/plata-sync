@@ -13,6 +13,7 @@ class AppTopBar extends StatefulWidget {
   final bool isLoading;
   final VoidCallback? onRefresh;
   final Widget? bottom;
+  final List<Widget>? actions;
 
   const AppTopBar({
     super.key,
@@ -22,6 +23,7 @@ class AppTopBar extends StatefulWidget {
     this.isLoading = false,
     this.onRefresh,
     this.bottom,
+    this.actions,
   });
 
   @override
@@ -101,6 +103,11 @@ class _AppTopBarState extends State<AppTopBar> {
               child: const CircularProgressIndicator.adaptive(),
             ),
           ),
+        if (widget.actions != null) ...[
+          AppSpacing.gapHorizontalXs,
+          ...widget.actions!,
+          AppSpacing.gapHorizontalXs,
+        ],
         if (widget.onSearchChanged != null) ...[
           if (isSearching)
             IconButton(icon: AppIcons.searchOff, onPressed: toggleSearch),

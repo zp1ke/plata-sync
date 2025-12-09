@@ -116,6 +116,10 @@ class AppIcons {
     size: AppSizing.iconXs,
   );
   static final check = const HugeIcon(icon: HugeIcons.strokeRoundedTick02);
+  static final checkSm = const HugeIcon(
+    icon: HugeIcons.strokeRoundedTick02,
+    size: AppSizing.iconSm,
+  );
 
   static Widget getIcon(String name, {Color? color, double? size}) {
     final iconData = iconDataMap[name] ?? HugeIcons.strokeRoundedHelpCircle;

@@ -5,12 +5,14 @@ import 'package:plata_sync/core/data/models/sort_param.dart';
 import 'package:plata_sync/core/di/service_locator.dart';
 import 'package:plata_sync/core/model/enums/view_mode.dart';
 import 'package:plata_sync/core/services/settings_service.dart';
+import 'package:plata_sync/core/utils/datetime.dart';
 import 'package:plata_sync/core/utils/numbers.dart';
 import 'package:plata_sync/features/accounts/application/accounts_manager.dart';
 import 'package:plata_sync/features/accounts/domain/entities/account.dart';
 import 'package:plata_sync/features/categories/application/categories_manager.dart';
 import 'package:plata_sync/features/transactions/data/interfaces/transaction_data_source.dart';
 import 'package:plata_sync/features/transactions/domain/entities/transaction.dart';
+import 'package:plata_sync/features/transactions/model/enums/date_filter.dart';
 import 'package:plata_sync/features/transactions/model/enums/sort_order.dart';
 
 class TransactionsManager {
@@ -29,6 +31,9 @@ class TransactionsManager {
     TransactionSortOrder.dateDesc,
   );
   final ValueNotifier<ViewMode> viewMode = ValueNotifier(ViewMode.list);
+  final ValueNotifier<DateFilter> currentDateFilter = ValueNotifier(
+    DateFilter.today,
+  );
 
   void _loadSortOrderFromSettings() {
     final settings = getService<SettingsService>();
@@ -124,6 +129,32 @@ class TransactionsManager {
         filter['categoryId'] = currentCategoryFilter.value;
       }
 
+      if (currentDateFilter.value != DateFilter.all) {
+        final now = DateTime.now();
+        DateTime? from;
+        DateTime? to;
+
+        switch (currentDateFilter.value) {
+          case DateFilter.today:
+            from = now.startOfDay;
+            to = now.endOfDay;
+            break;
+          case DateFilter.week:
+            from = now.startOfWeek;
+            to = now.endOfWeek;
+            break;
+          case DateFilter.month:
+            from = now.startOfMonth;
+            to = now.endOfMonth;
+            break;
+          case DateFilter.all:
+            break;
+        }
+
+        if (from != null) filter['from'] = from;
+        if (to != null) filter['to'] = to;
+      }
+
       transactions.value = await _dataSource.getAll(
         filter: filter.isNotEmpty ? filter : null,
         sort: sortOrder.value.sortParam(),
@@ -183,6 +214,11 @@ class TransactionsManager {
     // Save to settings
     final settings = getService<SettingsService>();
     settings.setTransactionsSortOrder(order);
+    loadTransactions();
+  }
+
+  void setDateFilter(DateFilter filter) {
+    currentDateFilter.value = filter;
     loadTransactions();
   }
 

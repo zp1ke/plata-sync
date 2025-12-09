@@ -10,7 +10,9 @@ import 'package:plata_sync/core/ui/widgets/sort_selector.dart';
 import 'package:plata_sync/core/ui/widgets/view_toggle.dart';
 import 'package:plata_sync/features/transactions/application/transactions_manager.dart';
 import 'package:plata_sync/features/transactions/domain/entities/transaction.dart';
+import 'package:plata_sync/features/transactions/model/enums/date_filter.dart';
 import 'package:plata_sync/features/transactions/model/enums/sort_order.dart';
+import 'package:plata_sync/features/transactions/ui/widgets/date_filter_selector.dart';
 import 'package:plata_sync/features/transactions/ui/widgets/transaction_details_dialog.dart';
 import 'package:plata_sync/features/transactions/ui/widgets/transaction_details_view.dart';
 import 'package:plata_sync/features/transactions/ui/widgets/transaction_edit_dialog.dart';
@@ -49,6 +51,9 @@ class _MobileTransactionsScreenState extends State<_MobileTransactionsScreen> {
     final isLoading = watchValue((TransactionsManager x) => x.isLoading);
     final transactions = watchValue((TransactionsManager x) => x.transactions);
     final sortOrder = watchValue((TransactionsManager x) => x.sortOrder);
+    final dateFilter = watchValue(
+      (TransactionsManager x) => x.currentDateFilter,
+    );
     final viewMode = watchValue((TransactionsManager x) => x.viewMode);
     final l10n = AppL10n.of(context);
 
@@ -80,6 +85,19 @@ class _MobileTransactionsScreenState extends State<_MobileTransactionsScreen> {
                   l10n,
                   isLoading,
                 ),
+                actions: [
+                  ConstrainedBox(
+                    constraints: BoxConstraints(
+                      maxWidth: AppSizing.inputWidthMd,
+                    ),
+                    child: DateFilterSelector(
+                      value: dateFilter,
+                      onChanged: isLoading ? null : manager.setDateFilter,
+                      labelBuilder: (filter) =>
+                          _getDateFilterLabel(l10n, filter),
+                    ),
+                  ),
+                ],
               ),
             ];
           },
@@ -330,6 +348,19 @@ Widget _buildBottomBar(
   );
 }
 
+String _getDateFilterLabel(AppL10n l10n, DateFilter filter) {
+  switch (filter) {
+    case DateFilter.today:
+      return 'Today';
+    case DateFilter.week:
+      return 'This Week';
+    case DateFilter.month:
+      return 'This Month';
+    case DateFilter.all:
+      return 'All Time';
+  }
+}
+
 String _getSortLabel(AppL10n l10n, TransactionSortOrder order) {
   switch (order) {
     case TransactionSortOrder.dateAsc:
@@ -364,6 +395,9 @@ class _TabletTransactionsScreenState extends State<_TabletTransactionsScreen> {
     final isLoading = watchValue((TransactionsManager x) => x.isLoading);
     final transactions = watchValue((TransactionsManager x) => x.transactions);
     final sortOrder = watchValue((TransactionsManager x) => x.sortOrder);
+    final dateFilter = watchValue(
+      (TransactionsManager x) => x.currentDateFilter,
+    );
     final viewMode = watchValue((TransactionsManager x) => x.viewMode);
     final l10n = AppL10n.of(context);
 
@@ -404,6 +438,19 @@ class _TabletTransactionsScreenState extends State<_TabletTransactionsScreen> {
                         isLoading,
                         showViewToggle: true,
                       ),
+                      actions: [
+                        ConstrainedBox(
+                          constraints: BoxConstraints(
+                            maxWidth: AppSizing.inputWidthMd,
+                          ),
+                          child: DateFilterSelector(
+                            value: dateFilter,
+                            onChanged: isLoading ? null : manager.setDateFilter,
+                            labelBuilder: (filter) =>
+                                _getDateFilterLabel(l10n, filter),
+                          ),
+                        ),
+                      ],
                     ),
                   ];
                 },
