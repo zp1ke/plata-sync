@@ -12,6 +12,7 @@ import 'package:plata_sync/features/transactions/application/transactions_manage
 import 'package:plata_sync/features/transactions/domain/entities/transaction.dart';
 import 'package:plata_sync/features/transactions/model/enums/date_filter.dart';
 import 'package:plata_sync/features/transactions/model/enums/sort_order.dart';
+import 'package:plata_sync/features/transactions/ui/mixins/transaction_actions_mixin.dart';
 import 'package:plata_sync/features/transactions/ui/widgets/date_filter_selector.dart';
 import 'package:plata_sync/features/transactions/ui/widgets/transaction_details_dialog.dart';
 import 'package:plata_sync/features/transactions/ui/widgets/transaction_details_view.dart';
@@ -43,9 +44,8 @@ class _MobileTransactionsScreen extends WatchingStatefulWidget {
       _MobileTransactionsScreenState();
 }
 
-class _MobileTransactionsScreenState extends State<_MobileTransactionsScreen> {
-  bool _hasShownSampleDialog = false;
-
+class _MobileTransactionsScreenState extends State<_MobileTransactionsScreen>
+    with TransactionActionsMixin {
   @override
   Widget build(BuildContext context) {
     final isLoading = watchValue((TransactionsManager x) => x.isLoading);
@@ -58,24 +58,7 @@ class _MobileTransactionsScreenState extends State<_MobileTransactionsScreen> {
     final l10n = AppL10n.of(context);
 
     // Show sample data dialog once after initial load completes with no data
-    if (!_hasShownSampleDialog && !isLoading && transactions.isEmpty) {
-      WidgetsBinding.instance.addPostFrameCallback((_) async {
-        if (!mounted || _hasShownSampleDialog) return;
-
-        final manager = getService<TransactionsManager>();
-        final hasData = await manager.hasAnyData();
-
-        if (!mounted || _hasShownSampleDialog) return;
-
-        setState(() {
-          _hasShownSampleDialog = true;
-        });
-
-        if (context.mounted && !hasData) {
-          _showSampleDataDialog(context);
-        }
-      });
-    }
+    checkSampleDataDialog(isLoading, transactions.isEmpty);
 
     return Scaffold(
       body: SafeArea(
@@ -121,79 +104,13 @@ class _MobileTransactionsScreenState extends State<_MobileTransactionsScreen> {
     );
   }
 
-  void _showSampleDataDialog(BuildContext context) {
-    final l10n = AppL10n.of(context);
-    showDialog(
-      context: context,
-      builder: (context) => AlertDialog(
-        insetPadding: AppSpacing.paddingMd,
-        title: Text(l10n.transactionsEmptyState),
-        content: Text(l10n.transactionsAddSampleDataPrompt),
-        actions: [
-          TextButton(
-            onPressed: () => Navigator.of(context).pop(),
-            child: Text(l10n.cancel),
-          ),
-          FilledButton(
-            onPressed: () async {
-              Navigator.of(context).pop();
-              await _handleCreateSampleData(context);
-            },
-            child: Text(l10n.addSampleData),
-          ),
-        ],
-      ),
-    );
-  }
-
-  Future<void> _handleCreateSampleData(BuildContext context) async {
-    final manager = getService<TransactionsManager>();
-    final l10n = AppL10n.of(context);
-    try {
-      await manager.createSampleData();
-      if (context.mounted) {
-        ScaffoldMessenger.of(
-          context,
-        ).showSnackBar(SnackBar(content: Text(l10n.sampleDataCreated)));
-      }
-    } catch (e) {
-      if (context.mounted) {
-        ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(content: Text(l10n.sampleDataCreateFailed(e.toString()))),
-        );
-      }
-    }
-  }
-
   void _handleCreate(BuildContext context) {
     showDialog(
       context: context,
       builder: (_) => TransactionEditDialog(
-        onSave: (newTransaction) => _handleSaveCreate(context, newTransaction),
+        onSave: (newTransaction) => handleSaveCreate(context, newTransaction),
       ),
     );
-  }
-
-  Future<void> _handleSaveCreate(
-    BuildContext context,
-    Transaction transaction,
-  ) async {
-    final manager = getService<TransactionsManager>();
-    final l10n = AppL10n.of(context);
-    try {
-      await manager.addTransaction(transaction);
-      if (context.mounted) {
-        ScaffoldMessenger.of(
-          context,
-        ).showSnackBar(SnackBar(content: Text(l10n.transactionCreated)));
-      }
-    } catch (e) {
-      if (context.mounted) {
-        ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(content: Text(l10n.transactionCreateFailed(e.toString()))),
-        );
-      }
-    }
   }
 
   void _showTransactionDetails(BuildContext context, Transaction transaction) {
@@ -202,7 +119,7 @@ class _MobileTransactionsScreenState extends State<_MobileTransactionsScreen> {
       builder: (_) => TransactionDetailsDialog(
         transaction: transaction,
         onEdit: () => _handleEdit(context, transaction),
-        onDelete: () => _handleDelete(context, transaction),
+        onDelete: () => showDeleteConfirmation(context, transaction),
       ),
     );
   }
@@ -213,81 +130,9 @@ class _MobileTransactionsScreenState extends State<_MobileTransactionsScreen> {
       builder: (_) => TransactionEditDialog(
         transaction: transaction,
         onSave: (updatedTransaction) =>
-            _handleSaveEdit(context, updatedTransaction),
+            handleSaveEdit(context, updatedTransaction),
       ),
     );
-  }
-
-  Future<void> _handleSaveEdit(
-    BuildContext context,
-    Transaction transaction,
-  ) async {
-    final manager = getService<TransactionsManager>();
-    final l10n = AppL10n.of(context);
-    try {
-      await manager.updateTransaction(transaction);
-      if (context.mounted) {
-        ScaffoldMessenger.of(
-          context,
-        ).showSnackBar(SnackBar(content: Text(l10n.transactionUpdated)));
-      }
-    } catch (e) {
-      if (context.mounted) {
-        ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(content: Text(l10n.transactionUpdateFailed(e.toString()))),
-        );
-      }
-    }
-  }
-
-  void _handleDelete(BuildContext context, Transaction transaction) {
-    final l10n = AppL10n.of(context);
-    showDialog(
-      context: context,
-      builder: (dialogContext) => AlertDialog(
-        insetPadding: AppSpacing.paddingMd,
-        title: Text(l10n.confirmDelete),
-        content: Text(l10n.transactionsDeleteConfirmation),
-        actions: [
-          TextButton(
-            onPressed: () => Navigator.of(dialogContext).pop(),
-            child: Text(l10n.cancel),
-          ),
-          FilledButton(
-            onPressed: () async {
-              Navigator.of(dialogContext).pop();
-              await _performDelete(context, transaction);
-            },
-            style: FilledButton.styleFrom(
-              backgroundColor: Theme.of(context).colorScheme.error,
-            ),
-            child: Text(l10n.delete),
-          ),
-        ],
-      ),
-    );
-  }
-
-  Future<void> _performDelete(
-    BuildContext context,
-    Transaction transaction,
-  ) async {
-    final manager = getService<TransactionsManager>();
-    final l10n = AppL10n.of(context);
-    try {
-      await manager.deleteTransaction(transaction.id);
-      if (context.mounted) {
-        ScaffoldMessenger.of(
-          context,
-        ).showSnackBar(SnackBar(content: Text(l10n.transactionDeleted)));
-      }
-    } catch (e) {
-      if (context.mounted) {
-        ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(content: Text(l10n.transactionDeleteFailed(e.toString()))),
-        );
-      }
-    }
   }
 
   Widget _buildContent(
@@ -393,10 +238,10 @@ class _TabletTransactionsScreen extends WatchingStatefulWidget {
       _TabletTransactionsScreenState();
 }
 
-class _TabletTransactionsScreenState extends State<_TabletTransactionsScreen> {
+class _TabletTransactionsScreenState extends State<_TabletTransactionsScreen>
+    with TransactionActionsMixin {
   Transaction? selectedTransaction;
   bool isEditing = false;
-  bool _hasShownSampleDialog = false;
   bool _canSave = false;
   final _editFormKey = GlobalKey<TransactionEditFormState>();
 
@@ -412,24 +257,7 @@ class _TabletTransactionsScreenState extends State<_TabletTransactionsScreen> {
     final l10n = AppL10n.of(context);
 
     // Show sample data dialog once after initial load completes with no data
-    if (!_hasShownSampleDialog && !isLoading && transactions.isEmpty) {
-      WidgetsBinding.instance.addPostFrameCallback((_) async {
-        if (!mounted || _hasShownSampleDialog) return;
-
-        final manager = getService<TransactionsManager>();
-        final hasData = await manager.hasAnyData();
-
-        if (!mounted || _hasShownSampleDialog) return;
-
-        setState(() {
-          _hasShownSampleDialog = true;
-        });
-
-        if (context.mounted && !hasData) {
-          _showSampleDataDialog(context);
-        }
-      });
-    }
+    checkSampleDataDialog(isLoading, transactions.isEmpty);
 
     final manager = getService<TransactionsManager>();
 
@@ -594,7 +422,18 @@ class _TabletTransactionsScreenState extends State<_TabletTransactionsScreen> {
                 ),
               ),
               IconButton(
-                onPressed: () => _handleDelete(context, transaction),
+                onPressed: () => showDeleteConfirmation(
+                  context,
+                  transaction,
+                  onSuccess: () {
+                    setState(() {
+                      if (selectedTransaction?.id == transaction.id) {
+                        selectedTransaction = null;
+                        isEditing = false;
+                      }
+                    });
+                  },
+                ),
                 icon: AppIcons.delete,
                 tooltip: l10n.delete,
                 style: TextButton.styleFrom(
@@ -698,14 +537,28 @@ class _TabletTransactionsScreenState extends State<_TabletTransactionsScreen> {
                   },
                   onSave: (updatedTransaction) async {
                     if (selectedTransaction == null) {
-                      await _handleSaveCreate(context, updatedTransaction);
+                      await handleSaveCreate(
+                        context,
+                        updatedTransaction,
+                        onSuccess: () {
+                          setState(() {
+                            selectedTransaction = updatedTransaction;
+                            isEditing = false;
+                          });
+                        },
+                      );
                     } else {
-                      await _handleSaveEdit(context, updatedTransaction);
+                      await handleSaveEdit(
+                        context,
+                        updatedTransaction,
+                        onSuccess: () {
+                          setState(() {
+                            selectedTransaction = updatedTransaction;
+                            isEditing = false;
+                          });
+                        },
+                      );
                     }
-                    setState(() {
-                      selectedTransaction = updatedTransaction;
-                      isEditing = false;
-                    });
                   },
                 ),
               ),
@@ -727,158 +580,6 @@ class _TabletTransactionsScreenState extends State<_TabletTransactionsScreen> {
       return l10n.transactionTypeExpense;
     } else {
       return l10n.transactionTypeIncome;
-    }
-  }
-
-  void _showSampleDataDialog(BuildContext context) {
-    final l10n = AppL10n.of(context);
-    showDialog(
-      context: context,
-      builder: (context) => AlertDialog(
-        insetPadding: AppSpacing.paddingMd,
-        title: Text(l10n.transactionsEmptyState),
-        content: Text(l10n.transactionsAddSampleDataPrompt),
-        actions: [
-          TextButton(
-            onPressed: () => Navigator.of(context).pop(),
-            child: Text(l10n.cancel),
-          ),
-          FilledButton(
-            onPressed: () async {
-              Navigator.of(context).pop();
-              await _handleCreateSampleData(context);
-            },
-            child: Text(l10n.addSampleData),
-          ),
-        ],
-      ),
-    );
-  }
-
-  Future<void> _handleCreateSampleData(BuildContext context) async {
-    final manager = getService<TransactionsManager>();
-    final l10n = AppL10n.of(context);
-    try {
-      await manager.createSampleData();
-      if (context.mounted) {
-        ScaffoldMessenger.of(
-          context,
-        ).showSnackBar(SnackBar(content: Text(l10n.sampleDataCreated)));
-      }
-    } catch (e) {
-      if (context.mounted) {
-        ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(content: Text(l10n.sampleDataCreateFailed(e.toString()))),
-        );
-      }
-    }
-  }
-
-  Future<void> _handleSaveCreate(
-    BuildContext context,
-    Transaction transaction,
-  ) async {
-    final manager = getService<TransactionsManager>();
-    final l10n = AppL10n.of(context);
-    try {
-      await manager.addTransaction(transaction);
-      if (context.mounted) {
-        setState(() {
-          selectedTransaction = transaction;
-          isEditing = false;
-        });
-        ScaffoldMessenger.of(
-          context,
-        ).showSnackBar(SnackBar(content: Text(l10n.transactionCreated)));
-      }
-    } catch (e) {
-      if (context.mounted) {
-        ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(content: Text(l10n.transactionCreateFailed(e.toString()))),
-        );
-      }
-    }
-  }
-
-  Future<void> _handleSaveEdit(
-    BuildContext context,
-    Transaction transaction,
-  ) async {
-    final manager = getService<TransactionsManager>();
-    final l10n = AppL10n.of(context);
-    try {
-      await manager.updateTransaction(transaction);
-      if (context.mounted) {
-        setState(() {
-          selectedTransaction = transaction;
-          isEditing = false;
-        });
-        ScaffoldMessenger.of(
-          context,
-        ).showSnackBar(SnackBar(content: Text(l10n.transactionUpdated)));
-      }
-    } catch (e) {
-      if (context.mounted) {
-        ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(content: Text(l10n.transactionUpdateFailed(e.toString()))),
-        );
-      }
-    }
-  }
-
-  void _handleDelete(BuildContext context, Transaction transaction) {
-    final l10n = AppL10n.of(context);
-    showDialog(
-      context: context,
-      builder: (dialogContext) => AlertDialog(
-        insetPadding: AppSpacing.paddingMd,
-        title: Text(l10n.confirmDelete),
-        content: Text(l10n.transactionsDeleteConfirmation),
-        actions: [
-          TextButton(
-            onPressed: () => Navigator.of(dialogContext).pop(),
-            child: Text(l10n.cancel),
-          ),
-          FilledButton(
-            onPressed: () async {
-              Navigator.of(dialogContext).pop();
-              await _performDelete(context, transaction);
-            },
-            style: FilledButton.styleFrom(
-              backgroundColor: Theme.of(context).colorScheme.error,
-            ),
-            child: Text(l10n.delete),
-          ),
-        ],
-      ),
-    );
-  }
-
-  Future<void> _performDelete(
-    BuildContext context,
-    Transaction transaction,
-  ) async {
-    final manager = getService<TransactionsManager>();
-    final l10n = AppL10n.of(context);
-    try {
-      await manager.deleteTransaction(transaction.id);
-      if (context.mounted) {
-        setState(() {
-          if (selectedTransaction?.id == transaction.id) {
-            selectedTransaction = null;
-            isEditing = false;
-          }
-        });
-        ScaffoldMessenger.of(
-          context,
-        ).showSnackBar(SnackBar(content: Text(l10n.transactionDeleted)));
-      }
-    } catch (e) {
-      if (context.mounted) {
-        ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(content: Text(l10n.transactionDeleteFailed(e.toString()))),
-        );
-      }
     }
   }
 }
