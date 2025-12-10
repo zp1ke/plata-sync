@@ -50,31 +50,22 @@ class CategorySelector extends StatelessWidget {
             .where((category) => category.id == categoryId)
             .firstOrNull;
 
-        return SelectField<Category?>(
+        return SelectField<Category>(
           value: selectedCategory,
-          options: required ? categories : [null, ...categories],
+          options: categories,
           label: l10n.transactionCategoryLabel,
-          itemBuilder: (category) {
-            if (category == null) {
-              return Text(
-                '(${l10n.none})',
-                style: const TextStyle(fontStyle: FontStyle.italic),
-              );
-            }
-            return Row(
-              children: [
-                ObjectIcon(iconData: category.iconData, size: AppSizing.iconMd),
-                AppSpacing.gapHorizontalMd,
-                Expanded(
-                  child: Text(category.name, overflow: TextOverflow.ellipsis),
-                ),
-              ],
-            );
-          },
+          itemBuilder: (category) => Row(
+            children: [
+              ObjectIcon(iconData: category.iconData, size: AppSizing.iconMd),
+              AppSpacing.gapHorizontalMd,
+              Expanded(
+                child: Text(category.name, overflow: TextOverflow.ellipsis),
+              ),
+            ],
+          ),
           searchFilter: (category, query) =>
-              category == null ||
               category.name.toLowerCase().contains(query.toLowerCase()),
-          onChanged: (category) => onChanged(category?.id),
+          onChanged: (category) => onChanged(category.id),
           validator: (category) => validator?.call(category?.id),
           enabled: enabled,
         );
