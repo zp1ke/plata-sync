@@ -60,6 +60,14 @@ class InMemoryTransactionDataSource extends TransactionDataSource {
               item.createdAt.isAfter(entry.value as DateTime)) {
             return false;
           }
+          if (entry.key == 'tagIds') {
+            final filterTagIds = entry.value as List<String>;
+            // Check if transaction has any of the filter tags
+            final hasAnyTag = filterTagIds.any(
+              (tagId) => item.tagIds.contains(tagId),
+            );
+            if (!hasAnyTag) return false;
+          }
         }
         return true;
       }).toList();

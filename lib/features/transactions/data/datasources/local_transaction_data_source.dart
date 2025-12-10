@@ -116,6 +116,17 @@ class LocalTransactionDataSource extends TransactionDataSource {
         args.add((filter['to'] as DateTime).millisecondsSinceEpoch);
       }
 
+      if (filter.containsKey('tagIds')) {
+        final tagIds = filter['tagIds'] as List<String>;
+        // Create OR conditions for each tag
+        final tagConditions = tagIds.map((_) => 'tag_ids LIKE ?').toList();
+        conditions.add('(${tagConditions.join(' OR ')})');
+        // Add wildcards for LIKE search
+        for (var tagId in tagIds) {
+          args.add('%$tagId%');
+        }
+      }
+
       if (conditions.isNotEmpty) {
         where = conditions.join(' AND ');
         whereArgs = args;

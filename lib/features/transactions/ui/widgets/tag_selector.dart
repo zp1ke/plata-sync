@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import '../../../../core/di/service_locator.dart';
 import '../../../../core/ui/resources/app_icons.dart';
-import '../../../../core/ui/resources/app_spacing.dart';
 import '../../../../core/ui/widgets/dialog.dart';
 import '../../../../core/ui/widgets/input_decoration.dart';
 import '../../../tags/application/tags_manager.dart';
