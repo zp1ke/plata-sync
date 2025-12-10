@@ -1,15 +1,15 @@
 import 'package:get_it/get_it.dart';
 import 'package:package_info_plus/package_info_plus.dart';
-import 'package:plata_sync/core/services/database_service.dart';
-import 'package:plata_sync/core/services/settings_service.dart';
-import 'package:plata_sync/features/accounts/application/accounts_manager.dart';
-import 'package:plata_sync/features/accounts/data/interfaces/account_data_source.dart';
-import 'package:plata_sync/features/categories/application/categories_manager.dart';
-import 'package:plata_sync/features/categories/data/interfaces/category_data_source.dart';
-import 'package:plata_sync/features/tags/application/tags_manager.dart';
-import 'package:plata_sync/features/tags/data/interfaces/tag_data_source.dart';
-import 'package:plata_sync/features/transactions/application/transactions_manager.dart';
-import 'package:plata_sync/features/transactions/data/interfaces/transaction_data_source.dart';
+import '../services/database_service.dart';
+import '../services/settings_service.dart';
+import '../../features/accounts/application/accounts_manager.dart';
+import '../../features/accounts/data/interfaces/account_data_source.dart';
+import '../../features/categories/application/categories_manager.dart';
+import '../../features/categories/data/interfaces/category_data_source.dart';
+import '../../features/tags/application/tags_manager.dart';
+import '../../features/tags/data/interfaces/tag_data_source.dart';
+import '../../features/transactions/application/transactions_manager.dart';
+import '../../features/transactions/data/interfaces/transaction_data_source.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 final getIt = GetIt.instance;

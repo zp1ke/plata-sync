@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:plata_sync/core/ui/widgets/responsive_layout.dart';
-import 'package:plata_sync/features/transactions/ui/screens/mobile_transactions_screen.dart';
-import 'package:plata_sync/features/transactions/ui/screens/tablet_transactions_screen.dart';
+import '../../../../core/ui/widgets/responsive_layout.dart';
+import 'mobile_transactions_screen.dart';
+import 'tablet_transactions_screen.dart';
 
 class TransactionsScreen extends StatelessWidget {
   const TransactionsScreen({super.key});

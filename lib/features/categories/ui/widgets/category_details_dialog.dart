@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:plata_sync/core/ui/resources/app_icons.dart';
-import 'package:plata_sync/core/ui/widgets/dialog.dart';
-import 'package:plata_sync/features/categories/domain/entities/category.dart';
-import 'package:plata_sync/features/categories/ui/widgets/category_details_view.dart';
-import 'package:plata_sync/l10n/app_localizations.dart';
+import '../../../../core/ui/resources/app_icons.dart';
+import '../../../../core/ui/widgets/dialog.dart';
+import '../../domain/entities/category.dart';
+import 'category_details_view.dart';
+import '../../../../l10n/app_localizations.dart';
 
 class CategoryDetailsDialog extends StatelessWidget {
   final Category category;

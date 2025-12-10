@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:plata_sync/core/ui/resources/app_colors.dart';
-import 'package:plata_sync/core/ui/resources/app_sizing.dart';
-import 'package:plata_sync/core/ui/resources/app_spacing.dart';
+import 'app_colors.dart';
+import 'app_sizing.dart';
+import 'app_spacing.dart';
 
 /// Light theme configuration
 ThemeData get lightTheme => _theme(lightScheme());

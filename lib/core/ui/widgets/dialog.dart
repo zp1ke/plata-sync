@@ -1,11 +1,11 @@
 import 'dart:math';
 
 import 'package:flutter/material.dart';
-import 'package:plata_sync/core/model/object_icon_data.dart';
-import 'package:plata_sync/core/ui/resources/app_icons.dart';
-import 'package:plata_sync/core/ui/resources/app_sizing.dart';
-import 'package:plata_sync/core/ui/resources/app_spacing.dart';
-import 'package:plata_sync/core/ui/widgets/object_icon.dart';
+import '../../model/object_icon_data.dart';
+import '../resources/app_icons.dart';
+import '../resources/app_sizing.dart';
+import '../resources/app_spacing.dart';
+import 'object_icon.dart';
 
 class AppDialog extends StatelessWidget {
   const AppDialog({

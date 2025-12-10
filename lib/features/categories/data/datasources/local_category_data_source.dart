@@ -1,8 +1,8 @@
-import 'package:plata_sync/core/data/models/sort_param.dart';
-import 'package:plata_sync/core/model/object_icon_data.dart';
-import 'package:plata_sync/core/services/database_service.dart';
-import 'package:plata_sync/features/categories/data/interfaces/category_data_source.dart';
-import 'package:plata_sync/features/categories/domain/entities/category.dart';
+import '../../../../core/data/models/sort_param.dart';
+import '../../../../core/model/object_icon_data.dart';
+import '../../../../core/services/database_service.dart';
+import '../interfaces/category_data_source.dart';
+import '../../domain/entities/category.dart';
 import 'package:sqflite/sqflite.dart';
 
 class LocalCategoryDataSource extends CategoryDataSource {

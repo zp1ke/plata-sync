@@ -1,9 +1,9 @@
-import 'package:plata_sync/core/data/models/sort_param.dart';
-import 'package:plata_sync/core/model/enums/data_source_type.dart';
-import 'package:plata_sync/core/services/database_service.dart';
-import 'package:plata_sync/features/tags/data/datasources/in_memory_tag_data_source.dart';
-import 'package:plata_sync/features/tags/data/datasources/local_tag_data_source.dart';
-import 'package:plata_sync/features/tags/domain/entities/tag.dart';
+import '../../../../core/data/models/sort_param.dart';
+import '../../../../core/model/enums/data_source_type.dart';
+import '../../../../core/services/database_service.dart';
+import '../datasources/in_memory_tag_data_source.dart';
+import '../datasources/local_tag_data_source.dart';
+import '../../domain/entities/tag.dart';
 
 /// Data source interface for Tag operations
 abstract class TagDataSource {

@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:hugeicons/hugeicons.dart';
-import 'package:plata_sync/core/ui/resources/app_sizing.dart';
-import 'package:plata_sync/l10n/app_localizations.dart';
+import 'app_sizing.dart';
+import '../../../l10n/app_localizations.dart';
 
 /// A centralized collection of application icons.
 /// HugeIcons are used: https://hugeicons.com/icons?style=Stroke&type=Rounded

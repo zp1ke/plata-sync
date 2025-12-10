@@ -1,4 +1,4 @@
-import 'package:plata_sync/core/data/models/sort_param.dart';
+import '../models/sort_param.dart';
 
 abstract class DataSource<T> {
   Future<bool> hasData();

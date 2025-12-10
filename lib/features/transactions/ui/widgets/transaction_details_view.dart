@@ -1,21 +1,21 @@
 import 'package:flutter/material.dart';
-import 'package:plata_sync/core/di/service_locator.dart';
-import 'package:plata_sync/core/model/object_icon_data.dart';
-import 'package:plata_sync/core/ui/resources/app_colors.dart';
-import 'package:plata_sync/core/ui/resources/app_icons.dart';
-import 'package:plata_sync/core/ui/resources/app_sizing.dart';
-import 'package:plata_sync/core/ui/resources/app_spacing.dart';
-import 'package:plata_sync/core/ui/widgets/object_icon.dart';
-import 'package:plata_sync/core/utils/datetime.dart';
-import 'package:plata_sync/core/utils/numbers.dart';
-import 'package:plata_sync/features/accounts/application/accounts_manager.dart';
-import 'package:plata_sync/features/accounts/domain/entities/account.dart';
-import 'package:plata_sync/features/categories/application/categories_manager.dart';
-import 'package:plata_sync/features/categories/domain/entities/category.dart';
-import 'package:plata_sync/features/tags/application/tags_manager.dart';
-import 'package:plata_sync/features/tags/domain/entities/tag.dart';
-import 'package:plata_sync/features/transactions/domain/entities/transaction.dart';
-import 'package:plata_sync/l10n/app_localizations.dart';
+import '../../../../core/di/service_locator.dart';
+import '../../../../core/model/object_icon_data.dart';
+import '../../../../core/ui/resources/app_colors.dart';
+import '../../../../core/ui/resources/app_icons.dart';
+import '../../../../core/ui/resources/app_sizing.dart';
+import '../../../../core/ui/resources/app_spacing.dart';
+import '../../../../core/ui/widgets/object_icon.dart';
+import '../../../../core/utils/datetime.dart';
+import '../../../../core/utils/numbers.dart';
+import '../../../accounts/application/accounts_manager.dart';
+import '../../../accounts/domain/entities/account.dart';
+import '../../../categories/application/categories_manager.dart';
+import '../../../categories/domain/entities/category.dart';
+import '../../../tags/application/tags_manager.dart';
+import '../../../tags/domain/entities/tag.dart';
+import '../../domain/entities/transaction.dart';
+import '../../../../l10n/app_localizations.dart';
 
 /// A reusable widget that displays transaction details.
 class TransactionDetailsView extends StatefulWidget {

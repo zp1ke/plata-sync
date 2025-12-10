@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:plata_sync/core/ui/widgets/responsive_grid_view.dart';
-import 'package:plata_sync/features/transactions/domain/entities/transaction.dart';
-import 'package:plata_sync/features/transactions/ui/widgets/transaction_grid_item.dart';
+import '../../../../core/ui/widgets/responsive_grid_view.dart';
+import '../../domain/entities/transaction.dart';
+import 'transaction_grid_item.dart';
 
 class TransactionGridView extends StatelessWidget {
   final List<Transaction> transactions;

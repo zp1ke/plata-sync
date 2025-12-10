@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:plata_sync/core/di/service_locator.dart';
-import 'package:plata_sync/core/ui/resources/app_spacing.dart';
-import 'package:plata_sync/features/transactions/application/transactions_manager.dart';
-import 'package:plata_sync/features/transactions/domain/entities/transaction.dart';
-import 'package:plata_sync/l10n/app_localizations.dart';
+import '../../../../core/di/service_locator.dart';
+import '../../../../core/ui/resources/app_spacing.dart';
+import '../../application/transactions_manager.dart';
+import '../../domain/entities/transaction.dart';
+import '../../../../l10n/app_localizations.dart';
 
 mixin TransactionActionsMixin<T extends StatefulWidget> on State<T> {
   bool hasShownSampleDialog = false;

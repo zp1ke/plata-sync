@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:plata_sync/core/ui/resources/app_spacing.dart';
-import 'package:plata_sync/core/ui/widgets/object_icon.dart';
-import 'package:plata_sync/features/categories/domain/entities/category.dart';
+import '../../../../core/ui/resources/app_spacing.dart';
+import '../../../../core/ui/widgets/object_icon.dart';
+import '../../domain/entities/category.dart';
 
 class CategoryListView extends StatelessWidget {
   final List<Category> categories;

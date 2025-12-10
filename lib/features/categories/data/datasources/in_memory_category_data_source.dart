@@ -1,6 +1,6 @@
-import 'package:plata_sync/core/data/models/sort_param.dart';
-import 'package:plata_sync/features/categories/data/interfaces/category_data_source.dart';
-import 'package:plata_sync/features/categories/domain/entities/category.dart';
+import '../../../../core/data/models/sort_param.dart';
+import '../interfaces/category_data_source.dart';
+import '../../domain/entities/category.dart';
 
 class InMemoryCategoryDataSource extends CategoryDataSource {
   InMemoryCategoryDataSource({int delayMilliseconds = 300})

@@ -1,6 +1,6 @@
-import 'package:plata_sync/core/data/models/sort_param.dart';
-import 'package:plata_sync/features/accounts/data/interfaces/account_data_source.dart';
-import 'package:plata_sync/features/accounts/domain/entities/account.dart';
+import '../../../../core/data/models/sort_param.dart';
+import '../interfaces/account_data_source.dart';
+import '../../domain/entities/account.dart';
 
 class InMemoryAccountDataSource extends AccountDataSource {
   InMemoryAccountDataSource({int delayMilliseconds = 300})

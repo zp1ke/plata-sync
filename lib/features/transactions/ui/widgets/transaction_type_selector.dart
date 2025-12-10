@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:plata_sync/l10n/app_localizations.dart';
+import '../../../../l10n/app_localizations.dart';
 
 enum TransactionType { expense, income, transfer }
 

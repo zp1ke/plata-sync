@@ -1,8 +1,8 @@
 import 'dart:async';
 
 import 'package:flutter/material.dart';
-import 'package:plata_sync/core/ui/resources/app_icons.dart';
-import 'package:plata_sync/core/ui/resources/app_spacing.dart';
+import '../resources/app_icons.dart';
+import '../resources/app_spacing.dart';
 
 import '../resources/app_sizing.dart';
 

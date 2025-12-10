@@ -1,15 +1,15 @@
 import 'package:flutter/material.dart';
-import 'package:plata_sync/core/model/enums/view_mode.dart';
-import 'package:plata_sync/core/ui/resources/app_icons.dart';
-import 'package:plata_sync/core/ui/resources/app_sizing.dart';
-import 'package:plata_sync/core/ui/resources/app_spacing.dart';
-import 'package:plata_sync/core/ui/widgets/sort_selector.dart';
-import 'package:plata_sync/core/ui/widgets/view_toggle.dart';
-import 'package:plata_sync/features/transactions/application/transactions_manager.dart';
-import 'package:plata_sync/features/transactions/model/enums/sort_order.dart';
-import 'package:plata_sync/features/transactions/ui/utils/transaction_ui_utils.dart';
-import 'package:plata_sync/features/transactions/ui/widgets/transaction_filter_dialog.dart';
-import 'package:plata_sync/l10n/app_localizations.dart';
+import '../../../../core/model/enums/view_mode.dart';
+import '../../../../core/ui/resources/app_icons.dart';
+import '../../../../core/ui/resources/app_sizing.dart';
+import '../../../../core/ui/resources/app_spacing.dart';
+import '../../../../core/ui/widgets/sort_selector.dart';
+import '../../../../core/ui/widgets/view_toggle.dart';
+import '../../application/transactions_manager.dart';
+import '../../model/enums/sort_order.dart';
+import '../utils/transaction_ui_utils.dart';
+import 'transaction_filter_dialog.dart';
+import '../../../../l10n/app_localizations.dart';
 import 'package:watch_it/watch_it.dart';
 
 class TransactionsBottomBar extends WatchingWidget

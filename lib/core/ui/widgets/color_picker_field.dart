@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:plata_sync/core/ui/resources/app_sizing.dart';
-import 'package:plata_sync/core/ui/resources/app_spacing.dart';
-import 'package:plata_sync/core/ui/widgets/dialog.dart';
-import 'package:plata_sync/core/utils/colors.dart';
-import 'package:plata_sync/l10n/app_localizations.dart';
+import '../resources/app_sizing.dart';
+import '../resources/app_spacing.dart';
+import 'dialog.dart';
+import '../../utils/colors.dart';
+import '../../../l10n/app_localizations.dart';
 
 /// A form field that allows users to pick a color from a predefined palette.
 class ColorPickerField extends StatelessWidget {

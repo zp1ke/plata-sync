@@ -1,6 +1,6 @@
-import 'package:plata_sync/core/data/models/sort_param.dart';
-import 'package:plata_sync/features/tags/data/interfaces/tag_data_source.dart';
-import 'package:plata_sync/features/tags/domain/entities/tag.dart';
+import '../../../../core/data/models/sort_param.dart';
+import '../interfaces/tag_data_source.dart';
+import '../../domain/entities/tag.dart';
 
 /// In-memory implementation of TagDataSource for testing and development
 class InMemoryTagDataSource implements TagDataSource {

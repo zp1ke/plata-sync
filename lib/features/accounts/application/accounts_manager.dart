@@ -1,11 +1,11 @@
 import 'package:flutter/foundation.dart';
-import 'package:plata_sync/core/di/service_locator.dart';
-import 'package:plata_sync/core/model/enums/view_mode.dart';
-import 'package:plata_sync/core/model/object_icon_data.dart';
-import 'package:plata_sync/core/services/settings_service.dart';
-import 'package:plata_sync/features/accounts/data/interfaces/account_data_source.dart';
-import 'package:plata_sync/features/accounts/domain/entities/account.dart';
-import 'package:plata_sync/features/accounts/model/enums/sort_order.dart';
+import '../../../core/di/service_locator.dart';
+import '../../../core/model/enums/view_mode.dart';
+import '../../../core/model/object_icon_data.dart';
+import '../../../core/services/settings_service.dart';
+import '../data/interfaces/account_data_source.dart';
+import '../domain/entities/account.dart';
+import '../model/enums/sort_order.dart';
 
 class AccountsManager {
   final AccountDataSource _dataSource;

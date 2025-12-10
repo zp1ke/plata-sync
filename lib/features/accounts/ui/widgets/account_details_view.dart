@@ -1,13 +1,13 @@
 import 'package:flutter/material.dart';
-import 'package:plata_sync/core/ui/resources/app_colors.dart';
-import 'package:plata_sync/core/ui/resources/app_icons.dart';
-import 'package:plata_sync/core/ui/resources/app_sizing.dart';
-import 'package:plata_sync/core/ui/resources/app_spacing.dart';
-import 'package:plata_sync/core/utils/colors.dart';
-import 'package:plata_sync/core/utils/datetime.dart';
-import 'package:plata_sync/core/utils/numbers.dart';
-import 'package:plata_sync/features/accounts/domain/entities/account.dart';
-import 'package:plata_sync/l10n/app_localizations.dart';
+import '../../../../core/ui/resources/app_colors.dart';
+import '../../../../core/ui/resources/app_icons.dart';
+import '../../../../core/ui/resources/app_sizing.dart';
+import '../../../../core/ui/resources/app_spacing.dart';
+import '../../../../core/utils/colors.dart';
+import '../../../../core/utils/datetime.dart';
+import '../../../../core/utils/numbers.dart';
+import '../../domain/entities/account.dart';
+import '../../../../l10n/app_localizations.dart';
 
 /// A reusable widget that displays account details.
 /// Can be used in dialogs or inline in detail panes.

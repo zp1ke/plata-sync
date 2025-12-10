@@ -1,14 +1,14 @@
 import 'package:flutter/material.dart';
-import 'package:plata_sync/core/di/service_locator.dart';
-import 'package:plata_sync/core/ui/resources/app_icons.dart';
-import 'package:plata_sync/core/ui/resources/app_sizing.dart';
-import 'package:plata_sync/core/ui/resources/app_spacing.dart';
-import 'package:plata_sync/core/ui/widgets/input_decoration.dart';
-import 'package:plata_sync/core/ui/widgets/object_icon.dart';
-import 'package:plata_sync/core/ui/widgets/select_field.dart';
-import 'package:plata_sync/features/categories/application/categories_manager.dart';
-import 'package:plata_sync/features/categories/domain/entities/category.dart';
-import 'package:plata_sync/l10n/app_localizations.dart';
+import '../../../../core/di/service_locator.dart';
+import '../../../../core/ui/resources/app_icons.dart';
+import '../../../../core/ui/resources/app_sizing.dart';
+import '../../../../core/ui/resources/app_spacing.dart';
+import '../../../../core/ui/widgets/input_decoration.dart';
+import '../../../../core/ui/widgets/object_icon.dart';
+import '../../../../core/ui/widgets/select_field.dart';
+import '../../../categories/application/categories_manager.dart';
+import '../../../categories/domain/entities/category.dart';
+import '../../../../l10n/app_localizations.dart';
 
 /// A widget that allows selecting a category from available categories
 class CategorySelector extends StatelessWidget {

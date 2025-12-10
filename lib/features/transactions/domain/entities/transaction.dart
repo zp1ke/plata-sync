@@ -1,5 +1,5 @@
 import 'package:equatable/equatable.dart';
-import 'package:plata_sync/core/utils/random.dart';
+import '../../../../core/utils/random.dart';
 
 class Transaction extends Equatable {
   final String id;

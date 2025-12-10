@@ -1,7 +1,7 @@
 import 'package:flutter/foundation.dart';
-import 'package:plata_sync/core/utils/random.dart';
-import 'package:plata_sync/features/tags/data/interfaces/tag_data_source.dart';
-import 'package:plata_sync/features/tags/domain/entities/tag.dart';
+import '../../../core/utils/random.dart';
+import '../data/interfaces/tag_data_source.dart';
+import '../domain/entities/tag.dart';
 
 class TagsManager {
   final TagDataSource _dataSource;

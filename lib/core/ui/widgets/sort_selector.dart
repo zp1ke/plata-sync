@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:plata_sync/core/ui/resources/app_icons.dart';
-import 'package:plata_sync/core/ui/resources/app_sizing.dart';
-import 'package:plata_sync/core/ui/resources/app_spacing.dart';
+import '../resources/app_icons.dart';
+import '../resources/app_sizing.dart';
+import '../resources/app_spacing.dart';
 
 /// A generic sort selector widget that displays a dropdown menu with sort options.
 ///

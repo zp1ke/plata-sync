@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:plata_sync/core/ui/resources/app_spacing.dart';
-import 'package:plata_sync/core/ui/widgets/object_icon.dart';
-import 'package:plata_sync/core/ui/widgets/responsive_grid_view.dart';
-import 'package:plata_sync/features/categories/domain/entities/category.dart';
+import '../../../../core/ui/resources/app_spacing.dart';
+import '../../../../core/ui/widgets/object_icon.dart';
+import '../../../../core/ui/widgets/responsive_grid_view.dart';
+import '../../domain/entities/category.dart';
 
 class CategoryGridView extends StatelessWidget {
   final List<Category> categories;

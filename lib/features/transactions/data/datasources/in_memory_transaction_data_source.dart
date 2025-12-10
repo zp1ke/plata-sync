@@ -1,6 +1,6 @@
-import 'package:plata_sync/core/data/models/sort_param.dart';
-import 'package:plata_sync/features/transactions/data/interfaces/transaction_data_source.dart';
-import 'package:plata_sync/features/transactions/domain/entities/transaction.dart';
+import '../../../../core/data/models/sort_param.dart';
+import '../interfaces/transaction_data_source.dart';
+import '../../domain/entities/transaction.dart';
 
 class InMemoryTransactionDataSource extends TransactionDataSource {
   InMemoryTransactionDataSource({int delayMilliseconds = 300})

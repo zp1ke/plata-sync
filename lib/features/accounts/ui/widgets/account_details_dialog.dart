@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:plata_sync/core/ui/resources/app_icons.dart';
-import 'package:plata_sync/core/ui/widgets/dialog.dart';
-import 'package:plata_sync/features/accounts/domain/entities/account.dart';
-import 'package:plata_sync/features/accounts/ui/widgets/account_details_view.dart';
-import 'package:plata_sync/l10n/app_localizations.dart';
+import '../../../../core/ui/resources/app_icons.dart';
+import '../../../../core/ui/widgets/dialog.dart';
+import '../../domain/entities/account.dart';
+import 'account_details_view.dart';
+import '../../../../l10n/app_localizations.dart';
 
 class AccountDetailsDialog extends StatelessWidget {
   final Account account;

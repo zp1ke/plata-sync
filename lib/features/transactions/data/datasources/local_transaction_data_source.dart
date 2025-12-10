@@ -1,8 +1,7 @@
-import 'package:plata_sync/core/data/models/sort_param.dart';
-import 'package:plata_sync/core/services/database_service.dart';
-import 'package:plata_sync/features/transactions/data/interfaces/transaction_data_source.dart';
-import 'package:plata_sync/features/transactions/domain/entities/transaction.dart'
-    as model;
+import '../../../../core/data/models/sort_param.dart';
+import '../../../../core/services/database_service.dart';
+import '../interfaces/transaction_data_source.dart';
+import '../../domain/entities/transaction.dart' as model;
 import 'package:sqflite/sqflite.dart';
 
 class LocalTransactionDataSource extends TransactionDataSource {

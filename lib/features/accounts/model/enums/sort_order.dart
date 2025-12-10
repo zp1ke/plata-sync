@@ -1,5 +1,5 @@
-import 'package:plata_sync/core/data/models/sort_param.dart';
-import 'package:plata_sync/core/model/sort_param_provider.dart';
+import '../../../../core/data/models/sort_param.dart';
+import '../../../../core/model/sort_param_provider.dart';
 
 enum AccountSortOrder implements SortParamProvider {
   nameAsc(isDescending: false),

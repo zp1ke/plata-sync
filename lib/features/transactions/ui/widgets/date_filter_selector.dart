@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:plata_sync/core/ui/resources/app_icons.dart';
-import 'package:plata_sync/core/ui/resources/app_sizing.dart';
-import 'package:plata_sync/core/ui/resources/app_spacing.dart';
-import 'package:plata_sync/features/transactions/model/enums/date_filter.dart';
+import '../../../../core/ui/resources/app_icons.dart';
+import '../../../../core/ui/resources/app_sizing.dart';
+import '../../../../core/ui/resources/app_spacing.dart';
+import '../../model/enums/date_filter.dart';
 
 class DateFilterSelector extends StatelessWidget {
   final DateFilter value;

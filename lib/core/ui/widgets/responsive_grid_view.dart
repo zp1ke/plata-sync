@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:plata_sync/core/ui/resources/app_spacing.dart';
+import '../resources/app_spacing.dart';
 
 /// A responsive grid view that adjusts column count and aspect ratio based on available width
 class ResponsiveGridView extends StatelessWidget {

@@ -1,10 +1,10 @@
 import 'package:package_info_plus/package_info_plus.dart';
-import 'package:plata_sync/core/model/enums/data_source_type.dart';
-import 'package:plata_sync/core/model/enums/date_format_type.dart';
-import 'package:plata_sync/core/model/enums/time_format_type.dart';
-import 'package:plata_sync/features/accounts/model/enums/sort_order.dart';
-import 'package:plata_sync/features/categories/model/enums/sort_order.dart';
-import 'package:plata_sync/features/transactions/model/enums/sort_order.dart';
+import '../model/enums/data_source_type.dart';
+import '../model/enums/date_format_type.dart';
+import '../model/enums/time_format_type.dart';
+import '../../features/accounts/model/enums/sort_order.dart';
+import '../../features/categories/model/enums/sort_order.dart';
+import '../../features/transactions/model/enums/sort_order.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 /// Service for managing application settings using SharedPreferences

@@ -1,11 +1,11 @@
 import 'package:flutter/foundation.dart' hide Category;
-import 'package:plata_sync/core/di/service_locator.dart';
-import 'package:plata_sync/core/model/enums/view_mode.dart';
-import 'package:plata_sync/core/model/object_icon_data.dart';
-import 'package:plata_sync/core/services/settings_service.dart';
-import 'package:plata_sync/features/categories/data/interfaces/category_data_source.dart';
-import 'package:plata_sync/features/categories/domain/entities/category.dart';
-import 'package:plata_sync/features/categories/model/enums/sort_order.dart';
+import '../../../core/di/service_locator.dart';
+import '../../../core/model/enums/view_mode.dart';
+import '../../../core/model/object_icon_data.dart';
+import '../../../core/services/settings_service.dart';
+import '../data/interfaces/category_data_source.dart';
+import '../domain/entities/category.dart';
+import '../model/enums/sort_order.dart';
 
 class CategoriesManager {
   final CategoryDataSource _dataSource;

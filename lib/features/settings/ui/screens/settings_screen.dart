@@ -1,16 +1,16 @@
 import 'dart:io';
 
 import 'package:flutter/material.dart';
-import 'package:plata_sync/core/di/service_locator.dart';
-import 'package:plata_sync/core/model/enums/data_source_type.dart';
-import 'package:plata_sync/core/model/enums/date_format_type.dart';
-import 'package:plata_sync/core/model/enums/time_format_type.dart';
-import 'package:plata_sync/core/services/settings_service.dart';
-import 'package:plata_sync/core/ui/resources/app_icons.dart';
-import 'package:plata_sync/core/ui/resources/app_sizing.dart';
-import 'package:plata_sync/core/ui/resources/app_spacing.dart';
-import 'package:plata_sync/core/ui/widgets/constrained_list_view.dart';
-import 'package:plata_sync/l10n/app_localizations.dart';
+import '../../../../core/di/service_locator.dart';
+import '../../../../core/model/enums/data_source_type.dart';
+import '../../../../core/model/enums/date_format_type.dart';
+import '../../../../core/model/enums/time_format_type.dart';
+import '../../../../core/services/settings_service.dart';
+import '../../../../core/ui/resources/app_icons.dart';
+import '../../../../core/ui/resources/app_sizing.dart';
+import '../../../../core/ui/resources/app_spacing.dart';
+import '../../../../core/ui/widgets/constrained_list_view.dart';
+import '../../../../l10n/app_localizations.dart';
 import 'package:restart_app/restart_app.dart';
 import 'package:watch_it/watch_it.dart';
 

@@ -1,8 +1,8 @@
-import 'package:plata_sync/core/data/models/sort_param.dart';
-import 'package:plata_sync/core/model/object_icon_data.dart';
-import 'package:plata_sync/core/services/database_service.dart';
-import 'package:plata_sync/features/accounts/data/interfaces/account_data_source.dart';
-import 'package:plata_sync/features/accounts/domain/entities/account.dart';
+import '../../../../core/data/models/sort_param.dart';
+import '../../../../core/model/object_icon_data.dart';
+import '../../../../core/services/database_service.dart';
+import '../interfaces/account_data_source.dart';
+import '../../domain/entities/account.dart';
 import 'package:sqflite/sqflite.dart';
 
 class LocalAccountDataSource extends AccountDataSource {

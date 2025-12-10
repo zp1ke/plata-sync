@@ -1,9 +1,9 @@
-import 'package:plata_sync/core/data/interfaces/data_source.dart';
-import 'package:plata_sync/core/model/enums/data_source_type.dart';
-import 'package:plata_sync/core/services/database_service.dart';
-import 'package:plata_sync/features/categories/data/datasources/in_memory_category_data_source.dart';
-import 'package:plata_sync/features/categories/data/datasources/local_category_data_source.dart';
-import 'package:plata_sync/features/categories/domain/entities/category.dart';
+import '../../../../core/data/interfaces/data_source.dart';
+import '../../../../core/model/enums/data_source_type.dart';
+import '../../../../core/services/database_service.dart';
+import '../datasources/in_memory_category_data_source.dart';
+import '../datasources/local_category_data_source.dart';
+import '../../domain/entities/category.dart';
 
 abstract class CategoryDataSource extends DataSource<Category> {
   static CategoryDataSource createDataSource(

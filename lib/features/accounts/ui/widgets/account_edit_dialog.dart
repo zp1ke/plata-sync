@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:plata_sync/core/ui/widgets/dialog.dart';
-import 'package:plata_sync/features/accounts/domain/entities/account.dart';
-import 'package:plata_sync/features/accounts/ui/widgets/account_edit_form.dart';
-import 'package:plata_sync/l10n/app_localizations.dart';
+import '../../../../core/ui/widgets/dialog.dart';
+import '../../domain/entities/account.dart';
+import 'account_edit_form.dart';
+import '../../../../l10n/app_localizations.dart';
 
 class AccountEditDialog extends StatelessWidget {
   final Account? account;

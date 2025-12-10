@@ -1,6 +1,6 @@
-import 'package:plata_sync/features/transactions/model/enums/date_filter.dart';
-import 'package:plata_sync/features/transactions/model/enums/sort_order.dart';
-import 'package:plata_sync/l10n/app_localizations.dart';
+import '../../model/enums/date_filter.dart';
+import '../../model/enums/sort_order.dart';
+import '../../../../l10n/app_localizations.dart';
 
 String getDateFilterLabel(AppL10n l10n, DateFilter filter) {
   switch (filter) {

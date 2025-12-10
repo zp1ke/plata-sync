@@ -1,12 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:plata_sync/core/ui/resources/app_icons.dart';
-import 'package:plata_sync/core/ui/resources/app_sizing.dart';
-import 'package:plata_sync/core/ui/resources/app_spacing.dart';
-import 'package:plata_sync/core/ui/widgets/calculator_keyboard.dart';
-import 'package:plata_sync/core/ui/widgets/input_decoration.dart';
-import 'package:plata_sync/core/utils/numbers.dart';
-import 'package:plata_sync/l10n/app_localizations.dart';
+import '../resources/app_icons.dart';
+import '../resources/app_sizing.dart';
+import '../resources/app_spacing.dart';
+import 'calculator_keyboard.dart';
+import 'input_decoration.dart';
+import '../../utils/numbers.dart';
+import '../../../l10n/app_localizations.dart';
 
 /// A text form field specifically designed for currency input.
 class CurrencyInputField extends StatelessWidget {

@@ -1,9 +1,9 @@
-import 'package:plata_sync/core/data/interfaces/data_source.dart';
-import 'package:plata_sync/core/model/enums/data_source_type.dart';
-import 'package:plata_sync/core/services/database_service.dart';
-import 'package:plata_sync/features/accounts/data/datasources/in_memory_account_data_source.dart';
-import 'package:plata_sync/features/accounts/data/datasources/local_account_data_source.dart';
-import 'package:plata_sync/features/accounts/domain/entities/account.dart';
+import '../../../../core/data/interfaces/data_source.dart';
+import '../../../../core/model/enums/data_source_type.dart';
+import '../../../../core/services/database_service.dart';
+import '../datasources/in_memory_account_data_source.dart';
+import '../datasources/local_account_data_source.dart';
+import '../../domain/entities/account.dart';
 
 abstract class AccountDataSource extends DataSource<Account> {
   static AccountDataSource createDataSource(

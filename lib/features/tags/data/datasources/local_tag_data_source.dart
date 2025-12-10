@@ -1,7 +1,7 @@
-import 'package:plata_sync/core/data/models/sort_param.dart';
-import 'package:plata_sync/core/services/database_service.dart';
-import 'package:plata_sync/features/tags/data/interfaces/tag_data_source.dart';
-import 'package:plata_sync/features/tags/domain/entities/tag.dart';
+import '../../../../core/data/models/sort_param.dart';
+import '../../../../core/services/database_service.dart';
+import '../interfaces/tag_data_source.dart';
+import '../../domain/entities/tag.dart';
 import 'package:sqflite/sqflite.dart';
 
 /// Local SQLite implementation of TagDataSource

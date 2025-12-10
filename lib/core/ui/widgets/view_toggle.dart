@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:plata_sync/core/model/enums/view_mode.dart';
-import 'package:plata_sync/core/ui/resources/app_icons.dart';
-import 'package:plata_sync/l10n/app_localizations.dart';
+import '../../model/enums/view_mode.dart';
+import '../resources/app_icons.dart';
+import '../../../l10n/app_localizations.dart';
 
 /// A view toggle widget that allows switching between list and grid view modes.
 class ViewToggle extends StatelessWidget {

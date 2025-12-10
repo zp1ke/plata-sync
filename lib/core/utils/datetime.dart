@@ -1,8 +1,8 @@
 import 'package:intl/intl.dart';
-import 'package:plata_sync/core/di/service_locator.dart';
-import 'package:plata_sync/core/model/enums/date_format_type.dart';
-import 'package:plata_sync/core/model/enums/time_format_type.dart';
-import 'package:plata_sync/core/services/settings_service.dart';
+import '../di/service_locator.dart';
+import '../model/enums/date_format_type.dart';
+import '../model/enums/time_format_type.dart';
+import '../services/settings_service.dart';
 
 extension DateExtensions on DateTime {
   /// Formats DateTime according to user's date format preference.

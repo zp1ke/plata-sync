@@ -1,19 +1,19 @@
 import 'dart:math';
 
 import 'package:flutter/foundation.dart' hide Category;
-import 'package:plata_sync/core/data/models/sort_param.dart';
-import 'package:plata_sync/core/di/service_locator.dart';
-import 'package:plata_sync/core/model/enums/view_mode.dart';
-import 'package:plata_sync/core/services/settings_service.dart';
-import 'package:plata_sync/core/utils/datetime.dart';
-import 'package:plata_sync/core/utils/numbers.dart';
-import 'package:plata_sync/features/accounts/application/accounts_manager.dart';
-import 'package:plata_sync/features/accounts/domain/entities/account.dart';
-import 'package:plata_sync/features/categories/application/categories_manager.dart';
-import 'package:plata_sync/features/transactions/data/interfaces/transaction_data_source.dart';
-import 'package:plata_sync/features/transactions/domain/entities/transaction.dart';
-import 'package:plata_sync/features/transactions/model/enums/date_filter.dart';
-import 'package:plata_sync/features/transactions/model/enums/sort_order.dart';
+import '../../../core/data/models/sort_param.dart';
+import '../../../core/di/service_locator.dart';
+import '../../../core/model/enums/view_mode.dart';
+import '../../../core/services/settings_service.dart';
+import '../../../core/utils/datetime.dart';
+import '../../../core/utils/numbers.dart';
+import '../../accounts/application/accounts_manager.dart';
+import '../../accounts/domain/entities/account.dart';
+import '../../categories/application/categories_manager.dart';
+import '../data/interfaces/transaction_data_source.dart';
+import '../domain/entities/transaction.dart';
+import '../model/enums/date_filter.dart';
+import '../model/enums/sort_order.dart';
 
 class TransactionsManager {
   final TransactionDataSource _dataSource;

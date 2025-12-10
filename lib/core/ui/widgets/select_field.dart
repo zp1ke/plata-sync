@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:plata_sync/core/ui/resources/app_icons.dart';
-import 'package:plata_sync/core/ui/resources/app_spacing.dart';
-import 'package:plata_sync/core/ui/widgets/dialog.dart';
-import 'package:plata_sync/l10n/app_localizations.dart';
+import '../resources/app_icons.dart';
+import '../resources/app_spacing.dart';
+import 'dialog.dart';
+import '../../../l10n/app_localizations.dart';
 
 /// A customizable select widget that displays a button and opens a searchable dialog.
 /// Useful for selecting from a list of options with optional search functionality.

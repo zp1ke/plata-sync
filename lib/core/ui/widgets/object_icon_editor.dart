@@ -1,12 +1,12 @@
 import 'package:flutter/material.dart';
-import 'package:plata_sync/core/model/object_icon_data.dart';
-import 'package:plata_sync/core/ui/resources/app_icons.dart';
-import 'package:plata_sync/core/ui/resources/app_sizing.dart';
-import 'package:plata_sync/core/ui/resources/app_spacing.dart';
-import 'package:plata_sync/core/ui/widgets/color_picker_field.dart';
-import 'package:plata_sync/core/ui/widgets/object_icon.dart';
-import 'package:plata_sync/core/ui/widgets/select_field.dart';
-import 'package:plata_sync/l10n/app_localizations.dart';
+import '../../model/object_icon_data.dart';
+import '../resources/app_icons.dart';
+import '../resources/app_sizing.dart';
+import '../resources/app_spacing.dart';
+import 'color_picker_field.dart';
+import 'object_icon.dart';
+import 'select_field.dart';
+import '../../../l10n/app_localizations.dart';
 
 class ObjectIconEditor extends StatefulWidget {
   final ObjectIconData initialData;

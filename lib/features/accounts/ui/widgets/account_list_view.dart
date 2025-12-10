@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:plata_sync/core/ui/resources/app_colors.dart';
-import 'package:plata_sync/core/ui/resources/app_spacing.dart';
-import 'package:plata_sync/core/ui/widgets/object_icon.dart';
-import 'package:plata_sync/core/utils/numbers.dart';
-import 'package:plata_sync/features/accounts/domain/entities/account.dart';
+import '../../../../core/ui/resources/app_colors.dart';
+import '../../../../core/ui/resources/app_spacing.dart';
+import '../../../../core/ui/widgets/object_icon.dart';
+import '../../../../core/utils/numbers.dart';
+import '../../domain/entities/account.dart';
 
 class AccountListView extends StatelessWidget {
   final List<Account> accounts;

@@ -1,12 +1,12 @@
 import 'package:flutter/material.dart';
-import 'package:plata_sync/core/model/object_icon_data.dart';
-import 'package:plata_sync/core/ui/resources/app_icons.dart';
-import 'package:plata_sync/core/ui/resources/app_sizing.dart';
-import 'package:plata_sync/core/ui/resources/app_spacing.dart';
-import 'package:plata_sync/core/ui/widgets/input_decoration.dart';
-import 'package:plata_sync/core/ui/widgets/object_icon_editor.dart';
-import 'package:plata_sync/features/categories/domain/entities/category.dart';
-import 'package:plata_sync/l10n/app_localizations.dart';
+import '../../../../core/model/object_icon_data.dart';
+import '../../../../core/ui/resources/app_icons.dart';
+import '../../../../core/ui/resources/app_sizing.dart';
+import '../../../../core/ui/resources/app_spacing.dart';
+import '../../../../core/ui/widgets/input_decoration.dart';
+import '../../../../core/ui/widgets/object_icon_editor.dart';
+import '../../domain/entities/category.dart';
+import '../../../../l10n/app_localizations.dart';
 
 /// A reusable form widget for creating and editing categories.
 /// Can be used in dialogs or inline in detail panes.

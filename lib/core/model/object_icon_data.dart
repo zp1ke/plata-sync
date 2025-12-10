@@ -1,6 +1,6 @@
 import 'package:equatable/equatable.dart';
 import 'package:flutter/widgets.dart';
-import 'package:plata_sync/core/utils/colors.dart';
+import '../utils/colors.dart';
 
 /// Holds the properties needed to display an ObjectIcon
 class ObjectIconData extends Equatable {

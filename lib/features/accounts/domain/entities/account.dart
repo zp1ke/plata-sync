@@ -1,6 +1,6 @@
 import 'package:equatable/equatable.dart';
-import 'package:plata_sync/core/model/object_icon_data.dart';
-import 'package:plata_sync/core/utils/random.dart';
+import '../../../../core/model/object_icon_data.dart';
+import '../../../../core/utils/random.dart';
 
 class Account extends Equatable {
   final String id;

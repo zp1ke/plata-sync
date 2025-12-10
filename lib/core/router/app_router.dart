@@ -1,9 +1,9 @@
 import 'package:go_router/go_router.dart';
-import 'package:plata_sync/core/ui/widgets/scaffold_with_nav_bar.dart';
-import 'package:plata_sync/features/accounts/ui/screens/accounts_screen.dart';
-import 'package:plata_sync/features/categories/ui/screens/categories_screen.dart';
-import 'package:plata_sync/features/settings/ui/screens/settings_screen.dart';
-import 'package:plata_sync/features/transactions/ui/screens/transactions_screen.dart';
+import '../ui/widgets/scaffold_with_nav_bar.dart';
+import '../../features/accounts/ui/screens/accounts_screen.dart';
+import '../../features/categories/ui/screens/categories_screen.dart';
+import '../../features/settings/ui/screens/settings_screen.dart';
+import '../../features/transactions/ui/screens/transactions_screen.dart';
 
 class AppRoutes {
   static const transactions = '/';

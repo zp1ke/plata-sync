@@ -1,17 +1,17 @@
 import 'package:flutter/material.dart';
-import 'package:plata_sync/core/di/service_locator.dart';
-import 'package:plata_sync/core/ui/resources/app_icons.dart';
-import 'package:plata_sync/core/ui/resources/app_sizing.dart';
-import 'package:plata_sync/core/ui/resources/app_spacing.dart';
-import 'package:plata_sync/core/ui/widgets/currency_input_field.dart';
-import 'package:plata_sync/core/ui/widgets/date_time_picker_field.dart';
-import 'package:plata_sync/features/tags/application/tags_manager.dart';
-import 'package:plata_sync/features/tags/domain/entities/tag.dart';
-import 'package:plata_sync/features/transactions/domain/entities/transaction.dart';
-import 'package:plata_sync/features/transactions/ui/widgets/account_selector.dart';
-import 'package:plata_sync/features/transactions/ui/widgets/category_selector.dart';
-import 'package:plata_sync/features/transactions/ui/widgets/transaction_type_selector.dart';
-import 'package:plata_sync/l10n/app_localizations.dart';
+import '../../../../core/di/service_locator.dart';
+import '../../../../core/ui/resources/app_icons.dart';
+import '../../../../core/ui/resources/app_sizing.dart';
+import '../../../../core/ui/resources/app_spacing.dart';
+import '../../../../core/ui/widgets/currency_input_field.dart';
+import '../../../../core/ui/widgets/date_time_picker_field.dart';
+import '../../../tags/application/tags_manager.dart';
+import '../../../tags/domain/entities/tag.dart';
+import '../../domain/entities/transaction.dart';
+import 'account_selector.dart';
+import 'category_selector.dart';
+import 'transaction_type_selector.dart';
+import '../../../../l10n/app_localizations.dart';
 
 /// A reusable form widget for creating and editing transactions.
 /// Can be used in dialogs or inline in detail panes.
