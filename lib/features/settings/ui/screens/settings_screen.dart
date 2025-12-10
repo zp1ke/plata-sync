@@ -13,6 +13,7 @@ import '../../../../core/ui/resources/app_sizing.dart';
 import '../../../../core/ui/resources/app_spacing.dart';
 import '../../../../core/ui/widgets/constrained_list_view.dart';
 import '../../../../core/ui/widgets/dialog.dart';
+import '../../../../core/ui/widgets/responsive_layout.dart';
 import '../../../../l10n/app_localizations.dart';
 import 'package:restart_app/restart_app.dart';
 import 'package:watch_it/watch_it.dart';
@@ -25,6 +26,62 @@ class SettingsScreen extends StatelessWidget {
     final l10n = AppL10n.of(context);
     final settingsService = getService<SettingsService>();
 
+    return ResponsiveLayout(
+      mobile: (context) =>
+          _MobileLayout(settingsService: settingsService, l10n: l10n),
+      tabletOrLarger: (context) => MasterDetailLayout(
+        masterWidthRatio: 0.4,
+        master: Scaffold(
+          appBar: AppBar(title: Text(l10n.settingsScreenTitle)),
+          body: SingleChildScrollView(
+            padding: EdgeInsets.all(AppSpacing.md),
+            child: ConstrainedBox(
+              constraints: BoxConstraints(maxWidth: AppSizing.dialogMaxWidth),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.stretch,
+                children: [
+                  _SectionHeader(title: l10n.settingsSectionApp),
+                  _AppIconWidget(),
+                  ListTile(
+                    leading: AppIcons.info,
+                    title: Text(l10n.settingsAppVersion),
+                    subtitle: Text(settingsService.getAppVersion()),
+                  ),
+                  SizedBox(height: AppSpacing.lg),
+                  _SectionHeader(title: l10n.settingsSectionData),
+                  const _DataSourceSetting(),
+                ],
+              ),
+            ),
+          ),
+        ),
+        detail: SingleChildScrollView(
+          padding: EdgeInsets.all(AppSpacing.md),
+          child: ConstrainedBox(
+            constraints: BoxConstraints(maxWidth: AppSizing.dialogMaxWidth),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.stretch,
+              children: [
+                _SectionHeader(title: l10n.settingsSectionDisplay),
+                const _DateFormatSetting(),
+                const _TimeFormatSetting(),
+              ],
+            ),
+          ),
+        ),
+      ),
+    );
+  }
+}
+
+class _MobileLayout extends StatelessWidget {
+  final SettingsService settingsService;
+  final AppL10n l10n;
+
+  const _MobileLayout({required this.settingsService, required this.l10n});
+
+  @override
+  Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(title: Text(l10n.settingsScreenTitle)),
       body: ConstrainedListView(
@@ -32,40 +89,7 @@ class SettingsScreen extends StatelessWidget {
         children: [
           // App Section
           _SectionHeader(title: l10n.settingsSectionApp),
-          Padding(
-            padding: EdgeInsets.symmetric(vertical: AppSpacing.md),
-            child: Center(
-              child: ClipRRect(
-                borderRadius: BorderRadius.circular(AppSizing.radiusXl),
-                child: SvgPicture.asset(
-                  'assets/icons/app_icon.svg',
-                  width: AppSizing.iconPreviewSize,
-                  height: AppSizing.iconPreviewSize,
-                  placeholderBuilder: (context) => Container(
-                    width: AppSizing.iconPreviewSize,
-                    height: AppSizing.iconPreviewSize,
-                    decoration: BoxDecoration(
-                      gradient: LinearGradient(
-                        begin: Alignment.topLeft,
-                        end: Alignment.bottomRight,
-                        colors: [
-                          Theme.of(context).colorScheme.appIconGradientStart,
-                          Theme.of(context).colorScheme.appIconGradientEnd,
-                        ],
-                      ),
-                    ),
-                    child: Center(
-                      child: Icon(
-                        Icons.account_balance_wallet_rounded,
-                        size: AppSizing.iconPreviewSize * 0.5,
-                        color: Colors.white.withValues(alpha: 0.9),
-                      ),
-                    ),
-                  ),
-                ),
-              ),
-            ),
-          ),
+          _AppIconWidget(),
           ListTile(
             leading: AppIcons.info,
             title: Text(l10n.settingsAppVersion),
@@ -83,6 +107,48 @@ class SettingsScreen extends StatelessWidget {
           const _DateFormatSetting(),
           const _TimeFormatSetting(),
         ],
+      ),
+    );
+  }
+}
+
+class _AppIconWidget extends StatelessWidget {
+  const _AppIconWidget();
+
+  @override
+  Widget build(BuildContext context) {
+    return Padding(
+      padding: EdgeInsets.symmetric(vertical: AppSpacing.md),
+      child: Center(
+        child: ClipRRect(
+          borderRadius: BorderRadius.circular(AppSizing.radiusXl),
+          child: SvgPicture.asset(
+            'assets/icons/app_icon.svg',
+            width: AppSizing.iconPreviewSize,
+            height: AppSizing.iconPreviewSize,
+            placeholderBuilder: (context) => Container(
+              width: AppSizing.iconPreviewSize,
+              height: AppSizing.iconPreviewSize,
+              decoration: BoxDecoration(
+                gradient: LinearGradient(
+                  begin: Alignment.topLeft,
+                  end: Alignment.bottomRight,
+                  colors: [
+                    Theme.of(context).colorScheme.appIconGradientStart,
+                    Theme.of(context).colorScheme.appIconGradientEnd,
+                  ],
+                ),
+              ),
+              child: Center(
+                child: Icon(
+                  Icons.account_balance_wallet_rounded,
+                  size: AppSizing.iconPreviewSize * 0.5,
+                  color: Theme.of(context).colorScheme.inAppIcon,
+                ),
+              ),
+            ),
+          ),
+        ),
       ),
     );
   }

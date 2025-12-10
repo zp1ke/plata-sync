@@ -127,8 +127,22 @@ extension TransactionColors on ColorScheme {
       : const Color(0xFFBDAB07); // Light yellow for dark theme
 
   /// App icon gradient start color (pastel green)
-  Color get appIconGradientStart => const Color(0xFF6B9B7A);
+  Color get appIconGradientStart => brightness == Brightness.light
+      ? const Color(0xFF6B9B7A) // Lighter green for light theme
+      : const Color.fromARGB(
+          255,
+          118,
+          173,
+          120,
+        ); // Light pastel green for dark theme
 
   /// App icon gradient end color (darker pastel green)
-  Color get appIconGradientEnd => const Color(0xFF4A7C59);
+  Color get appIconGradientEnd => brightness == Brightness.light
+      ? const Color(0xFF4A7C59) // Darker green for light theme
+      : const Color(0xFF2E7D32); // Dark green for dark theme
+
+  /// In App icon color
+  Color get inAppIcon => brightness == Brightness.light
+      ? const Color.fromARGB(255, 214, 223, 216) // Darker green for light theme
+      : const Color.fromARGB(255, 246, 248, 246); // Lighter green
 }
