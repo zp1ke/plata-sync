@@ -1,11 +1,13 @@
 import 'dart:io';
 
 import 'package:flutter/material.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 import '../../../../core/di/service_locator.dart';
 import '../../../../core/model/enums/data_source_type.dart';
 import '../../../../core/model/enums/date_format_type.dart';
 import '../../../../core/model/enums/time_format_type.dart';
 import '../../../../core/services/settings_service.dart';
+import '../../../../core/ui/resources/app_colors.dart';
 import '../../../../core/ui/resources/app_icons.dart';
 import '../../../../core/ui/resources/app_sizing.dart';
 import '../../../../core/ui/resources/app_spacing.dart';
@@ -30,6 +32,40 @@ class SettingsScreen extends StatelessWidget {
         children: [
           // App Section
           _SectionHeader(title: l10n.settingsSectionApp),
+          Padding(
+            padding: EdgeInsets.symmetric(vertical: AppSpacing.md),
+            child: Center(
+              child: ClipRRect(
+                borderRadius: BorderRadius.circular(AppSizing.radiusXl),
+                child: SvgPicture.asset(
+                  'assets/icons/app_icon.svg',
+                  width: AppSizing.iconPreviewSize,
+                  height: AppSizing.iconPreviewSize,
+                  placeholderBuilder: (context) => Container(
+                    width: AppSizing.iconPreviewSize,
+                    height: AppSizing.iconPreviewSize,
+                    decoration: BoxDecoration(
+                      gradient: LinearGradient(
+                        begin: Alignment.topLeft,
+                        end: Alignment.bottomRight,
+                        colors: [
+                          Theme.of(context).colorScheme.appIconGradientStart,
+                          Theme.of(context).colorScheme.appIconGradientEnd,
+                        ],
+                      ),
+                    ),
+                    child: Center(
+                      child: Icon(
+                        Icons.account_balance_wallet_rounded,
+                        size: AppSizing.iconPreviewSize * 0.5,
+                        color: Colors.white.withValues(alpha: 0.9),
+                      ),
+                    ),
+                  ),
+                ),
+              ),
+            ),
+          ),
           ListTile(
             leading: AppIcons.info,
             title: Text(l10n.settingsAppVersion),

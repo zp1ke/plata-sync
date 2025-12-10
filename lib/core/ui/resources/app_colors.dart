@@ -125,4 +125,10 @@ extension TransactionColors on ColorScheme {
   Color get warning => brightness == Brightness.light
       ? const Color(0xFFF9A825) // Dark yellow for light theme
       : const Color(0xFFBDAB07); // Light yellow for dark theme
+
+  /// App icon gradient start color (pastel green)
+  Color get appIconGradientStart => const Color(0xFF6B9B7A);
+
+  /// App icon gradient end color (darker pastel green)
+  Color get appIconGradientEnd => const Color(0xFF4A7C59);
 }
