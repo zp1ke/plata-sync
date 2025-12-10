@@ -5,6 +5,7 @@ import '../../../../core/ui/resources/app_icons.dart';
 import '../../../../core/ui/resources/app_sizing.dart';
 import '../../../../core/ui/resources/app_spacing.dart';
 import '../../../../core/ui/widgets/app_top_bar.dart';
+import '../../../../core/ui/widgets/dialog.dart';
 import '../../../../core/ui/widgets/responsive_layout.dart';
 import '../../../../core/ui/widgets/sort_selector.dart';
 import '../../../../core/ui/widgets/view_toggle.dart';
@@ -494,9 +495,8 @@ Future<void> _showSampleDataDialog(BuildContext context) async {
   final l10n = AppL10n.of(context);
   final result = await showDialog<bool>(
     context: context,
-    builder: (dialogContext) => AlertDialog(
-      insetPadding: AppSpacing.paddingMd,
-      title: Text(l10n.categoriesEmptyState),
+    builder: (dialogContext) => AppDialog(
+      title: l10n.categoriesEmptyState,
       content: Text(l10n.categoriesAddSampleDataPrompt),
       actions: [
         TextButton(
@@ -642,9 +642,8 @@ Future<void> _handleDelete(BuildContext context, Category category) async {
   final l10n = AppL10n.of(context);
   final confirmed = await showDialog<bool>(
     context: context,
-    builder: (dialogContext) => AlertDialog(
-      insetPadding: AppSpacing.paddingMd,
-      title: Text(l10n.delete),
+    builder: (dialogContext) => AppDialog(
+      title: l10n.delete,
       content: Text(l10n.categoriesDeleteConfirmation(category.name)),
       actions: [
         TextButton(

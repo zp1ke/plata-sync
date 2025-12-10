@@ -1155,6 +1155,18 @@ abstract class AppL10n {
   /// **'Search categories...'**
   String get searchCategories;
 
+  /// Hint for tag selection
+  ///
+  /// In en, this message translates to:
+  /// **'Select Tags'**
+  String get selectTags;
+
+  /// Hint for tag search
+  ///
+  /// In en, this message translates to:
+  /// **'Search tags...'**
+  String get searchTags;
+
   /// Label for clear button
   ///
   /// In en, this message translates to:

@@ -38,8 +38,13 @@ class TransactionsBottomBar extends WatchingWidget
     final currentCategoryFilter = watchValue(
       (TransactionsManager x) => x.currentCategoryFilter,
     );
+    final currentTagFilter = watchValue(
+      (TransactionsManager x) => x.currentTagFilter,
+    );
     final hasActiveFilters =
-        currentAccountFilter != null || currentCategoryFilter != null;
+        currentAccountFilter != null ||
+        currentCategoryFilter != null ||
+        (currentTagFilter != null && currentTagFilter.isNotEmpty);
 
     return Row(
       children: [
@@ -65,9 +70,11 @@ class TransactionsBottomBar extends WatchingWidget
                     builder: (context) => TransactionFilterDialog(
                       initialAccountId: currentAccountFilter,
                       initialCategoryId: currentCategoryFilter,
-                      onApply: (accountId, categoryId) {
+                      initialTagIds: currentTagFilter,
+                      onApply: (accountId, categoryId, tagIds) {
                         manager.setAccountFilter(accountId);
                         manager.setCategoryFilter(categoryId);
+                        manager.setTagFilter(tagIds);
                       },
                     ),
                   );

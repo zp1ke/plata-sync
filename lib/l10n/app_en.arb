@@ -826,6 +826,14 @@
   "@searchCategories": {
     "description": "Hint for category search"
   },
+  "selectTags": "Select Tags",
+  "@selectTags": {
+    "description": "Hint for tag selection"
+  },
+  "searchTags": "Search tags...",
+  "@searchTags": {
+    "description": "Hint for tag search"
+  },
   "clear": "Clear",
   "@clear": {
     "description": "Label for clear button"

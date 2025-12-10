@@ -33,6 +33,7 @@ class AppDialog extends StatelessWidget {
       insetPadding: AppSpacing.paddingMd,
       title: Row(
         spacing: AppSpacing.md,
+        mainAxisSize: MainAxisSize.min,
         children: [
           if (iconData != null)
             ObjectIcon(iconData: iconData!, size: AppSizing.avatarSm),
@@ -45,11 +46,13 @@ class AppDialog extends StatelessWidget {
           ),
         ],
       ),
-      content: SizedBox(
-        width: AppSizing.dialogMaxWidth,
-        height:
-            contentHeight ??
-            min(AppSizing.dialogMaxHeight, screenHeight * 0.75),
+      content: ConstrainedBox(
+        constraints: BoxConstraints(
+          maxWidth: AppSizing.dialogMaxWidth,
+          maxHeight:
+              contentHeight ??
+              min(AppSizing.dialogMaxHeight, screenHeight * 0.75),
+        ),
         child: scrollable ? SingleChildScrollView(child: content) : content,
       ),
       actions: actions,

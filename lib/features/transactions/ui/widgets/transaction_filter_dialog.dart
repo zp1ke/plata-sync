@@ -1,20 +1,29 @@
 import 'package:flutter/material.dart';
 import '../../../../core/ui/resources/app_spacing.dart';
+import '../../../../core/ui/widgets/dialog.dart';
 import '../../../../l10n/app_localizations.dart';
 import 'package:watch_it/watch_it.dart';
 
 import 'account_selector.dart';
 import 'category_selector.dart';
+import 'tag_selector.dart';
 
 class TransactionFilterDialog extends WatchingStatefulWidget {
   final String? initialAccountId;
   final String? initialCategoryId;
-  final void Function(String? accountId, String? categoryId) onApply;
+  final List<String>? initialTagIds;
+  final void Function(
+    String? accountId,
+    String? categoryId,
+    List<String>? tagIds,
+  )
+  onApply;
 
   const TransactionFilterDialog({
     super.key,
     this.initialAccountId,
     this.initialCategoryId,
+    this.initialTagIds,
     required this.onApply,
   });
 
@@ -26,20 +35,22 @@ class TransactionFilterDialog extends WatchingStatefulWidget {
 class _TransactionFilterDialogState extends State<TransactionFilterDialog> {
   String? _selectedAccountId;
   String? _selectedCategoryId;
+  List<String> _selectedTagIds = [];
 
   @override
   void initState() {
     super.initState();
     _selectedAccountId = widget.initialAccountId;
     _selectedCategoryId = widget.initialCategoryId;
+    _selectedTagIds = widget.initialTagIds ?? [];
   }
 
   @override
   Widget build(BuildContext context) {
     final l10n = AppL10n.of(context);
 
-    return AlertDialog(
-      title: Text(l10n.filterTransactions),
+    return AppDialog(
+      title: l10n.filterTransactions,
       content: Column(
         mainAxisSize: MainAxisSize.min,
         spacing: AppSpacing.md,
@@ -61,12 +72,20 @@ class _TransactionFilterDialogState extends State<TransactionFilterDialog> {
               });
             },
           ),
+          TagSelector(
+            tagIds: _selectedTagIds,
+            onChanged: (tagIds) {
+              setState(() {
+                _selectedTagIds = tagIds;
+              });
+            },
+          ),
         ],
       ),
       actions: [
         TextButton(
           onPressed: () {
-            widget.onApply(null, null);
+            widget.onApply(null, null, null);
             Navigator.of(context).pop();
           },
           child: Text(l10n.clear),
@@ -77,7 +96,11 @@ class _TransactionFilterDialogState extends State<TransactionFilterDialog> {
         ),
         FilledButton(
           onPressed: () {
-            widget.onApply(_selectedAccountId, _selectedCategoryId);
+            widget.onApply(
+              _selectedAccountId,
+              _selectedCategoryId,
+              _selectedTagIds.isEmpty ? null : _selectedTagIds,
+            );
             Navigator.of(context).pop();
           },
           child: Text(l10n.apply),

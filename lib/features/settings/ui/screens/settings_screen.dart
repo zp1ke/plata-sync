@@ -10,6 +10,7 @@ import '../../../../core/ui/resources/app_icons.dart';
 import '../../../../core/ui/resources/app_sizing.dart';
 import '../../../../core/ui/resources/app_spacing.dart';
 import '../../../../core/ui/widgets/constrained_list_view.dart';
+import '../../../../core/ui/widgets/dialog.dart';
 import '../../../../l10n/app_localizations.dart';
 import 'package:restart_app/restart_app.dart';
 import 'package:watch_it/watch_it.dart';
@@ -140,9 +141,8 @@ class _DataSourceSettingState extends State<_DataSourceSetting> {
       // For desktop platforms, just show a dialog so user restart manually
       showDialog<void>(
         context: context,
-        builder: (context) => AlertDialog(
-          insetPadding: AppSpacing.paddingMd,
-          title: Text(l10n.settingsDataSourceChangedTitle),
+        builder: (context) => AppDialog(
+          title: l10n.settingsDataSourceChangedTitle,
           content: Text(l10n.settingsDataSourceChangedMessage),
           actions: [
             FilledButton(
@@ -164,9 +164,8 @@ class _DataSourceSettingState extends State<_DataSourceSetting> {
     final l10n = AppL10n.of(context);
     final result = await showDialog<bool>(
       context: context,
-      builder: (context) => AlertDialog(
-        insetPadding: AppSpacing.paddingMd,
-        title: Text(l10n.settingsDataSourceChangeTitle),
+      builder: (context) => AppDialog(
+        title: l10n.settingsDataSourceChangeTitle,
         content: Text(l10n.settingsDataSourceChangeMessage),
         actions: [
           TextButton(

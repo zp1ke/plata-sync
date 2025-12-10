@@ -27,6 +27,7 @@ class TransactionsManager {
   final ValueNotifier<bool> isLoading = ValueNotifier(false);
   final ValueNotifier<String?> currentAccountFilter = ValueNotifier(null);
   final ValueNotifier<String?> currentCategoryFilter = ValueNotifier(null);
+  final ValueNotifier<List<String>?> currentTagFilter = ValueNotifier(null);
   final ValueNotifier<TransactionSortOrder> sortOrder = ValueNotifier(
     TransactionSortOrder.dateDesc,
   );
@@ -117,8 +118,10 @@ class TransactionsManager {
   Future<void> loadTransactions({
     String? accountId,
     String? categoryId,
+    List<String>? tagIds,
     bool clearAccount = false,
     bool clearCategory = false,
+    bool clearTags = false,
   }) async {
     isLoading.value = true;
     if (clearAccount) {
@@ -132,6 +135,12 @@ class TransactionsManager {
     } else if (categoryId != null) {
       currentCategoryFilter.value = categoryId;
     }
+
+    if (clearTags) {
+      currentTagFilter.value = null;
+    } else if (tagIds != null) {
+      currentTagFilter.value = tagIds;
+    }
     try {
       final filter = <String, dynamic>{};
       if (currentAccountFilter.value != null) {
@@ -139,6 +148,10 @@ class TransactionsManager {
       }
       if (currentCategoryFilter.value != null) {
         filter['categoryId'] = currentCategoryFilter.value;
+      }
+      if (currentTagFilter.value != null &&
+          currentTagFilter.value!.isNotEmpty) {
+        filter['tagIds'] = currentTagFilter.value;
       }
 
       if (currentDateFilter.value != DateFilter.all) {
@@ -184,6 +197,13 @@ class TransactionsManager {
 
   void setCategoryFilter(String? categoryId) {
     loadTransactions(categoryId: categoryId, clearCategory: categoryId == null);
+  }
+
+  void setTagFilter(List<String>? tagIds) {
+    loadTransactions(
+      tagIds: tagIds,
+      clearTags: tagIds == null || tagIds.isEmpty,
+    );
   }
 
   Future<void> addTransaction(Transaction transaction) async {
@@ -249,6 +269,7 @@ class TransactionsManager {
   void clearFilters() {
     currentAccountFilter.value = null;
     currentCategoryFilter.value = null;
+    currentTagFilter.value = null;
     loadTransactions();
   }
 
@@ -331,6 +352,7 @@ class TransactionsManager {
     isLoading.dispose();
     currentAccountFilter.dispose();
     currentCategoryFilter.dispose();
+    currentTagFilter.dispose();
     sortOrder.dispose();
     viewMode.dispose();
   }

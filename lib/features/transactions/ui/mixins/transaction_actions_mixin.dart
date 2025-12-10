@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import '../../../../core/di/service_locator.dart';
-import '../../../../core/ui/resources/app_spacing.dart';
+import '../../../../core/ui/widgets/dialog.dart';
 import '../../application/transactions_manager.dart';
 import '../../domain/entities/transaction.dart';
 import '../../../../l10n/app_localizations.dart';
@@ -33,9 +33,8 @@ mixin TransactionActionsMixin<T extends StatefulWidget> on State<T> {
     final l10n = AppL10n.of(context);
     showDialog(
       context: context,
-      builder: (context) => AlertDialog(
-        insetPadding: AppSpacing.paddingMd,
-        title: Text(l10n.transactionsEmptyState),
+      builder: (context) => AppDialog(
+        title: l10n.transactionsEmptyState,
         content: Text(l10n.transactionsAddSampleDataPrompt),
         actions: [
           TextButton(
@@ -129,9 +128,8 @@ mixin TransactionActionsMixin<T extends StatefulWidget> on State<T> {
     final l10n = AppL10n.of(context);
     showDialog(
       context: context,
-      builder: (dialogContext) => AlertDialog(
-        insetPadding: AppSpacing.paddingMd,
-        title: Text(l10n.confirmDelete),
+      builder: (dialogContext) => AppDialog(
+        title: l10n.confirmDelete,
         content: Text(l10n.transactionsDeleteConfirmation),
         actions: [
           TextButton(
