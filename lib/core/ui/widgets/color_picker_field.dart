@@ -50,50 +50,47 @@ class ColorPickerField extends StatelessWidget {
       context: context,
       builder: (context) => AppDialog(
         title: label,
-        content: SizedBox(
-          width: double.maxFinite,
-          child: GridView.builder(
-            shrinkWrap: true,
-            gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-              crossAxisCount: 8,
-              mainAxisSpacing: AppSpacing.sm,
-              crossAxisSpacing: AppSpacing.sm,
-            ),
-            itemCount: predefinedColors.length,
-            itemBuilder: (context, index) {
-              final colorHex = predefinedColors[index];
-              final isSelected =
-                  value.replaceAll('#', '').toUpperCase() ==
-                  colorHex.toUpperCase();
-
-              return InkWell(
-                onTap: () {
-                  onChanged(colorHex);
-                  Navigator.of(context).pop();
-                },
-                borderRadius: AppSizing.borderRadiusSm,
-                child: Container(
-                  decoration: BoxDecoration(
-                    color: ColorExtensions.fromHex(colorHex),
-                    borderRadius: AppSizing.borderRadiusSm,
-                    border: Border.all(
-                      color: isSelected
-                          ? Theme.of(context).colorScheme.primary
-                          : Colors.grey.shade300,
-                      width: isSelected ? 3 : 1,
-                    ),
-                  ),
-                  child: isSelected
-                      ? Icon(
-                          Icons.check,
-                          color: _getContrastColor(colorHex),
-                          size: AppSizing.iconLg,
-                        )
-                      : null,
-                ),
-              );
-            },
+        scrollable: false,
+        content: GridView.builder(
+          gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+            crossAxisCount: 8,
+            mainAxisSpacing: AppSpacing.sm,
+            crossAxisSpacing: AppSpacing.sm,
           ),
+          itemCount: predefinedColors.length,
+          itemBuilder: (context, index) {
+            final colorHex = predefinedColors[index];
+            final isSelected =
+                value.replaceAll('#', '').toUpperCase() ==
+                colorHex.toUpperCase();
+
+            return InkWell(
+              onTap: () {
+                onChanged(colorHex);
+                Navigator.of(context).pop();
+              },
+              borderRadius: AppSizing.borderRadiusSm,
+              child: Container(
+                decoration: BoxDecoration(
+                  color: ColorExtensions.fromHex(colorHex),
+                  borderRadius: AppSizing.borderRadiusSm,
+                  border: Border.all(
+                    color: isSelected
+                        ? Theme.of(context).colorScheme.primary
+                        : Colors.grey.shade300,
+                    width: isSelected ? 3 : 1,
+                  ),
+                ),
+                child: isSelected
+                    ? Icon(
+                        Icons.check,
+                        color: _getContrastColor(colorHex),
+                        size: AppSizing.iconLg,
+                      )
+                    : null,
+              ),
+            );
+          },
         ),
         actions: [
           TextButton(

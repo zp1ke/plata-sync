@@ -52,6 +52,10 @@ class AppIcons {
   static final transfer = const HugeIcon(
     icon: HugeIcons.strokeRoundedSquareArrowDataTransferHorizontal,
   );
+  static final tagsXs = const HugeIcon(
+    icon: HugeIcons.strokeRoundedTag01,
+    size: AppSizing.iconXs,
+  );
 
   // Accounts
   static final accounts = const HugeIcon(icon: HugeIcons.strokeRoundedWallet02);

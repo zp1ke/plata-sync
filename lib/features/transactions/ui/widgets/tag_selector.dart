@@ -51,29 +51,26 @@ class _TagSelectorState extends State<TagSelector> {
             final l10n = AppL10n.of(context);
             return AppDialog(
               title: widget.label ?? l10n.transactionTagsLabel,
-              content: SizedBox(
-                width: double.maxFinite,
-                child: ListView.builder(
-                  shrinkWrap: true,
-                  itemCount: allTags.length,
-                  itemBuilder: (context, index) {
-                    final tag = allTags[index];
-                    final isSelected = selectedIds.contains(tag.id);
-                    return CheckboxListTile(
-                      title: Text(tag.name),
-                      value: isSelected,
-                      onChanged: (checked) {
-                        setDialogState(() {
-                          if (checked == true) {
-                            selectedIds.add(tag.id);
-                          } else {
-                            selectedIds.remove(tag.id);
-                          }
-                        });
-                      },
-                    );
-                  },
-                ),
+              scrollable: false,
+              content: ListView.builder(
+                itemCount: allTags.length,
+                itemBuilder: (context, index) {
+                  final tag = allTags[index];
+                  final isSelected = selectedIds.contains(tag.id);
+                  return CheckboxListTile(
+                    title: Text(tag.name),
+                    value: isSelected,
+                    onChanged: (checked) {
+                      setDialogState(() {
+                        if (checked == true) {
+                          selectedIds.add(tag.id);
+                        } else {
+                          selectedIds.remove(tag.id);
+                        }
+                      });
+                    },
+                  );
+                },
               ),
               actions: [
                 TextButton(
@@ -110,7 +107,7 @@ class _TagSelectorState extends State<TagSelector> {
             decoration: inputDecorationWithPrefixIcon(
               labelText: labelText,
               hintText: l10n.transactionTagsHint,
-              prefixIcon: AppIcons.descriptionXs,
+              prefixIcon: AppIcons.tagsXs,
             ),
           );
         }
@@ -126,13 +123,9 @@ class _TagSelectorState extends State<TagSelector> {
         return InkWell(
           onTap: widget.enabled ? () => _showTagDialog(context, tags) : null,
           child: InputDecorator(
-            decoration: InputDecoration(
+            decoration: inputDecorationWithPrefixIcon(
               labelText: labelText,
-              prefixIcon: AppIcons.descriptionXs,
-              contentPadding: const EdgeInsets.symmetric(
-                horizontal: AppSpacing.md,
-                vertical: AppSpacing.md,
-              ),
+              prefixIcon: AppIcons.tagsXs,
             ),
             child: Text(
               displayText,

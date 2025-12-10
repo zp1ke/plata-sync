@@ -28,6 +28,8 @@ class AppDialog extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final screenHeight = MediaQuery.sizeOf(context).height;
+    final maxHeight =
+        contentHeight ?? min(AppSizing.dialogMaxHeight, screenHeight * 0.75);
 
     return AlertDialog(
       insetPadding: AppSpacing.paddingMd,
@@ -46,14 +48,15 @@ class AppDialog extends StatelessWidget {
           ),
         ],
       ),
-      content: ConstrainedBox(
-        constraints: BoxConstraints(
-          maxWidth: AppSizing.dialogMaxWidth,
-          maxHeight:
-              contentHeight ??
-              min(AppSizing.dialogMaxHeight, screenHeight * 0.75),
-        ),
-        child: scrollable ? SingleChildScrollView(child: content) : content,
+      content: SizedBox(
+        width: AppSizing.dialogMaxWidth,
+        height: scrollable ? null : maxHeight,
+        child: scrollable
+            ? ConstrainedBox(
+                constraints: BoxConstraints(maxHeight: maxHeight),
+                child: SingleChildScrollView(child: content),
+              )
+            : content,
       ),
       actions: actions,
     );

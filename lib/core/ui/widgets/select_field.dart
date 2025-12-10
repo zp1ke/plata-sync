@@ -178,7 +178,6 @@ class _SelectionDialogState<T> extends State<_SelectionDialog<T>> {
                     ),
                   )
                 : ListView.builder(
-                    shrinkWrap: true,
                     itemCount: filteredOptions.length,
                     itemBuilder: (context, index) {
                       final option = filteredOptions[index];
