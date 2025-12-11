@@ -5,6 +5,7 @@ import '../../../../core/ui/resources/app_icons.dart';
 import '../../../../core/ui/resources/app_sizing.dart';
 import '../../../../core/ui/resources/app_spacing.dart';
 import '../../../../core/ui/widgets/app_top_bar.dart';
+import '../../../../core/ui/widgets/responsive_layout.dart';
 import '../../application/transactions_manager.dart';
 import '../../domain/entities/transaction.dart';
 import '../mixins/transaction_actions_mixin.dart';
@@ -49,78 +50,75 @@ class _TabletTransactionsScreenState extends State<TabletTransactionsScreen>
 
     final manager = getService<TransactionsManager>();
 
-    return Scaffold(
-      body: SafeArea(
-        child: Row(
-          children: [
-            // Master pane (list)
-            Expanded(
-              flex: 2,
-              child: NestedScrollView(
-                headerSliverBuilder: (_, _) {
-                  return [
-                    AppTopBar(
-                      title: l10n.transactionsScreenTitle,
-                      isLoading: isLoading,
-                      onRefresh: () => manager.loadTransactions(),
-                      bottom: TransactionsBottomBar(
-                        sortOrder: sortOrder,
-                        viewMode: viewMode,
-                        manager: manager,
-                        isLoading: isLoading,
-                        showViewToggle: true,
+    return SafeArea(
+      child: MasterDetailLayout(
+        master: Scaffold(
+          body: NestedScrollView(
+            headerSliverBuilder: (_, _) {
+              return [
+                AppTopBar(
+                  title: l10n.transactionsScreenTitle,
+                  isLoading: isLoading,
+                  onRefresh: () => manager.loadTransactions(),
+                  bottom: TransactionsBottomBar(
+                    sortOrder: sortOrder,
+                    viewMode: viewMode,
+                    manager: manager,
+                    isLoading: isLoading,
+                    showViewToggle: true,
+                  ),
+                  actions: [
+                    ConstrainedBox(
+                      constraints: BoxConstraints(
+                        maxWidth: AppSizing.inputWidthMd,
                       ),
-                      actions: [
-                        ConstrainedBox(
-                          constraints: BoxConstraints(
-                            maxWidth: AppSizing.inputWidthMd,
-                          ),
-                          child: DateFilterSelector(
-                            value: dateFilter,
-                            onChanged: isLoading ? null : manager.setDateFilter,
-                            labelBuilder: (filter) =>
-                                getDateFilterLabel(l10n, filter),
-                          ),
-                        ),
-                      ],
+                      child: DateFilterSelector(
+                        value: dateFilter,
+                        onChanged: isLoading ? null : manager.setDateFilter,
+                        labelBuilder: (filter) =>
+                            getDateFilterLabel(l10n, filter),
+                      ),
                     ),
-                  ];
-                },
-                body: _buildMasterContent(
-                  context,
-                  isLoading,
-                  transactions,
-                  viewMode,
+                  ],
                 ),
-              ),
+              ];
+            },
+            body: _buildMasterContent(
+              context,
+              isLoading,
+              transactions,
+              viewMode,
             ),
-            const VerticalDivider(),
-            // Detail pane
-            Expanded(
-              flex: 3,
-              child: _buildDetailPane(context, isLoading, l10n),
+          ),
+          floatingActionButton: isEditing
+              ? null
+              : FloatingActionButton.extended(
+                  onPressed: isLoading
+                      ? null
+                      : () {
+                          WidgetsBinding.instance.addPostFrameCallback((_) {
+                            if (mounted) {
+                              setState(() {
+                                selectedTransaction = null;
+                                isEditing = true;
+                              });
+                            }
+                          });
+                        },
+                  icon: AppIcons.add,
+                  label: Text(l10n.transactionsAddButton),
+                ),
+        ),
+        detail: _buildDetailPane(),
+        detailPlaceholder: Center(
+          child: Text(
+            l10n.transactionsSelectPrompt,
+            style: Theme.of(context).textTheme.bodyLarge?.copyWith(
+              color: Theme.of(context).colorScheme.onSurfaceVariant,
             ),
-          ],
+          ),
         ),
       ),
-      floatingActionButton: isEditing
-          ? null
-          : FloatingActionButton.extended(
-              onPressed: isLoading
-                  ? null
-                  : () {
-                      WidgetsBinding.instance.addPostFrameCallback((_) {
-                        if (mounted) {
-                          setState(() {
-                            selectedTransaction = null;
-                            isEditing = true;
-                          });
-                        }
-                      });
-                    },
-              icon: AppIcons.add,
-              label: Text(l10n.transactionsAddButton),
-            ),
     );
   }
 
@@ -166,20 +164,11 @@ class _TabletTransactionsScreenState extends State<TabletTransactionsScreen>
           );
   }
 
-  Widget _buildDetailPane(BuildContext context, bool isLoading, AppL10n l10n) {
+  Widget? _buildDetailPane() {
+    if (selectedTransaction == null && !isEditing) return null;
+
     if (isEditing) {
       return _buildEditView();
-    }
-
-    if (selectedTransaction == null) {
-      return Center(
-        child: Text(
-          l10n.transactionsSelectPrompt,
-          style: Theme.of(context).textTheme.bodyLarge?.copyWith(
-            color: Theme.of(context).colorScheme.onSurfaceVariant,
-          ),
-        ),
-      );
     }
 
     return _buildDetailsView();
