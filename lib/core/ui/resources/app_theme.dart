@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'app_colors.dart';
 import 'app_sizing.dart';
 import 'app_spacing.dart';
@@ -13,7 +14,7 @@ ThemeData _theme(ColorScheme colorScheme) => ThemeData(
   useMaterial3: true,
   brightness: colorScheme.brightness,
   colorScheme: colorScheme,
-  textTheme: _textTheme,
+  textTheme: GoogleFonts.notoSansTextTheme(_textTheme),
   appBarTheme: _appBarTheme(colorScheme),
   elevatedButtonTheme: _elevatedButtonTheme,
   textButtonTheme: _textButtonTheme,

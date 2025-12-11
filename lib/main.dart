@@ -1,4 +1,6 @@
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'core/di/service_locator.dart';
 import 'core/ui/resources/app_theme.dart';
 import 'core/router/app_router.dart';
@@ -6,6 +8,14 @@ import 'l10n/app_localizations.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
+
+  LicenseRegistry.addLicense(() async* {
+    final String license = await rootBundle.loadString(
+      'assets/fonts/Noto_Sans/OFL.txt',
+    );
+    yield LicenseEntryWithLineBreaks(<String>['Noto_Sans'], license);
+  });
+
   await setupServiceLocator();
   runApp(const MainApp());
 }
