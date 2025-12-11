@@ -416,6 +416,22 @@ class AppL10nEn extends AppL10n {
   String get categoriesEditColorInvalid => 'Invalid hex color format';
 
   @override
+  String get categoriesEditTransactionType => 'Transaction Type';
+
+  @override
+  String get categoriesEditTransactionTypeHelper =>
+      'Leave empty to allow for both income and expense';
+
+  @override
+  String get categoryTransactionTypeIncome => 'Income';
+
+  @override
+  String get categoryTransactionTypeExpense => 'Expense';
+
+  @override
+  String get categoryTransactionTypeAny => 'Any';
+
+  @override
   String get categoriesAddButton => 'Add Category';
 
   @override

@@ -8,6 +8,8 @@ import '../../../../core/ui/widgets/object_icon.dart';
 import '../../../../core/ui/widgets/select_field.dart';
 import '../../../categories/application/categories_manager.dart';
 import '../../../categories/domain/entities/category.dart';
+import '../../../categories/model/enums/category_transaction_type.dart';
+import 'transaction_type_selector.dart';
 import '../../../../l10n/app_localizations.dart';
 
 /// A widget that allows selecting a category from available categories
@@ -17,6 +19,7 @@ class CategorySelector extends StatelessWidget {
   final String? Function(String?)? validator;
   final bool enabled;
   final bool required;
+  final TransactionType? transactionType;
 
   const CategorySelector({
     required this.categoryId,
@@ -24,6 +27,7 @@ class CategorySelector extends StatelessWidget {
     this.validator,
     this.enabled = true,
     this.required = false,
+    this.transactionType,
     super.key,
   });
 
@@ -35,7 +39,10 @@ class CategorySelector extends StatelessWidget {
     return ValueListenableBuilder<List<Category>>(
       valueListenable: manager.categories,
       builder: (context, categories, _) {
-        if (categories.isEmpty) {
+        // Filter categories based on transaction type
+        final filteredCategories = _filterCategoriesByType(categories);
+
+        if (filteredCategories.isEmpty) {
           return TextFormField(
             enabled: false,
             decoration: inputDecorationWithPrefixIcon(
@@ -46,13 +53,13 @@ class CategorySelector extends StatelessWidget {
           );
         }
 
-        final selectedCategory = categories
+        final selectedCategory = filteredCategories
             .where((category) => category.id == categoryId)
             .firstOrNull;
 
         return SelectField<Category>(
           value: selectedCategory,
-          options: categories,
+          options: filteredCategories,
           label: l10n.transactionCategoryLabel,
           itemBuilder: (category) => Row(
             children: [
@@ -71,5 +78,24 @@ class CategorySelector extends StatelessWidget {
         );
       },
     );
+  }
+
+  /// Filter categories based on the transaction type
+  List<Category> _filterCategoriesByType(List<Category> categories) {
+    if (transactionType == null ||
+        transactionType == TransactionType.transfer) {
+      return categories;
+    }
+
+    final categoryType = transactionType == TransactionType.income
+        ? CategoryTransactionType.income
+        : CategoryTransactionType.expense;
+
+    return categories.where((category) {
+      // Include categories with null transactionType (available for all types)
+      // or categories that match the current transaction type
+      return category.transactionType == null ||
+          category.transactionType == categoryType;
+    }).toList();
   }
 }

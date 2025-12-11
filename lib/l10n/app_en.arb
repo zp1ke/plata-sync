@@ -580,6 +580,26 @@
   "@categoriesEditColorInvalid": {
     "description": "Validation message when color format is invalid"
   },
+  "categoriesEditTransactionType": "Transaction Type",
+  "@categoriesEditTransactionType": {
+    "description": "Label for transaction type field in category edit dialog"
+  },
+  "categoriesEditTransactionTypeHelper": "Leave empty to allow for both income and expense",
+  "@categoriesEditTransactionTypeHelper": {
+    "description": "Helper text for transaction type field"
+  },
+  "categoryTransactionTypeIncome": "Income",
+  "@categoryTransactionTypeIncome": {
+    "description": "Label for income transaction type in category form"
+  },
+  "categoryTransactionTypeExpense": "Expense",
+  "@categoryTransactionTypeExpense": {
+    "description": "Label for expense transaction type in category form"
+  },
+  "categoryTransactionTypeAny": "Any",
+  "@categoryTransactionTypeAny": {
+    "description": "Label for any transaction type in category form (when null)"
+  },
   "categoriesAddButton": "Add Category",
   "@categoriesAddButton": {
     "description": "Label for the add category button"

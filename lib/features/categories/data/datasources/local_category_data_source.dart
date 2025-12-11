@@ -3,6 +3,7 @@ import '../../../../core/model/object_icon_data.dart';
 import '../../../../core/services/database_service.dart';
 import '../interfaces/category_data_source.dart';
 import '../../domain/entities/category.dart';
+import '../../model/enums/category_transaction_type.dart';
 import 'package:sqflite/sqflite.dart';
 
 class LocalCategoryDataSource extends CategoryDataSource {
@@ -23,6 +24,7 @@ class LocalCategoryDataSource extends CategoryDataSource {
       'icon_color_hex': category.iconData.iconColorHex,
       'last_used': category.lastUsed?.millisecondsSinceEpoch,
       'description': category.description,
+      'transaction_type': category.transactionType?.toDbString(),
     };
   }
 
@@ -41,6 +43,9 @@ class LocalCategoryDataSource extends CategoryDataSource {
           ? DateTime.fromMillisecondsSinceEpoch(map['last_used'] as int)
           : null,
       description: map['description'] as String?,
+      transactionType: CategoryTransactionType.fromString(
+        map['transaction_type'] as String?,
+      ),
     );
   }
 

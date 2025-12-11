@@ -6,7 +6,7 @@ import 'package:sqflite_common_ffi/sqflite_ffi.dart';
 /// Service for managing the SQLite database
 class DatabaseService {
   static const String _databaseName = 'plata_sync.db';
-  static const int _databaseVersion = 1;
+  static const int _databaseVersion = 2;
 
   Database? _database;
   DatabaseService() {
@@ -52,7 +52,8 @@ class DatabaseService {
         background_color_hex TEXT NOT NULL,
         icon_color_hex TEXT NOT NULL,
         last_used INTEGER,
-        description TEXT
+        description TEXT,
+        transaction_type TEXT
       )
     ''');
 
@@ -122,7 +123,12 @@ class DatabaseService {
 
   /// Handle database upgrades
   Future<void> _onUpgrade(Database db, int oldVersion, int newVersion) async {
-    // Future migrations will be handled here
+    // Version 1 -> 2: Add transaction_type column to categories table
+    if (oldVersion < 2) {
+      await db.execute('''
+        ALTER TABLE categories ADD COLUMN transaction_type TEXT
+      ''');
+    }
   }
 
   /// Close the database

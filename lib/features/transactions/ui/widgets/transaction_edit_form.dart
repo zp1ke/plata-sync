@@ -240,6 +240,7 @@ class TransactionEditFormState extends State<TransactionEditForm> {
                       ),
                       child: CategorySelector(
                         categoryId: _categoryId,
+                        transactionType: _type,
                         onChanged: (categoryId) {
                           setState(() {
                             _categoryId = categoryId;

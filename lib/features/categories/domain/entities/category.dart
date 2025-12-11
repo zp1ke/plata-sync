@@ -1,6 +1,7 @@
 import 'package:equatable/equatable.dart';
 import '../../../../core/model/object_icon_data.dart';
 import '../../../../core/utils/random.dart';
+import '../../model/enums/category_transaction_type.dart';
 
 class Category extends Equatable {
   final String id;
@@ -9,6 +10,7 @@ class Category extends Equatable {
   final ObjectIconData iconData;
   final DateTime? lastUsed;
   final String? description;
+  final CategoryTransactionType? transactionType;
 
   const Category({
     required this.id,
@@ -17,6 +19,7 @@ class Category extends Equatable {
     required this.iconData,
     this.lastUsed,
     this.description,
+    this.transactionType,
   });
 
   Category.create({
@@ -25,6 +28,7 @@ class Category extends Equatable {
     required this.name,
     required this.iconData,
     this.description,
+    this.transactionType,
   }) : id = id ?? randomId(),
        createdAt = createdAt ?? DateTime.now(),
        lastUsed = null;
@@ -36,6 +40,7 @@ class Category extends Equatable {
     ObjectIconData? iconData,
     String? description,
     DateTime? lastUsed,
+    CategoryTransactionType? transactionType,
   }) {
     return Category(
       id: id ?? this.id,
@@ -44,6 +49,7 @@ class Category extends Equatable {
       iconData: iconData ?? this.iconData,
       description: description ?? this.description,
       lastUsed: lastUsed ?? this.lastUsed,
+      transactionType: transactionType ?? this.transactionType,
     );
   }
 

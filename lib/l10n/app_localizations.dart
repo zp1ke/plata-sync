@@ -825,6 +825,36 @@ abstract class AppL10n {
   /// **'Invalid hex color format'**
   String get categoriesEditColorInvalid;
 
+  /// Label for transaction type field in category edit dialog
+  ///
+  /// In en, this message translates to:
+  /// **'Transaction Type'**
+  String get categoriesEditTransactionType;
+
+  /// Helper text for transaction type field
+  ///
+  /// In en, this message translates to:
+  /// **'Leave empty to allow for both income and expense'**
+  String get categoriesEditTransactionTypeHelper;
+
+  /// Label for income transaction type in category form
+  ///
+  /// In en, this message translates to:
+  /// **'Income'**
+  String get categoryTransactionTypeIncome;
+
+  /// Label for expense transaction type in category form
+  ///
+  /// In en, this message translates to:
+  /// **'Expense'**
+  String get categoryTransactionTypeExpense;
+
+  /// Label for any transaction type in category form (when null)
+  ///
+  /// In en, this message translates to:
+  /// **'Any'**
+  String get categoryTransactionTypeAny;
+
   /// Label for the add category button
   ///
   /// In en, this message translates to:

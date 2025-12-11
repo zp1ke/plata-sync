@@ -6,6 +6,7 @@ import '../../../../core/ui/resources/app_spacing.dart';
 import '../../../../core/ui/widgets/input_decoration.dart';
 import '../../../../core/ui/widgets/object_icon_editor.dart';
 import '../../domain/entities/category.dart';
+import '../../model/enums/category_transaction_type.dart';
 import '../../../../l10n/app_localizations.dart';
 
 /// A reusable form widget for creating and editing categories.
@@ -34,6 +35,7 @@ class CategoryEditFormState extends State<CategoryEditForm> {
   late final TextEditingController nameController;
   late final TextEditingController descriptionController;
   late ObjectIconData iconData;
+  late CategoryTransactionType? transactionType;
   final formKey = GlobalKey<FormState>();
   bool isFormValid = false;
 
@@ -51,6 +53,7 @@ class CategoryEditFormState extends State<CategoryEditForm> {
           backgroundColorHex: 'E3F2FD',
           iconColorHex: '2196F3',
         );
+    transactionType = widget.category?.transactionType;
 
     nameController.addListener(_validateForm);
     // Validate initial state
@@ -121,6 +124,48 @@ class CategoryEditFormState extends State<CategoryEditForm> {
                     });
                   },
                 ),
+                // Transaction Type selector
+                Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  spacing: AppSpacing.xs,
+                  children: [
+                    Text(
+                      '${l10n.categoriesEditTransactionType} (${l10n.optional})',
+                      style: Theme.of(context).textTheme.labelMedium,
+                    ),
+                    Text(
+                      l10n.categoriesEditTransactionTypeHelper,
+                      style: Theme.of(context).textTheme.bodySmall?.copyWith(
+                        color: Theme.of(context).colorScheme.onSurfaceVariant,
+                      ),
+                    ),
+                    AppSpacing.gapVerticalXs,
+                    SegmentedButton<CategoryTransactionType?>(
+                      showSelectedIcon: false,
+                      segments: [
+                        ButtonSegment(
+                          value: null,
+                          label: Text(l10n.categoryTransactionTypeAny),
+                        ),
+                        ButtonSegment(
+                          value: CategoryTransactionType.income,
+                          label: Text(l10n.categoryTransactionTypeIncome),
+                        ),
+                        ButtonSegment(
+                          value: CategoryTransactionType.expense,
+                          label: Text(l10n.categoryTransactionTypeExpense),
+                        ),
+                      ],
+                      selected: {transactionType},
+                      onSelectionChanged:
+                          (Set<CategoryTransactionType?> newSelection) {
+                            setState(() {
+                              transactionType = newSelection.first;
+                            });
+                          },
+                    ),
+                  ],
+                ),
                 // Actions (optional - for inline use)
                 if (widget.showActions)
                   Row(
@@ -155,6 +200,7 @@ class CategoryEditFormState extends State<CategoryEditForm> {
                   ? null
                   : descriptionController.text.trim(),
               iconData: iconData,
+              transactionType: transactionType,
             )
           : Category.create(
               name: nameController.text.trim(),
@@ -162,6 +208,7 @@ class CategoryEditFormState extends State<CategoryEditForm> {
                   ? null
                   : descriptionController.text.trim(),
               iconData: iconData,
+              transactionType: transactionType,
             );
       widget.onSave(category);
     }

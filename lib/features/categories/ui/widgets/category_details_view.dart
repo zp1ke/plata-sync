@@ -5,6 +5,7 @@ import '../../../../core/ui/resources/app_spacing.dart';
 import '../../../../core/utils/colors.dart';
 import '../../../../core/utils/datetime.dart';
 import '../../domain/entities/category.dart';
+import '../../model/enums/category_transaction_type.dart';
 import '../../../../l10n/app_localizations.dart';
 
 /// A reusable widget that displays category details.
@@ -72,6 +73,11 @@ class CategoryDetailsView extends StatelessWidget {
             ),
             _buildInfoRow(
               context,
+              label: l10n.categoriesEditTransactionType,
+              value: _getTransactionTypeLabel(l10n, category.transactionType),
+            ),
+            _buildInfoRow(
+              context,
               label: l10n.categoriesDetailsCreatedAt,
               value: category.createdAt.format(),
             ),
@@ -125,5 +131,17 @@ class CategoryDetailsView extends StatelessWidget {
         ),
       ],
     );
+  }
+
+  String _getTransactionTypeLabel(
+    AppL10n l10n,
+    CategoryTransactionType? transactionType,
+  ) {
+    if (transactionType == null) {
+      return l10n.categoryTransactionTypeAny;
+    }
+    return transactionType == CategoryTransactionType.income
+        ? l10n.categoryTransactionTypeIncome
+        : l10n.categoryTransactionTypeExpense;
   }
 }
