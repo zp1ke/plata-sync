@@ -1,19 +1,22 @@
 import 'package:flutter/material.dart';
+
 import '../../../../core/di/service_locator.dart';
 import '../../../../core/ui/widgets/dialog.dart';
+import '../../../../l10n/app_localizations.dart';
 import '../../application/transactions_manager.dart';
 import '../../domain/entities/transaction.dart';
-import '../../../../l10n/app_localizations.dart';
 
 mixin TransactionActionsMixin<T extends StatefulWidget> on State<T> {
   bool hasShownSampleDialog = false;
 
-  void checkSampleDataDialog(bool isLoading, bool hasTransactions) {
-    if (!hasShownSampleDialog && !isLoading && !hasTransactions) {
+  void checkSampleDataDialog(bool isLoading, bool hasNoTransactions) {
+    if (!hasShownSampleDialog && !isLoading && hasNoTransactions) {
       WidgetsBinding.instance.addPostFrameCallback((_) async {
         if (!mounted || hasShownSampleDialog) return;
 
         final manager = getService<TransactionsManager>();
+
+        // Check if there's truly no data at all in the database
         final hasData = await manager.hasAnyData();
 
         if (!mounted || hasShownSampleDialog) return;
