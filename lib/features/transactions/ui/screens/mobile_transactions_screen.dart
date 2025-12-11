@@ -36,6 +36,8 @@ class _MobileTransactionsScreenState extends State<MobileTransactionsScreen>
       (TransactionsManager x) => x.currentDateFilter,
     );
     final viewMode = watchValue((TransactionsManager x) => x.viewMode);
+    final manager = getService<TransactionsManager>();
+    final hasActiveFilters = manager.hasActiveFilters;
     final l10n = AppL10n.of(context);
 
     // Show sample data dialog once after initial load completes with no data
@@ -45,7 +47,6 @@ class _MobileTransactionsScreenState extends State<MobileTransactionsScreen>
       body: SafeArea(
         child: NestedScrollView(
           headerSliverBuilder: (_, _) {
-            final manager = getService<TransactionsManager>();
             return [
               AppTopBar(
                 title: l10n.transactionsScreenTitle,
@@ -73,7 +74,13 @@ class _MobileTransactionsScreenState extends State<MobileTransactionsScreen>
               ),
             ];
           },
-          body: _buildContent(context, isLoading, transactions, viewMode),
+          body: _buildContent(
+            context,
+            isLoading,
+            transactions,
+            viewMode,
+            hasActiveFilters,
+          ),
         ),
       ),
       floatingActionButton: FloatingActionButton(
@@ -119,6 +126,7 @@ class _MobileTransactionsScreenState extends State<MobileTransactionsScreen>
     bool isLoading,
     List<Transaction> transactions,
     ViewMode viewMode,
+    bool hasActiveFilters,
   ) {
     final l10n = AppL10n.of(context);
     if (isLoading && transactions.isEmpty) {
@@ -126,7 +134,10 @@ class _MobileTransactionsScreenState extends State<MobileTransactionsScreen>
     }
 
     if (transactions.isEmpty) {
-      return Center(child: Text(l10n.transactionsEmptyState));
+      final emptyMessage = hasActiveFilters
+          ? l10n.transactionsEmptyFilteredState
+          : l10n.transactionsEmptyState;
+      return Center(child: Text(emptyMessage));
     }
 
     return viewMode == ViewMode.list

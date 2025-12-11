@@ -1305,6 +1305,12 @@ abstract class AppL10n {
   /// **'No transactions yet'**
   String get transactionsEmptyState;
 
+  /// Message shown when there are no transactions matching the current filters
+  ///
+  /// In en, this message translates to:
+  /// **'No transactions found with current filters'**
+  String get transactionsEmptyFilteredState;
+
   /// Prompt shown in detail pane when no transaction is selected
   ///
   /// In en, this message translates to:

@@ -926,6 +926,10 @@
   "@transactionsEmptyState": {
     "description": "Message shown when there are no transactions"
   },
+  "transactionsEmptyFilteredState": "No transactions found with current filters",
+  "@transactionsEmptyFilteredState": {
+    "description": "Message shown when there are no transactions matching the current filters"
+  },
   "transactionsSelectPrompt": "Select a transaction to view details",
   "@transactionsSelectPrompt": {
     "description": "Prompt shown in detail pane when no transaction is selected"

@@ -672,6 +672,10 @@ class AppL10nEn extends AppL10n {
   String get transactionsEmptyState => 'No transactions yet';
 
   @override
+  String get transactionsEmptyFilteredState =>
+      'No transactions found with current filters';
+
+  @override
   String get transactionsSelectPrompt => 'Select a transaction to view details';
 
   @override

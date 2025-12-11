@@ -39,6 +39,15 @@ class TransactionsManager {
     DateFilter.today,
   );
 
+  bool get hasActiveFilters {
+    return currentAccountFilter.value != null ||
+        currentCategoryFilter.value != null ||
+        (currentTagFilter.value != null &&
+            currentTagFilter.value!.isNotEmpty) ||
+        currentTransactionTypeFilter.value != null ||
+        currentDateFilter.value != DateFilter.all;
+  }
+
   void _loadSortOrderFromSettings() {
     final settings = getService<SettingsService>();
     final saved = settings.getTransactionsSortOrder();
