@@ -223,10 +223,10 @@ class _TabletAccountsScreenState extends State<_TabletAccountsScreen> {
       });
     }
 
-    return Scaffold(
-      body: SafeArea(
-        child: MasterDetailLayout(
-          master: NestedScrollView(
+    return SafeArea(
+      child: MasterDetailLayout(
+        master: Scaffold(
+          body: NestedScrollView(
             headerSliverBuilder: (_, _) {
               final manager = getService<AccountsManager>();
               return [
@@ -258,33 +258,33 @@ class _TabletAccountsScreenState extends State<_TabletAccountsScreen> {
               selectedAccountId: selectedAccount?.id,
             ),
           ),
-          detail: _buildDetailPane(),
-          detailPlaceholder: Center(
-            child: Text(
-              l10n.accountsSelectPrompt,
-              style: Theme.of(context).textTheme.bodyLarge,
-            ),
+          floatingActionButton: isEditing
+              ? null
+              : FloatingActionButton.extended(
+                  onPressed: isLoading
+                      ? null
+                      : () {
+                          WidgetsBinding.instance.addPostFrameCallback((_) {
+                            if (mounted) {
+                              setState(() {
+                                selectedAccount = null;
+                                isEditing = true;
+                              });
+                            }
+                          });
+                        },
+                  icon: AppIcons.add,
+                  label: Text(l10n.accountsAddButton),
+                ),
+        ),
+        detail: _buildDetailPane(),
+        detailPlaceholder: Center(
+          child: Text(
+            l10n.accountsSelectPrompt,
+            style: Theme.of(context).textTheme.bodyLarge,
           ),
         ),
       ),
-      floatingActionButton: isEditing
-          ? null
-          : FloatingActionButton.extended(
-              onPressed: isLoading
-                  ? null
-                  : () {
-                      WidgetsBinding.instance.addPostFrameCallback((_) {
-                        if (mounted) {
-                          setState(() {
-                            selectedAccount = null;
-                            isEditing = true;
-                          });
-                        }
-                      });
-                    },
-              icon: AppIcons.add,
-              label: Text(l10n.accountsAddButton),
-            ),
     );
   }
 

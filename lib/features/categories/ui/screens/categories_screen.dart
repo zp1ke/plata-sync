@@ -218,10 +218,10 @@ class _TabletCategoriesScreenState extends State<_TabletCategoriesScreen> {
       });
     }
 
-    return Scaffold(
-      body: SafeArea(
-        child: MasterDetailLayout(
-          master: NestedScrollView(
+    return SafeArea(
+      child: MasterDetailLayout(
+        master: Scaffold(
+          body: NestedScrollView(
             headerSliverBuilder: (_, _) {
               final manager = getService<CategoriesManager>();
               return [
@@ -253,33 +253,33 @@ class _TabletCategoriesScreenState extends State<_TabletCategoriesScreen> {
               selectedCategoryId: selectedCategory?.id,
             ),
           ),
-          detail: _buildDetailPane(),
-          detailPlaceholder: Center(
-            child: Text(
-              l10n.categoriesSelectPrompt,
-              style: Theme.of(context).textTheme.bodyLarge,
-            ),
+          floatingActionButton: isEditing
+              ? null
+              : FloatingActionButton.extended(
+                  onPressed: isLoading
+                      ? null
+                      : () {
+                          WidgetsBinding.instance.addPostFrameCallback((_) {
+                            if (mounted) {
+                              setState(() {
+                                selectedCategory = null;
+                                isEditing = true;
+                              });
+                            }
+                          });
+                        },
+                  icon: AppIcons.add,
+                  label: Text(l10n.categoriesAddButton),
+                ),
+        ),
+        detail: _buildDetailPane(),
+        detailPlaceholder: Center(
+          child: Text(
+            l10n.categoriesSelectPrompt,
+            style: Theme.of(context).textTheme.bodyLarge,
           ),
         ),
       ),
-      floatingActionButton: isEditing
-          ? null
-          : FloatingActionButton.extended(
-              onPressed: isLoading
-                  ? null
-                  : () {
-                      WidgetsBinding.instance.addPostFrameCallback((_) {
-                        if (mounted) {
-                          setState(() {
-                            selectedCategory = null;
-                            isEditing = true;
-                          });
-                        }
-                      });
-                    },
-              icon: AppIcons.add,
-              label: Text(l10n.categoriesAddButton),
-            ),
     );
   }
 
