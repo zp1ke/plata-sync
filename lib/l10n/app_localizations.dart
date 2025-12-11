@@ -1167,6 +1167,18 @@ abstract class AppL10n {
   /// **'Filter Transactions'**
   String get filterTransactions;
 
+  /// Label for transaction type filter
+  ///
+  /// In en, this message translates to:
+  /// **'Transaction Type'**
+  String get transactionTypeFilter;
+
+  /// Label for all transaction types filter option
+  ///
+  /// In en, this message translates to:
+  /// **'All'**
+  String get transactionTypeAll;
+
   /// Hint for account selection
   ///
   /// In en, this message translates to:

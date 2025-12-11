@@ -1,6 +1,7 @@
 import '../../../../core/data/models/sort_param.dart';
 import '../interfaces/transaction_data_source.dart';
 import '../../domain/entities/transaction.dart';
+import '../../ui/widgets/transaction_type_selector.dart';
 
 class InMemoryTransactionDataSource extends TransactionDataSource {
   InMemoryTransactionDataSource({int delayMilliseconds = 300})
@@ -67,6 +68,21 @@ class InMemoryTransactionDataSource extends TransactionDataSource {
               (tagId) => item.tagIds.contains(tagId),
             );
             if (!hasAnyTag) return false;
+          }
+          if (entry.key == 'transactionType') {
+            final transactionType = entry.value as String;
+            if (transactionType == TransactionType.expense.name &&
+                !item.isExpense) {
+              return false;
+            }
+            if (transactionType == TransactionType.income.name &&
+                !item.isIncome) {
+              return false;
+            }
+            if (transactionType == TransactionType.transfer.name &&
+                !item.isTransfer) {
+              return false;
+            }
           }
         }
         return true;

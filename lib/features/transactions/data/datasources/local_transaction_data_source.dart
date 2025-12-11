@@ -2,6 +2,7 @@ import '../../../../core/data/models/sort_param.dart';
 import '../../../../core/services/database_service.dart';
 import '../interfaces/transaction_data_source.dart';
 import '../../domain/entities/transaction.dart' as model;
+import '../../ui/widgets/transaction_type_selector.dart';
 import 'package:sqflite/sqflite.dart';
 
 class LocalTransactionDataSource extends TransactionDataSource {
@@ -124,6 +125,17 @@ class LocalTransactionDataSource extends TransactionDataSource {
         // Add wildcards for LIKE search
         for (var tagId in tagIds) {
           args.add('%$tagId%');
+        }
+      }
+
+      if (filter.containsKey('transactionType')) {
+        final transactionType = filter['transactionType'] as String;
+        if (transactionType == TransactionType.expense.name) {
+          conditions.add('amount < 0 AND target_account_id IS NULL');
+        } else if (transactionType == TransactionType.income.name) {
+          conditions.add('amount > 0 AND target_account_id IS NULL');
+        } else if (transactionType == TransactionType.transfer.name) {
+          conditions.add('target_account_id IS NOT NULL');
         }
       }
 

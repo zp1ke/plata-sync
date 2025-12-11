@@ -834,6 +834,14 @@
   "@filterTransactions": {
     "description": "Title for transaction filter dialog"
   },
+  "transactionTypeFilter": "Transaction Type",
+  "@transactionTypeFilter": {
+    "description": "Label for transaction type filter"
+  },
+  "transactionTypeAll": "All",
+  "@transactionTypeAll": {
+    "description": "Label for all transaction types filter option"
+  },
   "selectAccount": "Select Account",
   "@selectAccount": {
     "description": "Hint for account selection"

@@ -14,6 +14,7 @@ import '../data/interfaces/transaction_data_source.dart';
 import '../domain/entities/transaction.dart';
 import '../model/enums/date_filter.dart';
 import '../model/enums/sort_order.dart';
+import '../ui/widgets/transaction_type_selector.dart';
 
 class TransactionsManager {
   final TransactionDataSource _dataSource;
@@ -28,6 +29,8 @@ class TransactionsManager {
   final ValueNotifier<String?> currentAccountFilter = ValueNotifier(null);
   final ValueNotifier<String?> currentCategoryFilter = ValueNotifier(null);
   final ValueNotifier<List<String>?> currentTagFilter = ValueNotifier(null);
+  final ValueNotifier<TransactionType?> currentTransactionTypeFilter =
+      ValueNotifier(null);
   final ValueNotifier<TransactionSortOrder> sortOrder = ValueNotifier(
     TransactionSortOrder.dateDesc,
   );
@@ -119,9 +122,11 @@ class TransactionsManager {
     String? accountId,
     String? categoryId,
     List<String>? tagIds,
+    TransactionType? transactionType,
     bool clearAccount = false,
     bool clearCategory = false,
     bool clearTags = false,
+    bool clearTransactionType = false,
   }) async {
     isLoading.value = true;
     if (clearAccount) {
@@ -141,6 +146,12 @@ class TransactionsManager {
     } else if (tagIds != null) {
       currentTagFilter.value = tagIds;
     }
+
+    if (clearTransactionType) {
+      currentTransactionTypeFilter.value = null;
+    } else if (transactionType != null) {
+      currentTransactionTypeFilter.value = transactionType;
+    }
     try {
       final filter = <String, dynamic>{};
       if (currentAccountFilter.value != null) {
@@ -152,6 +163,9 @@ class TransactionsManager {
       if (currentTagFilter.value != null &&
           currentTagFilter.value!.isNotEmpty) {
         filter['tagIds'] = currentTagFilter.value;
+      }
+      if (currentTransactionTypeFilter.value != null) {
+        filter['transactionType'] = currentTransactionTypeFilter.value!.name;
       }
 
       if (currentDateFilter.value != DateFilter.all) {
@@ -203,6 +217,13 @@ class TransactionsManager {
     loadTransactions(
       tagIds: tagIds,
       clearTags: tagIds == null || tagIds.isEmpty,
+    );
+  }
+
+  void setTransactionTypeFilter(TransactionType? transactionType) {
+    loadTransactions(
+      transactionType: transactionType,
+      clearTransactionType: transactionType == null,
     );
   }
 
@@ -270,6 +291,7 @@ class TransactionsManager {
     currentAccountFilter.value = null;
     currentCategoryFilter.value = null;
     currentTagFilter.value = null;
+    currentTransactionTypeFilter.value = null;
     loadTransactions();
   }
 
@@ -353,6 +375,7 @@ class TransactionsManager {
     currentAccountFilter.dispose();
     currentCategoryFilter.dispose();
     currentTagFilter.dispose();
+    currentTransactionTypeFilter.dispose();
     sortOrder.dispose();
     viewMode.dispose();
   }

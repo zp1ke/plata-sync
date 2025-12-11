@@ -601,6 +601,12 @@ class AppL10nEn extends AppL10n {
   String get filterTransactions => 'Filter Transactions';
 
   @override
+  String get transactionTypeFilter => 'Transaction Type';
+
+  @override
+  String get transactionTypeAll => 'All';
+
+  @override
   String get selectAccount => 'Select Account';
 
   @override
