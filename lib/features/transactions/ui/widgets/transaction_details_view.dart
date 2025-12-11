@@ -177,7 +177,7 @@ class _TransactionDetailsViewState extends State<TransactionDetailsView> {
                   label: Text(tag.name),
                   labelStyle: Theme.of(context).textTheme.bodySmall,
                   visualDensity: VisualDensity.compact,
-                  padding: EdgeInsets.symmetric(horizontal: AppSpacing.xs),
+                  padding: AppSpacing.paddingHorizontalXs,
                 );
               }).toList(),
             ),
@@ -259,7 +259,7 @@ class _TransactionDetailsViewState extends State<TransactionDetailsView> {
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         SizedBox(
-          width: 100,
+          width: AppSizing.boxWidthSm,
           child: Text(
             label,
             style: Theme.of(context).textTheme.bodySmall?.copyWith(

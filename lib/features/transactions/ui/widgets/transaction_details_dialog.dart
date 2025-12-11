@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import '../../../../core/ui/resources/app_icons.dart';
 import '../../../../core/ui/widgets/dialog.dart';
 import '../../domain/entities/transaction.dart';
+import '../utils/transaction_ui_utils.dart';
 import 'transaction_details_view.dart';
 import '../../../../l10n/app_localizations.dart';
 
@@ -21,17 +22,8 @@ class TransactionDetailsDialog extends StatelessWidget {
   Widget build(BuildContext context) {
     final l10n = AppL10n.of(context);
 
-    String typeLabel;
-    if (transaction.isTransfer) {
-      typeLabel = l10n.transactionTypeTransfer;
-    } else if (transaction.isExpense) {
-      typeLabel = l10n.transactionTypeExpense;
-    } else {
-      typeLabel = l10n.transactionTypeIncome;
-    }
-
     return AppDialog(
-      title: typeLabel,
+      title: getTransactionTypeLabel(l10n, transaction),
       content: TransactionDetailsView(transaction: transaction),
       actions: [
         TextButton.icon(

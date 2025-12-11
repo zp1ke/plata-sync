@@ -1,3 +1,4 @@
+import '../../domain/entities/transaction.dart';
 import '../../model/enums/date_filter.dart';
 import '../../model/enums/sort_order.dart';
 import '../../../../l10n/app_localizations.dart';
@@ -25,5 +26,15 @@ String getSortLabel(AppL10n l10n, TransactionSortOrder order) {
       return l10n.transactionsSortAmountAsc;
     case TransactionSortOrder.amountDesc:
       return l10n.transactionsSortAmountDesc;
+  }
+}
+
+String getTransactionTypeLabel(AppL10n l10n, Transaction transaction) {
+  if (transaction.isTransfer) {
+    return l10n.transactionTypeTransfer;
+  } else if (transaction.isExpense) {
+    return l10n.transactionTypeExpense;
+  } else {
+    return l10n.transactionTypeIncome;
   }
 }

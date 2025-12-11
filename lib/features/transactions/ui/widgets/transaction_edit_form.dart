@@ -304,9 +304,7 @@ class TransactionEditFormState extends State<TransactionEditForm> {
                           labelStyle: Theme.of(context).textTheme.bodySmall,
                           deleteIcon: AppIcons.close,
                           onDeleted: () => _removeTag(tag),
-                          padding: EdgeInsets.symmetric(
-                            horizontal: AppSpacing.xs,
-                          ),
+                          padding: AppSpacing.paddingHorizontalXs,
                         );
                       }).toList(),
                     ),

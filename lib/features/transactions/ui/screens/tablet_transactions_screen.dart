@@ -187,7 +187,7 @@ class _TabletTransactionsScreenState extends State<TabletTransactionsScreen>
       children: [
         // Header with actions
         Container(
-          padding: const EdgeInsets.all(AppSpacing.md),
+          padding: AppSpacing.paddingMd,
           decoration: BoxDecoration(
             border: Border(
               bottom: BorderSide(color: Theme.of(context).dividerColor),
@@ -197,7 +197,7 @@ class _TabletTransactionsScreenState extends State<TabletTransactionsScreen>
             children: [
               Expanded(
                 child: Text(
-                  _getTransactionTypeLabel(context, transaction),
+                  getTransactionTypeLabel(l10n, transaction),
                   style: Theme.of(context).textTheme.titleLarge,
                 ),
               ),
@@ -239,7 +239,7 @@ class _TabletTransactionsScreenState extends State<TabletTransactionsScreen>
         // Content
         Expanded(
           child: SingleChildScrollView(
-            padding: const EdgeInsets.all(AppSpacing.lg),
+            padding: AppSpacing.paddingLg,
             child: TransactionDetailsView(
               transaction: transaction,
               showLargeIcon: true,
@@ -261,7 +261,7 @@ class _TabletTransactionsScreenState extends State<TabletTransactionsScreen>
       children: [
         // Header
         Container(
-          padding: const EdgeInsets.all(AppSpacing.md),
+          padding: AppSpacing.paddingMd,
           decoration: BoxDecoration(
             border: Border(
               bottom: BorderSide(color: Theme.of(context).dividerColor),
@@ -300,7 +300,7 @@ class _TabletTransactionsScreenState extends State<TabletTransactionsScreen>
         // Form
         Expanded(
           child: SingleChildScrollView(
-            padding: const EdgeInsets.all(AppSpacing.lg),
+            padding: AppSpacing.paddingLg,
             child: Center(
               child: ConstrainedBox(
                 constraints: const BoxConstraints(
@@ -347,19 +347,5 @@ class _TabletTransactionsScreenState extends State<TabletTransactionsScreen>
         ),
       ],
     );
-  }
-
-  String _getTransactionTypeLabel(
-    BuildContext context,
-    Transaction transaction,
-  ) {
-    final l10n = AppL10n.of(context);
-    if (transaction.isTransfer) {
-      return l10n.transactionTypeTransfer;
-    } else if (transaction.isExpense) {
-      return l10n.transactionTypeExpense;
-    } else {
-      return l10n.transactionTypeIncome;
-    }
   }
 }
