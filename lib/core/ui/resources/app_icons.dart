@@ -89,6 +89,9 @@ class AppIcons {
   static final info = const HugeIcon(
     icon: HugeIcons.strokeRoundedInformationCircle,
   );
+  static final licenses = const HugeIcon(
+    icon: HugeIcons.strokeRoundedLicenseThirdParty,
+  );
   static final database = const HugeIcon(
     icon: HugeIcons.strokeRoundedDatabase01,
   );

@@ -151,6 +151,9 @@ class AppL10nEn extends AppL10n {
   String get settingsAppVersion => 'Version';
 
   @override
+  String get settingsLicenses => 'Open Source Licenses';
+
+  @override
   String get settingsDataSource => 'Data Source';
 
   @override

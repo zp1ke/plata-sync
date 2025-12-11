@@ -216,6 +216,10 @@
   "@settingsAppVersion": {
     "description": "Label for app version setting"
   },
+  "settingsLicenses": "Open Source Licenses",
+  "@settingsLicenses": {
+    "description": "Label for open source licenses button"
+  },
   "settingsDataSource": "Data Source",
   "@settingsDataSource": {
     "description": "Label for data source setting"

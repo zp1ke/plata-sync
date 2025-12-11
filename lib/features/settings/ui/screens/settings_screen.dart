@@ -47,6 +47,16 @@ class SettingsScreen extends StatelessWidget {
                     title: Text(l10n.settingsAppVersion),
                     subtitle: Text(settingsService.getAppVersion()),
                   ),
+                  ListTile(
+                    leading: AppIcons.licenses,
+                    title: Text(l10n.settingsLicenses),
+                    trailing: const Icon(Icons.chevron_right),
+                    onTap: () => showLicensePage(
+                      context: context,
+                      applicationName: l10n.appTitle,
+                      applicationVersion: settingsService.getAppVersion(),
+                    ),
+                  ),
                   SizedBox(height: AppSpacing.lg),
                   _SectionHeader(title: l10n.settingsSectionData),
                   const _DataSourceSetting(),
@@ -94,6 +104,16 @@ class _MobileLayout extends StatelessWidget {
             leading: AppIcons.info,
             title: Text(l10n.settingsAppVersion),
             subtitle: Text(settingsService.getAppVersion()),
+          ),
+          ListTile(
+            leading: AppIcons.licenses,
+            title: Text(l10n.settingsLicenses),
+            trailing: const Icon(Icons.chevron_right),
+            onTap: () => showLicensePage(
+              context: context,
+              applicationName: l10n.appTitle,
+              applicationVersion: settingsService.getAppVersion(),
+            ),
           ),
           const Divider(),
 

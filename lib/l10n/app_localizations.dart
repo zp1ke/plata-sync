@@ -333,6 +333,12 @@ abstract class AppL10n {
   /// **'Version'**
   String get settingsAppVersion;
 
+  /// Label for open source licenses button
+  ///
+  /// In en, this message translates to:
+  /// **'Open Source Licenses'**
+  String get settingsLicenses;
+
   /// Label for data source setting
   ///
   /// In en, this message translates to:
