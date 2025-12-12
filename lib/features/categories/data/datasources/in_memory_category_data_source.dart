@@ -57,7 +57,9 @@ class InMemoryCategoryDataSource extends CategoryDataSource {
           if (entry.key == 'id' && item.id != entry.value) return false;
           if (entry.key == 'transactionType') {
             final filterType = entry.value as String;
-            if (item.transactionType?.name != filterType) {
+            // Categories with null transactionType are applicable to all types
+            if (item.transactionType != null &&
+                item.transactionType!.name != filterType) {
               return false;
             }
           }

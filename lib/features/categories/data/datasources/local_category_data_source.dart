@@ -101,7 +101,8 @@ class LocalCategoryDataSource extends CategoryDataSource {
       }
 
       if (filter.containsKey('transactionType')) {
-        conditions.add('transaction_type = ?');
+        // Include categories with null transaction_type (applicable to all types)
+        conditions.add('(transaction_type = ? OR transaction_type IS NULL)');
         args.add(filter['transactionType']);
       }
 
