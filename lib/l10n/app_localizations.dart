@@ -501,6 +501,36 @@ abstract class AppL10n {
   /// **'Last Used (Newest)'**
   String get categoriesSortLastUsedDesc;
 
+  /// Title for category filter dialog
+  ///
+  /// In en, this message translates to:
+  /// **'Filter Categories'**
+  String get filterCategories;
+
+  /// Label for category type filter
+  ///
+  /// In en, this message translates to:
+  /// **'Category Type'**
+  String get categoryTypeFilter;
+
+  /// Label for all category types filter option
+  ///
+  /// In en, this message translates to:
+  /// **'All'**
+  String get categoryTypeAll;
+
+  /// Label for income category type
+  ///
+  /// In en, this message translates to:
+  /// **'Income'**
+  String get categoryTypeIncome;
+
+  /// Label for expense category type
+  ///
+  /// In en, this message translates to:
+  /// **'Expense'**
+  String get categoryTypeExpense;
+
   /// Tooltip for list view
   ///
   /// In en, this message translates to:

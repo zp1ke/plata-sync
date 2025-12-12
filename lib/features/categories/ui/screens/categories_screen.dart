@@ -12,6 +12,7 @@ import '../../../../core/ui/widgets/view_toggle.dart';
 import '../../../../core/utils/random.dart';
 import '../../application/categories_manager.dart';
 import '../../domain/entities/category.dart';
+import '../../model/enums/category_transaction_type.dart';
 import '../../model/enums/sort_order.dart';
 import '../widgets/category_details_dialog.dart';
 import '../widgets/category_details_view.dart';
@@ -53,6 +54,11 @@ class _MobileCategoriesScreenState extends State<_MobileCategoriesScreen> {
     final currentQuery = watchValue((CategoriesManager x) => x.currentQuery);
     final sortOrder = watchValue((CategoriesManager x) => x.sortOrder);
     final viewMode = watchValue((CategoriesManager x) => x.viewMode);
+    final manager = getService<CategoriesManager>();
+    final hasActiveFilters = manager.hasActiveFilters;
+    final currentTransactionTypeFilter = watchValue(
+      (CategoriesManager x) => x.currentTransactionTypeFilter,
+    );
     final l10n = AppL10n.of(context);
 
     // Show sample data dialog once after initial load completes with no data
@@ -74,7 +80,6 @@ class _MobileCategoriesScreenState extends State<_MobileCategoriesScreen> {
       body: SafeArea(
         child: NestedScrollView(
           headerSliverBuilder: (_, _) {
-            final manager = getService<CategoriesManager>();
             return [
               AppTopBar(
                 title: l10n.categoriesScreenTitle,
@@ -90,6 +95,8 @@ class _MobileCategoriesScreenState extends State<_MobileCategoriesScreen> {
                   manager,
                   l10n,
                   isLoading,
+                  hasActiveFilters,
+                  currentTransactionTypeFilter,
                 ),
               ),
             ];
@@ -201,6 +208,11 @@ class _TabletCategoriesScreenState extends State<_TabletCategoriesScreen> {
     final currentQuery = watchValue((CategoriesManager x) => x.currentQuery);
     final sortOrder = watchValue((CategoriesManager x) => x.sortOrder);
     final viewMode = watchValue((CategoriesManager x) => x.viewMode);
+    final manager = getService<CategoriesManager>();
+    final hasActiveFilters = manager.hasActiveFilters;
+    final currentTransactionTypeFilter = watchValue(
+      (CategoriesManager x) => x.currentTransactionTypeFilter,
+    );
     final l10n = AppL10n.of(context);
 
     // Show sample data dialog once after initial load completes with no data
@@ -223,7 +235,6 @@ class _TabletCategoriesScreenState extends State<_TabletCategoriesScreen> {
         master: Scaffold(
           body: NestedScrollView(
             headerSliverBuilder: (_, _) {
-              final manager = getService<CategoriesManager>();
               return [
                 AppTopBar(
                   title: l10n.categoriesScreenTitle,
@@ -239,6 +250,8 @@ class _TabletCategoriesScreenState extends State<_TabletCategoriesScreen> {
                     manager,
                     l10n,
                     isLoading,
+                    hasActiveFilters,
+                    currentTransactionTypeFilter,
                     showViewToggle: true,
                   ),
                 ),
@@ -523,31 +536,60 @@ Widget _buildBottomBar(
   ViewMode viewMode,
   CategoriesManager manager,
   AppL10n l10n,
-  bool isLoading, {
+  bool isLoading,
+  bool hasActiveFilters,
+  CategoryTransactionType? currentTransactionTypeFilter, {
   bool showViewToggle = false,
 }) {
-  return Row(
+  return Column(
+    mainAxisSize: MainAxisSize.min,
+    spacing: AppSpacing.sm,
+    crossAxisAlignment: CrossAxisAlignment.end,
     children: [
-      ConstrainedBox(
-        constraints: BoxConstraints(maxWidth: AppSizing.inputWidthMd),
-        child: SortSelector<CategorySortOrder>(
-          value: sortOrder,
-          onChanged: isLoading ? null : manager.setSortOrder,
-          labelBuilder: (order) => _sortLabel(order, l10n),
-          sortIconBuilder: (order) => order.isDescending
-              ? AppIcons.sortDescending
-              : AppIcons.sortAscending,
-          options: CategorySortOrder.values,
-        ),
+      Row(
+        children: [
+          ConstrainedBox(
+            constraints: BoxConstraints(maxWidth: AppSizing.inputWidthMd),
+            child: SortSelector<CategorySortOrder>(
+              value: sortOrder,
+              onChanged: isLoading ? null : manager.setSortOrder,
+              labelBuilder: (order) => _sortLabel(order, l10n),
+              sortIconBuilder: (order) => order.isDescending
+                  ? AppIcons.sortDescending
+                  : AppIcons.sortAscending,
+              options: CategorySortOrder.values,
+            ),
+          ),
+          const Spacer(),
+          if (showViewToggle) ...[
+            AppSpacing.gapHorizontalSm,
+            ViewToggle(
+              value: viewMode,
+              onChanged: isLoading ? null : manager.setViewMode,
+            ),
+          ],
+        ],
       ),
-      Spacer(),
-      if (showViewToggle) ...[
-        AppSpacing.gapHorizontalSm,
-        ViewToggle(
-          value: viewMode,
-          onChanged: isLoading ? null : manager.setViewMode,
-        ),
-      ],
+      SegmentedButton<CategoryTransactionType?>(
+        showSelectedIcon: false,
+        segments: [
+          ButtonSegment(value: null, label: Text(l10n.categoryTypeAll)),
+          ButtonSegment(
+            value: CategoryTransactionType.income,
+            label: Text(l10n.categoryTypeIncome),
+          ),
+          ButtonSegment(
+            value: CategoryTransactionType.expense,
+            label: Text(l10n.categoryTypeExpense),
+          ),
+        ],
+        selected: {currentTransactionTypeFilter},
+        onSelectionChanged: (Set<CategoryTransactionType?> newSelection) {
+          manager.setTransactionTypeFilter(
+            newSelection.isEmpty ? null : newSelection.first,
+          );
+        },
+      ),
     ],
   );
 }

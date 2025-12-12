@@ -100,6 +100,11 @@ class LocalCategoryDataSource extends CategoryDataSource {
         args.add('%${filter['description']}%');
       }
 
+      if (filter.containsKey('transactionType')) {
+        conditions.add('transaction_type = ?');
+        args.add(filter['transactionType']);
+      }
+
       if (conditions.isNotEmpty) {
         where = conditions.join(' AND ');
         whereArgs = args;

@@ -242,6 +242,21 @@ class AppL10nEn extends AppL10n {
   String get categoriesSortLastUsedDesc => 'Last Used (Newest)';
 
   @override
+  String get filterCategories => 'Filter Categories';
+
+  @override
+  String get categoryTypeFilter => 'Category Type';
+
+  @override
+  String get categoryTypeAll => 'All';
+
+  @override
+  String get categoryTypeIncome => 'Income';
+
+  @override
+  String get categoryTypeExpense => 'Expense';
+
+  @override
   String get viewList => 'List View';
 
   @override

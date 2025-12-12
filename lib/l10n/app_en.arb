@@ -333,6 +333,26 @@
   "@categoriesSortLastUsedDesc": {
     "description": "Sort categories by last used descending"
   },
+  "filterCategories": "Filter Categories",
+  "@filterCategories": {
+    "description": "Title for category filter dialog"
+  },
+  "categoryTypeFilter": "Category Type",
+  "@categoryTypeFilter": {
+    "description": "Label for category type filter"
+  },
+  "categoryTypeAll": "All",
+  "@categoryTypeAll": {
+    "description": "Label for all category types filter option"
+  },
+  "categoryTypeIncome": "Income",
+  "@categoryTypeIncome": {
+    "description": "Label for income category type"
+  },
+  "categoryTypeExpense": "Expense",
+  "@categoryTypeExpense": {
+    "description": "Label for expense category type"
+  },
   "viewList": "List View",
   "@viewList": {
     "description": "Tooltip for list view"

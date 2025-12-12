@@ -5,6 +5,7 @@ import '../../../core/model/object_icon_data.dart';
 import '../../../core/services/settings_service.dart';
 import '../data/interfaces/category_data_source.dart';
 import '../domain/entities/category.dart';
+import '../model/enums/category_transaction_type.dart';
 import '../model/enums/sort_order.dart';
 
 class CategoriesManager {
@@ -22,6 +23,12 @@ class CategoriesManager {
     CategorySortOrder.lastUsedDesc,
   );
   final ValueNotifier<ViewMode> viewMode = ValueNotifier(ViewMode.list);
+  final ValueNotifier<CategoryTransactionType?> currentTransactionTypeFilter =
+      ValueNotifier(null);
+
+  bool get hasActiveFilters {
+    return currentTransactionTypeFilter.value != null;
+  }
 
   void _loadSortOrderFromSettings() {
     final settings = getService<SettingsService>();
@@ -94,8 +101,18 @@ class CategoriesManager {
     }
     try {
       final filterQuery = query ?? currentQuery.value;
+      final filter = <String, dynamic>{};
+
+      if (filterQuery.isNotEmpty) {
+        filter['name'] = filterQuery;
+      }
+
+      if (currentTransactionTypeFilter.value != null) {
+        filter['transactionType'] = currentTransactionTypeFilter.value!.name;
+      }
+
       categories.value = await _dataSource.getAll(
-        filter: filterQuery.isNotEmpty ? {'name': filterQuery} : null,
+        filter: filter.isNotEmpty ? filter : null,
         sort: sortOrder.value.sortParam(),
       );
     } catch (e) {
@@ -156,11 +173,22 @@ class CategoriesManager {
     viewMode.value = mode;
   }
 
+  void setTransactionTypeFilter(CategoryTransactionType? transactionType) {
+    currentTransactionTypeFilter.value = transactionType;
+    loadCategories();
+  }
+
+  void clearFilters() {
+    currentTransactionTypeFilter.value = null;
+    loadCategories();
+  }
+
   void dispose() {
     categories.dispose();
     isLoading.dispose();
     currentQuery.dispose();
     sortOrder.dispose();
     viewMode.dispose();
+    currentTransactionTypeFilter.dispose();
   }
 }
