@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 
 import '../../../../core/di/service_locator.dart';
 import '../../../../core/ui/widgets/dialog.dart';
+import '../../../../core/ui/widgets/snack_alert.dart';
 import '../../../../l10n/app_localizations.dart';
 import '../../application/transactions_manager.dart';
 import '../../domain/entities/transaction.dart';
@@ -62,14 +63,13 @@ mixin TransactionActionsMixin<T extends StatefulWidget> on State<T> {
     try {
       await manager.createSampleData();
       if (context.mounted) {
-        ScaffoldMessenger.of(
-          context,
-        ).showSnackBar(SnackBar(content: Text(l10n.sampleDataCreated)));
+        SnackAlert.success(context, message: l10n.sampleDataCreated);
       }
     } catch (e) {
       if (context.mounted) {
-        ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(content: Text(l10n.sampleDataCreateFailed(e.toString()))),
+        SnackAlert.error(
+          context,
+          message: l10n.sampleDataCreateFailed(e.toString()),
         );
       }
     }
@@ -86,14 +86,13 @@ mixin TransactionActionsMixin<T extends StatefulWidget> on State<T> {
       await manager.addTransaction(transaction);
       if (context.mounted) {
         onSuccess?.call();
-        ScaffoldMessenger.of(
-          context,
-        ).showSnackBar(SnackBar(content: Text(l10n.transactionCreated)));
+        SnackAlert.success(context, message: l10n.transactionCreated);
       }
     } catch (e) {
       if (context.mounted) {
-        ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(content: Text(l10n.transactionCreateFailed(e.toString()))),
+        SnackAlert.error(
+          context,
+          message: l10n.transactionCreateFailed(e.toString()),
         );
       }
     }
@@ -110,14 +109,13 @@ mixin TransactionActionsMixin<T extends StatefulWidget> on State<T> {
       await manager.updateTransaction(transaction);
       if (context.mounted) {
         onSuccess?.call();
-        ScaffoldMessenger.of(
-          context,
-        ).showSnackBar(SnackBar(content: Text(l10n.transactionUpdated)));
+        SnackAlert.success(context, message: l10n.transactionUpdated);
       }
     } catch (e) {
       if (context.mounted) {
-        ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(content: Text(l10n.transactionUpdateFailed(e.toString()))),
+        SnackAlert.error(
+          context,
+          message: l10n.transactionUpdateFailed(e.toString()),
         );
       }
     }
@@ -165,14 +163,13 @@ mixin TransactionActionsMixin<T extends StatefulWidget> on State<T> {
       await manager.deleteTransaction(transaction.id);
       if (context.mounted) {
         onSuccess?.call();
-        ScaffoldMessenger.of(
-          context,
-        ).showSnackBar(SnackBar(content: Text(l10n.transactionDeleted)));
+        SnackAlert.success(context, message: l10n.transactionDeleted);
       }
     } catch (e) {
       if (context.mounted) {
-        ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(content: Text(l10n.transactionDeleteFailed(e.toString()))),
+        SnackAlert.error(
+          context,
+          message: l10n.transactionDeleteFailed(e.toString()),
         );
       }
     }

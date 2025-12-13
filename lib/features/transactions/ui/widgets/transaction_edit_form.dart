@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import '../../../../core/di/service_locator.dart';
 import '../../../../core/ui/resources/app_icons.dart';
+import '../../../../core/ui/widgets/snack_alert.dart';
 import '../../../../core/ui/resources/app_sizing.dart';
 import '../../../../core/ui/resources/app_spacing.dart';
 import '../../../../core/ui/widgets/currency_input_field.dart';
@@ -383,7 +384,7 @@ class TransactionEditFormState extends State<TransactionEditForm> {
                           ? const SizedBox(
                               width: AppSizing.iconSm,
                               height: AppSizing.iconSm,
-                              child: CircularProgressIndicator(
+                              child: CircularProgressIndicator.adaptive(
                                 strokeWidth: AppSizing.radiusXs / 2,
                               ),
                             )
@@ -435,8 +436,9 @@ class TransactionEditFormState extends State<TransactionEditForm> {
     } catch (e) {
       if (mounted) {
         final l10n = AppL10n.of(context);
-        ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(content: Text(l10n.errorCreatingTagMessage(e.toString()))),
+        SnackAlert.error(
+          context,
+          message: l10n.errorCreatingTagMessage(e.toString()),
         );
       }
     }

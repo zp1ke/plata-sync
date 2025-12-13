@@ -129,6 +129,18 @@ class AppIcons {
     icon: HugeIcons.strokeRoundedTick02,
     size: AppSizing.iconSm,
   );
+  static Widget checkCircle({Color? color, double? size}) => HugeIcon(
+    icon: HugeIcons.strokeRoundedCheckmarkCircle03,
+    color: color,
+    size: size,
+  );
+  static Widget errorCircle({Color? color, double? size}) =>
+      HugeIcon(icon: HugeIcons.strokeRoundedAlert02, color: color, size: size);
+  static Widget infoCircle({Color? color, double? size}) => HugeIcon(
+    icon: HugeIcons.strokeRoundedInformationCircle,
+    color: color,
+    size: size,
+  );
 
   static Widget getIcon(String name, {Color? color, double? size}) {
     final iconData = iconDataMap[name] ?? HugeIcons.strokeRoundedHelpCircle;

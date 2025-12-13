@@ -14,6 +14,7 @@ import '../../../../core/ui/resources/app_spacing.dart';
 import '../../../../core/ui/widgets/constrained_list_view.dart';
 import '../../../../core/ui/widgets/dialog.dart';
 import '../../../../core/ui/widgets/responsive_layout.dart';
+import '../../../../core/ui/widgets/snack_alert.dart';
 import '../../../../l10n/app_localizations.dart';
 import 'package:restart_app/restart_app.dart';
 import 'package:watch_it/watch_it.dart';
@@ -238,9 +239,7 @@ class _DataSourceSettingState extends State<_DataSourceSetting> {
       }
     } catch (e) {
       if (mounted) {
-        ScaffoldMessenger.of(
-          context,
-        ).showSnackBar(SnackBar(content: Text(e.toString())));
+        SnackAlert.error(context, message: e.toString());
       }
     } finally {
       if (mounted) {
@@ -378,9 +377,7 @@ class _DateFormatSettingState extends State<_DateFormatSetting> {
       await settingsService.setDateFormat(newValue);
     } catch (e) {
       if (mounted) {
-        ScaffoldMessenger.of(
-          context,
-        ).showSnackBar(SnackBar(content: Text(e.toString())));
+        SnackAlert.error(context, message: e.toString());
       }
     }
   }
@@ -451,9 +448,7 @@ class _TimeFormatSettingState extends State<_TimeFormatSetting> {
       await settingsService.setTimeFormat(newValue);
     } catch (e) {
       if (mounted) {
-        ScaffoldMessenger.of(
-          context,
-        ).showSnackBar(SnackBar(content: Text(e.toString())));
+        SnackAlert.error(context, message: e.toString());
       }
     }
   }
