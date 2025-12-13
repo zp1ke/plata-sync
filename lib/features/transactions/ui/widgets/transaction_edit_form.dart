@@ -5,6 +5,7 @@ import '../../../../core/ui/resources/app_sizing.dart';
 import '../../../../core/ui/resources/app_spacing.dart';
 import '../../../../core/ui/widgets/currency_input_field.dart';
 import '../../../../core/ui/widgets/date_time_picker_field.dart';
+import '../../../../core/ui/widgets/description_input.dart';
 import '../../../tags/application/tags_manager.dart';
 import '../../../tags/domain/entities/tag.dart';
 import '../../domain/entities/transaction.dart';
@@ -279,14 +280,10 @@ class TransactionEditFormState extends State<TransactionEditForm> {
               ),
 
               // Notes field
-              TextFormField(
+              DescriptionInput(
                 controller: _notesController,
-                decoration: InputDecoration(
-                  labelText: l10n.transactionNotesLabel,
-                  hintText: l10n.transactionNotesHint,
-                ),
-                maxLength: 200,
-                maxLines: 2,
+                labelText: l10n.transactionNotesLabel,
+                hintText: l10n.transactionNotesHint,
               ),
 
               // Tags field

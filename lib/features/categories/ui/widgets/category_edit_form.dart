@@ -3,7 +3,7 @@ import '../../../../core/model/object_icon_data.dart';
 import '../../../../core/ui/resources/app_icons.dart';
 import '../../../../core/ui/resources/app_sizing.dart';
 import '../../../../core/ui/resources/app_spacing.dart';
-import '../../../../core/ui/widgets/input_decoration.dart';
+import '../../../../core/ui/widgets/description_input.dart';
 import '../../../../core/ui/widgets/name_input.dart';
 import '../../../../core/ui/widgets/object_icon_editor.dart';
 import '../../domain/entities/category.dart';
@@ -93,15 +93,9 @@ class CategoryEditFormState extends State<CategoryEditForm> {
                   prefixIcon: AppIcons.categoriesOutlinedXs,
                 ),
                 // Description field
-                TextFormField(
+                DescriptionInput(
                   controller: descriptionController,
-                  decoration: inputDecorationWithPrefixIcon(
-                    labelText:
-                        '${l10n.categoriesEditDescription} (${l10n.optional})',
-                    prefixIcon: AppIcons.descriptionXs,
-                  ),
-                  maxLength: 200,
-                  maxLines: 2,
+                  labelText: l10n.categoriesEditDescription,
                 ),
                 // Icon editor
                 ObjectIconEditor(

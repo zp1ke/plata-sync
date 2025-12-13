@@ -4,7 +4,7 @@ import '../../../../core/ui/resources/app_icons.dart';
 import '../../../../core/ui/resources/app_sizing.dart';
 import '../../../../core/ui/resources/app_spacing.dart';
 import '../../../../core/ui/widgets/currency_input_field.dart';
-import '../../../../core/ui/widgets/input_decoration.dart';
+import '../../../../core/ui/widgets/description_input.dart';
 import '../../../../core/ui/widgets/name_input.dart';
 import '../../../../core/ui/widgets/object_icon_editor.dart';
 import '../../domain/entities/account.dart';
@@ -97,14 +97,9 @@ class AccountEditFormState extends State<AccountEditForm> {
               prefixIcon: AppIcons.accountsOutlinedXs,
             ),
             // Description field
-            TextFormField(
+            DescriptionInput(
               controller: descriptionController,
-              decoration: inputDecorationWithPrefixIcon(
-                prefixIcon: AppIcons.descriptionXs,
-                labelText: '${l10n.accountsEditDescription} (${l10n.optional})',
-              ),
-              maxLength: 200,
-              maxLines: 2,
+              labelText: l10n.accountsEditDescription,
             ),
             // Initial Balance field (only for creation)
             if (isCreating)

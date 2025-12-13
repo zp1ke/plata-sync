@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import '../resources/app_icons.dart';
 import 'input_decoration.dart';
 
 /// A shared widget for name input fields with capitalized text input.
