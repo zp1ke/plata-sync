@@ -5,6 +5,7 @@ import '../../../../core/ui/resources/app_sizing.dart';
 import '../../../../core/ui/resources/app_spacing.dart';
 import '../../../../core/ui/widgets/currency_input_field.dart';
 import '../../../../core/ui/widgets/input_decoration.dart';
+import '../../../../core/ui/widgets/name_input.dart';
 import '../../../../core/ui/widgets/object_icon_editor.dart';
 import '../../domain/entities/account.dart';
 import '../../../../l10n/app_localizations.dart';
@@ -89,20 +90,11 @@ class AccountEditFormState extends State<AccountEditForm> {
           spacing: AppSpacing.md,
           children: [
             // Name field
-            TextFormField(
+            NameInput(
               controller: nameController,
-              textInputAction: TextInputAction.next,
-              decoration: inputDecorationWithPrefixIcon(
-                labelText: '${l10n.accountsEditName} *',
-                prefixIcon: AppIcons.accountsOutlinedXs,
-              ),
-              maxLength: 100,
-              validator: (value) {
-                if (value == null || value.trim().isEmpty) {
-                  return l10n.accountsEditNameRequired;
-                }
-                return null;
-              },
+              labelText: l10n.accountsEditName,
+              errorText: l10n.accountsEditNameRequired,
+              prefixIcon: AppIcons.accountsOutlinedXs,
             ),
             // Description field
             TextFormField(

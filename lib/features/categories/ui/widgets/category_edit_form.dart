@@ -4,6 +4,7 @@ import '../../../../core/ui/resources/app_icons.dart';
 import '../../../../core/ui/resources/app_sizing.dart';
 import '../../../../core/ui/resources/app_spacing.dart';
 import '../../../../core/ui/widgets/input_decoration.dart';
+import '../../../../core/ui/widgets/name_input.dart';
 import '../../../../core/ui/widgets/object_icon_editor.dart';
 import '../../domain/entities/category.dart';
 import '../../model/enums/category_transaction_type.dart';
@@ -85,20 +86,11 @@ class CategoryEditFormState extends State<CategoryEditForm> {
               crossAxisAlignment: CrossAxisAlignment.end,
               children: [
                 // Name field
-                TextFormField(
+                NameInput(
                   controller: nameController,
-                  textInputAction: TextInputAction.next,
-                  decoration: inputDecorationWithPrefixIcon(
-                    labelText: '${l10n.categoriesEditName} *',
-                    prefixIcon: AppIcons.categoriesOutlinedXs,
-                  ),
-                  maxLength: 100,
-                  validator: (value) {
-                    if (value == null || value.trim().isEmpty) {
-                      return l10n.categoriesEditNameRequired;
-                    }
-                    return null;
-                  },
+                  labelText: l10n.categoriesEditName,
+                  errorText: l10n.categoriesEditNameRequired,
+                  prefixIcon: AppIcons.categoriesOutlinedXs,
                 ),
                 // Description field
                 TextFormField(
