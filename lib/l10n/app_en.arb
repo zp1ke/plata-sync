@@ -1098,5 +1098,9 @@
   "next": "Next",
   "@next": {
     "description": "Label for next action"
+  },
+  "categoriesNoTypeFilterResults": "No categories found for the selected type",
+  "@categoriesNoTypeFilterResults": {
+    "description": "Message shown when no categories match the selected type filter"
   }
 }

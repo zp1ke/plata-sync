@@ -794,4 +794,8 @@ class AppL10nEn extends AppL10n {
 
   @override
   String get next => 'Next';
+
+  @override
+  String get categoriesNoTypeFilterResults =>
+      'No categories found for the selected type';
 }

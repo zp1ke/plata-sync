@@ -56,7 +56,7 @@ class _MobileCategoriesScreenState extends State<_MobileCategoriesScreen> {
     final viewMode = watchValue((CategoriesManager x) => x.viewMode);
     final manager = getService<CategoriesManager>();
     final hasActiveFilters = manager.hasActiveFilters;
-    final currentTransactionTypeFilter = watchValue(
+    final transactionTypeFilter = watchValue(
       (CategoriesManager x) => x.currentTransactionTypeFilter,
     );
     final l10n = AppL10n.of(context);
@@ -97,7 +97,7 @@ class _MobileCategoriesScreenState extends State<_MobileCategoriesScreen> {
                   l10n,
                   isLoading,
                   hasActiveFilters,
-                  currentTransactionTypeFilter,
+                  transactionTypeFilter,
                 ),
               ),
             ];
@@ -108,6 +108,7 @@ class _MobileCategoriesScreenState extends State<_MobileCategoriesScreen> {
             categories,
             currentQuery,
             viewMode,
+            transactionTypeFilter,
           ),
         ),
       ),
@@ -155,6 +156,7 @@ class _MobileCategoriesScreenState extends State<_MobileCategoriesScreen> {
     List<Category> categories,
     String currentQuery,
     ViewMode viewMode,
+    CategoryTransactionType? transactionTypeFilter,
   ) {
     final l10n = AppL10n.of(context);
     if (isLoading && categories.isEmpty) {
@@ -166,6 +168,9 @@ class _MobileCategoriesScreenState extends State<_MobileCategoriesScreen> {
         return Center(
           child: Text(l10n.categoriesNoSearchResults(currentQuery)),
         );
+      }
+      if (transactionTypeFilter != null) {
+        return Center(child: Text(l10n.categoriesNoTypeFilterResults));
       }
       return Center(child: Text(l10n.categoriesEmptyState));
     }
@@ -211,7 +216,7 @@ class _TabletCategoriesScreenState extends State<_TabletCategoriesScreen> {
     final viewMode = watchValue((CategoriesManager x) => x.viewMode);
     final manager = getService<CategoriesManager>();
     final hasActiveFilters = manager.hasActiveFilters;
-    final currentTransactionTypeFilter = watchValue(
+    final transactionTypeFilter = watchValue(
       (CategoriesManager x) => x.currentTransactionTypeFilter,
     );
     final l10n = AppL10n.of(context);
@@ -253,7 +258,7 @@ class _TabletCategoriesScreenState extends State<_TabletCategoriesScreen> {
                     l10n,
                     isLoading,
                     hasActiveFilters,
-                    currentTransactionTypeFilter,
+                    transactionTypeFilter,
                     showViewToggle: true,
                   ),
                 ),
@@ -266,6 +271,7 @@ class _TabletCategoriesScreenState extends State<_TabletCategoriesScreen> {
               currentQuery,
               viewMode,
               selectedCategoryId: selectedCategory?.id,
+              transactionTypeFilter: transactionTypeFilter,
             ),
           ),
           floatingActionButton: isEditing
@@ -462,6 +468,7 @@ class _TabletCategoriesScreenState extends State<_TabletCategoriesScreen> {
     String currentQuery,
     ViewMode viewMode, {
     String? selectedCategoryId,
+    CategoryTransactionType? transactionTypeFilter,
   }) {
     final l10n = AppL10n.of(context);
     if (isLoading && categories.isEmpty) {
@@ -473,6 +480,9 @@ class _TabletCategoriesScreenState extends State<_TabletCategoriesScreen> {
         return Center(
           child: Text(l10n.categoriesNoSearchResults(currentQuery)),
         );
+      }
+      if (transactionTypeFilter != null) {
+        return Center(child: Text(l10n.categoriesNoTypeFilterResults));
       }
       return Center(child: Text(l10n.categoriesEmptyState));
     }

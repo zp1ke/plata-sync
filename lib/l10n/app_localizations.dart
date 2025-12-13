@@ -1526,6 +1526,12 @@ abstract class AppL10n {
   /// In en, this message translates to:
   /// **'Next'**
   String get next;
+
+  /// Message shown when no categories match the selected type filter
+  ///
+  /// In en, this message translates to:
+  /// **'No categories found for the selected type'**
+  String get categoriesNoTypeFilterResults;
 }
 
 class _AppL10nDelegate extends LocalizationsDelegate<AppL10n> {
