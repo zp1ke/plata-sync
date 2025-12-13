@@ -6,6 +6,7 @@ import '../../../../core/ui/resources/app_spacing.dart';
 import '../../../../core/ui/widgets/currency_input_field.dart';
 import '../../../../core/ui/widgets/date_time_picker_field.dart';
 import '../../../../core/ui/widgets/description_input.dart';
+import '../../../accounts/application/accounts_manager.dart';
 import '../../../tags/application/tags_manager.dart';
 import '../../../tags/domain/entities/tag.dart';
 import '../../domain/entities/transaction.dart';
@@ -49,6 +50,7 @@ class TransactionEditFormState extends State<TransactionEditForm> {
   late DateTime _createdAt;
   List<Tag> _selectedTags = [];
   bool isFormValid = false;
+  bool _isSaving = false;
 
   @override
   void initState() {
@@ -104,35 +106,69 @@ class TransactionEditFormState extends State<TransactionEditForm> {
     super.dispose();
   }
 
-  void handleSave() {
+  Future<void> handleSave() async {
     if (!(_formKey.currentState?.validate() ?? false)) return;
+    if (_isSaving) return; // Prevent double-saves
 
-    final amountText = _amountController.text.trim();
-    final amountDouble = double.parse(amountText);
-    int amount = (amountDouble * 100).round();
-    if (_type == TransactionType.expense) {
-      amount = -amount;
+    setState(() => _isSaving = true);
+
+    try {
+      final amountText = _amountController.text.trim();
+      final amountDouble = double.parse(amountText);
+      int amount = (amountDouble * 100).round();
+      if (_type == TransactionType.expense) {
+        amount = -amount;
+      }
+
+      final tagIds = _selectedTags.map((tag) => tag.id).toList();
+
+      // Get the account balance before creating the transaction
+      int accountBalanceBefore;
+      int? targetAccountBalanceBefore;
+
+      if (widget.transaction != null) {
+        // Editing existing transaction, keep original balance
+        accountBalanceBefore = widget.transaction!.accountBalanceBefore;
+        targetAccountBalanceBefore =
+            widget.transaction!.targetAccountBalanceBefore;
+      } else {
+        // Creating new transaction, fetch current account balance
+        final accountsManager = getService<AccountsManager>();
+        final account = await accountsManager.getAccountById(_accountId!);
+        accountBalanceBefore = account?.balance ?? 0;
+
+        // For transfers, also get target account balance
+        if (_type == TransactionType.transfer && _targetAccountId != null) {
+          final targetAccount = await accountsManager.getAccountById(
+            _targetAccountId!,
+          );
+          targetAccountBalanceBefore = targetAccount?.balance ?? 0;
+        }
+      }
+
+      final transaction = Transaction.create(
+        id: widget.transaction?.id,
+        createdAt: _createdAt,
+        accountId: _accountId!,
+        categoryId: _type == TransactionType.transfer ? null : _categoryId,
+        amount: amount,
+        accountBalanceBefore: accountBalanceBefore,
+        targetAccountId: _type == TransactionType.transfer
+            ? _targetAccountId
+            : null,
+        targetAccountBalanceBefore: targetAccountBalanceBefore,
+        notes: _notesController.text.trim().isEmpty
+            ? null
+            : _notesController.text.trim(),
+        tagIds: tagIds,
+      );
+
+      widget.onSave(transaction);
+    } finally {
+      if (mounted) {
+        setState(() => _isSaving = false);
+      }
     }
-
-    final tagIds = _selectedTags.map((tag) => tag.id).toList();
-
-    final transaction = Transaction.create(
-      id: widget.transaction?.id,
-      createdAt: _createdAt,
-      accountId: _accountId!,
-      categoryId: _type == TransactionType.transfer ? null : _categoryId,
-      amount: amount,
-      accountBalanceBefore: widget.transaction?.accountBalanceBefore ?? 0,
-      targetAccountId: _type == TransactionType.transfer
-          ? _targetAccountId
-          : null,
-      notes: _notesController.text.trim().isEmpty
-          ? null
-          : _notesController.text.trim(),
-      tagIds: tagIds,
-    );
-
-    widget.onSave(transaction);
   }
 
   @override
@@ -336,12 +372,22 @@ class TransactionEditFormState extends State<TransactionEditForm> {
                   children: [
                     if (widget.onCancel != null)
                       TextButton(
-                        onPressed: widget.onCancel,
+                        onPressed: _isSaving ? null : widget.onCancel,
                         child: Text(l10n.cancel),
                       ),
                     FilledButton(
-                      onPressed: isFormValid ? handleSave : null,
-                      child: Text(l10n.save),
+                      onPressed: (isFormValid && !_isSaving)
+                          ? handleSave
+                          : null,
+                      child: _isSaving
+                          ? const SizedBox(
+                              width: AppSizing.iconSm,
+                              height: AppSizing.iconSm,
+                              child: CircularProgressIndicator(
+                                strokeWidth: AppSizing.radiusXs / 2,
+                              ),
+                            )
+                          : Text(l10n.save),
                     ),
                   ],
                 ),

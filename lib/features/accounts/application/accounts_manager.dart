@@ -12,7 +12,8 @@ class AccountsManager {
 
   AccountsManager(this._dataSource) {
     _loadSortOrderFromSettings();
-    loadAccounts();
+    // Schedule load after frame to avoid notifying listeners during build
+    Future.microtask(() => loadAccounts());
   }
 
   final ValueNotifier<List<Account>> accounts = ValueNotifier([]);
