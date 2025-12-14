@@ -56,7 +56,9 @@ class SnackAlert {
         break;
     }
 
-    ScaffoldMessenger.of(context).showSnackBar(
+    final scaffoldMessenger = ScaffoldMessenger.of(context);
+    scaffoldMessenger.hideCurrentSnackBar();
+    scaffoldMessenger.showSnackBar(
       SnackBar(
         content: Row(
           crossAxisAlignment: CrossAxisAlignment.start,

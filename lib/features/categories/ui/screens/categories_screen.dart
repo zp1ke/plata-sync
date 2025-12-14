@@ -7,6 +7,7 @@ import '../../../../core/ui/resources/app_spacing.dart';
 import '../../../../core/ui/widgets/app_top_bar.dart';
 import '../../../../core/ui/widgets/dialog.dart';
 import '../../../../core/ui/widgets/responsive_layout.dart';
+import '../../../../core/ui/widgets/snack_alert.dart';
 import '../../../../core/ui/widgets/sort_selector.dart';
 import '../../../../core/ui/widgets/view_toggle.dart';
 import '../../../../core/utils/random.dart';
@@ -628,14 +629,16 @@ Future<void> _handleSaveCreate(
   try {
     await manager.addCategory(newCategory);
     if (context.mounted) {
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text(l10n.categoryCreated(newCategory.name))),
+      SnackAlert.success(
+        context,
+        message: l10n.categoryCreated(newCategory.name),
       );
     }
   } catch (e) {
     if (context.mounted) {
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text(l10n.categoryCreateFailed(e.toString()))),
+      SnackAlert.error(
+        context,
+        message: l10n.categoryCreateFailed(e.toString()),
       );
     }
   }
@@ -650,14 +653,16 @@ Future<void> _handleSaveEdit(
   try {
     await manager.updateCategory(updatedCategory);
     if (context.mounted) {
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text(l10n.categoryUpdated(updatedCategory.name))),
+      SnackAlert.success(
+        context,
+        message: l10n.categoryUpdated(updatedCategory.name),
       );
     }
   } catch (e) {
     if (context.mounted) {
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text(l10n.categoryUpdateFailed(e.toString()))),
+      SnackAlert.error(
+        context,
+        message: l10n.categoryUpdateFailed(e.toString()),
       );
     }
   }
@@ -675,18 +680,16 @@ Future<void> _handleDuplicate(BuildContext context, Category category) async {
     );
     await manager.addCategory(duplicated);
     if (context.mounted) {
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text(l10n.categoryDuplicated(category.name))),
+      SnackAlert.success(
+        context,
+        message: l10n.categoryDuplicated(category.name),
       );
     }
   } catch (e) {
     if (context.mounted) {
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(
-          content: Text(
-            l10n.categoryDuplicateFailed(category.name, e.toString()),
-          ),
-        ),
+      SnackAlert.error(
+        context,
+        message: l10n.categoryDuplicateFailed(category.name, e.toString()),
       );
     }
   }
@@ -720,18 +723,16 @@ Future<void> _handleDelete(BuildContext context, Category category) async {
     try {
       await manager.deleteCategory(category.id);
       if (context.mounted) {
-        ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(content: Text(l10n.categoryDeleted(category.name))),
+        SnackAlert.success(
+          context,
+          message: l10n.categoryDeleted(category.name),
         );
       }
     } catch (e) {
       if (context.mounted) {
-        ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(
-            content: Text(
-              l10n.categoryDeleteFailed(category.name, e.toString()),
-            ),
-          ),
+        SnackAlert.error(
+          context,
+          message: l10n.categoryDeleteFailed(category.name, e.toString()),
         );
       }
     }

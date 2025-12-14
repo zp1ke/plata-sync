@@ -7,6 +7,7 @@ import '../../../../core/ui/resources/app_spacing.dart';
 import '../../../../core/ui/widgets/app_top_bar.dart';
 import '../../../../core/ui/widgets/dialog.dart';
 import '../../../../core/ui/widgets/responsive_layout.dart';
+import '../../../../core/ui/widgets/snack_alert.dart';
 import '../../../../core/ui/widgets/sort_selector.dart';
 import '../../../../core/ui/widgets/view_toggle.dart';
 import '../../../../core/utils/numbers.dart';
@@ -578,14 +579,16 @@ Future<void> _handleSaveCreate(BuildContext context, Account newAccount) async {
   try {
     await manager.addAccount(newAccount);
     if (context.mounted) {
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text(l10n.accountCreated(newAccount.name))),
+      SnackAlert.success(
+        context,
+        message: l10n.accountCreated(newAccount.name),
       );
     }
   } catch (e) {
     if (context.mounted) {
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text(l10n.accountCreateFailed(e.toString()))),
+      SnackAlert.error(
+        context,
+        message: l10n.accountCreateFailed(e.toString()),
       );
     }
   }
@@ -600,14 +603,16 @@ Future<void> _handleSaveEdit(
   try {
     await manager.updateAccount(updatedAccount);
     if (context.mounted) {
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text(l10n.accountUpdated(updatedAccount.name))),
+      SnackAlert.success(
+        context,
+        message: l10n.accountUpdated(updatedAccount.name),
       );
     }
   } catch (e) {
     if (context.mounted) {
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text(l10n.accountUpdateFailed(e.toString()))),
+      SnackAlert.error(
+        context,
+        message: l10n.accountUpdateFailed(e.toString()),
       );
     }
   }
@@ -625,18 +630,16 @@ Future<void> _handleDuplicate(BuildContext context, Account account) async {
     );
     await manager.addAccount(duplicated);
     if (context.mounted) {
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text(l10n.accountDuplicated(account.name))),
+      SnackAlert.success(
+        context,
+        message: l10n.accountDuplicated(account.name),
       );
     }
   } catch (e) {
     if (context.mounted) {
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(
-          content: Text(
-            l10n.accountDuplicateFailed(account.name, e.toString()),
-          ),
-        ),
+      SnackAlert.error(
+        context,
+        message: l10n.accountDuplicateFailed(account.name, e.toString()),
       );
     }
   }
@@ -670,16 +673,13 @@ Future<void> _handleDelete(BuildContext context, Account account) async {
     try {
       await manager.deleteAccount(account.id);
       if (context.mounted) {
-        ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(content: Text(l10n.accountDeleted(account.name))),
-        );
+        SnackAlert.success(context, message: l10n.accountDeleted(account.name));
       }
     } catch (e) {
       if (context.mounted) {
-        ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(
-            content: Text(l10n.accountDeleteFailed(account.name, e.toString())),
-          ),
+        SnackAlert.error(
+          context,
+          message: l10n.accountDeleteFailed(account.name, e.toString()),
         );
       }
     }
