@@ -30,6 +30,7 @@ class AppDialog extends StatelessWidget {
     final screenHeight = MediaQuery.sizeOf(context).height;
     final maxHeight =
         contentHeight ?? min(AppSizing.dialogMaxHeight, screenHeight * 0.75);
+    final body = Padding(padding: AppSpacing.paddingVerticalXs, child: content);
 
     return AlertDialog(
       insetPadding: AppSpacing.paddingMd,
@@ -54,9 +55,9 @@ class AppDialog extends StatelessWidget {
         child: scrollable
             ? ConstrainedBox(
                 constraints: BoxConstraints(maxHeight: maxHeight),
-                child: SingleChildScrollView(child: content),
+                child: SingleChildScrollView(child: body),
               )
-            : content,
+            : body,
       ),
       actions: actions,
     );
