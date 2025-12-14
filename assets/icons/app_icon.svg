@@ -1,49 +1,24 @@
-<svg width="512" height="512" viewBox="0 0 512 512" fill="none" xmlns="http://www.w3.org/2000/svg">
-  <!-- Background circle with gradient -->
-  <defs>
-    <linearGradient id="bgGradient" x1="0%" y1="0%" x2="100%" y2="100%">
-      <stop offset="0%" style="stop-color:#6B9B7A;stop-opacity:1" />
-      <stop offset="100%" style="stop-color:#4A7C59;stop-opacity:1" />
-    </linearGradient>
-    <linearGradient id="coinGradient" x1="0%" y1="0%" x2="100%" y2="100%">
-      <stop offset="0%" style="stop-color:#FFD54F;stop-opacity:1" />
-      <stop offset="100%" style="stop-color:#FFA726;stop-opacity:1" />
-    </linearGradient>
-  </defs>
-
-  <!-- Background -->
-  <rect width="512" height="512" rx="115" fill="url(#bgGradient)"/>
-
-  <!-- Face container -->
-  <circle cx="256" cy="256" r="180" fill="none"/>
-
-  <!-- Left eye (coin with dollar sign) -->
-  <g transform="translate(190, 220)">
-    <!-- Coin circle -->
-    <circle cx="0" cy="0" r="58" stroke="#cdb31b" stroke-width="10" fill="none"/>
-    <!-- Cardinal points -->
-    <path d="M 0 -58 L 0 -48" stroke="#cdb31b" stroke-width="10"/>
-    <path d="M 58 0 L 48 0" stroke="#cdb31b" stroke-width="10"/>
-    <path d="M 0 58 L 0 48" stroke="#cdb31b" stroke-width="10"/>
-    <path d="M -58 0 L -48 0" stroke="#cdb31b" stroke-width="10"/>
-    <!-- Dollar sign -->
-    <path d="M 0 -14 C -9 -14 -14 -9 -14 -2 C -14 5 -9 9 0 9 C 9 9 14 14 14 21 C 14 28 9 33 0 33 M 0 -14 C 7 -14 12 -9 13 -3 M 0 33 C -7 33 -12 28 -13 22" stroke="#cdb31b" stroke-width="10" stroke-linecap="round" fill="none"/>
-    <path d="M 0 -21 L 0 -14" stroke="#cdb31b" stroke-width="10" stroke-linecap="round"/>
-    <path d="M 0 33 L 0 40" stroke="#cdb31b" stroke-width="10" stroke-linecap="round"/>
+<svg xmlns="http://www.w3.org/2000/svg" width="512" height="512" viewBox="0 0 512 512" fill="none">
+  <style>
+    :root {
+    --color-primary: #F97316;
+    --color-secondary: #B973A6;
+    --color-intersection: #D9735E;
+    --color-lock-strap: #F1F5F9;
+    --color-lock-button: #64748B;
+    }
+  </style>
+  <path
+    d="M 122 72 L 355 72 A 35 35 0 0 1 390 107 L 390 315 A 35 35 0 0 1 355 350 L 87 350 A 35 35 0 0 1 52 315 L 52 142 A 70 70 0 0 1 122 72 Z"
+    fill="var(--color-primary)" />
+  <path
+    d="M 87 112 L 425 112 A 35 35 0 0 1 460 147 L 460 370 A 70 70 0 0 1 390 440 L 87 440 A 35 35 0 0 1 52 405 L 52 147 A 35 35 0 0 1 87 112 Z"
+    fill="var(--color-secondary)" />
+  <path
+    d="M 87 112 L 390 112 L 390 315 A 35 35 0 0 1 355 350 L 87 350 A 35 35 0 0 1 52 315 L 52 147 A 35 35 0 0 1 87 112 Z"
+    fill="var(--color-intersection)" />
+  <g id="lock">
+    <path d="M 460 216 L 390 216 A 30 30 0 0 0 360 246 L 360 266 A 30 30 0 0 0 390 296 L 460 296 Z" fill="var(--color-lock-strap)" />
+    <circle cx="400" cy="256" r="22" fill="var(--color-lock-button)" />
   </g>
-
-  <!-- Right eye (blinking/winking) -->
-  <g id="rightEye">
-    <!-- Closed eye (wink) -->
-    <path d="M 292 220 Q 322 215 352 220" stroke="#3D6647" stroke-width="8" stroke-linecap="round" fill="none"/>
-    <path d="M 295 224 L 310 218" stroke="#3D6647" stroke-width="3" stroke-linecap="round"/>
-    <path d="M 332 218 L 347 224" stroke="#3D6647" stroke-width="3" stroke-linecap="round"/>
-  </g>
-
-  <!-- Smile (less rounded) -->
-  <path d="M 160 340 Q 256 390 352 340" stroke="#3D6647" stroke-width="12" stroke-linecap="round" fill="none"/>
-
-  <!-- Decorative elements -->
-  <circle cx="140" cy="140" r="12" fill="#FFFFFF" opacity="0.3"/>
-  <circle cx="372" cy="140" r="12" fill="#FFFFFF" opacity="0.3"/>
 </svg>
