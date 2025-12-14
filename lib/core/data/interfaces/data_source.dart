@@ -10,6 +10,7 @@ abstract class DataSource<T> {
     int? limit,
     int? offset,
   });
+  Future<int> count({Map<String, dynamic>? filter});
   Future<T> update(T item);
   Future<void> delete(String id);
 }

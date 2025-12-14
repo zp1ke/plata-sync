@@ -24,6 +24,7 @@ class LocalAccountDataSource extends AccountDataSource {
       'last_used': account.lastUsed?.millisecondsSinceEpoch,
       'description': account.description,
       'balance': account.balance,
+      'enabled': account.enabled ? 1 : 0,
     };
   }
 
@@ -43,6 +44,7 @@ class LocalAccountDataSource extends AccountDataSource {
           : null,
       description: map['description'] as String?,
       balance: map['balance'] as int,
+      enabled: (map['enabled'] as int?) == 1,
     );
   }
 
@@ -97,10 +99,21 @@ class LocalAccountDataSource extends AccountDataSource {
         args.add('%${filter['description']}%');
       }
 
+      // Filter by enabled status (defaults to only enabled items)
+      if (filter.containsKey('includeDisabled') &&
+          filter['includeDisabled'] == true) {
+        // Include disabled items - no filter needed
+      } else {
+        conditions.add('enabled = 1');
+      }
+
       if (conditions.isNotEmpty) {
         where = conditions.join(' AND ');
         whereArgs = args;
       }
+    } else {
+      // By default, only show enabled accounts
+      where = 'enabled = 1';
     }
 
     String? orderBy;
@@ -162,5 +175,70 @@ class LocalAccountDataSource extends AccountDataSource {
   @override
   Future<bool> hasData() {
     return getAll(limit: 1).then((list) => list.isNotEmpty);
+  }
+
+  @override
+  Future<bool> hasTransactions(String accountId) async {
+    final db = await _databaseService.database;
+    final result = await db.rawQuery(
+      '''
+      SELECT COUNT(*) as count FROM transactions
+      WHERE account_id = ? OR target_account_id = ?
+    ''',
+      [accountId, accountId],
+    );
+    final count = result.first['count'] as int;
+    return count > 0;
+  }
+
+  @override
+  Future<int> count({Map<String, dynamic>? filter}) async {
+    final db = await _databaseService.database;
+
+    String? where;
+    List<dynamic>? whereArgs;
+
+    if (filter != null) {
+      final conditions = <String>[];
+      final args = <dynamic>[];
+
+      if (filter.containsKey('id')) {
+        conditions.add('id = ?');
+        args.add(filter['id']);
+      }
+
+      if (filter.containsKey('name')) {
+        conditions.add('name LIKE ?');
+        args.add('%${filter['name']}%');
+      }
+
+      if (filter.containsKey('description')) {
+        conditions.add('description LIKE ?');
+        args.add('%${filter['description']}%');
+      }
+
+      // Filter by enabled status (defaults to only enabled items)
+      if (filter.containsKey('includeDisabled') &&
+          filter['includeDisabled'] == true) {
+        // Include disabled items - no filter needed
+      } else {
+        conditions.add('enabled = 1');
+      }
+
+      if (conditions.isNotEmpty) {
+        where = conditions.join(' AND ');
+        whereArgs = args;
+      }
+    } else {
+      // By default, only show enabled accounts
+      where = 'enabled = 1';
+    }
+
+    final result = await db.rawQuery(
+      'SELECT COUNT(*) as count FROM $_tableName${where != null ? " WHERE $where" : ""}',
+      whereArgs,
+    );
+
+    return result.first['count'] as int;
   }
 }

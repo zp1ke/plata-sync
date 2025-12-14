@@ -17,4 +17,7 @@ abstract class AccountDataSource extends DataSource<Account> {
         return LocalAccountDataSource(databaseService);
     }
   }
+
+  /// Check if an account has associated transactions
+  Future<bool> hasTransactions(String accountId);
 }

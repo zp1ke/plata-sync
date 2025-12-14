@@ -25,6 +25,7 @@ class LocalCategoryDataSource extends CategoryDataSource {
       'last_used': category.lastUsed?.millisecondsSinceEpoch,
       'description': category.description,
       'transaction_type': category.transactionType?.toDbString(),
+      'enabled': category.enabled ? 1 : 0,
     };
   }
 
@@ -46,6 +47,7 @@ class LocalCategoryDataSource extends CategoryDataSource {
       transactionType: CategoryTransactionType.fromString(
         map['transaction_type'] as String?,
       ),
+      enabled: (map['enabled'] as int?) == 1,
     );
   }
 
@@ -106,10 +108,21 @@ class LocalCategoryDataSource extends CategoryDataSource {
         args.add(filter['transactionType']);
       }
 
+      // Filter by enabled status (defaults to only enabled items)
+      if (filter.containsKey('includeDisabled') &&
+          filter['includeDisabled'] == true) {
+        // Include disabled items - no filter needed
+      } else {
+        conditions.add('enabled = 1');
+      }
+
       if (conditions.isNotEmpty) {
         where = conditions.join(' AND ');
         whereArgs = args;
       }
+    } else {
+      // By default, only show enabled categories
+      where = 'enabled = 1';
     }
 
     String? orderBy;
@@ -169,5 +182,76 @@ class LocalCategoryDataSource extends CategoryDataSource {
   @override
   Future<bool> hasData() {
     return getAll(limit: 1).then((list) => list.isNotEmpty);
+  }
+
+  @override
+  Future<bool> hasTransactions(String categoryId) async {
+    final db = await _databaseService.database;
+    final result = await db.rawQuery(
+      '''
+      SELECT COUNT(*) as count FROM transactions
+      WHERE category_id = ?
+    ''',
+      [categoryId],
+    );
+    final count = result.first['count'] as int;
+    return count > 0;
+  }
+
+  @override
+  Future<int> count({Map<String, dynamic>? filter}) async {
+    final db = await _databaseService.database;
+
+    String? where;
+    List<dynamic>? whereArgs;
+
+    if (filter != null) {
+      final conditions = <String>[];
+      final args = <dynamic>[];
+
+      if (filter.containsKey('id')) {
+        conditions.add('id = ?');
+        args.add(filter['id']);
+      }
+
+      if (filter.containsKey('name')) {
+        conditions.add('name LIKE ?');
+        args.add('%${filter['name']}%');
+      }
+
+      if (filter.containsKey('description')) {
+        conditions.add('description LIKE ?');
+        args.add('%${filter['description']}%');
+      }
+
+      if (filter.containsKey('transactionType')) {
+        // Include categories with null transaction_type (applicable to all types)
+        conditions.add('(transaction_type = ? OR transaction_type IS NULL)');
+        args.add(filter['transactionType']);
+      }
+
+      // Filter by enabled status (defaults to only enabled items)
+      if (filter.containsKey('includeDisabled') &&
+          filter['includeDisabled'] == true) {
+        // Include disabled items - no filter needed
+      } else {
+        conditions.add('enabled = 1');
+      }
+
+      if (conditions.isNotEmpty) {
+        where = conditions.join(' AND ');
+        whereArgs = args;
+      }
+    } else {
+      // By default, only show enabled categories
+      where = 'enabled = 1';
+    }
+
+    final result = await db.rawQuery(
+      'SELECT COUNT(*) as count FROM $_tableName${where != null ? " WHERE $where" : ""}',
+      whereArgs,
+    );
+
+    return result.first['count'] as int;
   }
 }

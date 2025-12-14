@@ -1,4 +1,6 @@
 import '../../../../core/data/models/sort_param.dart';
+import '../../../../core/di/service_locator.dart';
+import '../../../transactions/data/interfaces/transaction_data_source.dart';
 import '../interfaces/account_data_source.dart';
 import '../../domain/entities/account.dart';
 
@@ -38,9 +40,18 @@ class InMemoryAccountDataSource extends AccountDataSource {
     await Future.delayed(_delay);
     var items = _items.values.toList();
 
+    // By default, only show enabled accounts unless includeDisabled is true
+    final includeDisabled = filter?['includeDisabled'] == true;
+    if (!includeDisabled) {
+      items = items.where((item) => item.enabled).toList();
+    }
+
     if (filter != null) {
       items = items.where((item) {
         for (var entry in filter.entries) {
+          // Skip the includeDisabled filter key
+          if (entry.key == 'includeDisabled') continue;
+
           if (entry.key == 'name' &&
               !item.name.toLowerCase().contains(
                 entry.value.toString().toLowerCase(),
@@ -104,5 +115,59 @@ class InMemoryAccountDataSource extends AccountDataSource {
   @override
   Future<bool> hasData() {
     return Future.value(_items.isNotEmpty);
+  }
+
+  @override
+  Future<bool> hasTransactions(String accountId) async {
+    final transactionDataSource = getService<TransactionDataSource>();
+    var count = await transactionDataSource.count(
+      filter: {'accountId': accountId},
+    );
+    if (count > 0) {
+      return true;
+    }
+    count = await transactionDataSource.count(
+      filter: {'targetAccountId': accountId},
+    );
+    return count > 0;
+  }
+
+  @override
+  Future<int> count({Map<String, dynamic>? filter}) async {
+    await Future.delayed(_delay);
+    var items = _items.values.toList();
+
+    // By default, only show enabled accounts unless includeDisabled is true
+    final includeDisabled = filter?['includeDisabled'] == true;
+    if (!includeDisabled) {
+      items = items.where((item) => item.enabled).toList();
+    }
+
+    if (filter != null) {
+      items = items.where((item) {
+        for (var entry in filter.entries) {
+          // Skip the includeDisabled filter key
+          if (entry.key == 'includeDisabled') continue;
+
+          if (entry.key == 'name' &&
+              !item.name.toLowerCase().contains(
+                entry.value.toString().toLowerCase(),
+              )) {
+            return false;
+          }
+          if (entry.key == 'description' &&
+              (item.description == null ||
+                  !item.description!.toLowerCase().contains(
+                    entry.value.toString().toLowerCase(),
+                  ))) {
+            return false;
+          }
+          if (entry.key == 'id' && item.id != entry.value) return false;
+        }
+        return true;
+      }).toList();
+    }
+
+    return items.length;
   }
 }

@@ -202,4 +202,81 @@ class LocalTransactionDataSource extends TransactionDataSource {
     final result = await db.query(_tableName, limit: 1);
     return result.isNotEmpty;
   }
+
+  @override
+  Future<int> count({Map<String, dynamic>? filter}) async {
+    final db = await _databaseService.database;
+
+    String? where;
+    List<dynamic>? whereArgs;
+
+    if (filter != null) {
+      final conditions = <String>[];
+      final args = <dynamic>[];
+
+      if (filter.containsKey('id')) {
+        conditions.add('id = ?');
+        args.add(filter['id']);
+      }
+
+      if (filter.containsKey('accountId')) {
+        conditions.add('account_id = ?');
+        args.add(filter['accountId']);
+      }
+
+      if (filter.containsKey('categoryId')) {
+        conditions.add('category_id = ?');
+        args.add(filter['categoryId']);
+      }
+
+      if (filter.containsKey('targetAccountId')) {
+        conditions.add('target_account_id = ?');
+        args.add(filter['targetAccountId']);
+      }
+
+      if (filter.containsKey('from')) {
+        conditions.add('created_at >= ?');
+        args.add((filter['from'] as DateTime).millisecondsSinceEpoch);
+      }
+
+      if (filter.containsKey('to')) {
+        conditions.add('created_at <= ?');
+        args.add((filter['to'] as DateTime).millisecondsSinceEpoch);
+      }
+
+      if (filter.containsKey('tagIds')) {
+        final tagIds = filter['tagIds'] as List<String>;
+        // Create OR conditions for each tag
+        final tagConditions = tagIds.map((_) => 'tag_ids LIKE ?').toList();
+        conditions.add('(${tagConditions.join(' OR ')})');
+        // Add wildcards for LIKE search
+        for (var tagId in tagIds) {
+          args.add('%$tagId%');
+        }
+      }
+
+      if (filter.containsKey('transactionType')) {
+        final transactionType = filter['transactionType'] as String;
+        if (transactionType == TransactionType.expense.name) {
+          conditions.add('amount < 0 AND target_account_id IS NULL');
+        } else if (transactionType == TransactionType.income.name) {
+          conditions.add('amount > 0 AND target_account_id IS NULL');
+        } else if (transactionType == TransactionType.transfer.name) {
+          conditions.add('target_account_id IS NOT NULL');
+        }
+      }
+
+      if (conditions.isNotEmpty) {
+        where = conditions.join(' AND ');
+        whereArgs = args;
+      }
+    }
+
+    final result = await db.rawQuery(
+      'SELECT COUNT(*) as count FROM $_tableName${where != null ? " WHERE $where" : ""}',
+      whereArgs,
+    );
+
+    return result.first['count'] as int;
+  }
 }

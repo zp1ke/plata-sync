@@ -11,6 +11,7 @@ class Category extends Equatable {
   final DateTime? lastUsed;
   final String? description;
   final CategoryTransactionType? transactionType;
+  final bool enabled; // Whether the category is enabled (defaults to true)
 
   const Category({
     required this.id,
@@ -20,6 +21,7 @@ class Category extends Equatable {
     this.lastUsed,
     this.description,
     this.transactionType,
+    this.enabled = true,
   });
 
   Category.create({
@@ -29,6 +31,7 @@ class Category extends Equatable {
     required this.iconData,
     this.description,
     this.transactionType,
+    this.enabled = true,
   }) : id = id ?? randomId(),
        createdAt = createdAt ?? DateTime.now(),
        lastUsed = null;
@@ -41,6 +44,7 @@ class Category extends Equatable {
     String? description,
     DateTime? lastUsed,
     CategoryTransactionType? transactionType,
+    bool? enabled,
   }) {
     return Category(
       id: id ?? this.id,
@@ -50,6 +54,7 @@ class Category extends Equatable {
       description: description ?? this.description,
       lastUsed: lastUsed ?? this.lastUsed,
       transactionType: transactionType ?? this.transactionType,
+      enabled: enabled ?? this.enabled,
     );
   }
 

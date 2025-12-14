@@ -144,7 +144,19 @@ class CategoriesManager {
 
   Future<void> deleteCategory(String id) async {
     try {
-      await _dataSource.delete(id);
+      // Check if category has associated transactions
+      final hasTransactions = await _dataSource.hasTransactions(id);
+
+      if (hasTransactions) {
+        // Soft delete: disable the category instead of deleting
+        final category = await _dataSource.read(id);
+        if (category != null) {
+          await _dataSource.update(category.copyWith(enabled: false));
+        }
+      } else {
+        // Hard delete: no transactions associated
+        await _dataSource.delete(id);
+      }
       await loadCategories();
     } catch (e) {
       debugPrint('Error deleting category: $e');

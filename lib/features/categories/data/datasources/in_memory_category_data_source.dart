@@ -38,9 +38,18 @@ class InMemoryCategoryDataSource extends CategoryDataSource {
     await Future.delayed(_delay);
     var items = _items.values.toList();
 
+    // By default, only show enabled categories unless includeDisabled is true
+    final includeDisabled = filter?['includeDisabled'] == true;
+    if (!includeDisabled) {
+      items = items.where((item) => item.enabled).toList();
+    }
+
     if (filter != null) {
       items = items.where((item) {
         for (var entry in filter.entries) {
+          // Skip the includeDisabled filter key
+          if (entry.key == 'includeDisabled') continue;
+
           if (entry.key == 'name' &&
               !item.name.toLowerCase().contains(
                 entry.value.toString().toLowerCase(),
@@ -110,5 +119,59 @@ class InMemoryCategoryDataSource extends CategoryDataSource {
   @override
   Future<bool> hasData() {
     return Future.value(_items.isNotEmpty);
+  }
+
+  @override
+  Future<bool> hasTransactions(String categoryId) async {
+    // In-memory implementation would need access to transaction data source
+    // For now, return false as in-memory is mainly for testing
+    return Future.value(false);
+  }
+
+  @override
+  Future<int> count({Map<String, dynamic>? filter}) async {
+    await Future.delayed(_delay);
+    var items = _items.values.toList();
+
+    // By default, only show enabled categories unless includeDisabled is true
+    final includeDisabled = filter?['includeDisabled'] == true;
+    if (!includeDisabled) {
+      items = items.where((item) => item.enabled).toList();
+    }
+
+    if (filter != null) {
+      items = items.where((item) {
+        for (var entry in filter.entries) {
+          // Skip the includeDisabled filter key
+          if (entry.key == 'includeDisabled') continue;
+
+          if (entry.key == 'name' &&
+              !item.name.toLowerCase().contains(
+                entry.value.toString().toLowerCase(),
+              )) {
+            return false;
+          }
+          if (entry.key == 'description' &&
+              (item.description == null ||
+                  !item.description!.toLowerCase().contains(
+                    entry.value.toString().toLowerCase(),
+                  ))) {
+            return false;
+          }
+          if (entry.key == 'id' && item.id != entry.value) return false;
+          if (entry.key == 'transactionType') {
+            final filterType = entry.value as String;
+            // Categories with null transactionType are applicable to all types
+            if (item.transactionType != null &&
+                item.transactionType!.name != filterType) {
+              return false;
+            }
+          }
+        }
+        return true;
+      }).toList();
+    }
+
+    return items.length;
   }
 }

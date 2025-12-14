@@ -17,4 +17,7 @@ abstract class CategoryDataSource extends DataSource<Category> {
         return LocalCategoryDataSource(databaseService);
     }
   }
+
+  /// Check if a category has associated transactions
+  Future<bool> hasTransactions(String categoryId);
 }

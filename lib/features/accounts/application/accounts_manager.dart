@@ -141,7 +141,19 @@ class AccountsManager {
 
   Future<void> deleteAccount(String id) async {
     try {
-      await _dataSource.delete(id);
+      // Check if account has associated transactions
+      final hasTransactions = await _dataSource.hasTransactions(id);
+
+      if (hasTransactions) {
+        // Soft delete: disable the account instead of deleting
+        final account = await _dataSource.read(id);
+        if (account != null) {
+          await _dataSource.update(account.copyWith(enabled: false));
+        }
+      } else {
+        // Hard delete: no transactions associated
+        await _dataSource.delete(id);
+      }
       await loadAccounts();
     } catch (e) {
       debugPrint('Error deleting account: $e');

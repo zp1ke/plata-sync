@@ -10,6 +10,7 @@ class Account extends Equatable {
   final DateTime? lastUsed;
   final String? description;
   final int balance; // Balance in cents
+  final bool enabled; // Whether the account is enabled (defaults to true)
 
   const Account({
     required this.id,
@@ -19,6 +20,7 @@ class Account extends Equatable {
     required this.balance,
     this.lastUsed,
     this.description,
+    this.enabled = true,
   });
 
   Account.create({
@@ -28,6 +30,7 @@ class Account extends Equatable {
     required this.iconData,
     this.description,
     this.balance = 0,
+    this.enabled = true,
   }) : id = id ?? randomId(),
        createdAt = createdAt ?? DateTime.now(),
        lastUsed = null;
@@ -40,6 +43,7 @@ class Account extends Equatable {
     String? description,
     DateTime? lastUsed,
     int? balance,
+    bool? enabled,
   }) {
     return Account(
       id: id ?? this.id,
@@ -49,6 +53,7 @@ class Account extends Equatable {
       description: description ?? this.description,
       lastUsed: lastUsed ?? this.lastUsed,
       balance: balance ?? this.balance,
+      enabled: enabled ?? this.enabled,
     );
   }
 
