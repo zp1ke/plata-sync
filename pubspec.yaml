@@ -34,6 +34,7 @@ dev_dependencies:
   flutter_test:
     sdk: flutter
   flutter_lints: ^6.0.0
+  flutter_launcher_icons: ^0.14.2
 
 flutter:
   uses-material-design: true
@@ -42,3 +43,26 @@ flutter:
   assets:
     - assets/icons/
     - assets/fonts/Noto_Sans/
+
+flutter_launcher_icons:
+  android: true
+  ios: true
+  web:
+    generate: true
+    image_path: "assets/icons/app_icon_light_inline.png"
+    background_color: "#ffffff"
+  windows:
+    generate: true
+    image_path: "assets/icons/app_icon_light_inline.png"
+    icon_size: 48
+  macos:
+    generate: true
+    image_path: "assets/icons/app_icon_light_inline.png"
+  linux:
+    generate: true
+    image_path: "assets/icons/app_icon_light_inline.png"
+  image_path: "assets/icons/app_icon_light_inline.png"
+  adaptive_icon_background: "#ffffff"
+  adaptive_icon_foreground: "assets/icons/app_icon_light_inline.png"
+  remove_alpha_ios: true
+
