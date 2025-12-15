@@ -1,18 +1,6 @@
 import 'package:flutter/material.dart';
 
-/// Breakpoints for responsive layouts
-class Breakpoints {
-  const Breakpoints._();
-
-  /// Mobile devices (phones in portrait)
-  static const double mobile = 600.0;
-
-  /// Tablet devices and larger
-  static const double tablet = 840.0;
-
-  /// Desktop and large screens
-  static const double desktop = 1200.0;
-}
+import '../resources/app_sizing.dart';
 
 /// Device type based on screen width
 enum DeviceType {
@@ -32,9 +20,9 @@ extension ResponsiveContext on BuildContext {
   /// Get the current device type based on screen width
   DeviceType get deviceType {
     final width = MediaQuery.sizeOf(this).width;
-    if (width >= Breakpoints.desktop) {
+    if (width >= AppSizing.breakpointDesktop) {
       return DeviceType.desktop;
-    } else if (width >= Breakpoints.mobile) {
+    } else if (width >= AppSizing.breakpointMobile) {
       return DeviceType.tablet;
     }
     return DeviceType.mobile;
@@ -94,17 +82,24 @@ class MasterDetailLayout extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final screenWidth = MediaQuery.sizeOf(context).width;
+    final maxMasterWidth = screenWidth * 0.6;
+    final minMasterWidth = AppSizing.masterPaneMinWidth;
+    final desiredMasterWidth = screenWidth * masterWidthRatio;
+
+    final masterWidth = desiredMasterWidth.clamp(
+      minMasterWidth,
+      maxMasterWidth.clamp(minMasterWidth, double.infinity),
+    );
+
     return Row(
       children: [
         // Master pane
-        Expanded(flex: (masterWidthRatio * 10).round(), child: master),
+        SizedBox(width: masterWidth, child: master),
         // Divider
         const VerticalDivider(),
         // Detail pane
-        Expanded(
-          flex: ((1 - masterWidthRatio) * 10).round(),
-          child: detail ?? detailPlaceholder ?? const SizedBox.shrink(),
-        ),
+        Expanded(child: detail ?? detailPlaceholder ?? const SizedBox.shrink()),
       ],
     );
   }

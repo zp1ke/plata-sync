@@ -140,4 +140,17 @@ class AppSizing {
 
   /// Thick border (4px) - For emphasis, focus states
   static const double borderWidthThick = 4.0;
+
+  static const double masterPaneMinWidth = 450.0;
+
+  // Responsive breakpoints for different device sizes
+
+  /// Mobile devices (phones in portrait) - screens smaller than this value
+  static const double breakpointMobile = 700.0;
+
+  /// Tablet devices - screens between mobile and desktop
+  static const double breakpointTablet = 900.0;
+
+  /// Desktop and large screens - screens larger than this value
+  static const double breakpointDesktop = 1200.0;
 }
