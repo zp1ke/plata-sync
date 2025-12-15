@@ -173,8 +173,10 @@ class LocalAccountDataSource extends AccountDataSource {
   }
 
   @override
-  Future<bool> hasData() {
-    return getAll(limit: 1).then((list) => list.isNotEmpty);
+  Future<bool> hasData() async {
+    final db = await _databaseService.database;
+    final result = await db.query(_tableName, limit: 1);
+    return result.isNotEmpty;
   }
 
   @override
