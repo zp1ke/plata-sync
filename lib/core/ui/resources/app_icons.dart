@@ -1,13 +1,53 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_svg/svg.dart';
 import 'package:hugeicons/hugeicons.dart';
-import 'app_sizing.dart';
+import 'package:vector_graphics/vector_graphics.dart';
+
 import '../../../l10n/app_localizations.dart';
+import 'app_colors.dart';
+import 'app_sizing.dart';
 
 /// A centralized collection of application icons.
 /// HugeIcons are used: https://hugeicons.com/icons?style=Stroke&type=Rounded
 class AppIcons {
   // Private constructor to prevent instantiation
   const AppIcons._();
+
+  // App Icon
+  static Widget appIcon(
+    BuildContext context, {
+    double size = AppSizing.iconMd,
+  }) {
+    final colorScheme = Theme.of(context).colorScheme;
+    return SvgPicture(
+      AssetBytesLoader(
+        'assets/icons/app_icon_${colorScheme.brightness.name}.svg.vec',
+      ),
+      width: size,
+      height: size,
+      placeholderBuilder: (context) => Container(
+        width: size,
+        height: size,
+        decoration: BoxDecoration(
+          gradient: LinearGradient(
+            begin: Alignment.topLeft,
+            end: Alignment.bottomRight,
+            colors: [
+              colorScheme.appIconGradientStart,
+              colorScheme.appIconGradientEnd,
+            ],
+          ),
+        ),
+        child: Center(
+          child: HugeIcon(
+            icon: HugeIcons.strokeRoundedWallet01,
+            size: size * 0.5,
+            color: colorScheme.inAppIcon,
+          ),
+        ),
+      ),
+    );
+  }
 
   // Actions
   static final add = const HugeIcon(icon: HugeIcons.strokeRoundedAdd01);

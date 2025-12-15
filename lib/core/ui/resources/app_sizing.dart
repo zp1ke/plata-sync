@@ -10,6 +10,7 @@ class AppSizing {
   static const double iconMd = 24.0;
   static const double iconLg = 32.0;
   static const double iconXl = 48.0;
+  static const double iconXXl = 64.0;
 
   // Border radius
   static const double radiusXs = 4.0;

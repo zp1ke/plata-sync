@@ -1,13 +1,14 @@
 import 'dart:io';
 
 import 'package:flutter/material.dart';
-import 'package:flutter_svg/flutter_svg.dart';
+import 'package:restart_app/restart_app.dart';
+import 'package:watch_it/watch_it.dart';
+
 import '../../../../core/di/service_locator.dart';
 import '../../../../core/model/enums/data_source_type.dart';
 import '../../../../core/model/enums/date_format_type.dart';
 import '../../../../core/model/enums/time_format_type.dart';
 import '../../../../core/services/settings_service.dart';
-import '../../../../core/ui/resources/app_colors.dart';
 import '../../../../core/ui/resources/app_icons.dart';
 import '../../../../core/ui/resources/app_sizing.dart';
 import '../../../../core/ui/resources/app_spacing.dart';
@@ -16,8 +17,6 @@ import '../../../../core/ui/widgets/dialog.dart';
 import '../../../../core/ui/widgets/responsive_layout.dart';
 import '../../../../core/ui/widgets/snack_alert.dart';
 import '../../../../l10n/app_localizations.dart';
-import 'package:restart_app/restart_app.dart';
-import 'package:watch_it/watch_it.dart';
 
 class SettingsScreen extends StatelessWidget {
   const SettingsScreen({super.key});
@@ -138,38 +137,10 @@ class _AppIconWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Padding(
-      padding: EdgeInsets.symmetric(vertical: AppSpacing.md),
-      child: Center(
-        child: ClipRRect(
-          borderRadius: BorderRadius.circular(AppSizing.radiusXl),
-          child: SvgPicture.asset(
-            'assets/icons/app_icon.svg',
-            width: AppSizing.iconPreviewSize,
-            height: AppSizing.iconPreviewSize,
-            placeholderBuilder: (context) => Container(
-              width: AppSizing.iconPreviewSize,
-              height: AppSizing.iconPreviewSize,
-              decoration: BoxDecoration(
-                gradient: LinearGradient(
-                  begin: Alignment.topLeft,
-                  end: Alignment.bottomRight,
-                  colors: [
-                    Theme.of(context).colorScheme.appIconGradientStart,
-                    Theme.of(context).colorScheme.appIconGradientEnd,
-                  ],
-                ),
-              ),
-              child: Center(
-                child: Icon(
-                  Icons.account_balance_wallet_rounded,
-                  size: AppSizing.iconPreviewSize * 0.5,
-                  color: Theme.of(context).colorScheme.inAppIcon,
-                ),
-              ),
-            ),
-          ),
-        ),
+    return Center(
+      child: ClipRRect(
+        borderRadius: BorderRadius.circular(AppSizing.radiusXl),
+        child: AppIcons.appIcon(context, size: AppSizing.iconXXl),
       ),
     );
   }

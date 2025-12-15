@@ -1,11 +1,11 @@
 <svg xmlns="http://www.w3.org/2000/svg" width="512" height="512" viewBox="0 0 512 512" fill="none">
   <style>
     :root {
-    --color-primary: #F97316;
-    --color-secondary: #B973A6;
-    --color-intersection: #D9735E;
-    --color-lock-strap: #F1F5F9;
-    --color-lock-button: #64748B;
+    --color-primary: #5A8FCC;
+    --color-secondary: #3D9974;
+    --color-intersection: #4C94A0;
+    --color-lock-strap: #1D1D1D;
+    --color-lock-button: #8C9199;
     }
   </style>
   <path
