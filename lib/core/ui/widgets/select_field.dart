@@ -147,7 +147,6 @@ class _SelectionDialogState<T> extends State<_SelectionDialog<T>> {
           // Search field
           TextField(
             controller: _searchController,
-            autofocus: true,
             decoration: InputDecoration(
               labelText: widget.searchHint,
               border: const OutlineInputBorder(),

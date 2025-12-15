@@ -1,5 +1,3 @@
-import 'dart:io';
-
 import 'package:flutter/material.dart';
 import 'package:restart_app/restart_app.dart';
 import 'package:watch_it/watch_it.dart';
@@ -16,6 +14,7 @@ import '../../../../core/ui/widgets/constrained_list_view.dart';
 import '../../../../core/ui/widgets/dialog.dart';
 import '../../../../core/ui/widgets/responsive_layout.dart';
 import '../../../../core/ui/widgets/snack_alert.dart';
+import '../../../../core/utils/os.dart';
 import '../../../../l10n/app_localizations.dart';
 
 class SettingsScreen extends StatelessWidget {
@@ -223,13 +222,13 @@ class _DataSourceSettingState extends State<_DataSourceSetting> {
 
   void restartApp() {
     final l10n = AppL10n.of(context);
-    if (Platform.isAndroid || Platform.isIOS) {
+    if (isMobilePlatform()) {
       Restart.restartApp(
         webOrigin: null,
         notificationTitle: l10n.restartingApp,
         notificationBody: l10n.settingsDataSourceChangedRestartingMessage,
       );
-    } else {
+    } else if (isDesktopPlatform()) {
       // For desktop platforms, just show a dialog so user restart manually
       showDialog<void>(
         context: context,

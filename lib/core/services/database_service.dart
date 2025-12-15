@@ -1,7 +1,7 @@
-import 'dart:io';
-
 import 'package:path/path.dart';
 import 'package:sqflite_common_ffi/sqflite_ffi.dart';
+
+import '../utils/os.dart';
 
 /// Service for managing the SQLite database
 class DatabaseService {
@@ -10,7 +10,7 @@ class DatabaseService {
 
   Database? _database;
   DatabaseService() {
-    if (Platform.isLinux || Platform.isWindows || Platform.isMacOS) {
+    if (isDesktopPlatform()) {
       /// Initialize sqflite for desktop platforms
       sqfliteFfiInit();
       databaseFactory = databaseFactoryFfi;
