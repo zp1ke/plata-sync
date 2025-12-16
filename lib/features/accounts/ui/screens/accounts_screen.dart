@@ -61,6 +61,7 @@ class _MobileAccountsScreenState extends State<_MobileAccountsScreen> {
   @override
   Widget build(BuildContext context) {
     final isLoading = watchValue((AccountsManager x) => x.isLoading);
+    final hasLoadedOnce = watchValue((AccountsManager x) => x.hasLoadedOnce);
     final accounts = watchValue((AccountsManager x) => x.accounts);
     final currentQuery = watchValue((AccountsManager x) => x.currentQuery);
     final sortOrder = watchValue((AccountsManager x) => x.sortOrder);
@@ -69,6 +70,7 @@ class _MobileAccountsScreenState extends State<_MobileAccountsScreen> {
 
     // Show sample data dialog once after initial load completes with no data
     if (!_hasShownSampleDialog &&
+        hasLoadedOnce &&
         !isLoading &&
         accounts.isEmpty &&
         currentQuery.isEmpty) {
@@ -203,6 +205,7 @@ class _TabletAccountsScreenState extends State<_TabletAccountsScreen> {
   @override
   Widget build(BuildContext context) {
     final isLoading = watchValue((AccountsManager x) => x.isLoading);
+    final hasLoadedOnce = watchValue((AccountsManager x) => x.hasLoadedOnce);
     final accounts = watchValue((AccountsManager x) => x.accounts);
     final currentQuery = watchValue((AccountsManager x) => x.currentQuery);
     final sortOrder = watchValue((AccountsManager x) => x.sortOrder);
@@ -211,14 +214,13 @@ class _TabletAccountsScreenState extends State<_TabletAccountsScreen> {
 
     // Show sample data dialog once after initial load completes with no data
     if (!_hasShownSampleDialog &&
+        hasLoadedOnce &&
         !isLoading &&
         accounts.isEmpty &&
         currentQuery.isEmpty) {
+      _hasShownSampleDialog = true;
       WidgetsBinding.instance.addPostFrameCallback((_) {
-        if (mounted && !_hasShownSampleDialog) {
-          setState(() {
-            _hasShownSampleDialog = true;
-          });
+        if (mounted) {
           _showSampleDataDialog(context);
         }
       });

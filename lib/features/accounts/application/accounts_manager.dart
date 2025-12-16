@@ -18,6 +18,7 @@ class AccountsManager {
 
   final ValueNotifier<List<Account>> accounts = ValueNotifier([]);
   final ValueNotifier<bool> isLoading = ValueNotifier(false);
+  final ValueNotifier<bool> hasLoadedOnce = ValueNotifier(false);
   final ValueNotifier<String> currentQuery = ValueNotifier('');
   final ValueNotifier<AccountSortOrder> sortOrder = ValueNotifier(
     AccountSortOrder.lastUsedDesc,
@@ -116,6 +117,7 @@ class AccountsManager {
       debugPrint('Error loading accounts: $e');
     } finally {
       isLoading.value = false;
+      hasLoadedOnce.value = true;
     }
   }
 
@@ -184,6 +186,7 @@ class AccountsManager {
 
   void dispose() {
     accounts.dispose();
+    hasLoadedOnce.dispose();
     isLoading.dispose();
     currentQuery.dispose();
     sortOrder.dispose();
