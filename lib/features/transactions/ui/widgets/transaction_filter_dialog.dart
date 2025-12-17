@@ -4,18 +4,18 @@ import '../../../../core/ui/widgets/dialog.dart';
 import '../../../../l10n/app_localizations.dart';
 import 'package:watch_it/watch_it.dart';
 
-import 'account_selector.dart';
+import 'multi_account_selector.dart';
 import 'multi_category_selector.dart';
 import 'tag_selector.dart';
 import 'transaction_type_selector.dart';
 
 class TransactionFilterDialog extends WatchingStatefulWidget {
-  final String? initialAccountId;
+  final List<String>? initialAccountIds;
   final List<String>? initialCategoryIds;
   final List<String>? initialTagIds;
   final TransactionType? initialTransactionType;
   final void Function(
-    String? accountId,
+    List<String>? accountIds,
     List<String>? categoryIds,
     List<String>? tagIds,
     TransactionType? transactionType,
@@ -24,7 +24,7 @@ class TransactionFilterDialog extends WatchingStatefulWidget {
 
   const TransactionFilterDialog({
     super.key,
-    this.initialAccountId,
+    this.initialAccountIds,
     this.initialCategoryIds,
     this.initialTagIds,
     this.initialTransactionType,
@@ -37,7 +37,7 @@ class TransactionFilterDialog extends WatchingStatefulWidget {
 }
 
 class _TransactionFilterDialogState extends State<TransactionFilterDialog> {
-  String? _selectedAccountId;
+  List<String> _selectedAccountIds = [];
   List<String> _selectedCategoryIds = [];
   List<String> _selectedTagIds = [];
   TransactionType? _selectedTransactionType;
@@ -45,7 +45,7 @@ class _TransactionFilterDialogState extends State<TransactionFilterDialog> {
   @override
   void initState() {
     super.initState();
-    _selectedAccountId = widget.initialAccountId;
+    _selectedAccountIds = widget.initialAccountIds ?? [];
     _selectedCategoryIds = widget.initialCategoryIds ?? [];
     _selectedTagIds = widget.initialTagIds ?? [];
     _selectedTransactionType = widget.initialTransactionType;
@@ -61,12 +61,12 @@ class _TransactionFilterDialogState extends State<TransactionFilterDialog> {
         mainAxisSize: MainAxisSize.min,
         spacing: AppSpacing.md,
         children: [
-          AccountSelector(
-            accountId: _selectedAccountId,
+          MultiAccountSelector(
+            accountIds: _selectedAccountIds,
             label: l10n.transactionAccountLabel,
-            onChanged: (accountId) {
+            onChanged: (accountIds) {
               setState(() {
-                _selectedAccountId = accountId;
+                _selectedAccountIds = accountIds;
               });
             },
           ),
@@ -140,7 +140,7 @@ class _TransactionFilterDialogState extends State<TransactionFilterDialog> {
         FilledButton(
           onPressed: () {
             widget.onApply(
-              _selectedAccountId,
+              _selectedAccountIds.isEmpty ? null : _selectedAccountIds,
               _selectedCategoryIds.isEmpty ? null : _selectedCategoryIds,
               _selectedTagIds.isEmpty ? null : _selectedTagIds,
               _selectedTransactionType,

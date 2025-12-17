@@ -42,8 +42,11 @@ class InMemoryTransactionDataSource extends TransactionDataSource {
     if (filter != null) {
       items = items.where((item) {
         for (var entry in filter.entries) {
-          if (entry.key == 'accountId' && item.accountId != entry.value) {
-            return false;
+          if (entry.key == 'accountIds') {
+            final filterAccountIds = entry.value as List<String>;
+            // Check if transaction has any of the filter accounts
+            final hasAnyAccount = filterAccountIds.contains(item.accountId);
+            if (!hasAnyAccount) return false;
           }
           if (entry.key == 'categoryIds') {
             final filterCategoryIds = entry.value as List<String>;
@@ -146,8 +149,11 @@ class InMemoryTransactionDataSource extends TransactionDataSource {
     if (filter != null) {
       items = items.where((item) {
         for (var entry in filter.entries) {
-          if (entry.key == 'accountId' && item.accountId != entry.value) {
-            return false;
+          if (entry.key == 'accountIds') {
+            final filterAccountIds = entry.value as List<String>;
+            // Check if transaction has any of the filter accounts
+            final hasAnyAccount = filterAccountIds.contains(item.accountId);
+            if (!hasAnyAccount) return false;
           }
           if (entry.key == 'categoryIds') {
             final filterCategoryIds = entry.value as List<String>;

@@ -92,9 +92,17 @@ class LocalTransactionDataSource extends TransactionDataSource {
         args.add(filter['id']);
       }
 
-      if (filter.containsKey('accountId')) {
-        conditions.add('account_id = ?');
-        args.add(filter['accountId']);
+      if (filter.containsKey('accountIds')) {
+        final accountIds = filter['accountIds'] as List<String>;
+        // Create OR conditions for each account
+        final accountConditions = accountIds
+            .map((_) => 'account_id = ?')
+            .toList();
+        conditions.add('(${accountConditions.join(' OR ')})');
+        // Add each account id as an argument
+        for (var accountId in accountIds) {
+          args.add(accountId);
+        }
       }
 
       if (filter.containsKey('categoryIds')) {
@@ -227,9 +235,17 @@ class LocalTransactionDataSource extends TransactionDataSource {
         args.add(filter['id']);
       }
 
-      if (filter.containsKey('accountId')) {
-        conditions.add('account_id = ?');
-        args.add(filter['accountId']);
+      if (filter.containsKey('accountIds')) {
+        final accountIds = filter['accountIds'] as List<String>;
+        // Create OR conditions for each account
+        final accountConditions = accountIds
+            .map((_) => 'account_id = ?')
+            .toList();
+        conditions.add('(${accountConditions.join(' OR ')})');
+        // Add each account id as an argument
+        for (var accountId in accountIds) {
+          args.add(accountId);
+        }
       }
 
       if (filter.containsKey('categoryIds')) {

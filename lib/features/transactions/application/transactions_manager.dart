@@ -26,7 +26,7 @@ class TransactionsManager {
 
   final ValueNotifier<List<Transaction>> transactions = ValueNotifier([]);
   final ValueNotifier<bool> isLoading = ValueNotifier(false);
-  final ValueNotifier<String?> currentAccountFilter = ValueNotifier(null);
+  final ValueNotifier<List<String>?> currentAccountFilter = ValueNotifier(null);
   final ValueNotifier<List<String>?> currentCategoryFilter = ValueNotifier(
     null,
   );
@@ -42,7 +42,8 @@ class TransactionsManager {
   );
 
   bool get hasActiveFilters {
-    return currentAccountFilter.value != null ||
+    return (currentAccountFilter.value != null &&
+            currentAccountFilter.value!.isNotEmpty) ||
         (currentCategoryFilter.value != null &&
             currentCategoryFilter.value!.isNotEmpty) ||
         (currentTagFilter.value != null &&
@@ -131,7 +132,7 @@ class TransactionsManager {
   }
 
   Future<void> loadTransactions({
-    String? accountId,
+    List<String>? accountIds,
     List<String>? categoryIds,
     List<String>? tagIds,
     TransactionType? transactionType,
@@ -143,8 +144,8 @@ class TransactionsManager {
     isLoading.value = true;
     if (clearAccount) {
       currentAccountFilter.value = null;
-    } else if (accountId != null) {
-      currentAccountFilter.value = accountId;
+    } else if (accountIds != null) {
+      currentAccountFilter.value = accountIds;
     }
 
     if (clearCategory) {
@@ -166,8 +167,9 @@ class TransactionsManager {
     }
     try {
       final filter = <String, dynamic>{};
-      if (currentAccountFilter.value != null) {
-        filter['accountId'] = currentAccountFilter.value;
+      if (currentAccountFilter.value != null &&
+          currentAccountFilter.value!.isNotEmpty) {
+        filter['accountIds'] = currentAccountFilter.value;
       }
       if (currentCategoryFilter.value != null &&
           currentCategoryFilter.value!.isNotEmpty) {
@@ -218,8 +220,11 @@ class TransactionsManager {
     }
   }
 
-  void setAccountFilter(String? accountId) {
-    loadTransactions(accountId: accountId, clearAccount: accountId == null);
+  void setAccountFilter(List<String>? accountIds) {
+    loadTransactions(
+      accountIds: accountIds,
+      clearAccount: accountIds == null || accountIds.isEmpty,
+    );
   }
 
   void setCategoryFilter(List<String>? categoryIds) {

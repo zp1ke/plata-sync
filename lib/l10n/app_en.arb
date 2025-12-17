@@ -882,6 +882,10 @@
   "@selectCategories": {
     "description": "Hint for category selection in multi-select"
   },
+  "selectAccounts": "Select Accounts",
+  "@selectAccounts": {
+    "description": "Hint for account selection in multi-select"
+  },
   "selectTags": "Select Tags",
   "@selectTags": {
     "description": "Hint for tag selection"

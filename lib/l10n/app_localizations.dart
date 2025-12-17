@@ -1239,6 +1239,12 @@ abstract class AppL10n {
   /// **'Select Categories'**
   String get selectCategories;
 
+  /// Hint for account selection in multi-select
+  ///
+  /// In en, this message translates to:
+  /// **'Select Accounts'**
+  String get selectAccounts;
+
   /// Hint for tag selection
   ///
   /// In en, this message translates to:

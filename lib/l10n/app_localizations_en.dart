@@ -637,6 +637,9 @@ class AppL10nEn extends AppL10n {
   String get selectCategories => 'Select Categories';
 
   @override
+  String get selectAccounts => 'Select Accounts';
+
+  @override
   String get selectTags => 'Select Tags';
 
   @override
