@@ -540,6 +540,10 @@
   "@categoriesDetailsCreatedAt": {
     "description": "Label for category created at field"
   },
+  "categoriesDetailsViewTransactions": "View Transactions",
+  "@categoriesDetailsViewTransactions": {
+    "description": "Action to view transactions for a specific category"
+  },
   "cancel": "Cancel",
   "@cancel": {
     "description": "Cancel action"

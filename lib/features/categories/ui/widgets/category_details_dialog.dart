@@ -10,12 +10,14 @@ class CategoryDetailsDialog extends StatelessWidget {
   final VoidCallback onEdit;
   final VoidCallback onDuplicate;
   final VoidCallback onDelete;
+  final VoidCallback onViewTransactions;
 
   const CategoryDetailsDialog({
     required this.category,
     required this.onEdit,
     required this.onDuplicate,
     required this.onDelete,
+    required this.onViewTransactions,
     super.key,
   });
 
@@ -28,6 +30,14 @@ class CategoryDetailsDialog extends StatelessWidget {
       content: CategoryDetailsView(category: category),
       contentHeight: 200,
       actions: [
+        TextButton.icon(
+          onPressed: () {
+            Navigator.of(context).pop();
+            onViewTransactions();
+          },
+          icon: AppIcons.transactions,
+          label: Text(l10n.categoriesDetailsViewTransactions),
+        ),
         TextButton.icon(
           onPressed: () {
             Navigator.of(context).pop();

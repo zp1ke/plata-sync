@@ -765,6 +765,12 @@ abstract class AppL10n {
   /// **'Created At'**
   String get categoriesDetailsCreatedAt;
 
+  /// Action to view transactions for a specific category
+  ///
+  /// In en, this message translates to:
+  /// **'View Transactions'**
+  String get categoriesDetailsViewTransactions;
+
   /// Cancel action
   ///
   /// In en, this message translates to:

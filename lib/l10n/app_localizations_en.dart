@@ -386,6 +386,9 @@ class AppL10nEn extends AppL10n {
   String get categoriesDetailsCreatedAt => 'Created At';
 
   @override
+  String get categoriesDetailsViewTransactions => 'View Transactions';
+
+  @override
   String get cancel => 'Cancel';
 
   @override

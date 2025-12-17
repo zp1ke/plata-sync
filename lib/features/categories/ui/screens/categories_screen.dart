@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
 import '../../../../core/di/service_locator.dart';
 import '../../../../core/model/enums/view_mode.dart';
+import '../../../../core/router/app_router.dart';
 import '../../../../core/ui/resources/app_icons.dart';
 import '../../../../core/ui/resources/app_sizing.dart';
 import '../../../../core/ui/resources/app_spacing.dart';
@@ -11,6 +13,7 @@ import '../../../../core/ui/widgets/snack_alert.dart';
 import '../../../../core/ui/widgets/sort_selector.dart';
 import '../../../../core/ui/widgets/view_toggle.dart';
 import '../../../../core/utils/random.dart';
+import '../../../transactions/application/transactions_manager.dart';
 import '../../application/categories_manager.dart';
 import '../../domain/entities/category.dart';
 import '../../model/enums/category_transaction_type.dart';
@@ -137,6 +140,7 @@ class _MobileCategoriesScreenState extends State<_MobileCategoriesScreen> {
         onEdit: () => _handleEdit(context, category),
         onDuplicate: () => _handleDuplicate(context, category),
         onDelete: () => _handleDelete(context, category),
+        onViewTransactions: () => _handleViewTransactions(context, category),
       ),
     );
   }
@@ -338,6 +342,11 @@ class _TabletCategoriesScreenState extends State<_TabletCategoriesScreen> {
                 ),
               ),
               IconButton(
+                onPressed: () => _handleViewTransactions(context, category),
+                icon: AppIcons.transactions,
+                tooltip: l10n.categoriesDetailsViewTransactions,
+              ),
+              IconButton(
                 onPressed: () => _handleDelete(context, category),
                 icon: AppIcons.delete,
                 tooltip: l10n.delete,
@@ -517,6 +526,12 @@ class _TabletCategoriesScreenState extends State<_TabletCategoriesScreen> {
 }
 
 // Shared helper methods
+void _handleViewTransactions(BuildContext context, Category category) {
+  final transactionsManager = getService<TransactionsManager>();
+  transactionsManager.loadTransactions(categoryIds: [category.id]);
+  context.go(AppRoutes.transactions);
+}
+
 Future<void> _showSampleDataDialog(BuildContext context) async {
   final l10n = AppL10n.of(context);
   final result = await showDialog<bool>(
