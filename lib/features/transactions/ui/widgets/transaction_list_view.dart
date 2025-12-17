@@ -46,16 +46,32 @@ class _TransactionListViewState extends State<TransactionListView> {
 
   Future<void> _loadData() async {
     await _accountsManager.loadAccounts();
-    await _categoriesManager.loadCategories();
     if (mounted) {
       setState(() {
         _accountsMap = {
           for (var account in _accountsManager.accounts.value)
             account.id: account,
         };
+      });
+    }
+    // Load categories for each transaction (including disabled ones)
+    await _loadCategoriesForTransactions();
+  }
+
+  Future<void> _loadCategoriesForTransactions() async {
+    final categoryIds = widget.transactions
+        .where((t) => t.categoryId != null)
+        .map((t) => t.categoryId!)
+        .toSet()
+        .toList();
+
+    if (categoryIds.isEmpty) return;
+
+    final categories = await _categoriesManager.getCategoriesByIds(categoryIds);
+    if (mounted) {
+      setState(() {
         _categoriesMap = {
-          for (var category in _categoriesManager.categories.value)
-            category.id: category,
+          for (var category in categories) category.id: category,
         };
       });
     }

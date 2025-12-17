@@ -165,6 +165,21 @@ class LocalCategoryDataSource extends CategoryDataSource {
   }
 
   @override
+  Future<List<Category>> getByIds(List<String> ids) async {
+    if (ids.isEmpty) return [];
+
+    final db = await _databaseService.database;
+    final placeholders = List.filled(ids.length, '?').join(',');
+    final List<Map<String, dynamic>> maps = await db.query(
+      _tableName,
+      where: 'id IN ($placeholders)',
+      whereArgs: ids,
+    );
+
+    return maps.map(_fromMap).toList();
+  }
+
+  @override
   Future<Category> update(Category item) async {
     final db = await _databaseService.database;
     final count = await db.update(

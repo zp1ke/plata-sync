@@ -51,12 +51,11 @@ class _TransactionGridItemState extends State<TransactionGridItem> {
         .where((a) => a.id == widget.transaction.accountId)
         .firstOrNull;
 
-    // Load category if present
+    // Load category if present (including disabled categories)
     if (widget.transaction.categoryId != null) {
-      final allCategories = categoriesManager.categories.value;
-      category = allCategories
-          .where((c) => c.id == widget.transaction.categoryId)
-          .firstOrNull;
+      category = await categoriesManager.getCategoryById(
+        widget.transaction.categoryId!,
+      );
     }
 
     // Load target account for transfers

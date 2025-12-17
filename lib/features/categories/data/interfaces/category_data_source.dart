@@ -18,6 +18,9 @@ abstract class CategoryDataSource extends DataSource<Category> {
     }
   }
 
+  /// Get multiple categories by their IDs (including disabled ones)
+  Future<List<Category>> getByIds(List<String> ids);
+
   /// Check if a category has associated transactions
   Future<bool> hasTransactions(String categoryId);
 }

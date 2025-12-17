@@ -173,6 +173,15 @@ class CategoriesManager {
     }
   }
 
+  Future<List<Category>> getCategoriesByIds(List<String> ids) async {
+    try {
+      return await _dataSource.getByIds(ids);
+    } catch (e) {
+      debugPrint('Error getting categories by ids: $e');
+      return [];
+    }
+  }
+
   void setSortOrder(CategorySortOrder order) {
     sortOrder.value = order;
     // Save to settings

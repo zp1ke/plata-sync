@@ -107,6 +107,12 @@ class InMemoryCategoryDataSource extends CategoryDataSource {
   }
 
   @override
+  Future<List<Category>> getByIds(List<String> ids) async {
+    await Future.delayed(_delay);
+    return ids.map((id) => _items[id]).whereType<Category>().toList();
+  }
+
+  @override
   Future<Category> update(Category item) async {
     await Future.delayed(_delay);
     if (!_items.containsKey(item.id)) {
