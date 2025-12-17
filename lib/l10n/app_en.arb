@@ -604,7 +604,7 @@
   "@categoriesEditTransactionType": {
     "description": "Label for transaction type field in category edit dialog"
   },
-  "categoriesEditTransactionTypeHelper": "Leave empty to allow for both income and expense",
+  "categoriesEditTransactionTypeHelper": "Leave 'Any' to allow for both 'Income' and 'Expense'",
   "@categoriesEditTransactionTypeHelper": {
     "description": "Helper text for transaction type field"
   },

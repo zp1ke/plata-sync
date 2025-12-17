@@ -435,7 +435,7 @@ class AppL10nEn extends AppL10n {
 
   @override
   String get categoriesEditTransactionTypeHelper =>
-      'Leave empty to allow for both income and expense';
+      'Leave \'Any\' to allow for both \'Income\' and \'Expense\'';
 
   @override
   String get categoryTransactionTypeIncome => 'Income';

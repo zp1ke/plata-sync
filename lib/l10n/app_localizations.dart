@@ -864,7 +864,7 @@ abstract class AppL10n {
   /// Helper text for transaction type field
   ///
   /// In en, this message translates to:
-  /// **'Leave empty to allow for both income and expense'**
+  /// **'Leave \'Any\' to allow for both \'Income\' and \'Expense\''**
   String get categoriesEditTransactionTypeHelper;
 
   /// Label for income transaction type in category form
