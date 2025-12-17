@@ -17,6 +17,7 @@ ThemeData _theme(ColorScheme colorScheme) => ThemeData(
   textTheme: GoogleFonts.notoSansTextTheme(_textTheme),
   appBarTheme: _appBarTheme(colorScheme),
   elevatedButtonTheme: _elevatedButtonTheme,
+  filledButtonTheme: _filledButtonTheme,
   textButtonTheme: _textButtonTheme,
   outlinedButtonTheme: _outlinedButtonTheme,
   inputDecorationTheme: _inputDecorationTheme(colorScheme),
@@ -132,7 +133,17 @@ const TextTheme _textTheme = TextTheme(
 final ElevatedButtonThemeData _elevatedButtonTheme = ElevatedButtonThemeData(
   style: ElevatedButton.styleFrom(
     elevation: AppSizing.elevationLevel2,
-    padding: AppSpacing.paddingLg,
+    padding: AppSpacing.paddingMd,
+    shape: RoundedRectangleBorder(
+      borderRadius: BorderRadius.circular(AppSizing.radiusMd),
+    ),
+  ),
+);
+
+/// Filled button theme
+final FilledButtonThemeData _filledButtonTheme = FilledButtonThemeData(
+  style: FilledButton.styleFrom(
+    padding: AppSpacing.paddingMd,
     shape: RoundedRectangleBorder(
       borderRadius: BorderRadius.circular(AppSizing.radiusMd),
     ),
@@ -142,7 +153,7 @@ final ElevatedButtonThemeData _elevatedButtonTheme = ElevatedButtonThemeData(
 /// Text button theme
 final TextButtonThemeData _textButtonTheme = TextButtonThemeData(
   style: TextButton.styleFrom(
-    padding: AppSpacing.paddingLg,
+    padding: AppSpacing.paddingMd,
     shape: RoundedRectangleBorder(
       borderRadius: BorderRadius.circular(AppSizing.radiusMd),
     ),
@@ -152,7 +163,7 @@ final TextButtonThemeData _textButtonTheme = TextButtonThemeData(
 /// Outlined button theme
 final OutlinedButtonThemeData _outlinedButtonTheme = OutlinedButtonThemeData(
   style: OutlinedButton.styleFrom(
-    padding: AppSpacing.paddingLg,
+    padding: AppSpacing.paddingMd,
     shape: RoundedRectangleBorder(
       borderRadius: BorderRadius.circular(AppSizing.radiusMd),
     ),
