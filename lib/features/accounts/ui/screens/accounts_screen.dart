@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
 import '../../../../core/di/service_locator.dart';
 import '../../../../core/model/enums/view_mode.dart';
+import '../../../../core/router/app_router.dart';
 import '../../../../core/ui/resources/app_icons.dart';
 import '../../../../core/ui/resources/app_sizing.dart';
 import '../../../../core/ui/resources/app_spacing.dart';
@@ -12,6 +14,7 @@ import '../../../../core/ui/widgets/sort_selector.dart';
 import '../../../../core/ui/widgets/view_toggle.dart';
 import '../../../../core/utils/numbers.dart';
 import '../../../../core/utils/random.dart';
+import '../../../transactions/application/transactions_manager.dart';
 import '../../application/accounts_manager.dart';
 import '../../domain/entities/account.dart';
 import '../../model/enums/sort_order.dart';
@@ -138,6 +141,7 @@ class _MobileAccountsScreenState extends State<_MobileAccountsScreen> {
         onEdit: () => _handleEdit(context, account),
         onDuplicate: () => _handleDuplicate(context, account),
         onDelete: () => _handleDelete(context, account),
+        onViewTransactions: () => _handleViewTransactions(context, account),
       ),
     );
   }
@@ -324,6 +328,11 @@ class _TabletAccountsScreenState extends State<_TabletAccountsScreen> {
                 ),
               ),
               IconButton(
+                onPressed: () => _handleViewTransactions(context, account),
+                icon: AppIcons.transactions,
+                tooltip: l10n.accountsViewTransactions,
+              ),
+              IconButton(
                 onPressed: () => _handleDelete(context, account),
                 icon: AppIcons.delete,
                 tooltip: l10n.delete,
@@ -497,6 +506,15 @@ class _TabletAccountsScreenState extends State<_TabletAccountsScreen> {
 }
 
 // Shared helper methods
+void _handleViewTransactions(BuildContext context, Account account) {
+  // Set the account filter in TransactionsManager
+  final transactionsManager = getService<TransactionsManager>();
+  transactionsManager.setAccountFilter([account.id]);
+
+  // Navigate to transactions screen
+  context.go(AppRoutes.transactions);
+}
+
 Future<void> _showSampleDataDialog(BuildContext context) async {
   final l10n = AppL10n.of(context);
   final result = await showDialog<bool>(

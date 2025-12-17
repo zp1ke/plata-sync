@@ -296,6 +296,9 @@ class AppL10nEn extends AppL10n {
   String get accountsDetailsLastUsed => 'Last Used';
 
   @override
+  String get accountsViewTransactions => 'View Transactions';
+
+  @override
   String get accountsEditTitle => 'Edit Account';
 
   @override

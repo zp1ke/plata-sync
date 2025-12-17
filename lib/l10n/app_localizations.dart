@@ -609,6 +609,12 @@ abstract class AppL10n {
   /// **'Last Used'**
   String get accountsDetailsLastUsed;
 
+  /// Action to view transactions filtered by account
+  ///
+  /// In en, this message translates to:
+  /// **'View Transactions'**
+  String get accountsViewTransactions;
+
   /// Title for account edit dialog
   ///
   /// In en, this message translates to:

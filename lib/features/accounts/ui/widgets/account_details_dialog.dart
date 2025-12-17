@@ -10,12 +10,14 @@ class AccountDetailsDialog extends StatelessWidget {
   final VoidCallback onEdit;
   final VoidCallback onDuplicate;
   final VoidCallback onDelete;
+  final VoidCallback onViewTransactions;
 
   const AccountDetailsDialog({
     required this.account,
     required this.onEdit,
     required this.onDuplicate,
     required this.onDelete,
+    required this.onViewTransactions,
     super.key,
   });
 
@@ -28,6 +30,14 @@ class AccountDetailsDialog extends StatelessWidget {
       content: AccountDetailsView(account: account),
       contentHeight: 200,
       actions: [
+        TextButton.icon(
+          onPressed: () {
+            Navigator.of(context).pop();
+            onViewTransactions();
+          },
+          icon: AppIcons.transactions,
+          label: Text(l10n.accountsViewTransactions),
+        ),
         TextButton.icon(
           onPressed: () {
             Navigator.of(context).pop();
