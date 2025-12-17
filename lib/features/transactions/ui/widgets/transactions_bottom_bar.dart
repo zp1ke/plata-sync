@@ -73,13 +73,13 @@ class TransactionsBottomBar extends WatchingWidget
                     context: context,
                     builder: (context) => TransactionFilterDialog(
                       initialAccountId: currentAccountFilter,
-                      initialCategoryId: currentCategoryFilter,
+                      initialCategoryIds: currentCategoryFilter,
                       initialTagIds: currentTagFilter,
                       initialTransactionType: currentTransactionTypeFilter,
                       onApply:
-                          (accountId, categoryId, tagIds, transactionType) {
+                          (accountId, categoryIds, tagIds, transactionType) {
                             manager.setAccountFilter(accountId);
-                            manager.setCategoryFilter(categoryId);
+                            manager.setCategoryFilter(categoryIds);
                             manager.setTagFilter(tagIds);
                             manager.setTransactionTypeFilter(transactionType);
                           },

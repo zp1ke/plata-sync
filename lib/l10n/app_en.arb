@@ -878,6 +878,10 @@
   "@searchCategories": {
     "description": "Hint for category search"
   },
+  "selectCategories": "Select Categories",
+  "@selectCategories": {
+    "description": "Hint for category selection in multi-select"
+  },
   "selectTags": "Select Tags",
   "@selectTags": {
     "description": "Hint for tag selection"

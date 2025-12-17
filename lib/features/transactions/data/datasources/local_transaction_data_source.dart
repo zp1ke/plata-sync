@@ -97,9 +97,17 @@ class LocalTransactionDataSource extends TransactionDataSource {
         args.add(filter['accountId']);
       }
 
-      if (filter.containsKey('categoryId')) {
-        conditions.add('category_id = ?');
-        args.add(filter['categoryId']);
+      if (filter.containsKey('categoryIds')) {
+        final categoryIds = filter['categoryIds'] as List<String>;
+        // Create OR conditions for each category
+        final categoryConditions = categoryIds
+            .map((_) => 'category_id = ?')
+            .toList();
+        conditions.add('(${categoryConditions.join(' OR ')})');
+        // Add each category id as an argument
+        for (var categoryId in categoryIds) {
+          args.add(categoryId);
+        }
       }
 
       if (filter.containsKey('targetAccountId')) {
@@ -224,9 +232,17 @@ class LocalTransactionDataSource extends TransactionDataSource {
         args.add(filter['accountId']);
       }
 
-      if (filter.containsKey('categoryId')) {
-        conditions.add('category_id = ?');
-        args.add(filter['categoryId']);
+      if (filter.containsKey('categoryIds')) {
+        final categoryIds = filter['categoryIds'] as List<String>;
+        // Create OR conditions for each category
+        final categoryConditions = categoryIds
+            .map((_) => 'category_id = ?')
+            .toList();
+        conditions.add('(${categoryConditions.join(' OR ')})');
+        // Add each category id as an argument
+        for (var categoryId in categoryIds) {
+          args.add(categoryId);
+        }
       }
 
       if (filter.containsKey('targetAccountId')) {

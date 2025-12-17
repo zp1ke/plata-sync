@@ -27,7 +27,9 @@ class TransactionsManager {
   final ValueNotifier<List<Transaction>> transactions = ValueNotifier([]);
   final ValueNotifier<bool> isLoading = ValueNotifier(false);
   final ValueNotifier<String?> currentAccountFilter = ValueNotifier(null);
-  final ValueNotifier<String?> currentCategoryFilter = ValueNotifier(null);
+  final ValueNotifier<List<String>?> currentCategoryFilter = ValueNotifier(
+    null,
+  );
   final ValueNotifier<List<String>?> currentTagFilter = ValueNotifier(null);
   final ValueNotifier<TransactionType?> currentTransactionTypeFilter =
       ValueNotifier(null);
@@ -41,7 +43,8 @@ class TransactionsManager {
 
   bool get hasActiveFilters {
     return currentAccountFilter.value != null ||
-        currentCategoryFilter.value != null ||
+        (currentCategoryFilter.value != null &&
+            currentCategoryFilter.value!.isNotEmpty) ||
         (currentTagFilter.value != null &&
             currentTagFilter.value!.isNotEmpty) ||
         currentTransactionTypeFilter.value != null ||
@@ -129,7 +132,7 @@ class TransactionsManager {
 
   Future<void> loadTransactions({
     String? accountId,
-    String? categoryId,
+    List<String>? categoryIds,
     List<String>? tagIds,
     TransactionType? transactionType,
     bool clearAccount = false,
@@ -146,8 +149,8 @@ class TransactionsManager {
 
     if (clearCategory) {
       currentCategoryFilter.value = null;
-    } else if (categoryId != null) {
-      currentCategoryFilter.value = categoryId;
+    } else if (categoryIds != null) {
+      currentCategoryFilter.value = categoryIds;
     }
 
     if (clearTags) {
@@ -166,8 +169,9 @@ class TransactionsManager {
       if (currentAccountFilter.value != null) {
         filter['accountId'] = currentAccountFilter.value;
       }
-      if (currentCategoryFilter.value != null) {
-        filter['categoryId'] = currentCategoryFilter.value;
+      if (currentCategoryFilter.value != null &&
+          currentCategoryFilter.value!.isNotEmpty) {
+        filter['categoryIds'] = currentCategoryFilter.value;
       }
       if (currentTagFilter.value != null &&
           currentTagFilter.value!.isNotEmpty) {
@@ -218,8 +222,11 @@ class TransactionsManager {
     loadTransactions(accountId: accountId, clearAccount: accountId == null);
   }
 
-  void setCategoryFilter(String? categoryId) {
-    loadTransactions(categoryId: categoryId, clearCategory: categoryId == null);
+  void setCategoryFilter(List<String>? categoryIds) {
+    loadTransactions(
+      categoryIds: categoryIds,
+      clearCategory: categoryIds == null || categoryIds.isEmpty,
+    );
   }
 
   void setTagFilter(List<String>? tagIds) {

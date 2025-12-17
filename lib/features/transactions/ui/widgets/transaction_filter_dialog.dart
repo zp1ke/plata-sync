@@ -5,18 +5,18 @@ import '../../../../l10n/app_localizations.dart';
 import 'package:watch_it/watch_it.dart';
 
 import 'account_selector.dart';
-import 'category_selector.dart';
+import 'multi_category_selector.dart';
 import 'tag_selector.dart';
 import 'transaction_type_selector.dart';
 
 class TransactionFilterDialog extends WatchingStatefulWidget {
   final String? initialAccountId;
-  final String? initialCategoryId;
+  final List<String>? initialCategoryIds;
   final List<String>? initialTagIds;
   final TransactionType? initialTransactionType;
   final void Function(
     String? accountId,
-    String? categoryId,
+    List<String>? categoryIds,
     List<String>? tagIds,
     TransactionType? transactionType,
   )
@@ -25,7 +25,7 @@ class TransactionFilterDialog extends WatchingStatefulWidget {
   const TransactionFilterDialog({
     super.key,
     this.initialAccountId,
-    this.initialCategoryId,
+    this.initialCategoryIds,
     this.initialTagIds,
     this.initialTransactionType,
     required this.onApply,
@@ -38,7 +38,7 @@ class TransactionFilterDialog extends WatchingStatefulWidget {
 
 class _TransactionFilterDialogState extends State<TransactionFilterDialog> {
   String? _selectedAccountId;
-  String? _selectedCategoryId;
+  List<String> _selectedCategoryIds = [];
   List<String> _selectedTagIds = [];
   TransactionType? _selectedTransactionType;
 
@@ -46,7 +46,7 @@ class _TransactionFilterDialogState extends State<TransactionFilterDialog> {
   void initState() {
     super.initState();
     _selectedAccountId = widget.initialAccountId;
-    _selectedCategoryId = widget.initialCategoryId;
+    _selectedCategoryIds = widget.initialCategoryIds ?? [];
     _selectedTagIds = widget.initialTagIds ?? [];
     _selectedTransactionType = widget.initialTransactionType;
   }
@@ -70,11 +70,11 @@ class _TransactionFilterDialogState extends State<TransactionFilterDialog> {
               });
             },
           ),
-          CategorySelector(
-            categoryId: _selectedCategoryId,
-            onChanged: (categoryId) {
+          MultiCategorySelector(
+            categoryIds: _selectedCategoryIds,
+            onChanged: (categoryIds) {
               setState(() {
-                _selectedCategoryId = categoryId;
+                _selectedCategoryIds = categoryIds;
               });
             },
           ),
@@ -141,7 +141,7 @@ class _TransactionFilterDialogState extends State<TransactionFilterDialog> {
           onPressed: () {
             widget.onApply(
               _selectedAccountId,
-              _selectedCategoryId,
+              _selectedCategoryIds.isEmpty ? null : _selectedCategoryIds,
               _selectedTagIds.isEmpty ? null : _selectedTagIds,
               _selectedTransactionType,
             );

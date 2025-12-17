@@ -1233,6 +1233,12 @@ abstract class AppL10n {
   /// **'Search categories...'**
   String get searchCategories;
 
+  /// Hint for category selection in multi-select
+  ///
+  /// In en, this message translates to:
+  /// **'Select Categories'**
+  String get selectCategories;
+
   /// Hint for tag selection
   ///
   /// In en, this message translates to:
