@@ -50,7 +50,17 @@ class TransactionsBottomBar extends WatchingWidget
         (currentTagFilter?.isNotEmpty ?? false) ||
         currentTransactionTypeFilter != null;
 
-    return Row(
+    final stats = Row(
+      spacing: AppSpacing.sm,
+      children: [
+        AppIcons.transactionIncome,
+        Text('Income X TODO'),
+        AppIcons.transactionExpense,
+        Text('Expense X TODO'),
+      ],
+    );
+
+    final actions = Row(
       children: [
         ConstrainedBox(
           constraints: BoxConstraints(maxWidth: AppSizing.inputWidthMd),
@@ -97,6 +107,14 @@ class TransactionsBottomBar extends WatchingWidget
           ),
         ],
       ],
+    );
+
+    return Column(
+      mainAxisSize: MainAxisSize.min,
+      mainAxisAlignment: MainAxisAlignment.center,
+      crossAxisAlignment: CrossAxisAlignment.stretch,
+      spacing: AppSpacing.xs,
+      children: [stats, actions],
     );
   }
 

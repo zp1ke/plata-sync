@@ -96,6 +96,12 @@ class AppIcons {
     icon: HugeIcons.strokeRoundedTag01,
     size: AppSizing.iconXs,
   );
+  static final transactionIncome = const HugeIcon(
+    icon: HugeIcons.strokeRoundedChartIncrease,
+  );
+  static final transactionExpense = const HugeIcon(
+    icon: HugeIcons.strokeRoundedChartDecrease,
+  );
 
   // Accounts
   static final accounts = const HugeIcon(icon: HugeIcons.strokeRoundedWallet02);
