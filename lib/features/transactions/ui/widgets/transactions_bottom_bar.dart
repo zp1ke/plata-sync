@@ -1,10 +1,12 @@
 import 'package:flutter/material.dart';
 import '../../../../core/model/enums/view_mode.dart';
+import '../../../../core/ui/resources/app_colors.dart';
 import '../../../../core/ui/resources/app_icons.dart';
 import '../../../../core/ui/resources/app_sizing.dart';
 import '../../../../core/ui/resources/app_spacing.dart';
 import '../../../../core/ui/widgets/sort_selector.dart';
 import '../../../../core/ui/widgets/view_toggle.dart';
+import '../../../../core/utils/numbers.dart';
 import '../../application/transactions_manager.dart';
 import '../../model/enums/sort_order.dart';
 import '../utils/transaction_ui_utils.dart';
@@ -32,6 +34,11 @@ class TransactionsBottomBar extends WatchingWidget
   @override
   Widget build(BuildContext context) {
     final l10n = AppL10n.of(context);
+    final incomeAmount = watchValue((TransactionsManager x) => x.incomeAmount);
+    final expenseAmount = watchValue(
+      (TransactionsManager x) => x.expenseAmount,
+    );
+
     final currentAccountFilter = watchValue(
       (TransactionsManager x) => x.currentAccountFilter,
     );
@@ -50,13 +57,27 @@ class TransactionsBottomBar extends WatchingWidget
         (currentTagFilter?.isNotEmpty ?? false) ||
         currentTransactionTypeFilter != null;
 
+    final colorScheme = Theme.of(context).colorScheme;
     final stats = Row(
       spacing: AppSpacing.sm,
       children: [
-        AppIcons.transactionIncome,
-        Text('Income X TODO'),
-        AppIcons.transactionExpense,
-        Text('Expense X TODO'),
+        AppIcons.transactionIncome(colorScheme.income),
+        Text(
+          incomeAmount.asCompactCurrency(),
+          style: TextStyle(
+            fontWeight: FontWeight.bold,
+            color: colorScheme.income,
+          ),
+        ),
+        AppSpacing.gapHorizontalSm,
+        AppIcons.transactionExpense(colorScheme.expense),
+        Text(
+          expenseAmount.asCompactCurrency(),
+          style: TextStyle(
+            fontWeight: FontWeight.bold,
+            color: colorScheme.expense,
+          ),
+        ),
       ],
     );
 

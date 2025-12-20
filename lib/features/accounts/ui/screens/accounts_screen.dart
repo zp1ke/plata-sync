@@ -55,7 +55,7 @@ String _title(AppL10n l10n, List<Account> accounts) {
     0,
     (sum, account) => sum + account.balance,
   );
-  return '${l10n.accountsScreenTitle} · ${NumberFormatters.formatCompactCurrency(totalBalance)}';
+  return '${l10n.accountsScreenTitle} · ${totalBalance.asCompactCurrency()}';
 }
 
 class _MobileAccountsScreenState extends State<_MobileAccountsScreen> {

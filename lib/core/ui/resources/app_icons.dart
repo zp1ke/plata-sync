@@ -96,12 +96,10 @@ class AppIcons {
     icon: HugeIcons.strokeRoundedTag01,
     size: AppSizing.iconXs,
   );
-  static final transactionIncome = const HugeIcon(
-    icon: HugeIcons.strokeRoundedChartIncrease,
-  );
-  static final transactionExpense = const HugeIcon(
-    icon: HugeIcons.strokeRoundedChartDecrease,
-  );
+  static Widget transactionIncome(Color color) =>
+      HugeIcon(icon: HugeIcons.strokeRoundedChartIncrease, color: color);
+  static Widget transactionExpense(Color color) =>
+      HugeIcon(icon: HugeIcons.strokeRoundedChartDecrease, color: color);
 
   // Accounts
   static final accounts = const HugeIcon(icon: HugeIcons.strokeRoundedWallet02);

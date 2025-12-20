@@ -55,7 +55,7 @@ class AccountDetailsView extends StatelessWidget {
           context,
           label: l10n.accountsDetailsBalance,
           child: Text(
-            NumberFormatters.formatCurrency(account.balance),
+            account.balance.asCurrency(),
             style: Theme.of(context).textTheme.headlineSmall?.copyWith(
               fontWeight: FontWeight.bold,
               color: account.balance >= 0

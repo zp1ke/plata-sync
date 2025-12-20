@@ -26,6 +26,9 @@ class TransactionsManager {
 
   final ValueNotifier<List<Transaction>> transactions = ValueNotifier([]);
   final ValueNotifier<bool> isLoading = ValueNotifier(false);
+  final ValueNotifier<int> incomeAmount = ValueNotifier(0);
+  final ValueNotifier<int> expenseAmount = ValueNotifier(0);
+
   final ValueNotifier<List<String>?> currentAccountFilter = ValueNotifier(null);
   final ValueNotifier<List<String>?> currentCategoryFilter = ValueNotifier(
     null,
@@ -213,6 +216,18 @@ class TransactionsManager {
         filter: filter.isNotEmpty ? filter : null,
         sort: sortOrder.value.sortParam(),
       );
+      // Calculate income and expense amounts
+      int incomeTotal = 0;
+      int expenseTotal = 0;
+      for (final transaction in transactions.value) {
+        if (transaction.amount > 0) {
+          incomeTotal += transaction.amount;
+        } else {
+          expenseTotal += transaction.amount;
+        }
+      }
+      incomeAmount.value = incomeTotal;
+      expenseAmount.value = expenseTotal;
     } catch (e) {
       debugPrint('Error loading transactions: $e');
     } finally {
@@ -393,6 +408,8 @@ class TransactionsManager {
   void dispose() {
     transactions.dispose();
     isLoading.dispose();
+    incomeAmount.dispose();
+    expenseAmount.dispose();
     currentAccountFilter.dispose();
     currentCategoryFilter.dispose();
     currentTagFilter.dispose();

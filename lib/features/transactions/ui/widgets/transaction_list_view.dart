@@ -210,7 +210,7 @@ class _TransactionListViewState extends State<TransactionListView> {
                         style: Theme.of(context).textTheme.bodySmall,
                       ),
                       Text(
-                        NumberFormatters.formatCurrency(transaction.amount),
+                        transaction.amount.asCurrency(),
                         style: Theme.of(context).textTheme.titleMedium
                             ?.copyWith(
                               fontWeight: FontWeight.bold,

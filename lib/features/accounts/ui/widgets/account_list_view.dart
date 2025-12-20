@@ -61,7 +61,7 @@ class AccountListView extends StatelessWidget {
                     ),
                   ),
                   Text(
-                    NumberFormatters.formatCurrency(account.balance),
+                    account.balance.asCurrency(),
                     style: Theme.of(context).textTheme.titleMedium?.copyWith(
                       fontWeight: FontWeight.bold,
                       color: account.balance >= 0

@@ -96,7 +96,7 @@ class _TransactionDetailsViewState extends State<TransactionDetailsView> {
       children: [
         // Amount and type
         Text(
-          NumberFormatters.formatCurrency(transaction.amount),
+          transaction.amount.asCurrency(),
           style: Theme.of(context).textTheme.headlineSmall?.copyWith(
             fontWeight: FontWeight.bold,
             color: typeColor,
@@ -110,16 +110,12 @@ class _TransactionDetailsViewState extends State<TransactionDetailsView> {
             spacing: AppSpacing.sm,
             children: [
               Text(
-                NumberFormatters.formatCurrency(
-                  transaction.accountBalanceBefore,
-                ),
+                transaction.accountBalanceBefore.asCurrency(),
                 style: Theme.of(context).textTheme.bodyLarge,
               ),
               AppIcons.arrowRight,
               Text(
-                NumberFormatters.formatCurrency(
-                  transaction.accountBalanceAfter,
-                ),
+                transaction.accountBalanceAfter.asCurrency(),
                 style: Theme.of(context).textTheme.bodyLarge,
               ),
             ],

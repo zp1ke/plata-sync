@@ -50,9 +50,7 @@ class AccountGridView extends StatelessWidget {
                           style: const TextStyle(fontWeight: FontWeight.w500),
                         ),
                         Text(
-                          NumberFormatters.formatCompactCurrency(
-                            account.balance,
-                          ),
+                          account.balance.asCurrency(),
                           style: Theme.of(context).textTheme.bodySmall
                               ?.copyWith(
                                 fontWeight: FontWeight.bold,
