@@ -60,6 +60,7 @@ class TransactionsBottomBar extends WatchingWidget
     final colorScheme = Theme.of(context).colorScheme;
     final stats = Row(
       spacing: AppSpacing.sm,
+      mainAxisAlignment: MainAxisAlignment.center,
       children: [
         AppIcons.transactionIncome(colorScheme.income),
         Text(
@@ -134,7 +135,7 @@ class TransactionsBottomBar extends WatchingWidget
       mainAxisSize: MainAxisSize.min,
       mainAxisAlignment: MainAxisAlignment.center,
       crossAxisAlignment: CrossAxisAlignment.stretch,
-      spacing: AppSpacing.xs,
+      spacing: AppSpacing.sm,
       children: [stats, actions],
     );
   }
