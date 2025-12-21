@@ -97,7 +97,11 @@ class MasterDetailLayout extends StatelessWidget {
         // Master pane
         SizedBox(width: masterWidth, child: master),
         // Divider
-        const VerticalDivider(),
+        const VerticalDivider(
+          indent: 0,
+          endIndent: 0,
+          width: AppSizing.borderWidthThin,
+        ),
         // Detail pane
         Expanded(child: detail ?? detailPlaceholder ?? const SizedBox.shrink()),
       ],
