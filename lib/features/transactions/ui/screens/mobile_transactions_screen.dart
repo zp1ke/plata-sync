@@ -6,6 +6,7 @@ import '../../../../core/ui/resources/app_sizing.dart';
 import '../../../../core/ui/widgets/app_top_bar.dart';
 import '../../application/transactions_manager.dart';
 import '../../domain/entities/transaction.dart';
+import '../../model/enums/date_filter.dart';
 import '../mixins/transaction_actions_mixin.dart';
 import '../utils/transaction_ui_utils.dart';
 import '../widgets/date_filter_selector.dart';
@@ -79,6 +80,7 @@ class _MobileTransactionsScreenState extends State<MobileTransactionsScreen>
             isLoading,
             transactions,
             viewMode,
+            dateFilter,
             hasActiveFilters,
           ),
         ),
@@ -126,18 +128,18 @@ class _MobileTransactionsScreenState extends State<MobileTransactionsScreen>
     bool isLoading,
     List<Transaction> transactions,
     ViewMode viewMode,
+    DateFilter dateFilter,
     bool hasActiveFilters,
   ) {
-    final l10n = AppL10n.of(context);
-    if (isLoading && transactions.isEmpty) {
-      return const Center(child: CircularProgressIndicator.adaptive());
-    }
-
-    if (transactions.isEmpty) {
-      final emptyMessage = hasActiveFilters
-          ? l10n.transactionsEmptyFilteredState
-          : l10n.transactionsEmptyState;
-      return Center(child: Text(emptyMessage));
+    final emptyContent = getTransactionsEmptyContent(
+      context,
+      isLoading,
+      transactions,
+      dateFilter,
+      hasActiveFilters,
+    );
+    if (emptyContent != null) {
+      return emptyContent;
     }
 
     return viewMode == ViewMode.list

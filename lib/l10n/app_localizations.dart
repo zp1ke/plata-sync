@@ -1365,6 +1365,12 @@ abstract class AppL10n {
   /// **'No transactions found with current filters'**
   String get transactionsEmptyFilteredState;
 
+  /// Message shown when there are no transactions matching the current date filter
+  ///
+  /// In en, this message translates to:
+  /// **'No transactions found for {dateFilter}'**
+  String transactionsEmptyDateFilteredState(String dateFilter);
+
   /// Prompt shown in detail pane when no transaction is selected
   ///
   /// In en, this message translates to:

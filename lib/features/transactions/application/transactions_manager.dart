@@ -44,6 +44,8 @@ class TransactionsManager {
     DateFilter.today,
   );
 
+  /// Returns true if any filters are currently active
+  /// Ignores date filter
   bool get hasActiveFilters {
     return (currentAccountFilter.value != null &&
             currentAccountFilter.value!.isNotEmpty) ||
@@ -51,8 +53,7 @@ class TransactionsManager {
             currentCategoryFilter.value!.isNotEmpty) ||
         (currentTagFilter.value != null &&
             currentTagFilter.value!.isNotEmpty) ||
-        currentTransactionTypeFilter.value != null ||
-        currentDateFilter.value != DateFilter.all;
+        currentTransactionTypeFilter.value != null;
   }
 
   void _loadSortOrderFromSettings() {

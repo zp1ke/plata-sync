@@ -1,3 +1,5 @@
+import 'package:flutter/material.dart';
+
 import '../../domain/entities/transaction.dart';
 import '../../model/enums/date_filter.dart';
 import '../../model/enums/sort_order.dart';
@@ -37,4 +39,31 @@ String getTransactionTypeLabel(AppL10n l10n, Transaction transaction) {
   } else {
     return l10n.transactionTypeIncome;
   }
+}
+
+Widget? getTransactionsEmptyContent(
+  BuildContext context,
+  bool isLoading,
+  List<Transaction> transactions,
+  DateFilter dateFilter,
+  bool hasActiveFilters,
+) {
+  final l10n = AppL10n.of(context);
+  if (isLoading && transactions.isEmpty) {
+    return const Center(child: CircularProgressIndicator.adaptive());
+  }
+
+  if (transactions.isEmpty) {
+    var emptyMessage = l10n.transactionsEmptyState;
+    if (hasActiveFilters) {
+      emptyMessage = l10n.transactionsEmptyFilteredState;
+    } else if (dateFilter != DateFilter.all) {
+      emptyMessage = l10n.transactionsEmptyDateFilteredState(
+        getDateFilterLabel(l10n, dateFilter).toLowerCase(),
+      );
+    }
+    return Center(child: Text(emptyMessage));
+  }
+
+  return null;
 }

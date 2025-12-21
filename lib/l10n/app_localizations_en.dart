@@ -703,6 +703,11 @@ class AppL10nEn extends AppL10n {
       'No transactions found with current filters';
 
   @override
+  String transactionsEmptyDateFilteredState(String dateFilter) {
+    return 'No transactions found for $dateFilter';
+  }
+
+  @override
   String get transactionsSelectPrompt => 'Select a transaction to view details';
 
   @override
