@@ -21,7 +21,7 @@ ThemeData _theme(ColorScheme colorScheme) => ThemeData(
   textButtonTheme: _textButtonTheme,
   outlinedButtonTheme: _outlinedButtonTheme,
   inputDecorationTheme: _inputDecorationTheme(colorScheme),
-  cardTheme: _cardTheme,
+  cardTheme: _cardTheme(colorScheme),
   chipTheme: _chipTheme,
   progressIndicatorTheme: _progressIndicatorTheme,
   dividerTheme: _dividerTheme,
@@ -208,11 +208,15 @@ AppBarTheme _appBarTheme(ColorScheme colorScheme) => AppBarTheme(
 );
 
 /// Card theme
-final CardThemeData _cardTheme = CardThemeData(
-  elevation: AppSizing.elevationLevel1,
+CardThemeData _cardTheme(ColorScheme colorScheme) => CardThemeData(
+  elevation: 0,
   margin: EdgeInsets.all(AppSpacing.sm),
   shape: RoundedRectangleBorder(
     borderRadius: BorderRadius.circular(AppSizing.radiusLg),
+    side: BorderSide(
+      color: colorScheme.outlineVariant,
+      width: AppSizing.borderWidthThin,
+    ),
   ),
 );
 
