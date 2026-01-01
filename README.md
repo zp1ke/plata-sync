@@ -2,6 +2,8 @@
 
 A personal finance management application built with Flutter.
 
+[![Test](https://github.com/zp1ke/plata-sync/actions/workflows/test.yaml/badge.svg)](https://github.com/zp1ke/plata-sync/actions/workflows/test.yaml)
+
 ## Features
 
 - 💰 **Account Management**: Create, edit, and delete accounts with balance tracking
