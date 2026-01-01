@@ -42,7 +42,7 @@ class _MultiCategorySelectorState extends State<MultiCategorySelector> {
     // Load categories when the selector is first created
     final manager = getService<CategoriesManager>();
     if (manager.categories.value.isEmpty) {
-      manager.loadCategories();
+      Future.microtask(manager.loadCategories);
     }
   }
 

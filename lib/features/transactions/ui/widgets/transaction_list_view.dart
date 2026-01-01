@@ -45,7 +45,9 @@ class _TransactionListViewState extends State<TransactionListView> {
   }
 
   Future<void> _loadData() async {
-    await _accountsManager.loadAccounts();
+    // Defer loading to avoid setState during build
+    await Future.microtask(_accountsManager.loadAccounts);
+
     if (mounted) {
       setState(() {
         _accountsMap = {

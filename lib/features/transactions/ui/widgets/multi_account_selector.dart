@@ -38,7 +38,7 @@ class _MultiAccountSelectorState extends State<MultiAccountSelector> {
     // Load accounts when the selector is first created
     final manager = getService<AccountsManager>();
     if (manager.accounts.value.isEmpty) {
-      manager.loadAccounts();
+      Future.microtask(manager.loadAccounts);
     }
   }
 
