@@ -1,7 +1,7 @@
 name: plata_sync
 description: "Plata Sync - Personal Financial Management app."
 publish_to: 'none'
-version: 0.0.1+1
+version: 0.0.2+2
 
 environment:
   sdk: '>=3.10.0 <4.0.0'
