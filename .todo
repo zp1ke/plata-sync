@@ -1,0 +1,14 @@
+# Common
+- [ ] Move icon editor to show in dialog when icon is actioned (remove inlined with preview, add mini edit icon badge inside edit forms)
+
+# Android
+- [ ] App icon have a white background, it looks uggly
+
+# Transactions
+- [ ] Move period filter to line with stats (income, expenses amounts)
+- [ ] Refresh buttons should also refresh categories and accounts, when added a category and the an associated transaction the category is not visible until app restarted
+- [ ] Add a bottom header line with active filters, action it shows filter dialog
+- [ ] Filter dialog must allow clear individual fields (eg: clear categories)
+
+# Categories
+- [ ] Add manage tags icon so tags can be removed (hide if used)
