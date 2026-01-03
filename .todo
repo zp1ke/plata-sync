@@ -1,5 +1,6 @@
 # Common
 - [ ] Move icon editor to show in dialog when icon is actioned (remove inlined with preview, add mini edit icon badge inside edit forms)
+- [ ] Add privacy policy page at sp1ke.dev/plata-sync
 
 # Android
 - [ ] App icon have a white background, it looks uggly
