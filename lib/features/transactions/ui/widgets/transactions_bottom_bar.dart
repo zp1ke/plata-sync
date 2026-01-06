@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import '../../../../core/model/enums/view_mode.dart';
+import '../../../../core/di/service_locator.dart';
 import '../../../../core/ui/resources/app_colors.dart';
 import '../../../../core/ui/resources/app_icons.dart';
 import '../../../../core/ui/resources/app_sizing.dart';
@@ -10,26 +10,16 @@ import '../../../../core/utils/numbers.dart';
 import '../../application/transactions_manager.dart';
 import '../../model/enums/sort_order.dart';
 import '../utils/transaction_ui_utils.dart';
+import 'date_filter_selector.dart';
 import 'transaction_filter_dialog.dart';
 import '../../../../l10n/app_localizations.dart';
 import 'package:watch_it/watch_it.dart';
 
 class TransactionsBottomBar extends WatchingWidget
     implements PreferredSizeWidget {
-  final TransactionSortOrder sortOrder;
-  final ViewMode viewMode;
-  final TransactionsManager manager;
-  final bool isLoading;
   final bool showViewToggle;
 
-  const TransactionsBottomBar({
-    super.key,
-    required this.sortOrder,
-    required this.viewMode,
-    required this.manager,
-    required this.isLoading,
-    this.showViewToggle = false,
-  });
+  const TransactionsBottomBar({super.key, this.showViewToggle = false});
 
   @override
   Widget build(BuildContext context) {
@@ -57,10 +47,16 @@ class TransactionsBottomBar extends WatchingWidget
         (currentTagFilter?.isNotEmpty ?? false) ||
         currentTransactionTypeFilter != null;
 
+    final isLoading = watchValue((TransactionsManager x) => x.isLoading);
+    final viewMode = watchValue((TransactionsManager x) => x.viewMode);
+    final sortOrder = watchValue((TransactionsManager x) => x.sortOrder);
+    final dateFilter = watchValue(
+      (TransactionsManager x) => x.currentDateFilter,
+    );
+
     final colorScheme = Theme.of(context).colorScheme;
     final stats = Row(
-      spacing: AppSpacing.sm,
-      mainAxisAlignment: MainAxisAlignment.center,
+      mainAxisAlignment: MainAxisAlignment.end,
       children: [
         AppIcons.transactionIncome(colorScheme.income),
         Text(
@@ -79,16 +75,30 @@ class TransactionsBottomBar extends WatchingWidget
             color: colorScheme.expense,
           ),
         ),
+        AppSpacing.gapHorizontalSm,
+        ConstrainedBox(
+          constraints: BoxConstraints(maxWidth: AppSizing.inputWidthMd),
+          child: DateFilterSelector(
+            value: dateFilter,
+            onChanged: isLoading
+                ? null
+                : getIt<TransactionsManager>().setDateFilter,
+            labelBuilder: (filter) => getDateFilterLabel(l10n, filter),
+          ),
+        ),
       ],
     );
 
     final actions = Row(
+      mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: [
         ConstrainedBox(
           constraints: BoxConstraints(maxWidth: AppSizing.inputWidthMd),
           child: SortSelector<TransactionSortOrder>(
             value: sortOrder,
-            onChanged: isLoading ? null : manager.setSortOrder,
+            onChanged: isLoading
+                ? null
+                : getIt<TransactionsManager>().setSortOrder,
             labelBuilder: (order) => getSortLabel(l10n, order),
             sortIconBuilder: (order) => order.isDescending
                 ? AppIcons.sortDescending
@@ -96,7 +106,6 @@ class TransactionsBottomBar extends WatchingWidget
             options: TransactionSortOrder.values,
           ),
         ),
-        const Spacer(),
         IconButton(
           onPressed: isLoading
               ? null
@@ -110,6 +119,7 @@ class TransactionsBottomBar extends WatchingWidget
                       initialTransactionType: currentTransactionTypeFilter,
                       onApply:
                           (accountIds, categoryIds, tagIds, transactionType) {
+                            final manager = getIt<TransactionsManager>();
                             manager.setAccountFilter(accountIds);
                             manager.setCategoryFilter(categoryIds);
                             manager.setTagFilter(tagIds);
@@ -125,7 +135,9 @@ class TransactionsBottomBar extends WatchingWidget
           AppSpacing.gapHorizontalSm,
           ViewToggle(
             value: viewMode,
-            onChanged: isLoading ? null : manager.setViewMode,
+            onChanged: isLoading
+                ? null
+                : getIt<TransactionsManager>().setViewMode,
           ),
         ],
       ],

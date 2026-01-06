@@ -11,7 +11,6 @@ import '../../domain/entities/transaction.dart';
 import '../../model/enums/date_filter.dart';
 import '../mixins/transaction_actions_mixin.dart';
 import '../utils/transaction_ui_utils.dart';
-import '../widgets/date_filter_selector.dart';
 import '../widgets/transaction_details_view.dart';
 import '../widgets/transaction_edit_form.dart';
 import '../widgets/transaction_grid_view.dart';
@@ -39,13 +38,13 @@ class _TabletTransactionsScreenState extends State<TabletTransactionsScreen>
   Widget build(BuildContext context) {
     final isLoading = watchValue((TransactionsManager x) => x.isLoading);
     final transactions = watchValue((TransactionsManager x) => x.transactions);
-    final sortOrder = watchValue((TransactionsManager x) => x.sortOrder);
     final dateFilter = watchValue(
       (TransactionsManager x) => x.currentDateFilter,
     );
     final viewMode = watchValue((TransactionsManager x) => x.viewMode);
-    final manager = getService<TransactionsManager>();
-    final hasActiveFilters = manager.hasActiveFilters;
+    final hasActiveFilters = watchValue(
+      (TransactionsManager x) => x.hasActiveFilters,
+    );
     final l10n = AppL10n.of(context);
 
     // Show sample data dialog once after initial load completes with no data
@@ -60,27 +59,8 @@ class _TabletTransactionsScreenState extends State<TabletTransactionsScreen>
                 AppTopBar(
                   title: l10n.transactionsScreenTitle,
                   isLoading: isLoading,
-                  onRefresh: () => manager.loadTransactions(),
-                  bottom: TransactionsBottomBar(
-                    sortOrder: sortOrder,
-                    viewMode: viewMode,
-                    manager: manager,
-                    isLoading: isLoading,
-                    showViewToggle: true,
-                  ),
-                  actions: [
-                    ConstrainedBox(
-                      constraints: BoxConstraints(
-                        maxWidth: AppSizing.inputWidthMd,
-                      ),
-                      child: DateFilterSelector(
-                        value: dateFilter,
-                        onChanged: isLoading ? null : manager.setDateFilter,
-                        labelBuilder: (filter) =>
-                            getDateFilterLabel(l10n, filter),
-                      ),
-                    ),
-                  ],
+                  onRefresh: getService<TransactionsManager>().loadTransactions,
+                  bottom: TransactionsBottomBar(showViewToggle: true),
                 ),
               ];
             },

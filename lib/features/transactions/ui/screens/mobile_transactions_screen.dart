@@ -2,14 +2,12 @@ import 'package:flutter/material.dart';
 import '../../../../core/di/service_locator.dart';
 import '../../../../core/model/enums/view_mode.dart';
 import '../../../../core/ui/resources/app_icons.dart';
-import '../../../../core/ui/resources/app_sizing.dart';
 import '../../../../core/ui/widgets/app_top_bar.dart';
 import '../../application/transactions_manager.dart';
 import '../../domain/entities/transaction.dart';
 import '../../model/enums/date_filter.dart';
 import '../mixins/transaction_actions_mixin.dart';
 import '../utils/transaction_ui_utils.dart';
-import '../widgets/date_filter_selector.dart';
 import '../widgets/transaction_details_dialog.dart';
 import '../widgets/transaction_edit_dialog.dart';
 import '../widgets/transaction_grid_view.dart';
@@ -32,13 +30,13 @@ class _MobileTransactionsScreenState extends State<MobileTransactionsScreen>
   Widget build(BuildContext context) {
     final isLoading = watchValue((TransactionsManager x) => x.isLoading);
     final transactions = watchValue((TransactionsManager x) => x.transactions);
-    final sortOrder = watchValue((TransactionsManager x) => x.sortOrder);
+    final viewMode = watchValue((TransactionsManager x) => x.viewMode);
     final dateFilter = watchValue(
       (TransactionsManager x) => x.currentDateFilter,
     );
-    final viewMode = watchValue((TransactionsManager x) => x.viewMode);
-    final manager = getService<TransactionsManager>();
-    final hasActiveFilters = manager.hasActiveFilters;
+    final hasActiveFilters = watchValue(
+      (TransactionsManager x) => x.hasActiveFilters,
+    );
     final l10n = AppL10n.of(context);
 
     // Show sample data dialog once after initial load completes with no data
@@ -52,26 +50,8 @@ class _MobileTransactionsScreenState extends State<MobileTransactionsScreen>
               AppTopBar(
                 title: l10n.transactionsScreenTitle,
                 isLoading: isLoading,
-                onRefresh: () => manager.loadTransactions(),
-                bottom: TransactionsBottomBar(
-                  sortOrder: sortOrder,
-                  viewMode: viewMode,
-                  manager: manager,
-                  isLoading: isLoading,
-                ),
-                actions: [
-                  ConstrainedBox(
-                    constraints: BoxConstraints(
-                      maxWidth: AppSizing.inputWidthMd,
-                    ),
-                    child: DateFilterSelector(
-                      value: dateFilter,
-                      onChanged: isLoading ? null : manager.setDateFilter,
-                      labelBuilder: (filter) =>
-                          getDateFilterLabel(l10n, filter),
-                    ),
-                  ),
-                ],
+                onRefresh: getService<TransactionsManager>().loadTransactions,
+                bottom: TransactionsBottomBar(),
               ),
             ];
           },

@@ -76,12 +76,7 @@ class _AppTopBarState extends State<AppTopBar> {
         if (widget.bottom != null)
           SliverToBoxAdapter(
             child: Padding(
-              padding: const EdgeInsets.fromLTRB(
-                AppSpacing.md,
-                AppSpacing.md,
-                AppSpacing.md,
-                AppSpacing.sm,
-              ),
+              padding: const EdgeInsets.all(AppSpacing.sm),
               child: widget.bottom,
             ),
           ),

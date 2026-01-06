@@ -21,6 +21,7 @@ class TransactionsManager {
 
   TransactionsManager(this._dataSource) {
     _loadSortOrderFromSettings();
+    _setupFilterListeners();
     loadTransactions();
   }
 
@@ -46,15 +47,7 @@ class TransactionsManager {
 
   /// Returns true if any filters are currently active
   /// Ignores date filter
-  bool get hasActiveFilters {
-    return (currentAccountFilter.value != null &&
-            currentAccountFilter.value!.isNotEmpty) ||
-        (currentCategoryFilter.value != null &&
-            currentCategoryFilter.value!.isNotEmpty) ||
-        (currentTagFilter.value != null &&
-            currentTagFilter.value!.isNotEmpty) ||
-        currentTransactionTypeFilter.value != null;
-  }
+  final ValueNotifier<bool> hasActiveFilters = ValueNotifier(false);
 
   void _loadSortOrderFromSettings() {
     final settings = getService<SettingsService>();
@@ -62,6 +55,24 @@ class TransactionsManager {
     if (saved != null) {
       sortOrder.value = saved;
     }
+  }
+
+  void _setupFilterListeners() {
+    currentAccountFilter.addListener(_updateHasActiveFilters);
+    currentCategoryFilter.addListener(_updateHasActiveFilters);
+    currentTagFilter.addListener(_updateHasActiveFilters);
+    currentTransactionTypeFilter.addListener(_updateHasActiveFilters);
+  }
+
+  void _updateHasActiveFilters() {
+    hasActiveFilters.value =
+        (currentAccountFilter.value != null &&
+            currentAccountFilter.value!.isNotEmpty) ||
+        (currentCategoryFilter.value != null &&
+            currentCategoryFilter.value!.isNotEmpty) ||
+        (currentTagFilter.value != null &&
+            currentTagFilter.value!.isNotEmpty) ||
+        currentTransactionTypeFilter.value != null;
   }
 
   Future<bool> hasAnyData() => _dataSource.hasData();
@@ -417,6 +428,7 @@ class TransactionsManager {
     currentTransactionTypeFilter.dispose();
     sortOrder.dispose();
     viewMode.dispose();
+    hasActiveFilters.dispose();
   }
 
   Future<void> _updateAccountBalanceAndLastUsed(
