@@ -556,6 +556,10 @@
   "@save": {
     "description": "Save action"
   },
+  "editIcon": "Edit Icon",
+  "@editIcon": {
+    "description": "Title for icon editor dialog"
+  },
   "categoriesEditTitle": "Edit Category",
   "@categoriesEditTitle": {
     "description": "Title for category edit dialog"

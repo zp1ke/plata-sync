@@ -398,6 +398,9 @@ class AppL10nEn extends AppL10n {
   String get save => 'Save';
 
   @override
+  String get editIcon => 'Edit Icon';
+
+  @override
   String get categoriesEditTitle => 'Edit Category';
 
   @override

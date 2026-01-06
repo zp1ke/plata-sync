@@ -31,9 +31,95 @@ class ObjectIconEditor extends StatefulWidget {
 }
 
 class _ObjectIconEditorState extends State<ObjectIconEditor> {
+  late ObjectIconData _currentData;
+
+  @override
+  void initState() {
+    super.initState();
+    _currentData = widget.initialData;
+  }
+
+  Future<void> _showEditorDialog() async {
+    final result = await showDialog<ObjectIconData>(
+      context: context,
+      builder: (context) => _ObjectIconEditorDialog(
+        initialData: _currentData,
+        iconLabel: widget.iconLabel,
+        iconRequiredMessage: widget.iconRequiredMessage,
+        backgroundColorLabel: widget.backgroundColorLabel,
+        iconColorLabel: widget.iconColorLabel,
+      ),
+    );
+
+    if (result != null) {
+      setState(() {
+        _currentData = result;
+      });
+      widget.onChanged(result);
+    }
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    final colorScheme = Theme.of(context).colorScheme;
+    return InkWell(
+      onTap: _showEditorDialog,
+      customBorder: const CircleBorder(),
+      child: SizedBox(
+        width: AppSizing.avatarXl,
+        height: AppSizing.avatarXl,
+        child: Stack(
+          children: [
+            ObjectIcon.raw(
+              iconName: _currentData.iconName,
+              backgroundColorHex: _currentData.backgroundColorHex,
+              iconColorHex: _currentData.iconColorHex,
+              size: AppSizing.avatarXl,
+            ),
+            Positioned(
+              top: 0,
+              right: 0,
+              child: Container(
+                padding: const EdgeInsets.all(AppSpacing.xs),
+                decoration: BoxDecoration(
+                  color: colorScheme.primaryContainer,
+                  shape: BoxShape.circle,
+                ),
+                child: AppIcons.editSm(color: colorScheme.onPrimaryContainer),
+              ),
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+}
+
+class _ObjectIconEditorDialog extends StatefulWidget {
+  final ObjectIconData initialData;
+  final String iconLabel;
+  final String iconRequiredMessage;
+  final String backgroundColorLabel;
+  final String iconColorLabel;
+
+  const _ObjectIconEditorDialog({
+    required this.initialData,
+    required this.iconLabel,
+    required this.iconRequiredMessage,
+    required this.backgroundColorLabel,
+    required this.iconColorLabel,
+  });
+
+  @override
+  State<_ObjectIconEditorDialog> createState() =>
+      _ObjectIconEditorDialogState();
+}
+
+class _ObjectIconEditorDialogState extends State<_ObjectIconEditorDialog> {
   late String _selectedIconName;
   late String _backgroundColor;
   late String _iconColor;
+  final _formKey = GlobalKey<FormState>();
 
   @override
   void initState() {
@@ -43,99 +129,105 @@ class _ObjectIconEditorState extends State<ObjectIconEditor> {
     _iconColor = widget.initialData.iconColorHex;
   }
 
-  void _notifyChange() {
-    widget.onChanged(
-      ObjectIconData(
-        iconName: _selectedIconName,
-        backgroundColorHex: _backgroundColor,
-        iconColorHex: _iconColor,
-      ),
-    );
+  void _handleSave() {
+    if (_formKey.currentState?.validate() ?? false) {
+      Navigator.of(context).pop(
+        ObjectIconData(
+          iconName: _selectedIconName,
+          backgroundColorHex: _backgroundColor,
+          iconColorHex: _iconColor,
+        ),
+      );
+    }
   }
 
   @override
   Widget build(BuildContext context) {
     final l10n = AppL10n.of(context);
 
-    return Wrap(
-      alignment: WrapAlignment.end,
-      spacing: AppSpacing.md,
-      runSpacing: AppSpacing.md,
-      runAlignment: WrapAlignment.start,
-      crossAxisAlignment: WrapCrossAlignment.center,
-      children: [
-        // Preview
-        ObjectIcon.raw(
-          iconName: _selectedIconName,
-          backgroundColorHex: _backgroundColor,
-          iconColorHex: _iconColor,
-          size: AppSizing.avatarXl,
-        ),
-        // Icon selector
-        ConstrainedBox(
-          constraints: BoxConstraints(maxWidth: AppSizing.inputWidthMd),
-          child: SelectField<String>(
-            value: _selectedIconName,
-            options: AppIcons.iconDataMap.keys.toList(),
-            label: widget.iconLabel,
-            itemBuilder: (iconName) => Row(
-              spacing: AppSpacing.md,
-              children: [
-                AppIcons.getIcon(iconName, size: AppSizing.iconMd),
-                Expanded(
-                  child: Text(
-                    AppIcons.getIconLabel(iconName, l10n),
-                    overflow: TextOverflow.ellipsis,
-                  ),
+    return AlertDialog(
+      title: Text(l10n.editIcon),
+      content: Form(
+        key: _formKey,
+        child: SingleChildScrollView(
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              // Preview
+              Center(
+                child: ObjectIcon.raw(
+                  iconName: _selectedIconName,
+                  backgroundColorHex: _backgroundColor,
+                  iconColorHex: _iconColor,
+                  size: AppSizing.avatarXl,
                 ),
-              ],
-            ),
-            onChanged: (String newValue) {
-              setState(() {
-                _selectedIconName = newValue;
-              });
-              _notifyChange();
-            },
-            validator: (value) {
-              if (value == null || value.isEmpty) {
-                return widget.iconRequiredMessage;
-              }
-              return null;
-            },
-            searchFilter: (iconName, query) => AppIcons.getIconLabel(
-              iconName,
-              l10n,
-            ).toLowerCase().contains(query.toLowerCase()),
+              ),
+              const SizedBox(height: AppSpacing.lg),
+              // Icon selector
+              SelectField<String>(
+                value: _selectedIconName,
+                options: AppIcons.iconDataMap.keys.toList(),
+                label: widget.iconLabel,
+                itemBuilder: (iconName) => Row(
+                  spacing: AppSpacing.md,
+                  children: [
+                    AppIcons.getIcon(iconName, size: AppSizing.iconMd),
+                    Expanded(
+                      child: Text(
+                        AppIcons.getIconLabel(iconName, l10n),
+                        overflow: TextOverflow.ellipsis,
+                      ),
+                    ),
+                  ],
+                ),
+                onChanged: (String newValue) {
+                  setState(() {
+                    _selectedIconName = newValue;
+                  });
+                },
+                validator: (value) {
+                  if (value == null || value.isEmpty) {
+                    return widget.iconRequiredMessage;
+                  }
+                  return null;
+                },
+                searchFilter: (iconName, query) => AppIcons.getIconLabel(
+                  iconName,
+                  l10n,
+                ).toLowerCase().contains(query.toLowerCase()),
+              ),
+              const SizedBox(height: AppSpacing.md),
+              // Background color picker
+              ColorPickerField(
+                label: widget.backgroundColorLabel,
+                value: _backgroundColor,
+                onChanged: (color) {
+                  setState(() {
+                    _backgroundColor = color;
+                  });
+                },
+              ),
+              const SizedBox(height: AppSpacing.md),
+              // Icon color picker
+              ColorPickerField(
+                label: widget.iconColorLabel,
+                value: _iconColor,
+                onChanged: (color) {
+                  setState(() {
+                    _iconColor = color;
+                  });
+                },
+              ),
+            ],
           ),
         ),
-        // Background color picker
-        ConstrainedBox(
-          constraints: const BoxConstraints(maxWidth: AppSizing.avatarLg * 3),
-          child: ColorPickerField(
-            label: widget.backgroundColorLabel,
-            value: _backgroundColor,
-            onChanged: (color) {
-              setState(() {
-                _backgroundColor = color;
-              });
-              _notifyChange();
-            },
-          ),
+      ),
+      actions: [
+        TextButton(
+          onPressed: () => Navigator.of(context).pop(),
+          child: Text(l10n.cancel),
         ),
-        // Icon color picker
-        ConstrainedBox(
-          constraints: const BoxConstraints(maxWidth: AppSizing.avatarLg * 3),
-          child: ColorPickerField(
-            label: widget.iconColorLabel,
-            value: _iconColor,
-            onChanged: (color) {
-              setState(() {
-                _iconColor = color;
-              });
-              _notifyChange();
-            },
-          ),
-        ),
+        FilledButton(onPressed: _handleSave, child: Text(l10n.save)),
       ],
     );
   }

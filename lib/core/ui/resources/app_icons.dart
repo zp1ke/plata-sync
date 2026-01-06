@@ -57,6 +57,11 @@ class AppIcons {
   );
   static final copy = const HugeIcon(icon: HugeIcons.strokeRoundedCopy01);
   static final edit = const HugeIcon(icon: HugeIcons.strokeRoundedPencilEdit02);
+  static Widget editSm({required Color color}) => HugeIcon(
+    icon: HugeIcons.strokeRoundedPencilEdit02,
+    size: AppSizing.iconSm,
+    color: color,
+  );
   static final delete = const HugeIcon(icon: HugeIcons.strokeRoundedDelete04);
   static final backDelete = const Icon(Icons.backspace);
   static final refresh = const HugeIcon(icon: HugeIcons.strokeRoundedRefresh);

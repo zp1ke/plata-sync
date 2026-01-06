@@ -789,6 +789,12 @@ abstract class AppL10n {
   /// **'Save'**
   String get save;
 
+  /// Title for icon editor dialog
+  ///
+  /// In en, this message translates to:
+  /// **'Edit Icon'**
+  String get editIcon;
+
   /// Title for category edit dialog
   ///
   /// In en, this message translates to:
