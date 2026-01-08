@@ -13,6 +13,7 @@ import '../../../tags/domain/entities/tag.dart';
 import '../../domain/entities/transaction.dart';
 import 'account_selector.dart';
 import 'category_selector.dart';
+import 'tag_input.dart';
 import 'transaction_type_selector.dart';
 import '../../../../l10n/app_localizations.dart';
 
@@ -42,7 +43,6 @@ class TransactionEditFormState extends State<TransactionEditForm> {
   final _formKey = GlobalKey<FormState>();
   final _amountController = TextEditingController();
   final _notesController = TextEditingController();
-  final _tagInputController = TextEditingController();
 
   late TransactionType _type;
   late String? _accountId;
@@ -103,7 +103,6 @@ class TransactionEditFormState extends State<TransactionEditForm> {
     _amountController.removeListener(_validateForm);
     _amountController.dispose();
     _notesController.dispose();
-    _tagInputController.dispose();
     super.dispose();
   }
 
@@ -342,26 +341,7 @@ class TransactionEditFormState extends State<TransactionEditForm> {
                         );
                       }).toList(),
                     ),
-                  Row(
-                    children: [
-                      Expanded(
-                        child: TextFormField(
-                          controller: _tagInputController,
-                          decoration: InputDecoration(
-                            labelText: l10n.transactionTagsLabel,
-                            hintText: l10n.transactionTagsHint,
-                          ),
-                          onFieldSubmitted: _addTag,
-                        ),
-                      ),
-                      AppSpacing.gapHorizontalSm,
-                      FilledButton.icon(
-                        onPressed: () => _addTag(_tagInputController.text),
-                        icon: AppIcons.add,
-                        label: Text(l10n.add),
-                      ),
-                    ],
-                  ),
+                  TagInput(onAddTag: _addTag),
                 ],
               ),
 
@@ -432,7 +412,6 @@ class TransactionEditFormState extends State<TransactionEditForm> {
           _selectedTags.add(tag);
         });
       }
-      _tagInputController.clear();
     } catch (e) {
       if (mounted) {
         final l10n = AppL10n.of(context);
