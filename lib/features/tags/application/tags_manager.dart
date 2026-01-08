@@ -47,8 +47,11 @@ class TagsManager {
   }
 
   /// Search for tags by query
-  Future<List<Tag>> searchTags(String query) async {
-    return await _dataSource.search(query);
+  Future<List<Tag>> searchTags(
+    String query, {
+    List<String> excludeIds = const [],
+  }) async {
+    return await _dataSource.search(query, excludeIds: excludeIds);
   }
 
   /// Load all tags

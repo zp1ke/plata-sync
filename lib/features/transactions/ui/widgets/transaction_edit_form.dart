@@ -315,13 +315,6 @@ class TransactionEditFormState extends State<TransactionEditForm> {
                 ],
               ),
 
-              // Notes field
-              DescriptionInput(
-                controller: _notesController,
-                labelText: l10n.transactionNotesLabel,
-                hintText: l10n.transactionNotesHint,
-              ),
-
               // Tags field
               Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
@@ -341,8 +334,18 @@ class TransactionEditFormState extends State<TransactionEditForm> {
                         );
                       }).toList(),
                     ),
-                  TagInput(onAddTag: _addTag),
+                  TagInput(
+                    onAddTag: _addTag,
+                    excludedIds: _selectedTags.map((t) => t.id).toList(),
+                  ),
                 ],
+              ),
+
+              // Notes field
+              DescriptionInput(
+                controller: _notesController,
+                labelText: l10n.transactionNotesLabel,
+                hintText: l10n.transactionNotesHint,
               ),
 
               // Actions

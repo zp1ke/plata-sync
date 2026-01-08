@@ -82,14 +82,23 @@ class InMemoryTagDataSource implements TagDataSource {
   }
 
   @override
-  Future<List<Tag>> search(String query) async {
+  Future<List<Tag>> search(
+    String query, {
+    List<String> excludeIds = const [],
+  }) async {
     await _delay();
-    if (query.isEmpty) return getAll();
+    var tags = _tags.values;
 
-    final lowerQuery = query.toLowerCase();
-    return _tags.values
-        .where((tag) => tag.name.toLowerCase().contains(lowerQuery))
-        .toList();
+    if (query.isNotEmpty) {
+      final lowerQuery = query.toLowerCase();
+      tags = tags.where((tag) => tag.name.toLowerCase().contains(lowerQuery));
+    }
+
+    if (excludeIds.isNotEmpty) {
+      tags = tags.where((tag) => !excludeIds.contains(tag.id));
+    }
+
+    return tags.toList();
   }
 
   @override

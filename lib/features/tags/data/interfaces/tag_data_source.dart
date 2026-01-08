@@ -39,7 +39,7 @@ abstract class TagDataSource {
   Future<void> delete(String id);
 
   /// Search tags by name (case-insensitive, partial match)
-  Future<List<Tag>> search(String query);
+  Future<List<Tag>> search(String query, {List<String> excludeIds = const []});
 
   /// Update the lastUsedAt timestamp for a tag
   Future<void> updateLastUsed(String id);

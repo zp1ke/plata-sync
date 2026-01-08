@@ -9,7 +9,6 @@
 - [ ] Add a bottom header line with active filters, action it shows filter dialog
 - [ ] Filter dialog must allow clear individual fields (eg: clear categories)
 - [ ] After save a transfer and expense from target account, the balances of involved accounts make no sense
-- [ ] Tag input should also display list with matches as we type
 
 # Categories
 - [ ] Add manage tags icon so tags can be removed (hide if used)

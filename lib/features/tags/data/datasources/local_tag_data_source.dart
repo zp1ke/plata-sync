@@ -113,12 +113,25 @@ class LocalTagDataSource implements TagDataSource {
   }
 
   @override
-  Future<List<Tag>> search(String query) async {
+  Future<List<Tag>> search(
+    String query, {
+    List<String> excludeIds = const [],
+  }) async {
     final db = await _databaseService.database;
+
+    String whereClause = 'LOWER(name) LIKE LOWER(?)';
+    List<Object?> args = ['%$query%'];
+
+    if (excludeIds.isNotEmpty) {
+      final placeholders = List.filled(excludeIds.length, '?').join(',');
+      whereClause += ' AND id NOT IN ($placeholders)';
+      args.addAll(excludeIds);
+    }
+
     final maps = await db.query(
       _tableName,
-      where: 'LOWER(name) LIKE LOWER(?)',
-      whereArgs: ['%$query%'],
+      where: whereClause,
+      whereArgs: args,
       orderBy: 'name ASC',
     );
 
