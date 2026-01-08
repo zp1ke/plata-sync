@@ -152,10 +152,22 @@ class _MultiAccountSelectorState extends State<MultiAccountSelector> {
               ? () => _showAccountDialog(context, accounts)
               : null,
           child: InputDecorator(
-            decoration: inputDecorationWithPrefixIcon(
-              labelText: labelText,
-              prefixIcon: AppIcons.accountsOutlinedXs,
-            ),
+            decoration:
+                inputDecorationWithPrefixIcon(
+                  labelText: labelText,
+                  prefixIcon: AppIcons.accountsOutlinedXs,
+                ).copyWith(
+                  suffixIcon: selectedAccounts.isNotEmpty && widget.enabled
+                      ? IconButton(
+                          icon: SizedBox(
+                            width: AppSizing.iconMd,
+                            child: AppIcons.clear,
+                          ),
+                          onPressed: () => widget.onChanged([]),
+                          tooltip: l10n.clear,
+                        )
+                      : null,
+                ),
             child: Text(
               displayText,
               style: Theme.of(context).textTheme.bodyMedium?.copyWith(

@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import '../../../../core/di/service_locator.dart';
 import '../../../../core/ui/resources/app_icons.dart';
+import '../../../../core/ui/resources/app_sizing.dart';
 import '../../../../core/ui/widgets/dialog.dart';
 import '../../../../core/ui/widgets/input_decoration.dart';
 import '../../../tags/application/tags_manager.dart';
@@ -122,10 +123,22 @@ class _TagSelectorState extends State<TagSelector> {
         return InkWell(
           onTap: widget.enabled ? () => _showTagDialog(context, tags) : null,
           child: InputDecorator(
-            decoration: inputDecorationWithPrefixIcon(
-              labelText: labelText,
-              prefixIcon: AppIcons.tagsXs,
-            ),
+            decoration:
+                inputDecorationWithPrefixIcon(
+                  labelText: labelText,
+                  prefixIcon: AppIcons.accountsOutlinedXs,
+                ).copyWith(
+                  suffixIcon: selectedTags.isNotEmpty && widget.enabled
+                      ? IconButton(
+                          icon: SizedBox(
+                            width: AppSizing.iconMd,
+                            child: AppIcons.clear,
+                          ),
+                          onPressed: () => widget.onChanged([]),
+                          tooltip: l10n.clear,
+                        )
+                      : null,
+                ),
             child: Text(
               displayText,
               style: Theme.of(context).textTheme.bodyMedium?.copyWith(

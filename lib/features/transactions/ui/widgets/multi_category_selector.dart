@@ -177,10 +177,22 @@ class _MultiCategorySelectorState extends State<MultiCategorySelector> {
               ? () => _showCategoryDialog(context, filteredCategories)
               : null,
           child: InputDecorator(
-            decoration: inputDecorationWithPrefixIcon(
-              labelText: labelText,
-              prefixIcon: AppIcons.categoriesOutlinedXs,
-            ),
+            decoration:
+                inputDecorationWithPrefixIcon(
+                  labelText: labelText,
+                  prefixIcon: AppIcons.accountsOutlinedXs,
+                ).copyWith(
+                  suffixIcon: selectedCategories.isNotEmpty && widget.enabled
+                      ? IconButton(
+                          icon: SizedBox(
+                            width: AppSizing.iconMd,
+                            child: AppIcons.clear,
+                          ),
+                          onPressed: () => widget.onChanged([]),
+                          tooltip: l10n.clear,
+                        )
+                      : null,
+                ),
             child: Text(
               displayText,
               style: Theme.of(context).textTheme.bodyMedium?.copyWith(
