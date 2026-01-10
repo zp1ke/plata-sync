@@ -506,4 +506,22 @@ class TransactionsManager {
       account.copyWith(balance: balance, lastUsed: lastUsedValue),
     );
   }
+
+  Future<void> removeTagFromTransactions(String tagId) async {
+    final transactionsWithTag = await _dataSource.getAll(
+      filter: {
+        'tagIds': [tagId],
+      },
+    );
+
+    for (final transaction in transactionsWithTag) {
+      final updatedTagIds = List<String>.from(transaction.tagIds)
+        ..remove(tagId);
+      final updatedTransaction = transaction.copyWith(tagIds: updatedTagIds);
+      // We don't need to update associated accounts/balances when changing tags
+      await _updateTransaction(updatedTransaction, updateAssociated: false);
+    }
+
+    await loadTransactions();
+  }
 }

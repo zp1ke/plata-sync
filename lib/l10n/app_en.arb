@@ -1131,5 +1131,53 @@
   "categoriesNoTypeFilterResults": "No categories found for the selected type",
   "@categoriesNoTypeFilterResults": {
     "description": "Message shown when no categories match the selected type filter"
+  },
+  "manageTags": "Manage Tags",
+  "@manageTags": {
+    "description": "Label for manage tags action"
+  },
+  "addTag": "Add Tag",
+  "@addTag": {
+    "description": "Title for add tag dialog"
+  },
+  "editTag": "Edit Tag",
+  "@editTag": {
+    "description": "Title for edit tag dialog"
+  },
+  "tagName": "Tag Name",
+  "@tagName": {
+    "description": "Label for tag name field"
+  },
+  "tagNameHint": "Enter tag name",
+  "@tagNameHint": {
+    "description": "Hint text for tag name field"
+  },
+  "deleteTag": "Delete Tag",
+  "@deleteTag": {
+    "description": "Label for delete tag action"
+  },
+  "deleteTagConfirmTitle": "Delete Tag?",
+  "@deleteTagConfirmTitle": {
+    "description": "Title for delete tag confirmation"
+  },
+  "deleteTagConfirmBody": "Are you sure you want to delete this tag? This action cannot be undone.",
+  "@deleteTagConfirmBody": {
+    "description": "Body for delete tag confirmation"
+  },
+  "removeTagFromTransactions": "Remove form usage",
+  "@removeTagFromTransactions": {
+    "description": "Checkbox label to remove tag from associated transactions"
+  },
+  "tagDeleted": "Tag deleted",
+  "@tagDeleted": {
+    "description": "Success message when tag is deleted"
+  },
+  "tagSaved": "Tag saved",
+  "@tagSaved": {
+    "description": "Success message when tag is saved"
+  },
+  "fieldRequired": "Required",
+  "@fieldRequired": {
+    "description": "Short required field message"
   }
 }

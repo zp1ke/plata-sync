@@ -26,6 +26,7 @@ import '../widgets/category_grid_view.dart';
 import '../widgets/category_list_view.dart';
 import '../../../../l10n/app_localizations.dart';
 import 'package:watch_it/watch_it.dart';
+import '../../../tags/ui/widgets/tags_management_dialog.dart';
 
 class CategoriesScreen extends WatchingWidget {
   const CategoriesScreen({super.key});
@@ -93,6 +94,18 @@ class _MobileCategoriesScreenState extends State<_MobileCategoriesScreen> {
                     manager.loadCategories(query: value),
                 isLoading: isLoading,
                 onRefresh: () => manager.loadCategories(),
+                actions: [
+                  IconButton(
+                    icon: AppIcons.tags,
+                    onPressed: () {
+                      showDialog(
+                        context: context,
+                        builder: (context) => const TagsManagementDialog(),
+                      );
+                    },
+                    tooltip: l10n.manageTags,
+                  ),
+                ],
                 bottom: _buildBottomBar(
                   context,
                   sortOrder,
@@ -255,6 +268,18 @@ class _TabletCategoriesScreenState extends State<_TabletCategoriesScreen> {
                       manager.loadCategories(query: value),
                   isLoading: isLoading,
                   onRefresh: () => manager.loadCategories(),
+                  actions: [
+                    IconButton(
+                      icon: AppIcons.tags,
+                      onPressed: () {
+                        showDialog(
+                          context: context,
+                          builder: (context) => const TagsManagementDialog(),
+                        );
+                      },
+                      tooltip: l10n.manageTags,
+                    ),
+                  ],
                   bottom: _buildBottomBar(
                     context,
                     sortOrder,

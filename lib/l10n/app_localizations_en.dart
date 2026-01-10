@@ -818,4 +818,41 @@ class AppL10nEn extends AppL10n {
   @override
   String get categoriesNoTypeFilterResults =>
       'No categories found for the selected type';
+
+  @override
+  String get manageTags => 'Manage Tags';
+
+  @override
+  String get addTag => 'Add Tag';
+
+  @override
+  String get editTag => 'Edit Tag';
+
+  @override
+  String get tagName => 'Tag Name';
+
+  @override
+  String get tagNameHint => 'Enter tag name';
+
+  @override
+  String get deleteTag => 'Delete Tag';
+
+  @override
+  String get deleteTagConfirmTitle => 'Delete Tag?';
+
+  @override
+  String get deleteTagConfirmBody =>
+      'Are you sure you want to delete this tag? This action cannot be undone.';
+
+  @override
+  String get removeTagFromTransactions => 'Remove form usage';
+
+  @override
+  String get tagDeleted => 'Tag deleted';
+
+  @override
+  String get tagSaved => 'Tag saved';
+
+  @override
+  String get fieldRequired => 'Required';
 }

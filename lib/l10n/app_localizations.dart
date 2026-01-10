@@ -1568,6 +1568,78 @@ abstract class AppL10n {
   /// In en, this message translates to:
   /// **'No categories found for the selected type'**
   String get categoriesNoTypeFilterResults;
+
+  /// Label for manage tags action
+  ///
+  /// In en, this message translates to:
+  /// **'Manage Tags'**
+  String get manageTags;
+
+  /// Title for add tag dialog
+  ///
+  /// In en, this message translates to:
+  /// **'Add Tag'**
+  String get addTag;
+
+  /// Title for edit tag dialog
+  ///
+  /// In en, this message translates to:
+  /// **'Edit Tag'**
+  String get editTag;
+
+  /// Label for tag name field
+  ///
+  /// In en, this message translates to:
+  /// **'Tag Name'**
+  String get tagName;
+
+  /// Hint text for tag name field
+  ///
+  /// In en, this message translates to:
+  /// **'Enter tag name'**
+  String get tagNameHint;
+
+  /// Label for delete tag action
+  ///
+  /// In en, this message translates to:
+  /// **'Delete Tag'**
+  String get deleteTag;
+
+  /// Title for delete tag confirmation
+  ///
+  /// In en, this message translates to:
+  /// **'Delete Tag?'**
+  String get deleteTagConfirmTitle;
+
+  /// Body for delete tag confirmation
+  ///
+  /// In en, this message translates to:
+  /// **'Are you sure you want to delete this tag? This action cannot be undone.'**
+  String get deleteTagConfirmBody;
+
+  /// Checkbox label to remove tag from associated transactions
+  ///
+  /// In en, this message translates to:
+  /// **'Remove form usage'**
+  String get removeTagFromTransactions;
+
+  /// Success message when tag is deleted
+  ///
+  /// In en, this message translates to:
+  /// **'Tag deleted'**
+  String get tagDeleted;
+
+  /// Success message when tag is saved
+  ///
+  /// In en, this message translates to:
+  /// **'Tag saved'**
+  String get tagSaved;
+
+  /// Short required field message
+  ///
+  /// In en, this message translates to:
+  /// **'Required'**
+  String get fieldRequired;
 }
 
 class _AppL10nDelegate extends LocalizationsDelegate<AppL10n> {

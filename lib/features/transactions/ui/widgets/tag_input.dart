@@ -91,10 +91,4 @@ class _TagInputState extends State<TagInput> {
       ],
     );
   }
-
-  @override
-  void dispose() {
-    _controller?.dispose();
-    super.dispose();
-  }
 }

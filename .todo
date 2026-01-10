@@ -9,5 +9,7 @@
 - [ ] Add a bottom header line with active filters, action it shows filter dialog
 - [ ] After save a transfer and expense from target account, the balances of involved accounts make no sense
 
-# Categories
-- [ ] Add manage tags icon so tags can be removed (hide if used)
+# Settings
+- [ ] Add clear data action
+- [ ] Add export action
+- [ ] Add import action (append, replace)

@@ -67,6 +67,13 @@ class TagsManager {
     }
   }
 
+  /// Update an existing tag
+  Future<Tag> updateTag(Tag tag) async {
+    final updated = await _dataSource.update(tag);
+    await loadTags();
+    return updated;
+  }
+
   /// Delete a tag by ID
   Future<void> deleteTag(String id) async {
     await _dataSource.delete(id);

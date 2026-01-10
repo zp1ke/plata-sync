@@ -97,6 +97,7 @@ class AppIcons {
   static final transfer = const HugeIcon(
     icon: HugeIcons.strokeRoundedSquareArrowDataTransferHorizontal,
   );
+  static final tags = const HugeIcon(icon: HugeIcons.strokeRoundedTag01);
   static final tagsXs = const HugeIcon(
     icon: HugeIcons.strokeRoundedTag01,
     size: AppSizing.iconXs,
