@@ -158,7 +158,7 @@ class _TransactionGridItemState extends State<TransactionGridItem> {
                       ],
                     ),
                     Text(
-                      widget.transaction.amount.asCompactCurrency(),
+                      widget.transaction.effectiveAmount.asCompactCurrency(),
                       style: Theme.of(context).textTheme.titleMedium?.copyWith(
                         fontWeight: FontWeight.bold,
                         color: typeColor,

@@ -116,7 +116,8 @@ class TransactionEditFormState extends State<TransactionEditForm> {
       final amountText = _amountController.text.trim();
       final amountDouble = double.parse(amountText);
       int amount = (amountDouble * 100).round();
-      if (_type == TransactionType.expense) {
+      if (_type == TransactionType.expense ||
+          _type == TransactionType.transfer) {
         amount = -amount;
       }
 

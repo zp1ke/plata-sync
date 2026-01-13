@@ -87,4 +87,6 @@ class Transaction extends Equatable {
     if (targetAccountBalanceBefore == null) return null;
     return targetAccountBalanceBefore! - amount;
   }
+
+  int get effectiveAmount => isTransfer ? amount.abs() : amount;
 }

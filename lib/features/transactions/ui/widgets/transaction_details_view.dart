@@ -96,7 +96,7 @@ class _TransactionDetailsViewState extends State<TransactionDetailsView> {
       children: [
         // Amount and type
         Text(
-          transaction.amount.asCurrency(),
+          transaction.effectiveAmount.asCurrency(),
           style: Theme.of(context).textTheme.headlineSmall?.copyWith(
             fontWeight: FontWeight.bold,
             color: typeColor,
@@ -106,18 +106,50 @@ class _TransactionDetailsViewState extends State<TransactionDetailsView> {
         _buildSection(
           context,
           label: l10n.transactionBalanceMovementLabel,
-          child: Row(
-            spacing: AppSpacing.sm,
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            spacing: AppSpacing.xs,
             children: [
-              Text(
-                transaction.accountBalanceBefore.asCurrency(),
-                style: Theme.of(context).textTheme.bodyLarge,
+              Row(
+                spacing: AppSpacing.sm,
+                children: [
+                  if (transaction.isTransfer && _account != null)
+                    ObjectIcon(
+                      iconData: _account!.iconData,
+                      size: AppSizing.iconXs,
+                    ),
+                  Text(
+                    transaction.accountBalanceBefore.asCurrency(),
+                    style: Theme.of(context).textTheme.bodyLarge,
+                  ),
+                  AppIcons.arrowRight,
+                  Text(
+                    transaction.accountBalanceAfter.asCurrency(),
+                    style: Theme.of(context).textTheme.bodyLarge,
+                  ),
+                ],
               ),
-              AppIcons.arrowRight,
-              Text(
-                transaction.accountBalanceAfter.asCurrency(),
-                style: Theme.of(context).textTheme.bodyLarge,
-              ),
+              if (transaction.isTransfer &&
+                  transaction.targetAccountBalanceBefore != null)
+                Row(
+                  spacing: AppSpacing.sm,
+                  children: [
+                    if (_targetAccount != null)
+                      ObjectIcon(
+                        iconData: _targetAccount!.iconData,
+                        size: AppSizing.iconXs,
+                      ),
+                    Text(
+                      transaction.targetAccountBalanceBefore!.asCurrency(),
+                      style: Theme.of(context).textTheme.bodyLarge,
+                    ),
+                    AppIcons.arrowRight,
+                    Text(
+                      transaction.targetAccountBalanceAfter!.asCurrency(),
+                      style: Theme.of(context).textTheme.bodyLarge,
+                    ),
+                  ],
+                ),
             ],
           ),
         ),
