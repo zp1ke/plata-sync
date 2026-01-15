@@ -3,6 +3,8 @@ import '../../../../core/di/service_locator.dart';
 import '../../../../core/model/enums/view_mode.dart';
 import '../../../../core/ui/resources/app_icons.dart';
 import '../../../../core/ui/widgets/app_top_bar.dart';
+import '../../../accounts/application/accounts_manager.dart';
+import '../../../categories/application/categories_manager.dart';
 import '../../application/transactions_manager.dart';
 import '../../domain/entities/transaction.dart';
 import '../../model/enums/date_filter.dart';
@@ -50,7 +52,7 @@ class _MobileTransactionsScreenState extends State<MobileTransactionsScreen>
               AppTopBar(
                 title: l10n.transactionsScreenTitle,
                 isLoading: isLoading,
-                onRefresh: getService<TransactionsManager>().loadTransactions,
+                onRefresh: _handleRefresh,
                 bottom: TransactionsBottomBar(),
               ),
             ];
@@ -70,6 +72,14 @@ class _MobileTransactionsScreenState extends State<MobileTransactionsScreen>
         child: AppIcons.add,
       ),
     );
+  }
+
+  Future<void> _handleRefresh() async {
+    await Future.wait([
+      getService<TransactionsManager>().loadTransactions(),
+      getService<CategoriesManager>().loadCategories(),
+      getService<AccountsManager>().loadAccounts(),
+    ]);
   }
 
   void _handleCreate(BuildContext context) {

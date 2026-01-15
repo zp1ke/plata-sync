@@ -5,7 +5,6 @@
 - [ ] App icon have a white background, it looks uggly: https://developer.android.com/distribute/google-play/resources/icon-design-specifications
 
 # Transactions
-- [ ] Refresh buttons should also refresh categories and accounts, when added a category and the an associated transaction the category is not visible until app restarted
 - [ ] Add a bottom header line with active filters, action it shows filter dialog
 
 # Settings
