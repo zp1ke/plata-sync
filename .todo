@@ -4,9 +4,6 @@
 # Android
 - [ ] App icon have a white background, it looks uggly: https://developer.android.com/distribute/google-play/resources/icon-design-specifications
 
-# Transactions
-- [ ] Add a bottom header line with active filters, action it shows filter dialog
-
 # Settings
 - [ ] Add clear data action
 - [ ] Add export action
