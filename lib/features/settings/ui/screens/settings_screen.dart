@@ -378,6 +378,9 @@ class _DataActionsState extends State<_DataActions> {
       }
     } catch (e) {
       if (context.mounted) {
+        // Don't show error if user canceled
+        if (e.toString().contains('canceled')) return;
+
         SnackAlert.error(
           context,
           message: l10n.settingsExportFailed(e.toString()),
