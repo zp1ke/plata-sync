@@ -145,6 +145,23 @@ class AppL10nEn extends AppL10n {
   String get settingsSectionData => 'Data';
 
   @override
+  String get settingsExportData => 'Export Data';
+
+  @override
+  String get settingsExportDataDesc => 'Export your data to a CSV file';
+
+  @override
+  String get settingsExportStarted => 'Export started. Check your downloads.';
+
+  @override
+  String get settingsExportSuccess => 'Export complete.';
+
+  @override
+  String settingsExportFailed(String error) {
+    return 'Export failed: $error';
+  }
+
+  @override
   String get settingsSectionDisplay => 'Display';
 
   @override

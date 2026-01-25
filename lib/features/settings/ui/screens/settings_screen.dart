@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:restart_app/restart_app.dart';
 import 'package:watch_it/watch_it.dart';
 
+import '../../../../core/data/csv/csv_file_saver.dart';
+import '../../../../core/data/csv/transactions_csv_builder.dart';
 import '../../../../core/di/service_locator.dart';
 import '../../../../core/model/enums/data_source_type.dart';
 import '../../../../core/model/enums/date_format_type.dart';
@@ -15,6 +17,10 @@ import '../../../../core/ui/widgets/dialog.dart';
 import '../../../../core/ui/widgets/responsive_layout.dart';
 import '../../../../core/ui/widgets/snack_alert.dart';
 import '../../../../core/utils/os.dart';
+import '../../../accounts/data/interfaces/account_data_source.dart';
+import '../../../categories/data/interfaces/category_data_source.dart';
+import '../../../tags/data/interfaces/tag_data_source.dart';
+import '../../../transactions/data/interfaces/transaction_data_source.dart';
 import '../../../../l10n/app_localizations.dart';
 
 class SettingsScreen extends StatelessWidget {
@@ -59,6 +65,7 @@ class SettingsScreen extends StatelessWidget {
                   SizedBox(height: AppSpacing.lg),
                   _SectionHeader(title: l10n.settingsSectionData),
                   const _DataSourceSetting(),
+                  const _DataActions(),
                 ],
               ),
             ),
@@ -119,6 +126,7 @@ class _MobileLayout extends StatelessWidget {
           // Data Section
           _SectionHeader(title: l10n.settingsSectionData),
           const _DataSourceSetting(),
+          const _DataActions(),
           const Divider(),
 
           // Display Section
@@ -315,6 +323,98 @@ class _DataSourceSettingState extends State<_DataSourceSetting> {
           ),
         ],
       ),
+    );
+  }
+}
+
+class _DataActions extends StatefulWidget {
+  const _DataActions();
+
+  @override
+  State<_DataActions> createState() => _DataActionsState();
+}
+
+class _DataActionsState extends State<_DataActions> {
+  bool _isExporting = false;
+
+  Future<void> _handleExport(BuildContext context) async {
+    if (_isExporting) return;
+    setState(() {
+      _isExporting = true;
+    });
+
+    final l10n = AppL10n.of(context);
+
+    try {
+      final transactionDataSource = getService<TransactionDataSource>();
+      final accountDataSource = getService<AccountDataSource>();
+      final categoryDataSource = getService<CategoryDataSource>();
+      final tagDataSource = getService<TagDataSource>();
+
+      final transactions = await transactionDataSource.getAll();
+      final accounts = await accountDataSource.getAll();
+      final categories = await categoryDataSource.getAll();
+      final tags = await tagDataSource.getAll();
+
+      final csvContent = const TransactionsCsvBuilder().build(
+        transactions: transactions,
+        accounts: accounts,
+        categories: categories,
+        tags: tags,
+      );
+
+      final timestamp = DateTime.now()
+          .toIso8601String()
+          .replaceAll(':', '-')
+          .replaceAll('.', '-');
+      final fileName = 'plata_sync_export_$timestamp.csv';
+      final result = await saveCsvFile(fileName: fileName, content: csvContent);
+
+      if (context.mounted) {
+        final message = result.isDownload
+            ? l10n.settingsExportStarted
+            : l10n.settingsExportSuccess;
+        SnackAlert.success(context, message: message);
+      }
+    } catch (e) {
+      if (context.mounted) {
+        SnackAlert.error(
+          context,
+          message: l10n.settingsExportFailed(e.toString()),
+        );
+      }
+    } finally {
+      if (mounted) {
+        setState(() {
+          _isExporting = false;
+        });
+      }
+    }
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    final l10n = AppL10n.of(context);
+    final theme = Theme.of(context);
+
+    return ListTile(
+      leading: AppIcons.send,
+      title: Text(l10n.settingsExportData),
+      subtitle: Text(
+        l10n.settingsExportDataDesc,
+        style: theme.textTheme.bodySmall?.copyWith(
+          color: theme.colorScheme.onSurfaceVariant,
+        ),
+      ),
+      trailing: _isExporting
+          ? const SizedBox(
+              width: AppSizing.iconSm,
+              height: AppSizing.iconSm,
+              child: CircularProgressIndicator.adaptive(strokeWidth: 2),
+            )
+          : null,
+      enabled: !_isExporting,
+      onTap: _isExporting ? null : () => _handleExport(context),
     );
   }
 }

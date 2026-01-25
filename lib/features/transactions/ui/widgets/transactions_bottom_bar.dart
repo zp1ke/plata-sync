@@ -208,7 +208,7 @@ class TransactionsBottomBar extends WatchingWidget
                           if (currentTagFilter?.isNotEmpty ?? false)
                             '${l10n.transactionTagsLabel}: ${resolveNames(tags, currentTagFilter!, (item) => item.id, (item) => item.name).join(', ')}',
                           if (currentTransactionTypeFilter != null)
-                            '${l10n.transactionTypeFilter}: ${transactionTypeLabel(currentTransactionTypeFilter!)}',
+                            '${l10n.transactionTypeFilter}: ${transactionTypeLabel(currentTransactionTypeFilter)}',
                         ].join(' • '),
                         style: Theme.of(context).textTheme.labelSmall?.copyWith(
                           color: Theme.of(context).colorScheme.onSurfaceVariant,

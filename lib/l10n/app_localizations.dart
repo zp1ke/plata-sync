@@ -321,6 +321,36 @@ abstract class AppL10n {
   /// **'Data'**
   String get settingsSectionData;
 
+  /// Label for export data action
+  ///
+  /// In en, this message translates to:
+  /// **'Export Data'**
+  String get settingsExportData;
+
+  /// Description for export data action
+  ///
+  /// In en, this message translates to:
+  /// **'Export your data to a CSV file'**
+  String get settingsExportDataDesc;
+
+  /// Message shown when export starts on web
+  ///
+  /// In en, this message translates to:
+  /// **'Export started. Check your downloads.'**
+  String get settingsExportStarted;
+
+  /// Message shown when export completes
+  ///
+  /// In en, this message translates to:
+  /// **'Export complete.'**
+  String get settingsExportSuccess;
+
+  /// Message shown when export fails
+  ///
+  /// In en, this message translates to:
+  /// **'Export failed: {error}'**
+  String settingsExportFailed(String error);
+
   /// Section header for display settings
   ///
   /// In en, this message translates to:

@@ -208,6 +208,31 @@
   "@settingsSectionData": {
     "description": "Section header for data settings"
   },
+  "settingsExportData": "Export Data",
+  "@settingsExportData": {
+    "description": "Label for export data action"
+  },
+  "settingsExportDataDesc": "Export your data to a CSV file",
+  "@settingsExportDataDesc": {
+    "description": "Description for export data action"
+  },
+  "settingsExportStarted": "Export started. Check your downloads.",
+  "@settingsExportStarted": {
+    "description": "Message shown when export starts on web"
+  },
+  "settingsExportSuccess": "Export complete.",
+  "@settingsExportSuccess": {
+    "description": "Message shown when export completes"
+  },
+  "settingsExportFailed": "Export failed: {error}",
+  "@settingsExportFailed": {
+    "description": "Message shown when export fails",
+    "placeholders": {
+      "error": {
+        "type": "String"
+      }
+    }
+  },
   "settingsSectionDisplay": "Display",
   "@settingsSectionDisplay": {
     "description": "Section header for display settings"
