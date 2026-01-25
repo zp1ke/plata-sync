@@ -4,6 +4,9 @@ import '../../../../core/ui/widgets/dialog.dart';
 import '../../../../l10n/app_localizations.dart';
 import 'package:watch_it/watch_it.dart';
 
+import '../../../accounts/application/accounts_manager.dart';
+import '../../../categories/application/categories_manager.dart';
+import '../../../tags/application/tags_manager.dart';
 import 'multi_account_selector.dart';
 import 'multi_category_selector.dart';
 import 'tag_selector.dart';
@@ -54,6 +57,16 @@ class _TransactionFilterDialogState extends State<TransactionFilterDialog> {
   @override
   Widget build(BuildContext context) {
     final l10n = AppL10n.of(context);
+    final accounts = watchValue((AccountsManager x) => x.accounts);
+    final categories = watchValue((CategoriesManager x) => x.categories);
+    final tags = watchValue((TagsManager x) => x.tags);
+
+    List<String> normalizeSelection(List<String> selected, int total) {
+      if (total > 0 && selected.length == total) {
+        return <String>[];
+      }
+      return selected;
+    }
 
     return AppDialog(
       title: l10n.filterTransactions,
@@ -66,7 +79,10 @@ class _TransactionFilterDialogState extends State<TransactionFilterDialog> {
             label: l10n.transactionAccountLabel,
             onChanged: (accountIds) {
               setState(() {
-                _selectedAccountIds = accountIds;
+                _selectedAccountIds = normalizeSelection(
+                  accountIds,
+                  accounts.length,
+                );
               });
             },
           ),
@@ -74,7 +90,10 @@ class _TransactionFilterDialogState extends State<TransactionFilterDialog> {
             categoryIds: _selectedCategoryIds,
             onChanged: (categoryIds) {
               setState(() {
-                _selectedCategoryIds = categoryIds;
+                _selectedCategoryIds = normalizeSelection(
+                  categoryIds,
+                  categories.length,
+                );
               });
             },
           ),
@@ -82,7 +101,7 @@ class _TransactionFilterDialogState extends State<TransactionFilterDialog> {
             tagIds: _selectedTagIds,
             onChanged: (tagIds) {
               setState(() {
-                _selectedTagIds = tagIds;
+                _selectedTagIds = normalizeSelection(tagIds, tags.length);
               });
             },
           ),
