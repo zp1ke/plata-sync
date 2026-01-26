@@ -148,7 +148,8 @@ class AppL10nEn extends AppL10n {
   String get settingsExportData => 'Export Data';
 
   @override
-  String get settingsExportDataDesc => 'Export your data to a CSV file';
+  String get settingsExportDataDesc =>
+      'Export all your data to a JSON backup file';
 
   @override
   String get settingsExportStarted => 'Export started. Check your downloads.';

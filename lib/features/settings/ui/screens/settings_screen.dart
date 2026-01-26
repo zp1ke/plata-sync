@@ -2,8 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:restart_app/restart_app.dart';
 import 'package:watch_it/watch_it.dart';
 
-import '../../../../core/data/csv/csv_file_saver.dart';
-import '../../../../core/data/csv/transactions_csv_builder.dart';
+import '../../../../core/data/backup/backup_data_builder.dart';
+import '../../../../core/data/backup/file_saver.dart';
 import '../../../../core/di/service_locator.dart';
 import '../../../../core/model/enums/data_source_type.dart';
 import '../../../../core/model/enums/date_format_type.dart';
@@ -356,7 +356,7 @@ class _DataActionsState extends State<_DataActions> {
       final categories = await categoryDataSource.getAll();
       final tags = await tagDataSource.getAll();
 
-      final csvContent = const TransactionsCsvBuilder().build(
+      final jsonContent = const BackupDataBuilder().build(
         transactions: transactions,
         accounts: accounts,
         categories: categories,
@@ -367,8 +367,8 @@ class _DataActionsState extends State<_DataActions> {
           .toIso8601String()
           .replaceAll(':', '-')
           .replaceAll('.', '-');
-      final fileName = 'plata_sync_export_$timestamp.csv';
-      final result = await saveCsvFile(fileName: fileName, content: csvContent);
+      final fileName = 'plata_sync_export_$timestamp.json';
+      final result = await saveFile(fileName: fileName, content: jsonContent);
 
       if (context.mounted) {
         final message = result.isDownload

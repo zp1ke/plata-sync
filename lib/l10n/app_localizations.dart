@@ -330,7 +330,7 @@ abstract class AppL10n {
   /// Description for export data action
   ///
   /// In en, this message translates to:
-  /// **'Export your data to a CSV file'**
+  /// **'Export all your data to a JSON backup file'**
   String get settingsExportDataDesc;
 
   /// Message shown when export starts on web

@@ -19,6 +19,14 @@ class ObjectIconData extends Equatable {
       backgroundColorHex = '#E0E0E0',
       iconColorHex = '#9E9E9E';
 
+  Map<String, dynamic> toJson() {
+    return {
+      'icon_name': iconName,
+      'background_color_hex': backgroundColorHex,
+      'icon_color_hex': iconColorHex,
+    };
+  }
+
   ObjectIconData.fromColors({
     required this.iconName,
     required Color backgroundColorHex,

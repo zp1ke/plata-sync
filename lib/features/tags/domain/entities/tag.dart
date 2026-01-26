@@ -14,6 +14,15 @@ class Tag extends Equatable {
     required this.lastUsedAt,
   });
 
+  Map<String, dynamic> toJson() {
+    return {
+      'id': id,
+      'name': name,
+      'created_at': createdAt.toIso8601String(),
+      'last_used_at': lastUsedAt.toIso8601String(),
+    };
+  }
+
   factory Tag.create({
     required String id,
     required String name,

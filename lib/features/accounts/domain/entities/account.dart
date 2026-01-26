@@ -23,6 +23,19 @@ class Account extends Equatable {
     this.enabled = true,
   });
 
+  Map<String, dynamic> toJson() {
+    return {
+      'id': id,
+      'created_at': createdAt.toIso8601String(),
+      'name': name,
+      'icon_data': iconData.toJson(),
+      'last_used': lastUsed?.toIso8601String(),
+      'description': description,
+      'balance': balance,
+      'enabled': enabled,
+    };
+  }
+
   Account.create({
     String? id,
     DateTime? createdAt,

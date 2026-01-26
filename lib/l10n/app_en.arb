@@ -212,7 +212,7 @@
   "@settingsExportData": {
     "description": "Label for export data action"
   },
-  "settingsExportDataDesc": "Export your data to a CSV file",
+  "settingsExportDataDesc": "Export all your data to a JSON backup file",
   "@settingsExportDataDesc": {
     "description": "Description for export data action"
   },

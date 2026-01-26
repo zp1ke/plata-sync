@@ -5,21 +5,24 @@ import 'dart:typed_data';
 import 'package:file_saver/file_saver.dart';
 import 'package:file_selector/file_selector.dart';
 
-import 'csv_types.dart';
+import 'file_saver_types.dart';
 
-Future<CsvSaveResult> saveCsvFileImpl({
+Future<FileSaveResult> saveFileImpl({
   required String fileName,
   required String content,
 }) async {
+  final parts = fileName.split('.');
+  final ext = parts.length > 1 ? parts.last : 'json';
+
   if (Platform.isLinux || Platform.isMacOS || Platform.isWindows) {
     // Desktop: Prompt user for save location
     final FileSaveLocation? result = await getSaveLocation(
       suggestedName: fileName,
       acceptedTypeGroups: [
         const XTypeGroup(
-          label: 'CSV',
-          extensions: ['csv'],
-          mimeTypes: ['text/csv'],
+          label: 'JSON',
+          extensions: ['json'],
+          mimeTypes: ['application/json'],
         ),
       ],
     );
@@ -31,16 +34,23 @@ Future<CsvSaveResult> saveCsvFileImpl({
 
     final file = File(result.path);
     await file.writeAsString(content);
-    return CsvSaveResult(path: file.path);
+    return FileSaveResult(path: file.path);
   } else {
     // Mobile: Use FileSaver to save (it handles permissions and paths internally)
     final bytes = Uint8List.fromList(utf8.encode(content));
+    final name = parts.length > 1
+        ? parts.sublist(0, parts.length - 1).join('.')
+        : fileName;
+
+    MimeType mimeType = MimeType.json;
+    if (ext == 'csv') mimeType = MimeType.csv;
+
     final path = await FileSaver.instance.saveFile(
-      name: fileName.replaceAll('.csv', ''), // FileSaver adds extension
+      name: name,
       bytes: bytes,
-      fileExtension: 'csv',
-      mimeType: MimeType.csv,
+      fileExtension: ext,
+      mimeType: mimeType,
     );
-    return CsvSaveResult(path: path);
+    return FileSaveResult(path: path);
   }
 }

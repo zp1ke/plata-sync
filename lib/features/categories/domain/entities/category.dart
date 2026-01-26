@@ -24,6 +24,19 @@ class Category extends Equatable {
     this.enabled = true,
   });
 
+  Map<String, dynamic> toJson() {
+    return {
+      'id': id,
+      'created_at': createdAt.toIso8601String(),
+      'name': name,
+      'icon_data': iconData.toJson(),
+      'last_used': lastUsed?.toIso8601String(),
+      'description': description,
+      'transaction_type': transactionType?.name,
+      'enabled': enabled,
+    };
+  }
+
   Category.create({
     String? id,
     DateTime? createdAt,

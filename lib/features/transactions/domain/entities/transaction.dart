@@ -26,6 +26,21 @@ class Transaction extends Equatable {
     this.tagIds = const [],
   });
 
+  Map<String, dynamic> toJson() {
+    return {
+      'id': id,
+      'created_at': createdAt.toIso8601String(),
+      'account_id': accountId,
+      'category_id': categoryId,
+      'amount': amount,
+      'account_balance_before': accountBalanceBefore,
+      'target_account_id': targetAccountId,
+      'target_account_balance_before': targetAccountBalanceBefore,
+      'notes': notes,
+      'tag_ids': tagIds,
+    };
+  }
+
   Transaction.create({
     String? id,
     DateTime? createdAt,
