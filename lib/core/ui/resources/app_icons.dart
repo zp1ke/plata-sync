@@ -67,6 +67,9 @@ class AppIcons {
   static final refresh = const HugeIcon(icon: HugeIcons.strokeRoundedRefresh);
   static final go = const HugeIcon(icon: HugeIcons.strokeRoundedThumbsUp);
   static final send = const HugeIcon(icon: HugeIcons.strokeRoundedSent);
+  static final download = const HugeIcon(
+    icon: HugeIcons.strokeRoundedDownload01,
+  );
   static final search = const HugeIcon(icon: HugeIcons.strokeRoundedSearch01);
   static final searchXs = const HugeIcon(
     icon: HugeIcons.strokeRoundedSearch01,

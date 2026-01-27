@@ -41,6 +41,21 @@ class Transaction extends Equatable {
     };
   }
 
+  factory Transaction.fromJson(Map<String, dynamic> json) {
+    return Transaction(
+      id: json['id'] as String,
+      createdAt: DateTime.parse(json['created_at'] as String),
+      accountId: json['account_id'] as String,
+      categoryId: json['category_id'] as String?,
+      amount: json['amount'] as int,
+      accountBalanceBefore: json['account_balance_before'] as int,
+      targetAccountId: json['target_account_id'] as String?,
+      targetAccountBalanceBefore: json['target_account_balance_before'] as int?,
+      notes: json['notes'] as String?,
+      tagIds: (json['tag_ids'] as List<dynamic>?)?.cast<String>() ?? [],
+    );
+  }
+
   Transaction.create({
     String? id,
     DateTime? createdAt,

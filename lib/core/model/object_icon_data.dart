@@ -27,6 +27,14 @@ class ObjectIconData extends Equatable {
     };
   }
 
+  factory ObjectIconData.fromJson(Map<String, dynamic> json) {
+    return ObjectIconData(
+      iconName: json['icon_name'] as String,
+      backgroundColorHex: json['background_color_hex'] as String,
+      iconColorHex: json['icon_color_hex'] as String,
+    );
+  }
+
   ObjectIconData.fromColors({
     required this.iconName,
     required Color backgroundColorHex,

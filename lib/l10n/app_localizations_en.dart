@@ -163,6 +163,37 @@ class AppL10nEn extends AppL10n {
   }
 
   @override
+  String get settingsImportData => 'Import Data';
+
+  @override
+  String get settingsImportDataDesc => 'Import data from a JSON backup file';
+
+  @override
+  String get settingsImportSuccess => 'Data imported successfully';
+
+  @override
+  String settingsImportFailed(String error) {
+    return 'Import failed: $error';
+  }
+
+  @override
+  String get settingsImportModeTitle => 'Import Mode';
+
+  @override
+  String get settingsImportModeAppend => 'Append';
+
+  @override
+  String get settingsImportModeAppendDesc =>
+      'Add imported data to existing data';
+
+  @override
+  String get settingsImportModeReplace => 'Replace';
+
+  @override
+  String get settingsImportModeReplaceDesc =>
+      'Delete all existing data and replace with imported data';
+
+  @override
   String get settingsSectionDisplay => 'Display';
 
   @override

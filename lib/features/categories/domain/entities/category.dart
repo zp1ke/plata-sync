@@ -37,6 +37,25 @@ class Category extends Equatable {
     };
   }
 
+  factory Category.fromJson(Map<String, dynamic> json) {
+    return Category(
+      id: json['id'] as String,
+      createdAt: DateTime.parse(json['created_at'] as String),
+      name: json['name'] as String,
+      iconData: ObjectIconData.fromJson(
+        json['icon_data'] as Map<String, dynamic>,
+      ),
+      lastUsed: json['last_used'] != null
+          ? DateTime.parse(json['last_used'] as String)
+          : null,
+      description: json['description'] as String?,
+      transactionType: CategoryTransactionType.fromString(
+        json['transaction_type'] as String?,
+      ),
+      enabled: json['enabled'] as bool? ?? true,
+    );
+  }
+
   Category.create({
     String? id,
     DateTime? createdAt,

@@ -351,6 +351,60 @@ abstract class AppL10n {
   /// **'Export failed: {error}'**
   String settingsExportFailed(String error);
 
+  /// Label for import data action
+  ///
+  /// In en, this message translates to:
+  /// **'Import Data'**
+  String get settingsImportData;
+
+  /// Description for import data action
+  ///
+  /// In en, this message translates to:
+  /// **'Import data from a JSON backup file'**
+  String get settingsImportDataDesc;
+
+  /// Message shown when import succeeds
+  ///
+  /// In en, this message translates to:
+  /// **'Data imported successfully'**
+  String get settingsImportSuccess;
+
+  /// Message shown when import fails
+  ///
+  /// In en, this message translates to:
+  /// **'Import failed: {error}'**
+  String settingsImportFailed(String error);
+
+  /// Title for import mode selection dialog
+  ///
+  /// In en, this message translates to:
+  /// **'Import Mode'**
+  String get settingsImportModeTitle;
+
+  /// Label for append import mode
+  ///
+  /// In en, this message translates to:
+  /// **'Append'**
+  String get settingsImportModeAppend;
+
+  /// Description for append import mode
+  ///
+  /// In en, this message translates to:
+  /// **'Add imported data to existing data'**
+  String get settingsImportModeAppendDesc;
+
+  /// Label for replace import mode
+  ///
+  /// In en, this message translates to:
+  /// **'Replace'**
+  String get settingsImportModeReplace;
+
+  /// Description for replace import mode
+  ///
+  /// In en, this message translates to:
+  /// **'Delete all existing data and replace with imported data'**
+  String get settingsImportModeReplaceDesc;
+
   /// Section header for display settings
   ///
   /// In en, this message translates to:

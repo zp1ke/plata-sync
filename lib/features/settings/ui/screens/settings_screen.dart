@@ -3,6 +3,8 @@ import 'package:restart_app/restart_app.dart';
 import 'package:watch_it/watch_it.dart';
 
 import '../../../../core/data/backup/backup_data_builder.dart';
+import '../../../../core/data/backup/backup_data_parser.dart';
+import '../../../../core/data/backup/file_picker.dart';
 import '../../../../core/data/backup/file_saver.dart';
 import '../../../../core/di/service_locator.dart';
 import '../../../../core/model/enums/data_source_type.dart';
@@ -55,7 +57,7 @@ class SettingsScreen extends StatelessWidget {
                   ListTile(
                     leading: AppIcons.licenses,
                     title: Text(l10n.settingsLicenses),
-                    trailing: const Icon(Icons.chevron_right),
+                    trailing: AppIcons.arrowRight,
                     onTap: () => showLicensePage(
                       context: context,
                       applicationName: l10n.appTitle,
@@ -114,7 +116,7 @@ class _MobileLayout extends StatelessWidget {
           ListTile(
             leading: AppIcons.licenses,
             title: Text(l10n.settingsLicenses),
-            trailing: const Icon(Icons.chevron_right),
+            trailing: AppIcons.arrowRight,
             onTap: () => showLicensePage(
               context: context,
               applicationName: l10n.appTitle,
@@ -336,6 +338,7 @@ class _DataActions extends StatefulWidget {
 
 class _DataActionsState extends State<_DataActions> {
   bool _isExporting = false;
+  bool _isImporting = false;
 
   Future<void> _handleExport(BuildContext context) async {
     if (_isExporting) return;
@@ -395,32 +398,211 @@ class _DataActionsState extends State<_DataActions> {
     }
   }
 
+  Future<void> _handleImport(BuildContext context) async {
+    if (_isImporting) return;
+
+    final l10n = AppL10n.of(context);
+
+    // Step 1: Show import mode selection dialog
+    final importMode = await _showImportModeDialog(context);
+    if (importMode == null) return; // User canceled
+
+    setState(() {
+      _isImporting = true;
+    });
+
+    try {
+      // Step 2: Pick file
+      final result = await pickFile();
+      if (result == null) {
+        // User canceled file selection
+        if (mounted) {
+          setState(() {
+            _isImporting = false;
+          });
+        }
+        return;
+      }
+
+      // Step 3: Parse backup data
+      final parser = const BackupDataParser();
+      final backupData = parser.parse(result.content);
+
+      // Step 4: Get data sources
+      final transactionDataSource = getService<TransactionDataSource>();
+      final accountDataSource = getService<AccountDataSource>();
+      final categoryDataSource = getService<CategoryDataSource>();
+      final tagDataSource = getService<TagDataSource>();
+
+      // Step 5: Import data based on mode
+      if (importMode == _ImportMode.replace) {
+        // Clear all existing data
+        final existingTransactions = await transactionDataSource.getAll();
+        for (final transaction in existingTransactions) {
+          await transactionDataSource.delete(transaction.id);
+        }
+
+        final existingAccounts = await accountDataSource.getAll();
+        for (final account in existingAccounts) {
+          await accountDataSource.delete(account.id);
+        }
+
+        final existingCategories = await categoryDataSource.getAll();
+        for (final category in existingCategories) {
+          await categoryDataSource.delete(category.id);
+        }
+
+        final existingTags = await tagDataSource.getAll();
+        for (final tag in existingTags) {
+          await tagDataSource.delete(tag.id);
+        }
+      }
+
+      // Insert imported data
+      for (final account in backupData.accounts) {
+        await accountDataSource.create(account);
+      }
+
+      for (final category in backupData.categories) {
+        await categoryDataSource.create(category);
+      }
+
+      for (final tag in backupData.tags) {
+        await tagDataSource.create(tag);
+      }
+
+      for (final transaction in backupData.transactions) {
+        await transactionDataSource.create(transaction);
+      }
+
+      if (context.mounted) {
+        SnackAlert.success(context, message: l10n.settingsImportSuccess);
+      }
+    } catch (e) {
+      if (context.mounted) {
+        SnackAlert.error(
+          context,
+          message: l10n.settingsImportFailed(e.toString()),
+        );
+      }
+    } finally {
+      if (mounted) {
+        setState(() {
+          _isImporting = false;
+        });
+      }
+    }
+  }
+
+  Future<_ImportMode?> _showImportModeDialog(BuildContext context) async {
+    final l10n = AppL10n.of(context);
+    final theme = Theme.of(context);
+    _ImportMode? selectedMode;
+
+    return showDialog<_ImportMode>(
+      context: context,
+      builder: (context) => StatefulBuilder(
+        builder: (context, setState) {
+          return AppDialog(
+            title: l10n.settingsImportModeTitle,
+            content: RadioGroup<_ImportMode>(
+              groupValue: selectedMode,
+              onChanged: (value) => setState(() => selectedMode = value),
+              child: Column(
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  RadioListTile<_ImportMode>(
+                    value: _ImportMode.append,
+                    title: Text(l10n.settingsImportModeAppend),
+                    subtitle: Text(
+                      l10n.settingsImportModeAppendDesc,
+                      style: theme.textTheme.bodySmall?.copyWith(
+                        color: theme.colorScheme.onSurfaceVariant,
+                      ),
+                    ),
+                  ),
+                  RadioListTile<_ImportMode>(
+                    value: _ImportMode.replace,
+                    title: Text(l10n.settingsImportModeReplace),
+                    subtitle: Text(
+                      l10n.settingsImportModeReplaceDesc,
+                      style: theme.textTheme.bodySmall?.copyWith(
+                        color: theme.colorScheme.onSurfaceVariant,
+                      ),
+                    ),
+                  ),
+                ],
+              ),
+            ),
+            actions: [
+              TextButton(
+                onPressed: () => Navigator.of(context).pop(),
+                child: Text(l10n.cancel),
+              ),
+              FilledButton(
+                onPressed: selectedMode != null
+                    ? () => Navigator.of(context).pop(selectedMode)
+                    : null,
+                child: Text(l10n.ok),
+              ),
+            ],
+          );
+        },
+      ),
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     final l10n = AppL10n.of(context);
     final theme = Theme.of(context);
 
-    return ListTile(
-      leading: AppIcons.send,
-      title: Text(l10n.settingsExportData),
-      subtitle: Text(
-        l10n.settingsExportDataDesc,
-        style: theme.textTheme.bodySmall?.copyWith(
-          color: theme.colorScheme.onSurfaceVariant,
+    return Column(
+      children: [
+        ListTile(
+          leading: AppIcons.send,
+          title: Text(l10n.settingsExportData),
+          subtitle: Text(
+            l10n.settingsExportDataDesc,
+            style: theme.textTheme.bodySmall?.copyWith(
+              color: theme.colorScheme.onSurfaceVariant,
+            ),
+          ),
+          trailing: _isExporting
+              ? const SizedBox(
+                  width: AppSizing.iconSm,
+                  height: AppSizing.iconSm,
+                  child: CircularProgressIndicator.adaptive(strokeWidth: 2),
+                )
+              : null,
+          enabled: !_isExporting,
+          onTap: _isExporting ? null : () => _handleExport(context),
         ),
-      ),
-      trailing: _isExporting
-          ? const SizedBox(
-              width: AppSizing.iconSm,
-              height: AppSizing.iconSm,
-              child: CircularProgressIndicator.adaptive(strokeWidth: 2),
-            )
-          : null,
-      enabled: !_isExporting,
-      onTap: _isExporting ? null : () => _handleExport(context),
+        ListTile(
+          leading: AppIcons.download,
+          title: Text(l10n.settingsImportData),
+          subtitle: Text(
+            l10n.settingsImportDataDesc,
+            style: theme.textTheme.bodySmall?.copyWith(
+              color: theme.colorScheme.onSurfaceVariant,
+            ),
+          ),
+          trailing: _isImporting
+              ? const SizedBox(
+                  width: AppSizing.iconSm,
+                  height: AppSizing.iconSm,
+                  child: CircularProgressIndicator.adaptive(strokeWidth: 2),
+                )
+              : null,
+          enabled: !_isImporting,
+          onTap: _isImporting ? null : () => _handleImport(context),
+        ),
+      ],
     );
   }
 }
+
+enum _ImportMode { append, replace }
 
 class _DateFormatSetting extends StatefulWidget {
   const _DateFormatSetting();

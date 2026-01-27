@@ -23,6 +23,15 @@ class Tag extends Equatable {
     };
   }
 
+  factory Tag.fromJson(Map<String, dynamic> json) {
+    return Tag(
+      id: json['id'] as String,
+      name: json['name'] as String,
+      createdAt: DateTime.parse(json['created_at'] as String),
+      lastUsedAt: DateTime.parse(json['last_used_at'] as String),
+    );
+  }
+
   factory Tag.create({
     required String id,
     required String name,

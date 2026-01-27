@@ -36,6 +36,23 @@ class Account extends Equatable {
     };
   }
 
+  factory Account.fromJson(Map<String, dynamic> json) {
+    return Account(
+      id: json['id'] as String,
+      createdAt: DateTime.parse(json['created_at'] as String),
+      name: json['name'] as String,
+      iconData: ObjectIconData.fromJson(
+        json['icon_data'] as Map<String, dynamic>,
+      ),
+      lastUsed: json['last_used'] != null
+          ? DateTime.parse(json['last_used'] as String)
+          : null,
+      description: json['description'] as String?,
+      balance: json['balance'] as int,
+      enabled: json['enabled'] as bool? ?? true,
+    );
+  }
+
   Account.create({
     String? id,
     DateTime? createdAt,

@@ -233,6 +233,47 @@
       }
     }
   },
+  "settingsImportData": "Import Data",
+  "@settingsImportData": {
+    "description": "Label for import data action"
+  },
+  "settingsImportDataDesc": "Import data from a JSON backup file",
+  "@settingsImportDataDesc": {
+    "description": "Description for import data action"
+  },
+  "settingsImportSuccess": "Data imported successfully",
+  "@settingsImportSuccess": {
+    "description": "Message shown when import succeeds"
+  },
+  "settingsImportFailed": "Import failed: {error}",
+  "@settingsImportFailed": {
+    "description": "Message shown when import fails",
+    "placeholders": {
+      "error": {
+        "type": "String"
+      }
+    }
+  },
+  "settingsImportModeTitle": "Import Mode",
+  "@settingsImportModeTitle": {
+    "description": "Title for import mode selection dialog"
+  },
+  "settingsImportModeAppend": "Append",
+  "@settingsImportModeAppend": {
+    "description": "Label for append import mode"
+  },
+  "settingsImportModeAppendDesc": "Add imported data to existing data",
+  "@settingsImportModeAppendDesc": {
+    "description": "Description for append import mode"
+  },
+  "settingsImportModeReplace": "Replace",
+  "@settingsImportModeReplace": {
+    "description": "Label for replace import mode"
+  },
+  "settingsImportModeReplaceDesc": "Delete all existing data and replace with imported data",
+  "@settingsImportModeReplaceDesc": {
+    "description": "Description for replace import mode"
+  },
   "settingsSectionDisplay": "Display",
   "@settingsSectionDisplay": {
     "description": "Section header for display settings"
