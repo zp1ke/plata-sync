@@ -2,14 +2,11 @@ import 'package:flutter/material.dart';
 import 'package:restart_app/restart_app.dart';
 import 'package:watch_it/watch_it.dart';
 
-import '../../../../core/data/backup/backup_data_builder.dart';
-import '../../../../core/data/backup/backup_data_parser.dart';
-import '../../../../core/data/backup/file_picker.dart';
-import '../../../../core/data/backup/file_saver.dart';
 import '../../../../core/di/service_locator.dart';
 import '../../../../core/model/enums/data_source_type.dart';
 import '../../../../core/model/enums/date_format_type.dart';
 import '../../../../core/model/enums/time_format_type.dart';
+import '../../../../core/services/data_service.dart';
 import '../../../../core/services/settings_service.dart';
 import '../../../../core/ui/resources/app_icons.dart';
 import '../../../../core/ui/resources/app_sizing.dart';
@@ -18,10 +15,6 @@ import '../../../../core/ui/widgets/constrained_list_view.dart';
 import '../../../../core/ui/widgets/responsive_layout.dart';
 import '../../../../core/ui/widgets/snack_alert.dart';
 import '../../../../core/utils/os.dart';
-import '../../../accounts/data/interfaces/account_data_source.dart';
-import '../../../categories/data/interfaces/category_data_source.dart';
-import '../../../tags/data/interfaces/tag_data_source.dart';
-import '../../../transactions/data/interfaces/transaction_data_source.dart';
 import '../../../../l10n/app_localizations.dart';
 import '../widgets/settings_dialogs.dart';
 
@@ -321,29 +314,8 @@ class _DataActionsState extends State<_DataActions> {
     final l10n = AppL10n.of(context);
 
     try {
-      final transactionDataSource = getService<TransactionDataSource>();
-      final accountDataSource = getService<AccountDataSource>();
-      final categoryDataSource = getService<CategoryDataSource>();
-      final tagDataSource = getService<TagDataSource>();
-
-      final transactions = await transactionDataSource.getAll();
-      final accounts = await accountDataSource.getAll();
-      final categories = await categoryDataSource.getAll();
-      final tags = await tagDataSource.getAll();
-
-      final jsonContent = const BackupDataBuilder().build(
-        transactions: transactions,
-        accounts: accounts,
-        categories: categories,
-        tags: tags,
-      );
-
-      final timestamp = DateTime.now()
-          .toIso8601String()
-          .replaceAll(':', '-')
-          .replaceAll('.', '-');
-      final fileName = 'plata_sync_export_$timestamp.json';
-      final result = await saveFile(fileName: fileName, content: jsonContent);
+      final dataService = getService<DataService>();
+      final result = await dataService.exportData();
 
       if (context.mounted) {
         final message = result.isDownload
@@ -384,68 +356,10 @@ class _DataActionsState extends State<_DataActions> {
     });
 
     try {
-      // Step 2: Pick file
-      final result = await pickFile();
-      if (result == null) {
-        // User canceled file selection
-        if (mounted) {
-          setState(() {
-            _isImporting = false;
-          });
-        }
-        return;
-      }
-
-      // Step 3: Parse backup data
-      final parser = const BackupDataParser();
-      final backupData = parser.parse(result.content);
-
-      // Step 4: Get data sources
-      final transactionDataSource = getService<TransactionDataSource>();
-      final accountDataSource = getService<AccountDataSource>();
-      final categoryDataSource = getService<CategoryDataSource>();
-      final tagDataSource = getService<TagDataSource>();
-
-      // Step 5: Import data based on mode
-      if (importMode == ImportMode.replace) {
-        // Clear all existing data
-        final existingTransactions = await transactionDataSource.getAll();
-        for (final transaction in existingTransactions) {
-          await transactionDataSource.delete(transaction.id);
-        }
-
-        final existingAccounts = await accountDataSource.getAll();
-        for (final account in existingAccounts) {
-          await accountDataSource.delete(account.id);
-        }
-
-        final existingCategories = await categoryDataSource.getAll();
-        for (final category in existingCategories) {
-          await categoryDataSource.delete(category.id);
-        }
-
-        final existingTags = await tagDataSource.getAll();
-        for (final tag in existingTags) {
-          await tagDataSource.delete(tag.id);
-        }
-      }
-
-      // Insert imported data
-      for (final account in backupData.accounts) {
-        await accountDataSource.create(account);
-      }
-
-      for (final category in backupData.categories) {
-        await categoryDataSource.create(category);
-      }
-
-      for (final tag in backupData.tags) {
-        await tagDataSource.create(tag);
-      }
-
-      for (final transaction in backupData.transactions) {
-        await transactionDataSource.create(transaction);
-      }
+      final dataService = getService<DataService>();
+      await dataService.importData(
+        replaceExisting: importMode == ImportMode.replace,
+      );
 
       if (context.mounted) {
         SnackAlert.success(context, message: l10n.settingsImportSuccess);
@@ -487,32 +401,8 @@ class _DataActionsState extends State<_DataActions> {
     });
 
     try {
-      // Step 2: Get data sources
-      final transactionDataSource = getService<TransactionDataSource>();
-      final accountDataSource = getService<AccountDataSource>();
-      final categoryDataSource = getService<CategoryDataSource>();
-      final tagDataSource = getService<TagDataSource>();
-
-      // Step 3: Clear all data
-      final existingTransactions = await transactionDataSource.getAll();
-      for (final transaction in existingTransactions) {
-        await transactionDataSource.delete(transaction.id);
-      }
-
-      final existingAccounts = await accountDataSource.getAll();
-      for (final account in existingAccounts) {
-        await accountDataSource.delete(account.id);
-      }
-
-      final existingCategories = await categoryDataSource.getAll();
-      for (final category in existingCategories) {
-        await categoryDataSource.delete(category.id);
-      }
-
-      final existingTags = await tagDataSource.getAll();
-      for (final tag in existingTags) {
-        await tagDataSource.delete(tag.id);
-      }
+      final dataService = getService<DataService>();
+      await dataService.clearAllData();
 
       if (context.mounted) {
         SnackAlert.success(context, message: l10n.settingsClearDataSuccess);

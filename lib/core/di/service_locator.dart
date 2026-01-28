@@ -1,5 +1,6 @@
 import 'package:get_it/get_it.dart';
 import 'package:package_info_plus/package_info_plus.dart';
+import '../services/data_service.dart';
 import '../services/database_service.dart';
 import '../services/settings_service.dart';
 import '../../features/accounts/application/accounts_manager.dart';
@@ -51,6 +52,16 @@ Future<void> setupServiceLocator() async {
     databaseService,
   );
   getIt.registerSingleton<TagDataSource>(tagDataSource);
+
+  // Data Service
+  getIt.registerLazySingleton<DataService>(
+    () => DataService(
+      transactionDataSource: transactionDataSource,
+      accountDataSource: accountDataSource,
+      categoryDataSource: categoryDataSource,
+      tagDataSource: tagDataSource,
+    ),
+  );
 
   // Managers
   getIt.registerLazySingleton<CategoriesManager>(
