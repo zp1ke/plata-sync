@@ -274,6 +274,35 @@
   "@settingsImportModeReplaceDesc": {
     "description": "Description for replace import mode"
   },
+  "settingsClearData": "Clear All Data",
+  "@settingsClearData": {
+    "description": "Label for clear data action"
+  },
+  "settingsClearDataDesc": "Delete all accounts, categories, tags, and transactions",
+  "@settingsClearDataDesc": {
+    "description": "Description for clear data action"
+  },
+  "settingsClearDataConfirmTitle": "Clear All Data?",
+  "@settingsClearDataConfirmTitle": {
+    "description": "Title for clear data confirmation dialog"
+  },
+  "settingsClearDataConfirmMessage": "This will permanently delete all your accounts, categories, tags, and transactions. This action cannot be undone.",
+  "@settingsClearDataConfirmMessage": {
+    "description": "Message for clear data confirmation dialog"
+  },
+  "settingsClearDataSuccess": "All data cleared successfully",
+  "@settingsClearDataSuccess": {
+    "description": "Message shown when clear data succeeds"
+  },
+  "settingsClearDataFailed": "Failed to clear data: {error}",
+  "@settingsClearDataFailed": {
+    "description": "Message shown when clear data fails",
+    "placeholders": {
+      "error": {
+        "type": "String"
+      }
+    }
+  },
   "settingsSectionDisplay": "Display",
   "@settingsSectionDisplay": {
     "description": "Section header for display settings"

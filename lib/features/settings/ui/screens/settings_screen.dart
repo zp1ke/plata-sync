@@ -15,7 +15,6 @@ import '../../../../core/ui/resources/app_icons.dart';
 import '../../../../core/ui/resources/app_sizing.dart';
 import '../../../../core/ui/resources/app_spacing.dart';
 import '../../../../core/ui/widgets/constrained_list_view.dart';
-import '../../../../core/ui/widgets/dialog.dart';
 import '../../../../core/ui/widgets/responsive_layout.dart';
 import '../../../../core/ui/widgets/snack_alert.dart';
 import '../../../../core/utils/os.dart';
@@ -24,6 +23,7 @@ import '../../../categories/data/interfaces/category_data_source.dart';
 import '../../../tags/data/interfaces/tag_data_source.dart';
 import '../../../transactions/data/interfaces/transaction_data_source.dart';
 import '../../../../l10n/app_localizations.dart';
+import '../widgets/settings_dialogs.dart';
 
 class SettingsScreen extends StatelessWidget {
   const SettingsScreen({super.key});
@@ -242,18 +242,7 @@ class _DataSourceSettingState extends State<_DataSourceSetting> {
       // For desktop platforms, just show a dialog so user restart manually
       showDialog<void>(
         context: context,
-        builder: (context) => AppDialog(
-          title: l10n.settingsDataSourceChangedTitle,
-          content: Text(l10n.settingsDataSourceChangedMessage),
-          actions: [
-            FilledButton(
-              onPressed: () {
-                Navigator.of(context).pop();
-              },
-              child: Text(l10n.ok),
-            ),
-          ],
-        ),
+        builder: (context) => const DataSourceChangedDialog(),
       );
     }
   }
@@ -262,27 +251,9 @@ class _DataSourceSettingState extends State<_DataSourceSetting> {
     BuildContext context,
     DataSourceType newValue,
   ) async {
-    final l10n = AppL10n.of(context);
     final result = await showDialog<bool>(
       context: context,
-      builder: (context) => AppDialog(
-        title: l10n.settingsDataSourceChangeTitle,
-        content: Text(l10n.settingsDataSourceChangeMessage),
-        actions: [
-          TextButton(
-            onPressed: () {
-              Navigator.of(context).pop(false);
-            },
-            child: Text(l10n.cancel),
-          ),
-          FilledButton(
-            onPressed: () {
-              Navigator.of(context).pop(true);
-            },
-            child: Text(l10n.ok),
-          ),
-        ],
-      ),
+      builder: (context) => const DataSourceChangeConfirmDialog(),
     );
     return result ?? false;
   }
@@ -339,6 +310,7 @@ class _DataActions extends StatefulWidget {
 class _DataActionsState extends State<_DataActions> {
   bool _isExporting = false;
   bool _isImporting = false;
+  bool _isClearing = false;
 
   Future<void> _handleExport(BuildContext context) async {
     if (_isExporting) return;
@@ -435,7 +407,7 @@ class _DataActionsState extends State<_DataActions> {
       final tagDataSource = getService<TagDataSource>();
 
       // Step 5: Import data based on mode
-      if (importMode == _ImportMode.replace) {
+      if (importMode == ImportMode.replace) {
         // Clear all existing data
         final existingTransactions = await transactionDataSource.getAll();
         for (final transaction in existingTransactions) {
@@ -494,62 +466,79 @@ class _DataActionsState extends State<_DataActions> {
     }
   }
 
-  Future<_ImportMode?> _showImportModeDialog(BuildContext context) async {
-    final l10n = AppL10n.of(context);
-    final theme = Theme.of(context);
-    _ImportMode? selectedMode;
-
-    return showDialog<_ImportMode>(
+  Future<ImportMode?> _showImportModeDialog(BuildContext context) async {
+    return showDialog<ImportMode>(
       context: context,
-      builder: (context) => StatefulBuilder(
-        builder: (context, setState) {
-          return AppDialog(
-            title: l10n.settingsImportModeTitle,
-            content: RadioGroup<_ImportMode>(
-              groupValue: selectedMode,
-              onChanged: (value) => setState(() => selectedMode = value),
-              child: Column(
-                mainAxisSize: MainAxisSize.min,
-                children: [
-                  RadioListTile<_ImportMode>(
-                    value: _ImportMode.append,
-                    title: Text(l10n.settingsImportModeAppend),
-                    subtitle: Text(
-                      l10n.settingsImportModeAppendDesc,
-                      style: theme.textTheme.bodySmall?.copyWith(
-                        color: theme.colorScheme.onSurfaceVariant,
-                      ),
-                    ),
-                  ),
-                  RadioListTile<_ImportMode>(
-                    value: _ImportMode.replace,
-                    title: Text(l10n.settingsImportModeReplace),
-                    subtitle: Text(
-                      l10n.settingsImportModeReplaceDesc,
-                      style: theme.textTheme.bodySmall?.copyWith(
-                        color: theme.colorScheme.onSurfaceVariant,
-                      ),
-                    ),
-                  ),
-                ],
-              ),
-            ),
-            actions: [
-              TextButton(
-                onPressed: () => Navigator.of(context).pop(),
-                child: Text(l10n.cancel),
-              ),
-              FilledButton(
-                onPressed: selectedMode != null
-                    ? () => Navigator.of(context).pop(selectedMode)
-                    : null,
-                child: Text(l10n.ok),
-              ),
-            ],
-          );
-        },
-      ),
+      builder: (context) => const ImportModeDialog(),
     );
+  }
+
+  Future<void> _handleClearData(BuildContext context) async {
+    if (_isClearing) return;
+
+    final l10n = AppL10n.of(context);
+
+    // Step 1: Show confirmation dialog
+    final confirmed = await _showClearDataConfirmationDialog(context);
+    if (!confirmed) return; // User canceled
+
+    setState(() {
+      _isClearing = true;
+    });
+
+    try {
+      // Step 2: Get data sources
+      final transactionDataSource = getService<TransactionDataSource>();
+      final accountDataSource = getService<AccountDataSource>();
+      final categoryDataSource = getService<CategoryDataSource>();
+      final tagDataSource = getService<TagDataSource>();
+
+      // Step 3: Clear all data
+      final existingTransactions = await transactionDataSource.getAll();
+      for (final transaction in existingTransactions) {
+        await transactionDataSource.delete(transaction.id);
+      }
+
+      final existingAccounts = await accountDataSource.getAll();
+      for (final account in existingAccounts) {
+        await accountDataSource.delete(account.id);
+      }
+
+      final existingCategories = await categoryDataSource.getAll();
+      for (final category in existingCategories) {
+        await categoryDataSource.delete(category.id);
+      }
+
+      final existingTags = await tagDataSource.getAll();
+      for (final tag in existingTags) {
+        await tagDataSource.delete(tag.id);
+      }
+
+      if (context.mounted) {
+        SnackAlert.success(context, message: l10n.settingsClearDataSuccess);
+      }
+    } catch (e) {
+      if (context.mounted) {
+        SnackAlert.error(
+          context,
+          message: l10n.settingsClearDataFailed(e.toString()),
+        );
+      }
+    } finally {
+      if (mounted) {
+        setState(() {
+          _isClearing = false;
+        });
+      }
+    }
+  }
+
+  Future<bool> _showClearDataConfirmationDialog(BuildContext context) async {
+    final result = await showDialog<bool>(
+      context: context,
+      builder: (context) => const ClearDataConfirmDialog(),
+    );
+    return result ?? false;
   }
 
   @override
@@ -572,7 +561,9 @@ class _DataActionsState extends State<_DataActions> {
               ? const SizedBox(
                   width: AppSizing.iconSm,
                   height: AppSizing.iconSm,
-                  child: CircularProgressIndicator.adaptive(strokeWidth: 2),
+                  child: CircularProgressIndicator.adaptive(
+                    strokeWidth: AppSizing.borderWidthMedium,
+                  ),
                 )
               : null,
           enabled: !_isExporting,
@@ -591,18 +582,39 @@ class _DataActionsState extends State<_DataActions> {
               ? const SizedBox(
                   width: AppSizing.iconSm,
                   height: AppSizing.iconSm,
-                  child: CircularProgressIndicator.adaptive(strokeWidth: 2),
+                  child: CircularProgressIndicator.adaptive(
+                    strokeWidth: AppSizing.borderWidthMedium,
+                  ),
                 )
               : null,
           enabled: !_isImporting,
           onTap: _isImporting ? null : () => _handleImport(context),
         ),
+        ListTile(
+          leading: AppIcons.delete,
+          title: Text(l10n.settingsClearData),
+          subtitle: Text(
+            l10n.settingsClearDataDesc,
+            style: theme.textTheme.bodySmall?.copyWith(
+              color: theme.colorScheme.onSurfaceVariant,
+            ),
+          ),
+          trailing: _isClearing
+              ? const SizedBox(
+                  width: AppSizing.iconSm,
+                  height: AppSizing.iconSm,
+                  child: CircularProgressIndicator.adaptive(
+                    strokeWidth: AppSizing.borderWidthMedium,
+                  ),
+                )
+              : null,
+          enabled: !_isClearing,
+          onTap: _isClearing ? null : () => _handleClearData(context),
+        ),
       ],
     );
   }
 }
-
-enum _ImportMode { append, replace }
 
 class _DateFormatSetting extends StatefulWidget {
   const _DateFormatSetting();

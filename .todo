@@ -3,7 +3,3 @@
 
 # Android
 - [ ] App icon have a white background, it looks uggly: https://developer.android.com/distribute/google-play/resources/icon-design-specifications
-
-# Settings
-- [ ] Add clear data action
-- [ ] Add import action (append, replace)

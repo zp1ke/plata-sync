@@ -405,6 +405,42 @@ abstract class AppL10n {
   /// **'Delete all existing data and replace with imported data'**
   String get settingsImportModeReplaceDesc;
 
+  /// Label for clear data action
+  ///
+  /// In en, this message translates to:
+  /// **'Clear All Data'**
+  String get settingsClearData;
+
+  /// Description for clear data action
+  ///
+  /// In en, this message translates to:
+  /// **'Delete all accounts, categories, tags, and transactions'**
+  String get settingsClearDataDesc;
+
+  /// Title for clear data confirmation dialog
+  ///
+  /// In en, this message translates to:
+  /// **'Clear All Data?'**
+  String get settingsClearDataConfirmTitle;
+
+  /// Message for clear data confirmation dialog
+  ///
+  /// In en, this message translates to:
+  /// **'This will permanently delete all your accounts, categories, tags, and transactions. This action cannot be undone.'**
+  String get settingsClearDataConfirmMessage;
+
+  /// Message shown when clear data succeeds
+  ///
+  /// In en, this message translates to:
+  /// **'All data cleared successfully'**
+  String get settingsClearDataSuccess;
+
+  /// Message shown when clear data fails
+  ///
+  /// In en, this message translates to:
+  /// **'Failed to clear data: {error}'**
+  String settingsClearDataFailed(String error);
+
   /// Section header for display settings
   ///
   /// In en, this message translates to:

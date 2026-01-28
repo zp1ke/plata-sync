@@ -194,6 +194,28 @@ class AppL10nEn extends AppL10n {
       'Delete all existing data and replace with imported data';
 
   @override
+  String get settingsClearData => 'Clear All Data';
+
+  @override
+  String get settingsClearDataDesc =>
+      'Delete all accounts, categories, tags, and transactions';
+
+  @override
+  String get settingsClearDataConfirmTitle => 'Clear All Data?';
+
+  @override
+  String get settingsClearDataConfirmMessage =>
+      'This will permanently delete all your accounts, categories, tags, and transactions. This action cannot be undone.';
+
+  @override
+  String get settingsClearDataSuccess => 'All data cleared successfully';
+
+  @override
+  String settingsClearDataFailed(String error) {
+    return 'Failed to clear data: $error';
+  }
+
+  @override
   String get settingsSectionDisplay => 'Display';
 
   @override
