@@ -25,6 +25,8 @@ class LocalAccountDataSource extends AccountDataSource {
       'description': account.description,
       'balance': account.balance,
       'enabled': account.enabled ? 1 : 0,
+      'supports_effective_date': account.supportsEffectiveDate ? 1 : 0,
+      'supports_installments': account.supportsInstallments ? 1 : 0,
     };
   }
 
@@ -45,6 +47,8 @@ class LocalAccountDataSource extends AccountDataSource {
       description: map['description'] as String?,
       balance: map['balance'] as int,
       enabled: (map['enabled'] as int?) == 1,
+      supportsEffectiveDate: (map['supports_effective_date'] as int?) == 1,
+      supportsInstallments: (map['supports_installments'] as int?) == 1,
     );
   }
 

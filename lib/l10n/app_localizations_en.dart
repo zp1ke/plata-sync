@@ -411,6 +411,20 @@ class AppL10nEn extends AppL10n {
   String get accountsEditIconColor => 'Icon Color';
 
   @override
+  String get accountsEditSupportsEffectiveDate => 'Supports Effective Date';
+
+  @override
+  String get accountsEditSupportsEffectiveDateHelper =>
+      'Allow transactions to have a future effective date';
+
+  @override
+  String get accountsEditSupportsInstallments => 'Supports Installments';
+
+  @override
+  String get accountsEditSupportsInstallmentsHelper =>
+      'Allow expense transactions to be split into multiple installments';
+
+  @override
   String get categoriesDetailsId => 'ID';
 
   @override

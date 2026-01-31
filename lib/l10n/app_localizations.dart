@@ -813,6 +813,30 @@ abstract class AppL10n {
   /// **'Icon Color'**
   String get accountsEditIconColor;
 
+  /// Label for supports effective date toggle in edit dialog
+  ///
+  /// In en, this message translates to:
+  /// **'Supports Effective Date'**
+  String get accountsEditSupportsEffectiveDate;
+
+  /// Helper text explaining effective date support
+  ///
+  /// In en, this message translates to:
+  /// **'Allow transactions to have a future effective date'**
+  String get accountsEditSupportsEffectiveDateHelper;
+
+  /// Label for supports installments toggle in edit dialog
+  ///
+  /// In en, this message translates to:
+  /// **'Supports Installments'**
+  String get accountsEditSupportsInstallments;
+
+  /// Helper text explaining installments support
+  ///
+  /// In en, this message translates to:
+  /// **'Allow expense transactions to be split into multiple installments'**
+  String get accountsEditSupportsInstallmentsHelper;
+
   /// Label for category ID field
   ///
   /// In en, this message translates to:

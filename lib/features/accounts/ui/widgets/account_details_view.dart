@@ -94,6 +94,16 @@ class AccountDetailsView extends StatelessWidget {
               label: l10n.accountsDetailsLastUsed,
               value: account.lastUsed?.format() ?? l10n.never,
             ),
+            _buildInfoRow(
+              context,
+              label: l10n.accountsEditSupportsEffectiveDate,
+              value: account.supportsEffectiveDate ? l10n.yes : l10n.no,
+            ),
+            _buildInfoRow(
+              context,
+              label: l10n.accountsEditSupportsInstallments,
+              value: account.supportsInstallments ? l10n.yes : l10n.no,
+            ),
           ],
         ),
       ],

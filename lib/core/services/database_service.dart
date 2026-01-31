@@ -6,7 +6,7 @@ import '../utils/os.dart';
 /// Service for managing the SQLite database
 class DatabaseService {
   static const String _databaseName = 'plata_sync.db';
-  static const int _databaseVersion = 1;
+  static const int _databaseVersion = 2;
 
   Database? _database;
   DatabaseService() {
@@ -69,7 +69,9 @@ class DatabaseService {
         last_used INTEGER,
         description TEXT,
         balance INTEGER NOT NULL DEFAULT 0,
-        enabled INTEGER NOT NULL DEFAULT 1
+        enabled INTEGER NOT NULL DEFAULT 1,
+        supports_effective_date INTEGER NOT NULL DEFAULT 0,
+        supports_installments INTEGER NOT NULL DEFAULT 0
       )
     ''');
 
@@ -125,7 +127,15 @@ class DatabaseService {
 
   /// Handle database upgrades
   Future<void> _onUpgrade(Database db, int oldVersion, int newVersion) async {
-    // No migrations yet - app has not been released
+    if (oldVersion < 2) {
+      // Migration from version 1 to 2: Add supports_effective_date and supports_installments columns
+      await db.execute(
+        'ALTER TABLE accounts ADD COLUMN supports_effective_date INTEGER NOT NULL DEFAULT 0',
+      );
+      await db.execute(
+        'ALTER TABLE accounts ADD COLUMN supports_installments INTEGER NOT NULL DEFAULT 0',
+      );
+    }
   }
 
   /// Close the database

@@ -11,6 +11,10 @@ class Account extends Equatable {
   final String? description;
   final int balance; // Balance in cents
   final bool enabled; // Whether the account is enabled (defaults to true)
+  final bool
+  supportsEffectiveDate; // Whether the account supports effective dates for transactions
+  final bool
+  supportsInstallments; // Whether the account supports installment payments
 
   const Account({
     required this.id,
@@ -21,6 +25,8 @@ class Account extends Equatable {
     this.lastUsed,
     this.description,
     this.enabled = true,
+    this.supportsEffectiveDate = false,
+    this.supportsInstallments = false,
   });
 
   Map<String, dynamic> toJson() {
@@ -33,6 +39,8 @@ class Account extends Equatable {
       'description': description,
       'balance': balance,
       'enabled': enabled,
+      'supports_effective_date': supportsEffectiveDate,
+      'supports_installments': supportsInstallments,
     };
   }
 
@@ -50,6 +58,8 @@ class Account extends Equatable {
       description: json['description'] as String?,
       balance: json['balance'] as int,
       enabled: json['enabled'] as bool? ?? true,
+      supportsEffectiveDate: json['supports_effective_date'] as bool? ?? false,
+      supportsInstallments: json['supports_installments'] as bool? ?? false,
     );
   }
 
@@ -61,6 +71,8 @@ class Account extends Equatable {
     this.description,
     this.balance = 0,
     this.enabled = true,
+    this.supportsEffectiveDate = false,
+    this.supportsInstallments = false,
   }) : id = id ?? randomId(),
        createdAt = createdAt ?? DateTime.now(),
        lastUsed = null;
@@ -74,6 +86,8 @@ class Account extends Equatable {
     DateTime? lastUsed,
     int? balance,
     bool? enabled,
+    bool? supportsEffectiveDate,
+    bool? supportsInstallments,
   }) {
     return Account(
       id: id ?? this.id,
@@ -84,6 +98,9 @@ class Account extends Equatable {
       lastUsed: lastUsed ?? this.lastUsed,
       balance: balance ?? this.balance,
       enabled: enabled ?? this.enabled,
+      supportsEffectiveDate:
+          supportsEffectiveDate ?? this.supportsEffectiveDate,
+      supportsInstallments: supportsInstallments ?? this.supportsInstallments,
     );
   }
 

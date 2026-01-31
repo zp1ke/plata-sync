@@ -37,6 +37,8 @@ class AccountEditFormState extends State<AccountEditForm> {
   late final TextEditingController descriptionController;
   late final TextEditingController balanceController;
   late ObjectIconData iconData;
+  late bool supportsEffectiveDate;
+  late bool supportsInstallments;
   final formKey = GlobalKey<FormState>();
   bool isFormValid = false;
 
@@ -58,6 +60,8 @@ class AccountEditFormState extends State<AccountEditForm> {
           backgroundColorHex: 'E3F2FD',
           iconColorHex: '2196F3',
         );
+    supportsEffectiveDate = widget.account?.supportsEffectiveDate ?? false;
+    supportsInstallments = widget.account?.supportsInstallments ?? false;
 
     nameController.addListener(_validateForm);
     balanceController.addListener(_validateForm);
@@ -135,6 +139,30 @@ class AccountEditFormState extends State<AccountEditForm> {
                 });
               },
             ),
+            // Supports Effective Date
+            SwitchListTile(
+              value: supportsEffectiveDate,
+              onChanged: (value) {
+                setState(() {
+                  supportsEffectiveDate = value;
+                });
+              },
+              title: Text(l10n.accountsEditSupportsEffectiveDate),
+              subtitle: Text(l10n.accountsEditSupportsEffectiveDateHelper),
+              contentPadding: EdgeInsets.zero,
+            ),
+            // Supports Installments
+            SwitchListTile(
+              value: supportsInstallments,
+              onChanged: (value) {
+                setState(() {
+                  supportsInstallments = value;
+                });
+              },
+              title: Text(l10n.accountsEditSupportsInstallments),
+              subtitle: Text(l10n.accountsEditSupportsInstallmentsHelper),
+              contentPadding: EdgeInsets.zero,
+            ),
             // Actions (optional - for inline use)
             if (widget.showActions)
               Row(
@@ -172,6 +200,8 @@ class AccountEditFormState extends State<AccountEditForm> {
                   ? null
                   : descriptionController.text.trim(),
               iconData: iconData,
+              supportsEffectiveDate: supportsEffectiveDate,
+              supportsInstallments: supportsInstallments,
             )
           : Account.create(
               name: nameController.text.trim(),
@@ -180,6 +210,8 @@ class AccountEditFormState extends State<AccountEditForm> {
                   : descriptionController.text.trim(),
               iconData: iconData,
               balance: balanceInCents,
+              supportsEffectiveDate: supportsEffectiveDate,
+              supportsInstallments: supportsInstallments,
             );
       widget.onSave(account);
     }

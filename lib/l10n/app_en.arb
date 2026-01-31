@@ -556,6 +556,22 @@
   "@accountsEditIconColor": {
     "description": "Label for icon color field in edit dialog"
   },
+  "accountsEditSupportsEffectiveDate": "Supports Effective Date",
+  "@accountsEditSupportsEffectiveDate": {
+    "description": "Label for supports effective date toggle in edit dialog"
+  },
+  "accountsEditSupportsEffectiveDateHelper": "Allow transactions to have a future effective date",
+  "@accountsEditSupportsEffectiveDateHelper": {
+    "description": "Helper text explaining effective date support"
+  },
+  "accountsEditSupportsInstallments": "Supports Installments",
+  "@accountsEditSupportsInstallments": {
+    "description": "Label for supports installments toggle in edit dialog"
+  },
+  "accountsEditSupportsInstallmentsHelper": "Allow expense transactions to be split into multiple installments",
+  "@accountsEditSupportsInstallmentsHelper": {
+    "description": "Helper text explaining installments support"
+  },
   "categoriesDetailsId": "ID",
   "@categoriesDetailsId": {
     "description": "Label for category ID field"
