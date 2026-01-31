@@ -94,15 +94,15 @@ class AccountDetailsView extends StatelessWidget {
               label: l10n.accountsDetailsLastUsed,
               value: account.lastUsed?.format() ?? l10n.never,
             ),
-            _buildInfoRow(
+            _buildBoolInfoRow(
               context,
               label: l10n.accountsEditSupportsEffectiveDate,
-              value: account.supportsEffectiveDate ? l10n.yes : l10n.no,
+              value: account.supportsEffectiveDate,
             ),
-            _buildInfoRow(
+            _buildBoolInfoRow(
               context,
               label: l10n.accountsEditSupportsInstallments,
-              value: account.supportsInstallments ? l10n.yes : l10n.no,
+              value: account.supportsInstallments,
             ),
           ],
         ),
@@ -136,7 +136,7 @@ class AccountDetailsView extends StatelessWidget {
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         SizedBox(
-          width: 100,
+          width: AppSizing.boxWidthSm,
           child: Text(
             label,
             style: Theme.of(context).textTheme.bodySmall?.copyWith(
@@ -146,6 +146,49 @@ class AccountDetailsView extends StatelessWidget {
         ),
         Expanded(
           child: Text(value, style: Theme.of(context).textTheme.bodySmall),
+        ),
+      ],
+    );
+  }
+
+  Widget _buildBoolInfoRow(
+    BuildContext context, {
+    required String label,
+    required bool value,
+  }) {
+    final l10n = AppL10n.of(context);
+    final color = value
+        ? Theme.of(context).colorScheme.income
+        : Theme.of(context).colorScheme.expense;
+
+    return Row(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        SizedBox(
+          width: AppSizing.boxWidthSm,
+          child: Text(
+            label,
+            style: Theme.of(context).textTheme.bodySmall?.copyWith(
+              color: Theme.of(context).colorScheme.onSurfaceVariant,
+            ),
+          ),
+        ),
+        Expanded(
+          child: Row(
+            spacing: AppSpacing.xs,
+            children: [
+              if (value)
+                AppIcons.checkCircle(color: color, size: AppSizing.iconXs)
+              else
+                AppIcons.errorCircle(color: color, size: AppSizing.iconXs),
+              Text(
+                value ? l10n.yes : l10n.no,
+                style: Theme.of(
+                  context,
+                ).textTheme.bodySmall?.copyWith(color: color),
+              ),
+            ],
+          ),
         ),
       ],
     );
