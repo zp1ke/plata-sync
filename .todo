@@ -13,7 +13,6 @@
 - [ ] Account edit should allow to disable account. Disabled accounts will show last in list and won't show in selectors for transactions.
 
 # Categories
-- [ ] Detail view will show if category is enabled or not.
 - [ ] Category edit should allow to disable category. Disabled categories will show last in list and won't show in selectors for transactions.
 
 # Transactions

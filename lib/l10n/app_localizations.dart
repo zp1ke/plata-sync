@@ -867,6 +867,12 @@ abstract class AppL10n {
   /// **'Icon Color'**
   String get categoriesDetailsIconColor;
 
+  /// Label for category enabled status field
+  ///
+  /// In en, this message translates to:
+  /// **'Enabled'**
+  String get categoriesDetailsEnabled;
+
   /// Label for copy action
   ///
   /// In en, this message translates to:

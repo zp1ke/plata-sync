@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import '../../../../core/ui/resources/app_colors.dart';
 import '../../../../core/ui/resources/app_icons.dart';
 import '../../../../core/ui/resources/app_sizing.dart';
 import '../../../../core/ui/resources/app_spacing.dart';
@@ -86,6 +87,11 @@ class CategoryDetailsView extends StatelessWidget {
               label: l10n.categoriesDetailsLastUsed,
               value: category.lastUsed?.format() ?? l10n.never,
             ),
+            _buildBoolInfoRow(
+              context,
+              label: l10n.categoriesDetailsEnabled,
+              value: category.enabled,
+            ),
           ],
         ),
       ],
@@ -128,6 +134,49 @@ class CategoryDetailsView extends StatelessWidget {
         ),
         Expanded(
           child: Text(value, style: Theme.of(context).textTheme.bodyMedium),
+        ),
+      ],
+    );
+  }
+
+  Widget _buildBoolInfoRow(
+    BuildContext context, {
+    required String label,
+    required bool value,
+  }) {
+    final l10n = AppL10n.of(context);
+    final color = value
+        ? Theme.of(context).colorScheme.income
+        : Theme.of(context).colorScheme.expense;
+
+    return Row(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        SizedBox(
+          width: AppSizing.boxWidthSm,
+          child: Text(
+            label,
+            style: Theme.of(context).textTheme.bodySmall?.copyWith(
+              color: Theme.of(context).colorScheme.onSurfaceVariant,
+            ),
+          ),
+        ),
+        Expanded(
+          child: Row(
+            spacing: AppSpacing.xs,
+            children: [
+              if (value)
+                AppIcons.checkCircle(color: color, size: AppSizing.iconXs)
+              else
+                AppIcons.errorCircle(color: color, size: AppSizing.iconXs),
+              Text(
+                value ? l10n.yes : l10n.no,
+                style: Theme.of(
+                  context,
+                ).textTheme.bodySmall?.copyWith(color: color),
+              ),
+            ],
+          ),
         ),
       ],
     );

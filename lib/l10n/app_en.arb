@@ -592,6 +592,10 @@
   "@categoriesDetailsIconColor": {
     "description": "Label for category icon color field"
   },
+  "categoriesDetailsEnabled": "Enabled",
+  "@categoriesDetailsEnabled": {
+    "description": "Label for category enabled status field"
+  },
   "copy": "Copy",
   "@copy": {
     "description": "Label for copy action"

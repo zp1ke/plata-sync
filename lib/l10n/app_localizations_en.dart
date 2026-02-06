@@ -440,6 +440,9 @@ class AppL10nEn extends AppL10n {
   String get categoriesDetailsIconColor => 'Icon Color';
 
   @override
+  String get categoriesDetailsEnabled => 'Enabled';
+
+  @override
   String get copy => 'Copy';
 
   @override
