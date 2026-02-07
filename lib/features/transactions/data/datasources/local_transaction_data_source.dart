@@ -27,6 +27,7 @@ class LocalTransactionDataSource extends TransactionDataSource {
       'tag_ids': transaction.tagIds.isEmpty
           ? null
           : transaction.tagIds.join(','),
+      'effective_date': transaction.effectiveDate?.millisecondsSinceEpoch,
     };
   }
 
@@ -48,6 +49,9 @@ class LocalTransactionDataSource extends TransactionDataSource {
       targetAccountBalanceBefore: map['target_account_balance_before'] as int?,
       notes: map['notes'] as String?,
       tagIds: tagIds,
+      effectiveDate: map['effective_date'] != null
+          ? DateTime.fromMillisecondsSinceEpoch(map['effective_date'] as int)
+          : null,
     );
   }
 

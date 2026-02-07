@@ -955,6 +955,10 @@
   "@transactionDateLabel": {
     "description": "Label for transaction date field"
   },
+  "transactionEffectiveDateLabel": "Effective Date",
+  "@transactionEffectiveDateLabel": {
+    "description": "Label for transaction effective date field"
+  },
   "transactionDateFormat": "{date}",
   "@transactionDateFormat": {
     "description": "Format for displaying transaction date",

@@ -695,6 +695,9 @@ class AppL10nEn extends AppL10n {
   String get transactionDateLabel => 'Date';
 
   @override
+  String get transactionEffectiveDateLabel => 'Effective Date';
+
+  @override
   String transactionDateFormat(DateTime date) {
     final intl.DateFormat dateDateFormat = intl.DateFormat.yMMMd(localeName);
     final String dateString = dateDateFormat.format(date);

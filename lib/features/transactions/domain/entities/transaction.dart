@@ -12,6 +12,7 @@ class Transaction extends Equatable {
   final int? targetAccountBalanceBefore;
   final String? notes;
   final List<String> tagIds;
+  final DateTime? effectiveDate;
 
   const Transaction({
     required this.id,
@@ -24,6 +25,7 @@ class Transaction extends Equatable {
     this.targetAccountBalanceBefore,
     this.notes,
     this.tagIds = const [],
+    this.effectiveDate,
   });
 
   Map<String, dynamic> toJson() {
@@ -38,6 +40,7 @@ class Transaction extends Equatable {
       'target_account_balance_before': targetAccountBalanceBefore,
       'notes': notes,
       'tag_ids': tagIds,
+      'effective_date': effectiveDate?.toIso8601String(),
     };
   }
 
@@ -53,6 +56,9 @@ class Transaction extends Equatable {
       targetAccountBalanceBefore: json['target_account_balance_before'] as int?,
       notes: json['notes'] as String?,
       tagIds: (json['tag_ids'] as List<dynamic>?)?.cast<String>() ?? [],
+      effectiveDate: json['effective_date'] != null
+          ? DateTime.parse(json['effective_date'] as String)
+          : null,
     );
   }
 
@@ -67,6 +73,7 @@ class Transaction extends Equatable {
     this.targetAccountBalanceBefore,
     this.notes,
     this.tagIds = const [],
+    this.effectiveDate,
   }) : id = id ?? randomId(),
        createdAt = createdAt ?? DateTime.now();
 
@@ -81,6 +88,7 @@ class Transaction extends Equatable {
     int? targetAccountBalanceBefore,
     String? notes,
     List<String>? tagIds,
+    DateTime? effectiveDate,
   }) {
     return Transaction(
       id: id ?? this.id,
@@ -94,6 +102,7 @@ class Transaction extends Equatable {
           targetAccountBalanceBefore ?? this.targetAccountBalanceBefore,
       notes: notes ?? this.notes,
       tagIds: tagIds ?? this.tagIds,
+      effectiveDate: effectiveDate ?? this.effectiveDate,
     );
   }
 

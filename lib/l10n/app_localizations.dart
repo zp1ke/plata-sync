@@ -1335,6 +1335,12 @@ abstract class AppL10n {
   /// **'Date'**
   String get transactionDateLabel;
 
+  /// Label for transaction effective date field
+  ///
+  /// In en, this message translates to:
+  /// **'Effective Date'**
+  String get transactionEffectiveDateLabel;
+
   /// Format for displaying transaction date
   ///
   /// In en, this message translates to:

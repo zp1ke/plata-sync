@@ -6,7 +6,7 @@ import '../utils/os.dart';
 /// Service for managing the SQLite database
 class DatabaseService {
   static const String _databaseName = 'plata_sync.db';
-  static const int _databaseVersion = 2;
+  static const int _databaseVersion = 3;
 
   Database? _database;
   DatabaseService() {
@@ -87,6 +87,7 @@ class DatabaseService {
         target_account_balance_before INTEGER,
         notes TEXT,
         tag_ids TEXT,
+        effective_date INTEGER,
         FOREIGN KEY (account_id) REFERENCES accounts(id) ON DELETE CASCADE,
         FOREIGN KEY (category_id) REFERENCES categories(id) ON DELETE SET NULL,
         FOREIGN KEY (target_account_id) REFERENCES accounts(id) ON DELETE CASCADE
@@ -134,6 +135,12 @@ class DatabaseService {
       );
       await db.execute(
         'ALTER TABLE accounts ADD COLUMN supports_installments INTEGER NOT NULL DEFAULT 0',
+      );
+    }
+    if (oldVersion < 3) {
+      // Migration from version 2 to 3: Add effective_date column to transactions
+      await db.execute(
+        'ALTER TABLE transactions ADD COLUMN effective_date INTEGER',
       );
     }
   }

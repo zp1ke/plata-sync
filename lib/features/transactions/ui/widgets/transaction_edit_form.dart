@@ -5,9 +5,11 @@ import '../../../../core/ui/widgets/snack_alert.dart';
 import '../../../../core/ui/resources/app_sizing.dart';
 import '../../../../core/ui/resources/app_spacing.dart';
 import '../../../../core/ui/widgets/currency_input_field.dart';
+import '../../../../core/ui/widgets/date_picker_field.dart';
 import '../../../../core/ui/widgets/date_time_picker_field.dart';
 import '../../../../core/ui/widgets/description_input.dart';
 import '../../../accounts/application/accounts_manager.dart';
+import '../../../accounts/domain/entities/account.dart';
 import '../../../tags/application/tags_manager.dart';
 import '../../../tags/domain/entities/tag.dart';
 import '../../domain/entities/transaction.dart';
@@ -49,7 +51,9 @@ class TransactionEditFormState extends State<TransactionEditForm> {
   late String? _categoryId;
   late String? _targetAccountId;
   late DateTime _createdAt;
+  late DateTime? _effectiveDate;
   List<Tag> _selectedTags = [];
+  Account? _selectedAccount;
   bool isFormValid = false;
   bool _isSaving = false;
 
@@ -63,11 +67,13 @@ class TransactionEditFormState extends State<TransactionEditForm> {
       _categoryId = transaction.categoryId;
       _targetAccountId = transaction.targetAccountId;
       _createdAt = transaction.createdAt;
+      _effectiveDate = transaction.effectiveDate;
       _amountController.text = (transaction.amount.abs() / 100).toStringAsFixed(
         2,
       );
       _notesController.text = transaction.notes ?? '';
       _loadExistingTags(transaction.tagIds);
+      _loadAccount(transaction.accountId);
 
       if (transaction.isTransfer) {
         _type = TransactionType.transfer;
@@ -82,6 +88,7 @@ class TransactionEditFormState extends State<TransactionEditForm> {
       _categoryId = null;
       _targetAccountId = null;
       _createdAt = DateTime.now();
+      _effectiveDate = null;
       _selectedTags = [];
     }
 
@@ -96,6 +103,25 @@ class TransactionEditFormState extends State<TransactionEditForm> {
     setState(() {
       _selectedTags = tags;
     });
+  }
+
+  Future<void> _loadAccount(String accountId) async {
+    final accountsManager = getService<AccountsManager>();
+    final account = await accountsManager.getAccountById(accountId);
+    if (mounted) {
+      setState(() {
+        _selectedAccount = account;
+        // Set effective date to today if account supports it and no effective date is set
+        if (_selectedAccount?.supportsEffectiveDate == true &&
+            _effectiveDate == null) {
+          _effectiveDate = DateTime(
+            DateTime.now().year,
+            DateTime.now().month,
+            DateTime.now().day,
+          );
+        }
+      });
+    }
   }
 
   @override
@@ -162,6 +188,7 @@ class TransactionEditFormState extends State<TransactionEditForm> {
             ? null
             : _notesController.text.trim(),
         tagIds: tagIds,
+        effectiveDate: _effectiveDate,
       );
 
       widget.onSave(transaction);
@@ -238,6 +265,23 @@ class TransactionEditFormState extends State<TransactionEditForm> {
                 ),
               ),
 
+              // Effective Date field (only for expenses if account supports it)
+              if (_type == TransactionType.expense &&
+                  _selectedAccount?.supportsEffectiveDate == true &&
+                  _effectiveDate != null)
+                ConstrainedBox(
+                  constraints: BoxConstraints(maxWidth: AppSizing.inputWidthSm),
+                  child: DatePickerField(
+                    date: _effectiveDate!,
+                    label: l10n.transactionEffectiveDateLabel,
+                    onChanged: (DateTime newDate) {
+                      setState(() {
+                        _effectiveDate = newDate;
+                      });
+                    },
+                  ),
+                ),
+
               Wrap(
                 alignment: WrapAlignment.end,
                 spacing: AppSpacing.md,
@@ -260,6 +304,7 @@ class TransactionEditFormState extends State<TransactionEditForm> {
                           _accountId = accountId;
                           _validateForm();
                         });
+                        _loadAccount(accountId);
                       },
                       validator: (accountId) {
                         if (accountId == null || accountId.isEmpty) {
