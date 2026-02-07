@@ -12,9 +12,6 @@
 - [ ] Detail view will show if account is enabled or not.
 - [ ] Account edit should allow to disable account. Disabled accounts will show last in list and won't show in selectors for transactions.
 
-# Categories
-- [ ] Category edit should allow to disable category. Disabled categories will show last in list and won't show in selectors for transactions.
-
 # Transactions
 - [ ] expenses - If selected account allows effective dates for transactions, shows a select date for this value (default now, no time, just date).
 - [ ] create/edit expense - If selected account allows multiple installments, shows option for number of installments (default 1). This will create multiple transactions linked.

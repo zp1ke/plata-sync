@@ -82,16 +82,17 @@ class CategorySelector extends StatelessWidget {
 
   /// Filter categories based on the transaction type
   List<Category> _filterCategoriesByType(List<Category> categories) {
+    final enabledCategories = categories.where((category) => category.enabled);
     if (transactionType == null ||
         transactionType == TransactionType.transfer) {
-      return categories;
+      return enabledCategories.toList();
     }
 
     final categoryType = transactionType == TransactionType.income
         ? CategoryTransactionType.income
         : CategoryTransactionType.expense;
 
-    return categories.where((category) {
+    return enabledCategories.where((category) {
       // Include categories with null transactionType (available for all types)
       // or categories that match the current transaction type
       return category.transactionType == null ||

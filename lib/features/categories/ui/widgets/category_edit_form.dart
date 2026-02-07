@@ -37,6 +37,7 @@ class CategoryEditFormState extends State<CategoryEditForm> {
   late final TextEditingController descriptionController;
   late ObjectIconData iconData;
   late CategoryTransactionType? transactionType;
+  late bool enabled;
   final formKey = GlobalKey<FormState>();
   bool isFormValid = false;
 
@@ -55,6 +56,7 @@ class CategoryEditFormState extends State<CategoryEditForm> {
           iconColorHex: '2196F3',
         );
     transactionType = widget.category?.transactionType;
+    enabled = widget.category?.enabled ?? true;
 
     nameController.addListener(_validateForm);
     // Validate initial state
@@ -152,6 +154,17 @@ class CategoryEditFormState extends State<CategoryEditForm> {
                     ),
                   ],
                 ),
+                SwitchListTile(
+                  value: enabled,
+                  onChanged: (value) {
+                    setState(() {
+                      enabled = value;
+                    });
+                  },
+                  title: Text(l10n.categoriesEditEnabled),
+                  subtitle: Text(l10n.categoriesEditEnabledHelper),
+                  contentPadding: EdgeInsets.zero,
+                ),
                 // Actions (optional - for inline use)
                 if (widget.showActions)
                   Row(
@@ -187,6 +200,7 @@ class CategoryEditFormState extends State<CategoryEditForm> {
                   : descriptionController.text.trim(),
               iconData: iconData,
               transactionType: transactionType,
+              enabled: enabled,
             )
           : Category.create(
               name: nameController.text.trim(),
@@ -195,6 +209,7 @@ class CategoryEditFormState extends State<CategoryEditForm> {
                   : descriptionController.text.trim(),
               iconData: iconData,
               transactionType: transactionType,
+              enabled: enabled,
             );
       widget.onSave(category);
     }

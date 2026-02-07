@@ -735,6 +735,14 @@
   "@categoriesEditTransactionTypeHelper": {
     "description": "Helper text for transaction type field"
   },
+  "categoriesEditEnabled": "Enabled",
+  "@categoriesEditEnabled": {
+    "description": "Label for category enabled switch in edit dialog"
+  },
+  "categoriesEditEnabledHelper": "Disabled categories appear last and won't show in selectors.",
+  "@categoriesEditEnabledHelper": {
+    "description": "Helper text for category enabled switch"
+  },
   "categoryTransactionTypeIncome": "Income",
   "@categoryTransactionTypeIncome": {
     "description": "Label for income transaction type in category form"

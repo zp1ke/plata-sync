@@ -1035,6 +1035,18 @@ abstract class AppL10n {
   /// **'Leave \'Any\' to allow for both \'Income\' and \'Expense\''**
   String get categoriesEditTransactionTypeHelper;
 
+  /// Label for category enabled switch in edit dialog
+  ///
+  /// In en, this message translates to:
+  /// **'Enabled'**
+  String get categoriesEditEnabled;
+
+  /// Helper text for category enabled switch
+  ///
+  /// In en, this message translates to:
+  /// **'Disabled categories appear last and won\'t show in selectors.'**
+  String get categoriesEditEnabledHelper;
+
   /// Label for income transaction type in category form
   ///
   /// In en, this message translates to:

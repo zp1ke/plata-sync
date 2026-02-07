@@ -535,6 +535,13 @@ class AppL10nEn extends AppL10n {
       'Leave \'Any\' to allow for both \'Income\' and \'Expense\'';
 
   @override
+  String get categoriesEditEnabled => 'Enabled';
+
+  @override
+  String get categoriesEditEnabledHelper =>
+      'Disabled categories appear last and won\'t show in selectors.';
+
+  @override
   String get categoryTransactionTypeIncome => 'Income';
 
   @override

@@ -107,6 +107,8 @@ class CategoriesManager {
         filter['name'] = filterQuery;
       }
 
+      filter['includeDisabled'] = true;
+
       if (currentTransactionTypeFilter.value != null) {
         filter['transactionType'] = currentTransactionTypeFilter.value!.name;
       }
