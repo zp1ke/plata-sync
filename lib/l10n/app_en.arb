@@ -500,6 +500,10 @@
   "@accountsDetailsLastUsed": {
     "description": "Label for account last used field"
   },
+  "accountsDetailsEnabled": "Enabled",
+  "@accountsDetailsEnabled": {
+    "description": "Label for account enabled status field"
+  },
   "accountsViewTransactions": "View Transactions",
   "@accountsViewTransactions": {
     "description": "Action to view transactions filtered by account"

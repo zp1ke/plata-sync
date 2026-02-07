@@ -729,6 +729,12 @@ abstract class AppL10n {
   /// **'Last Used'**
   String get accountsDetailsLastUsed;
 
+  /// Label for account enabled status field
+  ///
+  /// In en, this message translates to:
+  /// **'Enabled'**
+  String get accountsDetailsEnabled;
+
   /// Action to view transactions filtered by account
   ///
   /// In en, this message translates to:

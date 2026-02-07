@@ -96,6 +96,11 @@ class AccountDetailsView extends StatelessWidget {
             ),
             _buildBoolInfoRow(
               context,
+              label: l10n.accountsDetailsEnabled,
+              value: account.enabled,
+            ),
+            _buildBoolInfoRow(
+              context,
               label: l10n.accountsEditSupportsEffectiveDate,
               value: account.supportsEffectiveDate,
             ),
