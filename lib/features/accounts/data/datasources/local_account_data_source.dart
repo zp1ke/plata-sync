@@ -124,14 +124,15 @@ class LocalAccountDataSource extends AccountDataSource {
     if (sort != null) {
       final direction = sort.ascending ? 'ASC' : 'DESC';
       if (sort.field == 'name') {
-        orderBy = 'name $direction';
+        orderBy = 'enabled DESC, name $direction';
       } else if (sort.field == 'lastUsed') {
         // Sort nulls last, then by last_used or created_at
         orderBy =
+            'enabled DESC, '
             'CASE WHEN last_used IS NULL THEN 1 ELSE 0 END, '
             'COALESCE(last_used, created_at) $direction';
       } else if (sort.field == 'balance') {
-        orderBy = 'balance $direction';
+        orderBy = 'enabled DESC, balance $direction';
       }
     }
 

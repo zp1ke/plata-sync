@@ -576,6 +576,14 @@
   "@accountsEditSupportsInstallmentsHelper": {
     "description": "Helper text explaining installments support"
   },
+  "accountsEditEnabled": "Enabled",
+  "@accountsEditEnabled": {
+    "description": "Label for account enabled switch in edit dialog"
+  },
+  "accountsEditEnabledHelper": "Disabled accounts appear last and won't show in selectors.",
+  "@accountsEditEnabledHelper": {
+    "description": "Helper text for account enabled switch"
+  },
   "categoriesDetailsId": "ID",
   "@categoriesDetailsId": {
     "description": "Label for category ID field"

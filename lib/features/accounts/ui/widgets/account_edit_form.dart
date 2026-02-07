@@ -39,6 +39,7 @@ class AccountEditFormState extends State<AccountEditForm> {
   late ObjectIconData iconData;
   late bool supportsEffectiveDate;
   late bool supportsInstallments;
+  late bool enabled;
   final formKey = GlobalKey<FormState>();
   bool isFormValid = false;
 
@@ -62,6 +63,7 @@ class AccountEditFormState extends State<AccountEditForm> {
         );
     supportsEffectiveDate = widget.account?.supportsEffectiveDate ?? false;
     supportsInstallments = widget.account?.supportsInstallments ?? false;
+    enabled = widget.account?.enabled ?? true;
 
     nameController.addListener(_validateForm);
     balanceController.addListener(_validateForm);
@@ -163,6 +165,18 @@ class AccountEditFormState extends State<AccountEditForm> {
               subtitle: Text(l10n.accountsEditSupportsInstallmentsHelper),
               contentPadding: EdgeInsets.zero,
             ),
+            // Enabled
+            SwitchListTile(
+              value: enabled,
+              onChanged: (value) {
+                setState(() {
+                  enabled = value;
+                });
+              },
+              title: Text(l10n.accountsEditEnabled),
+              subtitle: Text(l10n.accountsEditEnabledHelper),
+              contentPadding: EdgeInsets.zero,
+            ),
             // Actions (optional - for inline use)
             if (widget.showActions)
               Row(
@@ -202,6 +216,7 @@ class AccountEditFormState extends State<AccountEditForm> {
               iconData: iconData,
               supportsEffectiveDate: supportsEffectiveDate,
               supportsInstallments: supportsInstallments,
+              enabled: enabled,
             )
           : Account.create(
               name: nameController.text.trim(),
@@ -212,6 +227,7 @@ class AccountEditFormState extends State<AccountEditForm> {
               balance: balanceInCents,
               supportsEffectiveDate: supportsEffectiveDate,
               supportsInstallments: supportsInstallments,
+              enabled: enabled,
             );
       widget.onSave(account);
     }

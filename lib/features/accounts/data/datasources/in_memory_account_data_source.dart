@@ -73,6 +73,14 @@ class InMemoryAccountDataSource extends AccountDataSource {
 
     if (sort != null) {
       items.sort((a, b) {
+        final enabledComparison = a.enabled == b.enabled
+            ? 0
+            : a.enabled
+            ? -1
+            : 1;
+        if (enabledComparison != 0) {
+          return enabledComparison;
+        }
         int comparison = 0;
         if (sort.field == 'name') {
           comparison = a.name.compareTo(b.name);

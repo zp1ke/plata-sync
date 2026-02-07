@@ -109,8 +109,16 @@ class AccountsManager {
     }
     try {
       final filterQuery = query ?? currentQuery.value;
+      final filter = <String, dynamic>{};
+
+      if (filterQuery.isNotEmpty) {
+        filter['name'] = filterQuery;
+      }
+
+      filter['includeDisabled'] = true;
+
       accounts.value = await _dataSource.getAll(
-        filter: filterQuery.isNotEmpty ? {'name': filterQuery} : null,
+        filter: filter.isNotEmpty ? filter : null,
         sort: sortOrder.value.sortParam(),
       );
     } catch (e) {

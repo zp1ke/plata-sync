@@ -428,6 +428,13 @@ class AppL10nEn extends AppL10n {
       'Allow expense transactions to be split into multiple installments';
 
   @override
+  String get accountsEditEnabled => 'Enabled';
+
+  @override
+  String get accountsEditEnabledHelper =>
+      'Disabled accounts appear last and won\'t show in selectors.';
+
+  @override
   String get categoriesDetailsId => 'ID';
 
   @override

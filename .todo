@@ -9,7 +9,6 @@
 
 # Accounts
 - [ ] App will check once a day all expenses transactions with effective date (not created, just effective) not checked and reached; and update associated accounts balances. This will be done by saving last effective date checked, so app just perform this calculations at most once a day on user opening the app.
-- [ ] Account edit should allow to disable account. Disabled accounts will show last in list and won't show in selectors for transactions.
 
 # Transactions
 - [ ] expenses - If selected account allows effective dates for transactions, shows a select date for this value (default now, no time, just date).

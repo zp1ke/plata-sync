@@ -843,6 +843,18 @@ abstract class AppL10n {
   /// **'Allow expense transactions to be split into multiple installments'**
   String get accountsEditSupportsInstallmentsHelper;
 
+  /// Label for account enabled switch in edit dialog
+  ///
+  /// In en, this message translates to:
+  /// **'Enabled'**
+  String get accountsEditEnabled;
+
+  /// Helper text for account enabled switch
+  ///
+  /// In en, this message translates to:
+  /// **'Disabled accounts appear last and won\'t show in selectors.'**
+  String get accountsEditEnabledHelper;
+
   /// Label for category ID field
   ///
   /// In en, this message translates to:
