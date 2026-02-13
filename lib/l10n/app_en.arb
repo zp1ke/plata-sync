@@ -1318,5 +1318,38 @@
   "fieldRequired": "Required",
   "@fieldRequired": {
     "description": "Short required field message"
+  },
+  "transactionInstallmentsLabel": "Number of Installments",
+  "@transactionInstallmentsLabel": {
+    "description": "Label for transaction installments field"
+  },
+  "transactionInstallmentsHelper": "Split this expense into multiple monthly installments",
+  "@transactionInstallmentsHelper": {
+    "description": "Helper text for installments field"
+  },
+  "transactionIsLinked": "This is part of an installment plan",
+  "@transactionIsLinked": {
+    "description": "Info shown when viewing a transaction that is linked to a parent"
+  },
+  "transactionLinkedToParent": "Linked to parent transaction",
+  "@transactionLinkedToParent": {
+    "description": "Info shown when a transaction is linked"
+  },
+  "transactionHasChildren": "This transaction has {count} linked installments",
+  "@transactionHasChildren": {
+    "description": "Info shown when viewing a parent transaction with linked children",
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "editParentTransactionMessage": "You must edit the parent transaction. Changes will be applied to all installments.",
+  "@editParentTransactionMessage": {
+    "description": "Message shown when trying to edit a linked transaction"
+  },
+  "transactionNotFound": "Transaction not found",
+  "@transactionNotFound": {
+    "description": "Error message when a transaction cannot be found"
   }
 }

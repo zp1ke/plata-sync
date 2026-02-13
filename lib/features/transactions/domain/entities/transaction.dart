@@ -135,4 +135,7 @@ class Transaction extends Equatable {
   }
 
   int get effectiveAmount => isTransfer ? amount.abs() : amount;
+
+  /// Returns true if this transaction is linked to a parent transaction
+  bool get isLinkedTransaction => parentTransactionId != null;
 }

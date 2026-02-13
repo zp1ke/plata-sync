@@ -56,6 +56,8 @@ class TransactionEditFormState extends State<TransactionEditForm> {
   Account? _selectedAccount;
   bool isFormValid = false;
   bool _isSaving = false;
+  int _numberOfInstallments = 1;
+  bool _isEditingLinkedTransaction = false;
 
   @override
   void initState() {
@@ -63,6 +65,9 @@ class TransactionEditFormState extends State<TransactionEditForm> {
     final transaction = widget.transaction;
 
     if (transaction != null) {
+      // Check if this transaction is a linked transaction (has a parent)
+      _isEditingLinkedTransaction = transaction.isLinkedTransaction;
+
       _accountId = transaction.accountId;
       _categoryId = transaction.categoryId;
       _targetAccountId = transaction.targetAccountId;
@@ -173,6 +178,7 @@ class TransactionEditFormState extends State<TransactionEditForm> {
         }
       }
 
+      // Create the main transaction
       final transaction = Transaction.create(
         id: widget.transaction?.id,
         createdAt: _createdAt,
@@ -191,7 +197,49 @@ class TransactionEditFormState extends State<TransactionEditForm> {
         effectiveDate: _effectiveDate,
       );
 
-      widget.onSave(transaction);
+      // If creating new transaction with installments > 1, create linked transactions
+      if (widget.transaction == null && _numberOfInstallments > 1) {
+        // For multiple installments, divide the amount
+        final installmentAmount = amount ~/ _numberOfInstallments;
+        final remainder = amount % _numberOfInstallments;
+
+        // Create a list to hold all transactions - first is the parent
+        final List<Transaction> transactionsToCreate = [transaction];
+
+        // Create child transactions
+        for (int i = 1; i < _numberOfInstallments; i++) {
+          final childAmount = i == _numberOfInstallments - 1
+              ? installmentAmount + remainder
+              : installmentAmount;
+
+          // Each month, starting from the next month
+          final childDate = _createdAt.add(Duration(days: 30 * i));
+
+          final childTransaction = Transaction.create(
+            createdAt: childDate,
+            accountId: _accountId!,
+            categoryId: _categoryId,
+            amount: childAmount,
+            accountBalanceBefore: 0,
+            notes: _notesController.text.trim().isEmpty
+                ? null
+                : '${_notesController.text.trim()} (${i + 1}/$_numberOfInstallments)',
+            tagIds: tagIds,
+            parentTransactionId: transaction.id,
+          );
+          transactionsToCreate.add(childTransaction);
+        }
+
+        // Return all transactions to be saved by parent handler
+        // We need to modify onSave callback to handle multiple transactions
+        // For now, we'll pass them one by one, starting with the parent
+        widget.onSave(transaction);
+        for (int i = 1; i < transactionsToCreate.length; i++) {
+          widget.onSave(transactionsToCreate[i]);
+        }
+      } else {
+        widget.onSave(transaction);
+      }
     } finally {
       if (mounted) {
         setState(() => _isSaving = false);
@@ -279,6 +327,78 @@ class TransactionEditFormState extends State<TransactionEditForm> {
                         _effectiveDate = newDate;
                       });
                     },
+                  ),
+                ),
+
+              // Installments field (only for new expenses if account supports it)
+              if (_type == TransactionType.expense &&
+                  _selectedAccount?.supportsInstallments == true &&
+                  widget.transaction == null)
+                ConstrainedBox(
+                  constraints: BoxConstraints(maxWidth: AppSizing.inputWidthSm),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    mainAxisSize: MainAxisSize.min,
+                    spacing: AppSpacing.xs,
+                    children: [
+                      Text(
+                        l10n.transactionInstallmentsLabel,
+                        style: Theme.of(context).textTheme.labelMedium,
+                      ),
+                      SegmentedButton<int>(
+                        segments: List<ButtonSegment<int>>.generate(
+                          12,
+                          (index) => ButtonSegment<int>(
+                            value: index + 1,
+                            label: Text('${index + 1}'),
+                          ),
+                        ),
+                        selected: {_numberOfInstallments},
+                        onSelectionChanged: (Set<int> newSelection) {
+                          setState(() {
+                            _numberOfInstallments = newSelection.first;
+                          });
+                        },
+                        showSelectedIcon: false,
+                      ),
+                      if (_numberOfInstallments > 1)
+                        Text(
+                          l10n.transactionInstallmentsHelper,
+                          style: Theme.of(context).textTheme.labelSmall
+                              ?.copyWith(
+                                color: Theme.of(context).colorScheme.outline,
+                              ),
+                        ),
+                    ],
+                  ),
+                ),
+
+              // Linked transaction info
+              if (_isEditingLinkedTransaction)
+                Container(
+                  padding: AppSpacing.paddingMd,
+                  decoration: BoxDecoration(
+                    color: Theme.of(context).colorScheme.surfaceContainer,
+                    borderRadius: BorderRadius.circular(AppSizing.radiusMd),
+                  ),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    mainAxisSize: MainAxisSize.min,
+                    spacing: AppSpacing.sm,
+                    children: [
+                      Row(
+                        children: [
+                          AppIcons.info,
+                          SizedBox(width: AppSpacing.md),
+                          Expanded(
+                            child: Text(
+                              l10n.editParentTransactionMessage,
+                              style: Theme.of(context).textTheme.bodySmall,
+                            ),
+                          ),
+                        ],
+                      ),
+                    ],
                   ),
                 ),
 

@@ -142,7 +142,17 @@ class _TabletTransactionsScreenState extends State<TabletTransactionsScreen>
                 ? null
                 : (transaction) {
                     setState(() {
-                      selectedTransaction = transaction;
+                      // If this is a linked transaction, select the parent instead
+                      if (transaction.isLinkedTransaction) {
+                        final parentTransaction = transactions
+                            .where(
+                              (t) => t.id == transaction.parentTransactionId,
+                            )
+                            .firstOrNull;
+                        selectedTransaction = parentTransaction ?? transaction;
+                      } else {
+                        selectedTransaction = transaction;
+                      }
                       isEditing = false;
                     });
                   },
@@ -154,7 +164,17 @@ class _TabletTransactionsScreenState extends State<TabletTransactionsScreen>
                 ? null
                 : (transaction) {
                     setState(() {
-                      selectedTransaction = transaction;
+                      // If this is a linked transaction, select the parent instead
+                      if (transaction.isLinkedTransaction) {
+                        final parentTransaction = transactions
+                            .where(
+                              (t) => t.id == transaction.parentTransactionId,
+                            )
+                            .firstOrNull;
+                        selectedTransaction = parentTransaction ?? transaction;
+                      } else {
+                        selectedTransaction = transaction;
+                      }
                       isEditing = false;
                     });
                   },

@@ -14,6 +14,7 @@ import '../../../categories/application/categories_manager.dart';
 import '../../../categories/domain/entities/category.dart';
 import '../../../tags/application/tags_manager.dart';
 import '../../../tags/domain/entities/tag.dart';
+import '../../application/transactions_manager.dart';
 import '../../domain/entities/transaction.dart';
 import '../../../../l10n/app_localizations.dart';
 
@@ -102,6 +103,60 @@ class _TransactionDetailsViewState extends State<TransactionDetailsView> {
             color: typeColor,
           ),
         ),
+        // Linked transaction info
+        if (transaction.isLinkedTransaction)
+          Container(
+            padding: AppSpacing.paddingMd,
+            decoration: BoxDecoration(
+              color: Theme.of(context).colorScheme.surfaceContainer,
+              borderRadius: BorderRadius.circular(AppSizing.radiusMd),
+            ),
+            child: Row(
+              children: [
+                AppIcons.transfer,
+                SizedBox(width: AppSpacing.md),
+                Expanded(
+                  child: Text(
+                    l10n.transactionIsLinked,
+                    style: Theme.of(context).textTheme.bodySmall,
+                  ),
+                ),
+              ],
+            ),
+          ),
+        // Child transactions info (if this is a parent)
+        if (!transaction.isLinkedTransaction)
+          Builder(
+            builder: (context) {
+              final transactionsManager = getService<TransactionsManager>();
+              final childTransactions = transactionsManager.transactions.value
+                  .where((t) => t.parentTransactionId == transaction.id)
+                  .length;
+
+              if (childTransactions > 0) {
+                return Container(
+                  padding: AppSpacing.paddingMd,
+                  decoration: BoxDecoration(
+                    color: Theme.of(context).colorScheme.surfaceContainer,
+                    borderRadius: BorderRadius.circular(AppSizing.radiusMd),
+                  ),
+                  child: Row(
+                    children: [
+                      AppIcons.transfer,
+                      SizedBox(width: AppSpacing.md),
+                      Expanded(
+                        child: Text(
+                          l10n.transactionHasChildren(childTransactions),
+                          style: Theme.of(context).textTheme.bodySmall,
+                        ),
+                      ),
+                    ],
+                  ),
+                );
+              }
+              return const SizedBox.shrink();
+            },
+          ),
         // Balance before & after
         _buildSection(
           context,

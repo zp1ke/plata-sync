@@ -963,4 +963,29 @@ class AppL10nEn extends AppL10n {
 
   @override
   String get fieldRequired => 'Required';
+
+  @override
+  String get transactionInstallmentsLabel => 'Number of Installments';
+
+  @override
+  String get transactionInstallmentsHelper =>
+      'Split this expense into multiple monthly installments';
+
+  @override
+  String get transactionIsLinked => 'This is part of an installment plan';
+
+  @override
+  String get transactionLinkedToParent => 'Linked to parent transaction';
+
+  @override
+  String transactionHasChildren(int count) {
+    return 'This transaction has $count linked installments';
+  }
+
+  @override
+  String get editParentTransactionMessage =>
+      'You must edit the parent transaction. Changes will be applied to all installments.';
+
+  @override
+  String get transactionNotFound => 'Transaction not found';
 }

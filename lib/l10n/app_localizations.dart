@@ -1826,6 +1826,48 @@ abstract class AppL10n {
   /// In en, this message translates to:
   /// **'Required'**
   String get fieldRequired;
+
+  /// Label for transaction installments field
+  ///
+  /// In en, this message translates to:
+  /// **'Number of Installments'**
+  String get transactionInstallmentsLabel;
+
+  /// Helper text for installments field
+  ///
+  /// In en, this message translates to:
+  /// **'Split this expense into multiple monthly installments'**
+  String get transactionInstallmentsHelper;
+
+  /// Info shown when viewing a transaction that is linked to a parent
+  ///
+  /// In en, this message translates to:
+  /// **'This is part of an installment plan'**
+  String get transactionIsLinked;
+
+  /// Info shown when a transaction is linked
+  ///
+  /// In en, this message translates to:
+  /// **'Linked to parent transaction'**
+  String get transactionLinkedToParent;
+
+  /// Info shown when viewing a parent transaction with linked children
+  ///
+  /// In en, this message translates to:
+  /// **'This transaction has {count} linked installments'**
+  String transactionHasChildren(int count);
+
+  /// Message shown when trying to edit a linked transaction
+  ///
+  /// In en, this message translates to:
+  /// **'You must edit the parent transaction. Changes will be applied to all installments.'**
+  String get editParentTransactionMessage;
+
+  /// Error message when a transaction cannot be found
+  ///
+  /// In en, this message translates to:
+  /// **'Transaction not found'**
+  String get transactionNotFound;
 }
 
 class _AppL10nDelegate extends LocalizationsDelegate<AppL10n> {

@@ -3,6 +3,7 @@ import '../../../../core/di/service_locator.dart';
 import '../../../../core/model/enums/view_mode.dart';
 import '../../../../core/ui/resources/app_icons.dart';
 import '../../../../core/ui/widgets/app_top_bar.dart';
+import '../../../../core/ui/widgets/snack_alert.dart';
 import '../../../accounts/application/accounts_manager.dart';
 import '../../../categories/application/categories_manager.dart';
 import '../../application/transactions_manager.dart';
@@ -92,12 +93,59 @@ class _MobileTransactionsScreenState extends State<MobileTransactionsScreen>
   }
 
   void _showTransactionDetails(BuildContext context, Transaction transaction) {
+    // If this is a linked transaction, show the parent instead
+    if (transaction.isLinkedTransaction) {
+      _showParentTransactionDetails(context, transaction);
+      return;
+    }
+
     showDialog(
       context: context,
       builder: (_) => TransactionDetailsDialog(
         transaction: transaction,
         onEdit: () => _handleEdit(context, transaction),
         onDelete: () => showDeleteConfirmation(context, transaction),
+      ),
+    );
+  }
+
+  void _showParentTransactionDetails(
+    BuildContext context,
+    Transaction linkedTransaction,
+  ) {
+    final manager = getService<TransactionsManager>();
+    final l10n = AppL10n.of(context);
+
+    // Try to load the parent transaction
+    manager.transactions.value.firstWhere(
+      (t) => t.id == linkedTransaction.parentTransactionId,
+      orElse: () {
+        // Parent not found, show error
+        SnackAlert.error(context, message: l10n.transactionNotFound);
+        return linkedTransaction;
+      },
+    );
+
+    // Find the parent transaction
+    final parentTransaction = manager.transactions.value.firstWhere(
+      (t) => t.id == linkedTransaction.parentTransactionId,
+      orElse: () => linkedTransaction,
+    );
+
+    // If we didn't find the parent, show error
+    if (parentTransaction.id == linkedTransaction.id &&
+        linkedTransaction.isLinkedTransaction) {
+      SnackAlert.error(context, message: l10n.transactionNotFound);
+      return;
+    }
+
+    // Show the parent transaction
+    showDialog(
+      context: context,
+      builder: (_) => TransactionDetailsDialog(
+        transaction: parentTransaction,
+        onEdit: () => _handleEdit(context, parentTransaction),
+        onDelete: () => showDeleteConfirmation(context, parentTransaction),
       ),
     );
   }

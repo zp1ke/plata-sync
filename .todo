@@ -11,6 +11,5 @@
 - [ ] App will check once a day all expenses transactions with effective date (not created, just effective) not checked and reached; and update associated accounts balances. This will be done by saving last effective date checked, so app just perform this calculations at most once a day on user opening the app.
 
 # Transactions
-- [ ] create/edit expense - If selected account allows multiple installments, shows option for number of installments (default 1). This will create multiple transactions linked. Edit one of the linked transactions must edit the root one (which in turn edits or delete the linked ones).
 - [ ] expenses - Target account will be affected by transaction amount only when effective date has been reached.
 - [ ] details/show - Date will be effective date if available, current value otherwise.
