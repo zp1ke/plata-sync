@@ -972,6 +972,10 @@ class AppL10nEn extends AppL10n {
       'Split this expense into multiple monthly installments';
 
   @override
+  String get transactionInstallmentsValidation =>
+      'Number of installments must be between 1 and 24';
+
+  @override
   String get transactionIsLinked => 'This is part of an installment plan';
 
   @override
@@ -988,4 +992,10 @@ class AppL10nEn extends AppL10n {
 
   @override
   String get transactionNotFound => 'Transaction not found';
+
+  @override
+  String get increase => 'Increase';
+
+  @override
+  String get decrease => 'Decrease';
 }

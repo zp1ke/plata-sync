@@ -42,9 +42,13 @@ class TransactionEditForm extends StatefulWidget {
 }
 
 class TransactionEditFormState extends State<TransactionEditForm> {
+  static const int _minInstallments = 1;
+  static const int _maxInstallments = 24;
+
   final _formKey = GlobalKey<FormState>();
   final _amountController = TextEditingController();
   final _notesController = TextEditingController();
+  late final TextEditingController _installmentsController;
 
   late TransactionType _type;
   late String? _accountId;
@@ -62,6 +66,9 @@ class TransactionEditFormState extends State<TransactionEditForm> {
   @override
   void initState() {
     super.initState();
+    _installmentsController = TextEditingController(
+      text: _numberOfInstallments.toString(),
+    );
     final transaction = widget.transaction;
 
     if (transaction != null) {
@@ -134,6 +141,7 @@ class TransactionEditFormState extends State<TransactionEditForm> {
     _amountController.removeListener(_validateForm);
     _amountController.dispose();
     _notesController.dispose();
+    _installmentsController.dispose();
     super.dispose();
   }
 
@@ -198,7 +206,8 @@ class TransactionEditFormState extends State<TransactionEditForm> {
       );
 
       // If creating new transaction with installments > 1, create linked transactions
-      if (widget.transaction == null && _numberOfInstallments > 1) {
+      if (widget.transaction == null &&
+          _numberOfInstallments > _minInstallments) {
         // For multiple installments, divide the amount
         final installmentAmount = amount ~/ _numberOfInstallments;
         final remainder = amount % _numberOfInstallments;
@@ -345,23 +354,79 @@ class TransactionEditFormState extends State<TransactionEditForm> {
                         l10n.transactionInstallmentsLabel,
                         style: Theme.of(context).textTheme.labelMedium,
                       ),
-                      SegmentedButton<int>(
-                        segments: List<ButtonSegment<int>>.generate(
-                          12,
-                          (index) => ButtonSegment<int>(
-                            value: index + 1,
-                            label: Text('${index + 1}'),
+                      Row(
+                        spacing: AppSpacing.sm,
+                        children: [
+                          IconButton(
+                            icon: AppIcons.arrowDropDown,
+                            onPressed: _numberOfInstallments > _minInstallments
+                                ? () {
+                                    setState(() {
+                                      _numberOfInstallments--;
+                                      _installmentsController.text =
+                                          _numberOfInstallments.toString();
+                                    });
+                                  }
+                                : null,
+                            tooltip: l10n.decrease,
+                            iconSize: AppSizing.iconMd,
                           ),
-                        ),
-                        selected: {_numberOfInstallments},
-                        onSelectionChanged: (Set<int> newSelection) {
-                          setState(() {
-                            _numberOfInstallments = newSelection.first;
-                          });
-                        },
-                        showSelectedIcon: false,
+                          Expanded(
+                            child: TextFormField(
+                              controller: _installmentsController,
+                              onChanged: (value) {
+                                final intValue = int.tryParse(value);
+                                if (intValue != null &&
+                                    intValue >= _minInstallments &&
+                                    intValue <= _maxInstallments) {
+                                  setState(() {
+                                    _numberOfInstallments = intValue;
+                                  });
+                                }
+                              },
+                              keyboardType: TextInputType.number,
+                              textAlign: TextAlign.center,
+                              validator: (value) {
+                                if (value == null || value.isEmpty) {
+                                  return l10n.fieldRequired;
+                                }
+                                final intValue = int.tryParse(value);
+                                if (intValue == null) {
+                                  return l10n.invalidAmountError;
+                                }
+                                if (intValue < _minInstallments ||
+                                    intValue > _maxInstallments) {
+                                  return l10n.transactionInstallmentsValidation;
+                                }
+                                return null;
+                              },
+                              decoration: InputDecoration(
+                                border: OutlineInputBorder(
+                                  borderRadius: BorderRadius.circular(
+                                    AppSizing.radiusMd,
+                                  ),
+                                ),
+                                contentPadding: AppSpacing.paddingMd,
+                              ),
+                            ),
+                          ),
+                          IconButton(
+                            icon: AppIcons.arrowDropUp,
+                            onPressed: _numberOfInstallments < _maxInstallments
+                                ? () {
+                                    setState(() {
+                                      _numberOfInstallments++;
+                                      _installmentsController.text =
+                                          _numberOfInstallments.toString();
+                                    });
+                                  }
+                                : null,
+                            tooltip: l10n.increase,
+                            iconSize: AppSizing.iconMd,
+                          ),
+                        ],
                       ),
-                      if (_numberOfInstallments > 1)
+                      if (_numberOfInstallments > _minInstallments)
                         Text(
                           l10n.transactionInstallmentsHelper,
                           style: Theme.of(context).textTheme.labelSmall

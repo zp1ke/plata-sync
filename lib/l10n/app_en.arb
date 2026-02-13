@@ -1327,6 +1327,10 @@
   "@transactionInstallmentsHelper": {
     "description": "Helper text for installments field"
   },
+  "transactionInstallmentsValidation": "Number of installments must be between 1 and 24",
+  "@transactionInstallmentsValidation": {
+    "description": "Validation error for installments field"
+  },
   "transactionIsLinked": "This is part of an installment plan",
   "@transactionIsLinked": {
     "description": "Info shown when viewing a transaction that is linked to a parent"
@@ -1351,5 +1355,13 @@
   "transactionNotFound": "Transaction not found",
   "@transactionNotFound": {
     "description": "Error message when a transaction cannot be found"
+  },
+  "increase": "Increase",
+  "@increase": {
+    "description": "Tooltip for increase/add button"
+  },
+  "decrease": "Decrease",
+  "@decrease": {
+    "description": "Tooltip for decrease/remove button"
   }
 }

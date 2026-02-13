@@ -1839,6 +1839,12 @@ abstract class AppL10n {
   /// **'Split this expense into multiple monthly installments'**
   String get transactionInstallmentsHelper;
 
+  /// Validation error for installments field
+  ///
+  /// In en, this message translates to:
+  /// **'Number of installments must be between 1 and 24'**
+  String get transactionInstallmentsValidation;
+
   /// Info shown when viewing a transaction that is linked to a parent
   ///
   /// In en, this message translates to:
@@ -1868,6 +1874,18 @@ abstract class AppL10n {
   /// In en, this message translates to:
   /// **'Transaction not found'**
   String get transactionNotFound;
+
+  /// Tooltip for increase/add button
+  ///
+  /// In en, this message translates to:
+  /// **'Increase'**
+  String get increase;
+
+  /// Tooltip for decrease/remove button
+  ///
+  /// In en, this message translates to:
+  /// **'Decrease'**
+  String get decrease;
 }
 
 class _AppL10nDelegate extends LocalizationsDelegate<AppL10n> {

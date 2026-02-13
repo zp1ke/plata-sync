@@ -6,7 +6,7 @@ import '../utils/os.dart';
 /// Service for managing the SQLite database
 class DatabaseService {
   static const String _databaseName = 'plata_sync.db';
-  static const int _databaseVersion = 3;
+  static const int _databaseVersion = 4;
 
   Database? _database;
   DatabaseService() {
@@ -147,6 +147,16 @@ class DatabaseService {
       // Migration from version 2 to 3: Add effective_date column to transactions
       await db.execute(
         'ALTER TABLE transactions ADD COLUMN effective_date INTEGER',
+      );
+    }
+    if (oldVersion < 4) {
+      // Migration from version 3 to 4: Add parent_transaction_id column to transactions
+      await db.execute(
+        'ALTER TABLE transactions ADD COLUMN parent_transaction_id TEXT',
+      );
+      // Add index for parent_transaction_id
+      await db.execute(
+        'CREATE INDEX idx_transactions_parent_transaction_id ON transactions(parent_transaction_id)',
       );
     }
   }
