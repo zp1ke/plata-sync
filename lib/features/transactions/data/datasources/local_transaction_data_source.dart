@@ -28,6 +28,7 @@ class LocalTransactionDataSource extends TransactionDataSource {
           ? null
           : transaction.tagIds.join(','),
       'effective_date': transaction.effectiveDate?.millisecondsSinceEpoch,
+      'parent_transaction_id': transaction.parentTransactionId,
     };
   }
 
@@ -52,6 +53,7 @@ class LocalTransactionDataSource extends TransactionDataSource {
       effectiveDate: map['effective_date'] != null
           ? DateTime.fromMillisecondsSinceEpoch(map['effective_date'] as int)
           : null,
+      parentTransactionId: map['parent_transaction_id'] as String?,
     );
   }
 

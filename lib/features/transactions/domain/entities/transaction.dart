@@ -13,6 +13,7 @@ class Transaction extends Equatable {
   final String? notes;
   final List<String> tagIds;
   final DateTime? effectiveDate;
+  final String? parentTransactionId;
 
   const Transaction({
     required this.id,
@@ -26,6 +27,7 @@ class Transaction extends Equatable {
     this.notes,
     this.tagIds = const [],
     this.effectiveDate,
+    this.parentTransactionId,
   });
 
   Map<String, dynamic> toJson() {
@@ -41,6 +43,7 @@ class Transaction extends Equatable {
       'notes': notes,
       'tag_ids': tagIds,
       'effective_date': effectiveDate?.toIso8601String(),
+      'parent_transaction_id': parentTransactionId,
     };
   }
 
@@ -59,6 +62,7 @@ class Transaction extends Equatable {
       effectiveDate: json['effective_date'] != null
           ? DateTime.parse(json['effective_date'] as String)
           : null,
+      parentTransactionId: json['parent_transaction_id'] as String?,
     );
   }
 
@@ -74,6 +78,7 @@ class Transaction extends Equatable {
     this.notes,
     this.tagIds = const [],
     this.effectiveDate,
+    this.parentTransactionId,
   }) : id = id ?? randomId(),
        createdAt = createdAt ?? DateTime.now();
 
@@ -89,6 +94,7 @@ class Transaction extends Equatable {
     String? notes,
     List<String>? tagIds,
     DateTime? effectiveDate,
+    String? parentTransactionId,
   }) {
     return Transaction(
       id: id ?? this.id,
@@ -103,6 +109,7 @@ class Transaction extends Equatable {
       notes: notes ?? this.notes,
       tagIds: tagIds ?? this.tagIds,
       effectiveDate: effectiveDate ?? this.effectiveDate,
+      parentTransactionId: parentTransactionId ?? this.parentTransactionId,
     );
   }
 

@@ -88,9 +88,11 @@ class DatabaseService {
         notes TEXT,
         tag_ids TEXT,
         effective_date INTEGER,
+        parent_transaction_id TEXT,
         FOREIGN KEY (account_id) REFERENCES accounts(id) ON DELETE CASCADE,
         FOREIGN KEY (category_id) REFERENCES categories(id) ON DELETE SET NULL,
-        FOREIGN KEY (target_account_id) REFERENCES accounts(id) ON DELETE CASCADE
+        FOREIGN KEY (target_account_id) REFERENCES accounts(id) ON DELETE CASCADE,
+        FOREIGN KEY (parent_transaction_id) REFERENCES transactions(id) ON DELETE CASCADE
       )
     ''');
 
@@ -109,6 +111,10 @@ class DatabaseService {
 
     await db.execute('''
       CREATE INDEX idx_transactions_created_at ON transactions(created_at)
+    ''');
+
+    await db.execute('''
+      CREATE INDEX idx_transactions_parent_transaction_id ON transactions(parent_transaction_id)
     ''');
 
     // Create tags table
