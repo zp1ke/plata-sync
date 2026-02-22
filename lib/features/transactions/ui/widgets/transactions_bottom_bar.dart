@@ -229,11 +229,7 @@ class TransactionsBottomBar extends WatchingWidget
       mainAxisAlignment: MainAxisAlignment.center,
       crossAxisAlignment: CrossAxisAlignment.stretch,
       spacing: AppSpacing.sm,
-      children: [
-        stats,
-        actions,
-        if (activeFiltersLine != null) activeFiltersLine,
-      ],
+      children: [stats, actions, ?activeFiltersLine],
     );
   }
 
