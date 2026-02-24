@@ -12,6 +12,12 @@ class AppL10nEn extends AppL10n {
   String get appTitle => 'Plata Sync';
 
   @override
+  String get splashLoading => 'Loading your data...';
+
+  @override
+  String get startupError => 'We could not start the app. Please try again.';
+
+  @override
   String get navTransactions => 'Transactions';
 
   @override

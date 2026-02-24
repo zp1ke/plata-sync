@@ -1,0 +1,19 @@
+[tasks.l10n]
+run = "flutter gen-l10n"
+description = "Generate localization files"
+
+[tasks.gen-icons]
+run = "dart run flutter_launcher_icons"
+description = "Generate launcher icons"
+
+[tasks.lint]
+run = "dart analyze"
+description = "Analyze Dart code for potential issues"
+
+[tasks.format]
+run = "dart format lib/"
+description = "Format Dart code in lib/"
+
+[tasks.test]
+run = "flutter test"
+description = "Run all Flutter tests"

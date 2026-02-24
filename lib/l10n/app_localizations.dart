@@ -99,6 +99,18 @@ abstract class AppL10n {
   /// **'Plata Sync'**
   String get appTitle;
 
+  /// Status text shown on the splash screen while the app initializes
+  ///
+  /// In en, this message translates to:
+  /// **'Loading your data...'**
+  String get splashLoading;
+
+  /// Status text shown on the splash screen when initialization fails
+  ///
+  /// In en, this message translates to:
+  /// **'We could not start the app. Please try again.'**
+  String get startupError;
+
   /// Label for the Transactions navigation tab
   ///
   /// In en, this message translates to:
