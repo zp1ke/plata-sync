@@ -9,4 +9,3 @@
 
 # Transactions
 - [ ] expenses - Target account will be affected by transaction amount only when effective date has been reached.
-- [ ] details/show - Date will be effective date if available, current value otherwise.

@@ -278,7 +278,8 @@ class _TransactionDetailsViewState extends State<TransactionDetailsView> {
             _buildInfoRow(
               context,
               label: l10n.transactionDateLabel,
-              value: transaction.createdAt.formatWithTime(),
+              value: (transaction.effectiveDate ?? transaction.createdAt)
+                  .formatWithTime(),
             ),
           ],
         ),
