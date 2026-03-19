@@ -463,5 +463,69 @@ void main() {
         ); // WRONG: Should be 60000 but bug causes it to be 10000
       },
     );
+
+    test(
+      'should not affect account balance immediately for future effective expenses',
+      () async {
+        final account = Account.create(
+          id: 'account-effective-future',
+          name: 'Effective Date Account',
+          iconData: ObjectIconData.empty(),
+          balance: 1000,
+        );
+        await accountManager.addAccount(account);
+
+        final transaction = Transaction.create(
+          id: 'tx-effective-future',
+          createdAt: DateTime.now().subtract(const Duration(days: 1)),
+          accountId: account.id,
+          amount: -300,
+          accountBalanceBefore: 1000,
+          effectiveDate: DateTime.now().add(const Duration(days: 2)),
+        );
+
+        await manager.addTransaction(transaction);
+
+        final updatedAccount = await accountManager.getAccountById(account.id);
+        expect(updatedAccount, isNotNull);
+        expect(updatedAccount!.balance, 1000);
+      },
+    );
+
+    test(
+      'should settle reached effective expenses once per day on app open',
+      () async {
+        final account = Account.create(
+          id: 'account-effective-settle',
+          name: 'Daily Settlement Account',
+          iconData: ObjectIconData.empty(),
+          balance: 1000,
+        );
+        await accountManager.addAccount(account);
+
+        // Simulate previously created data that was not yet settled by startup.
+        final transaction = Transaction.create(
+          id: 'tx-effective-settle',
+          createdAt: DateTime.now().subtract(const Duration(days: 3)),
+          accountId: account.id,
+          amount: -250,
+          accountBalanceBefore: 1000,
+          effectiveDate: DateTime.now().subtract(const Duration(days: 1)),
+        );
+        await dataSource.create(transaction);
+
+        await manager.settleReachedEffectiveExpensesIfNeeded();
+
+        final updatedAccount = await accountManager.getAccountById(account.id);
+        expect(updatedAccount, isNotNull);
+        expect(updatedAccount!.balance, 750);
+
+        final lastChecked = updatedAccount.lastEffectiveExpensesCheckedAt;
+        expect(lastChecked, isNotNull);
+        expect(lastChecked!.year, DateTime.now().year);
+        expect(lastChecked.month, DateTime.now().month);
+        expect(lastChecked.day, DateTime.now().day);
+      },
+    );
   });
 }

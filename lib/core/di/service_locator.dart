@@ -74,6 +74,8 @@ Future<void> setupServiceLocator() async {
     () => TransactionsManager(transactionDataSource),
   );
   getIt.registerLazySingleton<TagsManager>(() => TagsManager(tagDataSource));
+
+  await getIt<TransactionsManager>().settleReachedEffectiveExpensesIfNeeded();
 }
 
 T getService<T extends Object>() => getIt<T>();

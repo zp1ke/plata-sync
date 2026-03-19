@@ -49,6 +49,39 @@ class TransactionsManager {
   /// Ignores date filter
   final ValueNotifier<bool> hasActiveFilters = ValueNotifier(false);
 
+  DateTime _appliedAt(Transaction transaction) {
+    if (transaction.isExpense && transaction.effectiveDate != null) {
+      return transaction.effectiveDate!;
+    }
+    return transaction.createdAt;
+  }
+
+  bool _affectsBalance(Transaction transaction, DateTime now) {
+    if (!transaction.isExpense) {
+      return true;
+    }
+
+    if (transaction.effectiveDate == null) {
+      return true;
+    }
+
+    return !transaction.effectiveDate!.isAfter(now);
+  }
+
+  int _compareTransactionsByAppliedAt(Transaction a, Transaction b) {
+    final appliedComparison = _appliedAt(a).compareTo(_appliedAt(b));
+    if (appliedComparison != 0) {
+      return appliedComparison;
+    }
+
+    final createdComparison = a.createdAt.compareTo(b.createdAt);
+    if (createdComparison != 0) {
+      return createdComparison;
+    }
+
+    return a.id.compareTo(b.id);
+  }
+
   void _loadSortOrderFromSettings() {
     final settings = getService<SettingsService>();
     final saved = settings.getTransactionsSortOrder();
@@ -356,14 +389,12 @@ class TransactionsManager {
       transaction.accountId,
     );
     if (sourceAccount != null) {
-      await _updateAccountBalanceAndLastUsed(
+      await _recalculateAccountBalanceAndLastUsed(
         accountsManager,
         sourceAccount,
-        transaction.createdAt.add(Duration(milliseconds: 1)),
         lastUsed,
-        deleted
-            ? transaction.accountBalanceBefore
-            : transaction.accountBalanceAfter,
+        fallbackBalance: deleted ? transaction.accountBalanceBefore : null,
+        fallbackFrom: deleted ? _appliedAt(transaction) : null,
       );
     }
 
@@ -373,14 +404,14 @@ class TransactionsManager {
         transaction.targetAccountId!,
       );
       if (targetAccount != null) {
-        await _updateAccountBalanceAndLastUsed(
+        await _recalculateAccountBalanceAndLastUsed(
           accountsManager,
           targetAccount,
-          transaction.createdAt.add(Duration(milliseconds: 1)),
           lastUsed,
-          deleted
+          fallbackBalance: deleted
               ? transaction.targetAccountBalanceBefore
-              : transaction.targetAccountBalanceAfter,
+              : null,
+          fallbackFrom: deleted ? _appliedAt(transaction) : null,
         );
       }
     }
@@ -417,6 +448,66 @@ class TransactionsManager {
     await loadTransactions();
   }
 
+  Future<void> settleReachedEffectiveExpensesIfNeeded() async {
+    final now = DateTime.now();
+    final today = now.startOfDay;
+    final accountsManager = getService<AccountsManager>();
+    await accountsManager.loadAccounts();
+    final accounts = List<Account>.from(accountsManager.accounts.value);
+
+    var hasUpdates = false;
+    for (final account in accounts) {
+      final lastChecked = account.lastEffectiveExpensesCheckedAt;
+      if (lastChecked != null && !lastChecked.startOfDay.isBefore(today)) {
+        continue;
+      }
+
+      final expenseTransactions = await _dataSource.getAll(
+        filter: {
+          'accountIds': [account.id],
+          'transactionType': TransactionType.expense.name,
+        },
+      );
+
+      final reachedEffectiveExpenses = expenseTransactions.where((transaction) {
+        final effectiveDate = transaction.effectiveDate;
+        if (effectiveDate == null) {
+          return false;
+        }
+
+        if (effectiveDate.isAfter(now.endOfDay)) {
+          return false;
+        }
+
+        if (lastChecked == null) {
+          return true;
+        }
+
+        return effectiveDate.isAfter(lastChecked);
+      }).toList();
+
+      if (reachedEffectiveExpenses.isNotEmpty) {
+        await _recalculateAccountBalanceAndLastUsed(
+          accountsManager,
+          account,
+          null,
+        );
+      }
+
+      final refreshedAccount =
+          await accountsManager.getAccountById(account.id) ?? account;
+      await accountsManager.updateAccount(
+        refreshedAccount.copyWith(lastEffectiveExpensesCheckedAt: now),
+      );
+      hasUpdates = true;
+    }
+
+    if (hasUpdates) {
+      await accountsManager.loadAccounts();
+      await loadTransactions();
+    }
+  }
+
   void dispose() {
     transactions.dispose();
     isLoading.dispose();
@@ -431,41 +522,74 @@ class TransactionsManager {
     hasActiveFilters.dispose();
   }
 
-  Future<void> _updateAccountBalanceAndLastUsed(
+  Future<void> _recalculateAccountBalanceAndLastUsed(
     AccountsManager accountsManager,
     Account account,
-    DateTime from,
-    DateTime? lastUsed,
-    int? initialBalance,
-  ) async {
+    DateTime? lastUsed, {
+    int? fallbackBalance,
+    DateTime? fallbackFrom,
+  }) async {
+    final now = DateTime.now();
     final transactions = await _dataSource.getAll(
-      filter: {'accountId': account.id, 'from': from},
-      sort: SortParam('createdAt', ascending: true),
+      filter: {
+        'accountIds': [account.id],
+      },
     );
     final transferTransactions = await _dataSource.getAll(
-      filter: {'targetAccountId': account.id, 'from': from},
-      sort: SortParam('createdAt', ascending: true),
+      filter: {'targetAccountId': account.id},
     );
     transactions.addAll(transferTransactions);
-    // Sort all transactions by date to ensure proper balance calculation
-    transactions.sort((a, b) => a.createdAt.compareTo(b.createdAt));
+    transactions.sort(_compareTransactionsByAppliedAt);
 
-    var balance = initialBalance ?? IntExtensions.minSafeValue;
+    var effectiveFallbackBalance = fallbackBalance;
+    if (effectiveFallbackBalance != null && fallbackFrom != null) {
+      final hasEarlierAffectingTransaction = transactions.any((transaction) {
+        if (!_affectsBalance(transaction, now)) {
+          return false;
+        }
+        return _appliedAt(transaction).isBefore(fallbackFrom);
+      });
+
+      if (hasEarlierAffectingTransaction) {
+        effectiveFallbackBalance = null;
+      }
+    }
+
+    var balance = IntExtensions.minSafeValue;
     var lastUsedValue = lastUsed;
     for (final transaction in transactions) {
+      if (!_affectsBalance(transaction, now)) {
+        continue;
+      }
+
+      final appliedAt = _appliedAt(transaction);
+
       // Update lastUsed
       if (lastUsedValue == null) {
         // First assignment
-        lastUsedValue = transaction.createdAt;
-      } else if (transaction.createdAt.isAfter(lastUsedValue)) {
+        lastUsedValue = appliedAt;
+      } else if (appliedAt.isAfter(lastUsedValue)) {
         // Update to most recent
-        lastUsedValue = transaction.createdAt;
+        lastUsedValue = appliedAt;
       }
+
       if (transaction.accountId == account.id) {
         // Get balance as source account
         if (balance == IntExtensions.minSafeValue) {
-          // First transaction, set initial balance
-          balance = transaction.accountBalanceBefore + transaction.amount;
+          // First transaction, use fallback baseline when provided.
+          if (effectiveFallbackBalance != null) {
+            if (transaction.accountBalanceBefore != effectiveFallbackBalance) {
+              await _updateTransaction(
+                transaction.copyWith(
+                  accountBalanceBefore: effectiveFallbackBalance,
+                ),
+                updateAssociated: false,
+              );
+            }
+            balance = effectiveFallbackBalance + transaction.amount;
+          } else {
+            balance = transaction.accountBalanceBefore + transaction.amount;
+          }
         } else {
           if (transaction.accountBalanceBefore != balance) {
             // Update accountBalanceBefore on transaction
@@ -480,10 +604,23 @@ class TransactionsManager {
       } else if (transaction.targetAccountId == account.id) {
         // Get balance as target account in transfer
         if (balance == IntExtensions.minSafeValue) {
-          // First transaction, set initial balance
-          balance =
-              (transaction.targetAccountBalanceBefore ?? 0) +
-              transaction.amount.abs();
+          // First transaction, use fallback baseline when provided.
+          if (effectiveFallbackBalance != null) {
+            if (transaction.targetAccountBalanceBefore !=
+                effectiveFallbackBalance) {
+              await _updateTransaction(
+                transaction.copyWith(
+                  targetAccountBalanceBefore: effectiveFallbackBalance,
+                ),
+                updateAssociated: false,
+              );
+            }
+            balance = effectiveFallbackBalance + transaction.amount.abs();
+          } else {
+            balance =
+                (transaction.targetAccountBalanceBefore ?? 0) +
+                transaction.amount.abs();
+          }
         } else {
           if (transaction.targetAccountBalanceBefore != balance) {
             // Update targetAccountBalanceBefore on transfer transaction
@@ -499,10 +636,10 @@ class TransactionsManager {
     }
 
     if (balance == IntExtensions.minSafeValue) {
-      // No transactions, set balance to 0
-      balance = 0;
+      balance = effectiveFallbackBalance ?? account.balance;
     }
-    accountsManager.updateAccount(
+
+    await accountsManager.updateAccount(
       account.copyWith(balance: balance, lastUsed: lastUsedValue),
     );
   }

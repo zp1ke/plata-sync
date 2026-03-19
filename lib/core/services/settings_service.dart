@@ -15,6 +15,8 @@ class SettingsService {
   static const String _keyAccountsSortOrder = 'accounts_sort_order';
   static const String _keyCategoriesSortOrder = 'categories_sort_order';
   static const String _keyTransactionsSortOrder = 'transactions_sort_order';
+  static const String _keyLastEffectiveExpensesCheckedAt =
+      'last_effective_expenses_checked_at';
 
   final SharedPreferences _prefs;
   final PackageInfo _packageInfo;
@@ -103,6 +105,22 @@ class SettingsService {
   /// Set the transactions sort order setting
   Future<bool> setTransactionsSortOrder(TransactionSortOrder sortOrder) async {
     return await _prefs.setString(_keyTransactionsSortOrder, sortOrder.name);
+  }
+
+  DateTime? getLastEffectiveExpensesCheckedAt() {
+    final value = _prefs.getInt(_keyLastEffectiveExpensesCheckedAt);
+    if (value == null) {
+      return null;
+    }
+
+    return DateTime.fromMillisecondsSinceEpoch(value);
+  }
+
+  Future<bool> setLastEffectiveExpensesCheckedAt(DateTime date) async {
+    return await _prefs.setInt(
+      _keyLastEffectiveExpensesCheckedAt,
+      date.millisecondsSinceEpoch,
+    );
   }
 
   /// Get the app version string

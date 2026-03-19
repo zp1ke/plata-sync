@@ -22,6 +22,8 @@ class LocalAccountDataSource extends AccountDataSource {
       'background_color_hex': account.iconData.backgroundColorHex,
       'icon_color_hex': account.iconData.iconColorHex,
       'last_used': account.lastUsed?.millisecondsSinceEpoch,
+      'last_effective_expenses_checked_at':
+          account.lastEffectiveExpensesCheckedAt?.millisecondsSinceEpoch,
       'description': account.description,
       'balance': account.balance,
       'enabled': account.enabled ? 1 : 0,
@@ -43,6 +45,12 @@ class LocalAccountDataSource extends AccountDataSource {
       ),
       lastUsed: map['last_used'] != null
           ? DateTime.fromMillisecondsSinceEpoch(map['last_used'] as int)
+          : null,
+      lastEffectiveExpensesCheckedAt:
+          map['last_effective_expenses_checked_at'] != null
+          ? DateTime.fromMillisecondsSinceEpoch(
+              map['last_effective_expenses_checked_at'] as int,
+            )
           : null,
       description: map['description'] as String?,
       balance: map['balance'] as int,

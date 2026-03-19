@@ -8,6 +8,7 @@ class Account extends Equatable {
   final String name;
   final ObjectIconData iconData;
   final DateTime? lastUsed;
+  final DateTime? lastEffectiveExpensesCheckedAt;
   final String? description;
   final int balance; // Balance in cents
   final bool enabled; // Whether the account is enabled (defaults to true)
@@ -23,6 +24,7 @@ class Account extends Equatable {
     required this.iconData,
     required this.balance,
     this.lastUsed,
+    this.lastEffectiveExpensesCheckedAt,
     this.description,
     this.enabled = true,
     this.supportsEffectiveDate = false,
@@ -36,6 +38,8 @@ class Account extends Equatable {
       'name': name,
       'icon_data': iconData.toJson(),
       'last_used': lastUsed?.toIso8601String(),
+      'last_effective_expenses_checked_at': lastEffectiveExpensesCheckedAt
+          ?.toIso8601String(),
       'description': description,
       'balance': balance,
       'enabled': enabled,
@@ -54,6 +58,10 @@ class Account extends Equatable {
       ),
       lastUsed: json['last_used'] != null
           ? DateTime.parse(json['last_used'] as String)
+          : null,
+      lastEffectiveExpensesCheckedAt:
+          json['last_effective_expenses_checked_at'] != null
+          ? DateTime.parse(json['last_effective_expenses_checked_at'] as String)
           : null,
       description: json['description'] as String?,
       balance: json['balance'] as int,
@@ -75,7 +83,8 @@ class Account extends Equatable {
     this.supportsInstallments = false,
   }) : id = id ?? randomId(),
        createdAt = createdAt ?? DateTime.now(),
-       lastUsed = null;
+       lastUsed = null,
+       lastEffectiveExpensesCheckedAt = null;
 
   Account copyWith({
     String? id,
@@ -84,6 +93,7 @@ class Account extends Equatable {
     ObjectIconData? iconData,
     String? description,
     DateTime? lastUsed,
+    DateTime? lastEffectiveExpensesCheckedAt,
     int? balance,
     bool? enabled,
     bool? supportsEffectiveDate,
@@ -96,6 +106,8 @@ class Account extends Equatable {
       iconData: iconData ?? this.iconData,
       description: description ?? this.description,
       lastUsed: lastUsed ?? this.lastUsed,
+      lastEffectiveExpensesCheckedAt:
+          lastEffectiveExpensesCheckedAt ?? this.lastEffectiveExpensesCheckedAt,
       balance: balance ?? this.balance,
       enabled: enabled ?? this.enabled,
       supportsEffectiveDate:

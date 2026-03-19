@@ -6,7 +6,7 @@ import '../utils/os.dart';
 /// Service for managing the SQLite database
 class DatabaseService {
   static const String _databaseName = 'plata_sync.db';
-  static const int _databaseVersion = 4;
+  static const int _databaseVersion = 5;
 
   Database? _database;
   DatabaseService() {
@@ -67,6 +67,7 @@ class DatabaseService {
         background_color_hex TEXT NOT NULL,
         icon_color_hex TEXT NOT NULL,
         last_used INTEGER,
+        last_effective_expenses_checked_at INTEGER,
         description TEXT,
         balance INTEGER NOT NULL DEFAULT 0,
         enabled INTEGER NOT NULL DEFAULT 1,
@@ -157,6 +158,12 @@ class DatabaseService {
       // Add index for parent_transaction_id
       await db.execute(
         'CREATE INDEX idx_transactions_parent_transaction_id ON transactions(parent_transaction_id)',
+      );
+    }
+    if (oldVersion < 5) {
+      // Migration from version 4 to 5: Track per-account effective expense checks
+      await db.execute(
+        'ALTER TABLE accounts ADD COLUMN last_effective_expenses_checked_at INTEGER',
       );
     }
   }
