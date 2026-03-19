@@ -1,19 +1,148 @@
+[tasks.clean]
+description = "Clean build artifacts"
+run = "flutter clean"
+
+[tasks.deps-get]
+description = "Get dependencies"
+run = "flutter pub get"
+
+[tasks.deps-outdated]
+description = "Check outdated dependencies"
+run = "flutter pub outdated"
+
+[tasks.deps-upgrade]
+description = "Upgrade dependencies"
+run = "flutter pub upgrade"
+
 [tasks.l10n]
-run = "flutter gen-l10n"
 description = "Generate localization files"
+run = "flutter gen-l10n"
 
 [tasks.gen-icons]
-run = "dart run flutter_launcher_icons"
 description = "Generate launcher icons"
-
-[tasks.lint]
-run = "dart analyze"
-description = "Analyze Dart code for potential issues"
+run = "dart run flutter_launcher_icons"
 
 [tasks.format]
-run = "dart format lib/"
-description = "Format Dart code in lib/"
+description = "Format Dart code in lib"
+run = "dart format lib"
+
+[tasks.analyze]
+description = "Analyze Dart and Flutter code"
+run = "flutter analyze"
+
+[tasks.lint]
+description = "Format and analyze code"
+depends = ["format", "analyze"]
 
 [tasks.test]
+description = "Run tests"
 run = "flutter test"
-description = "Run all Flutter tests"
+
+[tasks.run]
+description = "Run app on default device"
+run = "flutter run"
+
+[tasks.run-linux]
+description = "Run app on Linux"
+run = "flutter run -d linux"
+
+[tasks.run-web]
+description = "Run app on Chrome"
+run = "flutter run -d chrome"
+
+[tasks.build-android]
+description = "Build Android app bundle"
+run = "flutter build appbundle"
+
+[tasks.build-ios]
+description = "Build iOS app"
+run = "flutter build ios"
+
+[tasks.build-web]
+description = "Build web app"
+run = "flutter build web"
+
+[tasks.build-linux]
+description = "Build Linux app"
+run = "flutter build linux"
+
+[tasks.build-windows]
+description = "Build Windows app"
+run = "flutter build windows"
+
+[tasks.build-macos]
+description = "Build macOS app"
+run = "flutter build macos"
+
+[tasks.version-show]
+description = "Show current pubspec version"
+run = "grep '^version:' pubspec.yaml"
+
+[tasks.version-bump-major]
+description = "Bump major version and build number"
+run = '''
+current_version="$(grep -oE '^version: .*$' pubspec.yaml | sed 's/version: //')"
+base_version="${current_version%%+*}"
+build_number="${current_version#*+}"
+if [ "$build_number" = "$current_version" ]; then
+	build_number=0
+fi
+
+IFS='.' read -r major minor patch <<EOF
+$base_version
+EOF
+
+major=$((major + 1))
+minor=0
+patch=0
+build_number=$((build_number + 1))
+
+new_version="$major.$minor.$patch+$build_number"
+sed -i "s/^version: .*/version: $new_version/" pubspec.yaml
+echo "Version updated: $current_version -> $new_version"
+'''
+
+[tasks.version-bump-minor]
+description = "Bump minor version and build number"
+run = '''
+current_version="$(grep -oE '^version: .*$' pubspec.yaml | sed 's/version: //')"
+base_version="${current_version%%+*}"
+build_number="${current_version#*+}"
+if [ "$build_number" = "$current_version" ]; then
+	build_number=0
+fi
+
+IFS='.' read -r major minor patch <<EOF
+$base_version
+EOF
+
+minor=$((minor + 1))
+patch=0
+build_number=$((build_number + 1))
+
+new_version="$major.$minor.$patch+$build_number"
+sed -i "s/^version: .*/version: $new_version/" pubspec.yaml
+echo "Version updated: $current_version -> $new_version"
+'''
+
+[tasks.version-bump-patch]
+description = "Bump patch version and build number"
+run = '''
+current_version="$(grep -oE '^version: .*$' pubspec.yaml | sed 's/version: //')"
+base_version="${current_version%%+*}"
+build_number="${current_version#*+}"
+if [ "$build_number" = "$current_version" ]; then
+	build_number=0
+fi
+
+IFS='.' read -r major minor patch <<EOF
+$base_version
+EOF
+
+patch=$((patch + 1))
+build_number=$((build_number + 1))
+
+new_version="$major.$minor.$patch+$build_number"
+sed -i "s/^version: .*/version: $new_version/" pubspec.yaml
+echo "Version updated: $current_version -> $new_version"
+'''
